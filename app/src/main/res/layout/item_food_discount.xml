@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="ivm"
+            type="ww.smartexpress.app.data.model.api.response.FoodDiscount" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="@dimen/_170sdp"
+        android:layout_height="@dimen/_90sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:background="@color/white">
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="@dimen/_11sdp"
+            tools:ignore="MissingConstraints">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/food_discount">
+            </ImageView>
+            <TextView
+                style="@style/roboto_bold"
+                android:id="@+id/txtFood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:text="Milk Tea"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_20ssp"/>
+            <TextView
+                style="@style/roboto_medium"
+                android:id="@+id/textView26"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/txtFood"
+                android:layout_below="@+id/txtFood"
+                android:text="Big size -20%"
+                android:textColor="@color/app_color"/>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+</layout>

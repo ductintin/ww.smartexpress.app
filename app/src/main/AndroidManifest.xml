@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="ww.smartexpress.app">
+
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+
+    <uses-permission
+        android:name="android.permission.WRITE_SECURE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:name="ww.smartexpress.app.MVVMApplication"
+        android:allowBackup="true"
+        android:banner="@mipmap/ic_launcher"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:windowSoftInputMode="adjustResize|stateHidden">
+
+        <activity android:name="ww.smartexpress.app.ui.chat.ChatActivity"
+            android:theme="@style/WhiteAppTheme"
+            android:exported="true">
+        </activity>
+
+        <activity android:name="ww.smartexpress.app.ui.password.reset.ResetPasswordActivity"
+            android:theme="@style/WhiteAppTheme"
+            android:exported="true">
+        </activity>
+
+        <activity android:name="ww.smartexpress.app.ui.signin.SignInActivity"
+            android:theme="@style/WhiteAppTheme"
+            android:exported="true">
+        </activity>
+
+        <activity android:name="ww.smartexpress.app.ui.index.IndexActivity"
+            android:theme="@style/WhiteAppTheme"
+            android:exported="true">
+        </activity>
+
+        <activity android:name="ww.smartexpress.app.ui.register.RegisterActivity"
+            android:theme="@style/WhiteAppTheme"
+            android:exported="true">
+        </activity>
+
+        <activity android:name="ww.smartexpress.app.ui.trip.cancel.TripCancelReasonActivity"
+            android:theme="@style/WhiteAppTheme"
+            android:exported="true">
+        </activity>
+
+        <activity android:name="ww.smartexpress.app.ui.trip.complete.TripCompleteActivity"
+            android:theme="@style/WhiteAppTheme"
+            android:exported="true">
+        </activity>
+
+        <activity android:name="ww.smartexpress.app.ui.delivery.BookDeliveryActivity"
+            android:theme="@style/WhiteAppTheme"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true">
+        </activity>
+
+        <activity android:name="ww.smartexpress.app.ui.order.OrderActivity"
+            android:theme="@style/WhiteAppTheme"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true">
+        </activity>
+
+        <activity android:name="ww.smartexpress.app.ui.rate.RateDriverActivity"
+            android:theme="@style/WhiteAppTheme"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true">
+        </activity>
+
+        <activity android:name="ww.smartexpress.app.ui.search.location.SearchLocationActivity"
+            android:theme="@style/WhiteAppTheme"
+            android:exported="true">
+        </activity>
+
+        <activity android:name="ww.smartexpress.app.ui.coupon.CouponActivity"
+            android:theme="@style/WhiteAppTheme"
+            android:exported="true">
+        </activity>
+
+        <activity android:name="ww.smartexpress.app.ui.search.SearchActivity"
+            android:exported="true"
+            android:theme="@style/WhiteAppTheme">
+        </activity>
+
+        <activity android:name="ww.smartexpress.app.ui.login.LoginActivity"
+            android:exported="true">
+        </activity>
+
+        <activity android:name="ww.smartexpress.app.ui.otp.ForgetPasswordOTPActivity"
+            android:exported="true">
+        </activity>
+
+
+        <activity
+            android:name="ww.smartexpress.app.ui.input.phone.PhoneActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Welcome"/>
+        <activity
+            android:name="ww.smartexpress.app.ui.welcome.WelcomeActivity"
+            android:exported="true"
+            android:theme="@style/Welcome"/>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAbgWMc4w9mE1C5nEVpLaM6ZUgV7qyvV0s" />
+
+        <activity android:name="ww.smartexpress.app.ui.otp.LoginOTPActivity"
+            android:exported="true"
+            android:theme="@style/WhiteAppTheme">
+
+        </activity>
+
+        <activity android:name="ww.smartexpress.app.ui.profile.EditProfileActivity"
+            android:exported="true"
+            android:theme="@style/WhiteAppTheme">
+
+        </activity>
+        <activity android:name="ww.smartexpress.app.ui.home.HomeActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/WhiteAppTheme">
+
+        </activity>
+        <activity android:name="ww.smartexpress.app.ui.bookcar.BookCarActivity"
+            android:exported="true"
+            android:theme="@style/WhiteAppTheme"></activity>
+        <activity android:name="ww.smartexpress.app.ui.payment.PaymentActivity"
+            android:exported="true"
+            android:theme="@style/WhiteAppTheme"></activity>
+        <activity android:name="ww.smartexpress.app.ui.note.NoteActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/WhiteAppTheme"></activity>
+        <activity android:name="ww.smartexpress.app.ui.trip.TripActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/WhiteAppTheme"></activity>
+        <activity android:name="ww.smartexpress.app.ui.store.StoreActivity"
+            android:exported="true"
+            android:theme="@style/WhiteAppTheme"></activity>
+        <activity android:name="ww.smartexpress.app.ui.cart.CartActivity"
+            android:exported="true"
+            android:theme="@style/WhiteAppTheme"></activity>
+        <activity android:name="ww.smartexpress.app.ui.order.details.OrderDetailsActivity"
+            android:exported="true"
+            android:theme="@style/WhiteAppTheme"></activity>
+        <activity
+            android:name="ww.smartexpress.app.ui.purchase.PurchaseActivity"
+            android:exported="true"
+            android:theme="@style/WhiteAppTheme">
+        </activity>
+        <activity
+            android:name="ww.smartexpress.app.ui.shipping.address.ShippingAddressActivity"
+            android:exported="true"
+            android:theme="@style/WhiteAppTheme">
+        </activity>
+        <activity
+            android:name="ww.smartexpress.app.ui.order.information.OrderInformationActivity"
+            android:exported="true"
+            android:theme="@style/WhiteAppTheme">
+        </activity>
+        <activity
+            android:name="ww.smartexpress.app.ui.shipping.address.search.SearchAddressActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true"
+            android:theme="@style/WhiteAppTheme">
+        </activity>
+        <activity
+            android:name="ww.smartexpress.app.ui.delivery.order.DeliveryActivity"
+            android:exported="true"
+            android:theme="@style/WhiteAppTheme" />
+        <activity
+            android:name="ww.smartexpress.app.ui.search.food.SearchFoodActivity"
+            android:exported="true"
+            android:theme="@style/WhiteAppTheme" />
+        <activity
+            android:name="ww.smartexpress.app.ui.main.MainActivity"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name="ww.smartexpress.app.ui.splashform.SplashFormActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:theme="@style/WhiteAppTheme">
+            <intent-filter>
+
+                <!-- Config app launcher -->
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_path" />
+        </provider>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+    </application>
+</manifest>

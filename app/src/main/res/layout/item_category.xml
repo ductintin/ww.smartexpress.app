@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="ivm"
+            type="ww.smartexpress.app.data.model.api.response.CategoryResponse" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/_10sdp"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:gravity="left">
+
+        <FrameLayout
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:background="@drawable/item_category_background">
+
+            <ImageView
+                android:id="@+id/imgCate"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:src="@{ivm.image, default=@drawable/car}" />
+        </FrameLayout>
+
+        <TextView
+            style="@style/roboto_medium"
+            android:id="@+id/txtCateName"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="@{ivm.name}"
+            android:textColor="@color/text_small_color"
+            android:textSize="@dimen/_8ssp"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+</layout>

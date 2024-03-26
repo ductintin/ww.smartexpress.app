@@ -1,0 +1,109 @@
+package ww.smartexpress.app.ui.profile;
+
+import androidx.databinding.ObservableField;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import okhttp3.RequestBody;
+import ww.smartexpress.app.MVVMApplication;
+import ww.smartexpress.app.R;
+import ww.smartexpress.app.constant.Constants;
+import ww.smartexpress.app.data.Repository;
+import ww.smartexpress.app.data.model.api.ResponseWrapper;
+import ww.smartexpress.app.data.model.api.request.UpdateProfileRequest;
+import ww.smartexpress.app.data.model.api.response.ProfileResponse;
+import ww.smartexpress.app.data.model.api.response.UploadFileResponse;
+import ww.smartexpress.app.data.model.room.UserEntity;
+import ww.smartexpress.app.ui.base.activity.BaseViewModel;
+import ww.smartexpress.app.ui.home.HomeActivity;
+import ww.smartexpress.app.ui.input.phone.PhoneActivity;
+import ww.smartexpress.app.ui.welcome.WelcomeActivity;
+
+public class EditProfileViewModel extends BaseViewModel {
+
+    public ObservableField<String> avatar = new ObservableField<>("");
+    public ObservableField<String> fullName = new ObservableField<>("");
+    public ObservableField<String> email = new ObservableField<>("");
+    public ObservableField<String> password = new ObservableField<>("");
+    public ObservableField<String> confirmPassword = new ObservableField<>("");
+
+    public ObservableField<ProfileResponse> profile = new ObservableField<>(new ProfileResponse());
+    public ObservableField<UpdateProfileRequest> request = new ObservableField<>(new UpdateProfileRequest());
+    public ObservableField<Long> userId = new ObservableField<>(0L);
+    public ObservableField<UserEntity> userEntityObservableField = new ObservableField<>(new UserEntity());
+    public ObservableField<Boolean> isVisibility = new ObservableField<>(false);
+
+    public EditProfileViewModel(Repository repository, MVVMApplication application) {
+        super(repository, application);
+    }
+
+    public void back(){
+        application.getCurrentActivity().onBackPressed();
+    }
+
+    public void setProfile(ProfileResponse response){
+        profile.set(response);
+        fullName.set(profile.get().getName());
+        email.set(profile.get().getEmail());
+        avatar.set(profile.get().getAvatar());
+    }
+
+    Observable<ResponseWrapper<ProfileResponse>> getProfileObserve() {
+        return repository.getApiService().getProfile()
+                .doOnNext(response -> {
+                    if(response.isResult()){
+                        setProfile(response.getData());
+                    }
+                });
+    }
+
+    public boolean getProfileStored(){
+        showLoading();
+        userId.set(repository.getSharedPreferences().getLongVal(Constants.KEY_USER_ID));
+        if(userId.get() != 0){
+            Single<UserEntity> userEntity = repository.getRoomService().userDao().findById(userId.get());
+            hideLoading();
+            if(userEntity != null){
+                ProfileResponse profileResponse = new ProfileResponse();
+                profileResponse.setId(userEntity.blockingGet().getId());
+                profileResponse.setName(userEntity.blockingGet().getName());
+                profileResponse.setPhone(userEntity.blockingGet().getPhone());
+                profileResponse.setAvatar(userEntity.blockingGet().getAvatar());
+                profileResponse.setEmail(userEntity.blockingGet().getEmail());
+                setProfile(profileResponse);
+                return true;
+            }
+        }else{
+            hideLoading();
+        }
+        return false;
+    }
+
+    Observable<ResponseWrapper<String>> updateProfile(UpdateProfileRequest request) {
+        return repository.getApiService().updateProfile(request)
+                .doOnNext(response -> {
+                    password.set("");
+                });
+    }
+
+    public void storeProfile(){
+        repository.getRoomService().userDao().insert(userEntityObservableField.get())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+
+                }, throwable -> {
+
+                });
+    }
+
+    public void setIsVisibilityPassword(){
+        isVisibility.set(!isVisibility.get());
+    }
+
+    public Observable<ResponseWrapper<UploadFileResponse>> uploadAvatar(RequestBody requestBody){
+        return repository.getApiService().uploadFile(requestBody);
+    }
+}

@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="a"
+            type="ww.smartexpress.app.ui.bookcar.BookCarActivity" />
+        <variable
+            name="vm"
+            type="ww.smartexpress.app.ui.bookcar.BookCarViewModel" />
+        <import type="android.view.View" />
+        <import type="android.text.TextUtils" />
+        <import type="ww.smartexpress.app.utils.NumberUtils" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+        <ImageView
+            android:id="@+id/btnBackBookCar"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:background="@drawable/oval_background"
+            android:onClick="@{()->vm.back()}"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:elevation="@dimen/_15sdp"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/ic_icon_back"/>
+        <LinearLayout
+            android:id="@+id/bottomLayoutSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_anchor="@+id/frameLayout"
+            app:layout_anchorGravity="bottom"
+            android:elevation="@dimen/_35sdp"
+            android:background="@drawable/bg_order_detail"
+            android:orientation="vertical">
+            <LinearLayout
+                android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound) ? View.VISIBLE : View.GONE}"
+                android:id="@+id/llPayment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:id="@+id/imageView12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        app:srcCompat="@drawable/ic_icon_money" />
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        style="@style/book_car_properties"
+                        android:layout_width="@dimen/_33sdp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/_8sdp"
+                        android:text="@string/money" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="match_parent"
+                    android:background="#97979780"
+                    android:layout_marginHorizontal="@dimen/_5sdp"></FrameLayout>
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/textView11"-->
+                <!--                    style="@style/book_car_properties"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="match_parent"-->
+                <!--                    android:layout_weight="1"-->
+                <!--                    android:gravity="center"-->
+                <!--                    android:onClick="@{(v)->vm.selectDiscountCard()}"-->
+                <!--                    android:text="@string/endow" />-->
+
+                <!--                <FrameLayout-->
+                <!--                    android:layout_width="@dimen/_1sdp"-->
+                <!--                    android:layout_height="match_parent"-->
+                <!--                    android:background="#97979780"></FrameLayout>-->
+
+                <TextView
+                    android:id="@+id/textView10"
+                    style="@style/book_car_properties"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity='center'
+                    android:onClick="@{(v)->vm.doNote()}"
+                    android:text='@{TextUtils.isEmpty(vm.customerNote) ? @string/do_note : vm.customerNote}'
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
+            </LinearLayout>
+
+            <Button
+                android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound) ? View.VISIBLE : View.GONE}"
+                android:id="@+id/bntBook"
+                style="@style/BookCarButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:background="@drawable/app_button_background"
+                android:enabled="true"
+                android:onClick="@{(v)->vm.doBookWin()}"
+                android:text="@string/book_car"
+                android:textColor="@color/white"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_15sdp"/>
+
+            <LinearLayout
+                android:visibility="@{(vm.isBooking &amp;&amp; !vm.isFound) ? View.VISIBLE : View.GONE}"
+                android:id="@+id/llFindDriver"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:orientation="vertical"
+                android:weightSum="3"
+                >
+                <ProgressBar
+                    android:id="@+id/progressBarFindDriver"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    style="?android:attr/progressBarStyle"
+                    android:indeterminateDrawable="@drawable/custom_progressbar">
+
+                </ProgressBar>
+                <TextView
+                    android:layout_marginTop="@dimen/_10sdp"
+                    style="@style/item_win_bike"
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/finding_driver_title">
+
+                </TextView>
+
+                <TextView
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    style="@style/rating_note"
+                    android:textAlignment="center"
+                    android:textColor="#52424242"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/finding_driver_subtitle">
+
+                </TextView>
+                <Button
+                    android:id="@+id/bntCancelBook"
+                    style="@style/BookCarButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:background="@drawable/bg_btn_cancel_find_driver"
+                    android:enabled="true"
+                    android:onClick="@{(v)->vm.cancelFinding()}"
+                    android:text="@string/cancel"
+                    android:textColor="@color/app_color"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="@{(!vm.isBooking &amp;&amp; vm.isFound) ? View.VISIBLE : View.GONE}"
+                android:id="@+id/llFoundDriver"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:orientation="vertical"
+                android:onClick="@{(v)->vm.showTripActivity()}"
+                >
+
+                <TextView
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_5sdp"
+                    android:background="@drawable/bg_node"
+                    android:layout_gravity="center">
+
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+                    <TextView
+                        android:layout_marginTop="@dimen/_10sdp"
+                        style="@style/item_win_bike"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/driver_pickup_title">
+
+                    </TextView>
+                    <TextView
+                        android:visibility="gone"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        style="@style/item_win_bike"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{vm.time}">
+
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:gravity="center">
+                    <TextView
+                        style="@style/location_text"
+                        android:textAlignment="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{vm.vehicle}"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        >
+
+                    </TextView>
+                    <TextView
+                        style="@style/location_text"
+                        android:textAlignment="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{vm.licensePlates}"
+                        android:background="@drawable/bg_tv_vehicle_number"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        >
+
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginVertical="@dimen/_10sdp">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:src="@{vm.driverAvatar, default = @drawable/user_avatar}"
+                        app:civ_border_width="@dimen/_1sdp"
+                        app:civ_border_color="@color/app_color"
+                        android:layout_marginRight="@dimen/_20sdp">
+
+                    </de.hdodenhof.circleimageview.CircleImageView>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        >
+                        <TextView
+                            style="@style/item_win_bike"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.driverName}">
+
+                        </TextView>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_5sdp">
+                            <TextView
+                                style="@style/location_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{String.valueOf(vm.rate)}">
+
+                            </TextView>
+                            <RatingBar
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:id="@+id/rating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="?android:attr/ratingBarStyleSmall"
+                                android:numStars="5"
+                                android:stepSize="0.1"
+                                android:isIndicator="true"
+                                android:progressBackgroundTint="@color/grey_light"
+                                android:progressTint="@color/yellow"
+                                android:secondaryProgressTint="@android:color/transparent"
+                                android:rating="@{vm.rate}"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="@{(!vm.isBooking &amp;&amp; vm.isFound) ? View.VISIBLE : View.GONE}"
+                android:id="@+id/llFoundDriverAction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/background_book_small"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingTop="@dimen/_15sdp"
+                android:paddingBottom="@dimen/_10sdp"
+                android:gravity="bottom">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_btn_chat"
+                    android:layout_margin="@dimen/_5sdp">
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/ic_icon_chat"
+                        android:onClick="@{(v)->vm.chatDriver()}">
+
+                    </ImageView>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnCancelBookPickUp"
+                    android:layout_gravity="center"
+                    style="@style/BookCarButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:background="@drawable/app_button_background"
+                    android:enabled="true"
+                    android:text="@string/cancel"
+                    android:textColor="@color/white"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="@dimen/_10sdp">
+                                    <fragment
+                                        android:id="@+id/map"
+                                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        />
+        </FrameLayout>
+
+        <LinearLayout
+            android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound) ? View.VISIBLE : View.GONE}"
+            android:id="@+id/bottomLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/backgroud_book"
+            android:elevation="@dimen/_20sdp"
+            android:orientation="vertical"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="@dimen/_260sdp"
+            app:layout_behavior="@string/bottom_sheet">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/_10sdp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/item_win_bike"
+                    android:layout_gravity="center"
+                    android:text="@{vm.distanceKm}">
+
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/item_win_bike"
+                    android:layout_gravity="center"
+                    android:text="-"
+                    android:layout_marginHorizontal="@dimen/_10sdp">
+
+                </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/item_win_bike"
+                    android:layout_gravity="center"
+                    android:text="@{NumberUtils.formatSecondsToTime(vm.duration)}">
+
+                </TextView>
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcWinBike"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_110sdp"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_win_bike" />
+
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

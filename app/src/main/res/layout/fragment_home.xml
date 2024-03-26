@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="f"
+            type="ww.smartexpress.app.ui.fragment.home.HomeFragment" />
+        <variable
+            name="vm"
+            type="ww.smartexpress.app.ui.fragment.home.HomeFragmentViewModel" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    style="@style/roboto_medium"
+                    android:id="@+id/txtNameAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_alignParentStart="true"
+                    android:textColor="#75787D"
+                    android:text='@{@string/hello + " " + vm.profile.name}'/>
+                <TextView
+                    style="@style/roboto_bold"
+                    android:id="@+id/txtHello"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtNameAccount"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:text="@string/allwin_hello"
+                    android:textSize="@dimen/_25ssp"
+                    android:textColor="@color/black"/>
+               <LinearLayout
+                   android:onClick="@{(v)->vm.searchFood()}"
+                   android:id="@+id/ln"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginLeft="@dimen/_10sdp"
+                   android:layout_below="@+id/txtHello"
+                   android:layout_marginTop="@dimen/_5sdp"
+                   android:background="@drawable/bg_search_food"
+                   android:layout_marginRight="@dimen/_15sdp"
+                  >
+                   <ImageView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:src="@drawable/ic_icon_search"
+                       android:layout_gravity="center"
+                       android:layout_marginLeft="@dimen/_10sdp">
+
+                   </ImageView>
+                   <TextView
+                       android:id="@+id/searchView"
+                       android:layout_width="match_parent"
+                       android:layout_height="@dimen/_35sdp"
+                       android:gravity="center|left"
+                       android:paddingLeft="@dimen/_10sdp"
+                       android:text="@string/search_hint"
+                       android:textColor="#C92A2A2A"
+                       style="@style/roboto_medium"
+                       android:maxLines="1"/>
+               </LinearLayout>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginLeft="@dimen/_4sdp"
+                    app:cardCornerRadius="@dimen/_15sdp"
+                    app:cardElevation="@dimen/_2sdp"
+                    >
+
+                    <ImageButton
+                        android:onClick="@{(v)->vm.openNotification()}"
+                        android:id="@+id/imgBtnNotification"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:background="@color/white"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_icon_notification"/>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ln"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:clipToPadding="false"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_category">
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcBanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rcCategory"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:paddingLeft="@dimen/_7sdp"
+                    android:clipToPadding="false"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_banner">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/txtSg"
+                    style="@style/roboto_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rcBanner"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_toStartOf="@+id/txtShowAllSg"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="@string/propose"
+                    android:textColor="@color/title_home_page"
+                    android:textSize="@dimen/_14ssp" />
+
+                <TextView
+                    android:onClick="@{(v)->vm.showAllPropose()}"
+                    style="@style/roboto_medium"
+                    android:id="@+id/txtShowAllSg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/rcBanner"
+                    android:layout_alignTop="@+id/txtSg"
+                    android:layout_alignBottom="@+id/txtSg"
+                    android:gravity="center"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:text="@string/show_all"
+                    android:textColor="@color/app_color"
+                    android:maxLines="1"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcSg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:paddingVertical="@dimen/_5sdp"
+                    android:clipToPadding="false"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:layout_below="@+id/txtSg"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_food">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+
+                <TextView
+                    style="@style/roboto_medium"
+                    android:id="@+id/txtPb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@id/rcSg"
+                    android:layout_toStartOf="@+id/txtShowAllPb"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@string/popular_food"
+                    android:textColor="@color/title_home_page"
+                    android:textSize="@dimen/_14ssp"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
+
+                <TextView
+                    android:onClick="@{(v)->vm.showAllPopularFood()}"
+                    style="@style/roboto_medium"
+                    android:id="@+id/txtShowAllPb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/rcSg"
+                    android:layout_alignTop="@+id/txtPb"
+                    android:layout_alignBottom="@+id/txtPb"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:text="@string/show_all"
+                    android:textColor="@color/app_color" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcPb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtPb"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:paddingVertical="@dimen/_5sdp"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:clipToPadding="false"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_food">
+
+                </androidx.recyclerview.widget.RecyclerView>
+            </RelativeLayout>
+        </ScrollView>
+    </FrameLayout>
+</layout>

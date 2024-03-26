@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="a"
+            type="ww.smartexpress.app.ui.shipping.address.ShippingAddressActivity" />
+
+        <variable
+            name="vm"
+            type="ww.smartexpress.app.ui.shipping.address.ShippingAddressViewModel" />
+        <import type="android.text.TextUtils"></import>
+        <import type="android.view.View"></import>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <FrameLayout
+            android:id="@+id/frameLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center"
+                android:onClick="@{()->vm.back()}"
+                android:paddingLeft="@dimen/_5ssp"
+                android:paddingRight="@dimen/_20ssp"
+                android:src="@drawable/ic_icon_back">
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/textView10"
+                style="@style/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="Nơi nhận hàng">
+
+            </TextView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                app:cardCornerRadius="@dimen/_15sdp"
+                app:cardElevation="@dimen/_2sdp">
+
+                <ImageButton
+                    android:id="@+id/imgBtnNotification"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_gravity="center"
+                    android:background="@color/white"
+                    android:onClick="@{(v)->vm.getNotifications()}"
+                    android:src="@drawable/ic_icon_notification"
+                    android:visibility="gone"/>
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/_12sdp"
+            android:paddingRight="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_12sdp"
+                android:background="@drawable/bg_green_light_elevation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_15sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/_21sdp"
+                            android:layout_height="@dimen/_21sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:src="@drawable/baseline_location_on_24"></ImageView>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_marginLeft="@dimen/_5sdp">
+                            <EditText
+                                android:id="@+id/edtShippingAddress"
+                                style="@style/location_text"
+                                android:textColorHint="#898A8D"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@color/white"
+                                android:hint="@string/enter_shipping_address"
+                                android:text="@={vm.shippingAddress}"
+                                android:textSize="@dimen/_11sdp"
+                                android:maxLines="1"
+                                android:layout_weight="1">
+
+                            </EditText>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="@{!TextUtils.isEmpty(vm.shippingAddress) ? View.GONE : View.VISIBLE}"
+                android:id="@+id/lnSavedLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_12sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{()->vm.getSavedLocation()}"
+                        android:src="@drawable/ic_icon_mark_full">
+
+                    </ImageView>
+
+                    <TextView
+                        style="@style/destination_save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:text="@string/search_destination_save">
+
+                    </TextView>
+                </LinearLayout>
+
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_12sdp"
+                        android:orientation="horizontal">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcLocationType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:listitem="@layout/item_location_type">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_5sdp"
+            android:background="#EEF2F5"
+            android:visibility="@{!TextUtils.isEmpty(vm.shippingAddress) ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
+
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/_12sdp"
+            android:paddingRight="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView11">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcShippingAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_saved_address">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/background_book_small"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/bntNote"
+                style="@style/BookCarButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:background="@drawable/app_button_background"
+                android:enabled="@{!TextUtils.isEmpty(vm.location) &amp;&amp; !TextUtils.isEmpty(vm.shippingAddress)}"
+                android:onClick="@{(v)->vm.nextDelivery()}"
+                android:text="@string/next"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

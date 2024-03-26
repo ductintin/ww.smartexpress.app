@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="a"
+            type="ww.smartexpress.app.ui.payment.PaymentActivity" />
+        <variable
+            name="vm"
+            type="ww.smartexpress.app.ui.payment.PaymentViewModel" />
+        <import type="android.view.View" />
+
+    </data>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/frameLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:padding="@dimen/_5sdp">
+
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center"
+                android:onClick="@{()->vm.doBack()}"
+                android:paddingLeft="@dimen/_5ssp"
+                android:paddingRight="@dimen/_20ssp"
+                android:src="@drawable/ic_icon_back">
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/textView10"
+                style="@style/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/payment_method">
+
+            </TextView>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_7sdp"
+            android:background="#EEF2F5">
+
+        </FrameLayout>
+        <RelativeLayout
+            android:id="@+id/layoutCashPayment"
+            android:onClick="@{(v)->vm.payCash()}"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_48sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:background="@{vm.paymentMethod==0 ? @drawable/payment_method_background:@drawable/payment_method_background_disable}"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/imgMoney"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_icon_money"
+                />
+
+
+            <ImageView
+                android:id="@+id/txtTick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_icon_tick"
+                android:visibility="@{vm.paymentMethod == 0 ? View.VISIBLE : View.GONE }"/>
+
+            <TextView
+                style="@style/payment_method"
+                android:id="@+id/txtPayment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/imgMoney"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:text="@string/money" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutCreditPayment"
+            android:onClick="@{(v)->vm.payCredit()}"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_48sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:background="@{vm.paymentMethod!=0 ?@drawable/payment_method_background: @drawable/payment_method_background_disable}"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/imgCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_icon_credit" />
+
+
+            <ImageView
+                android:id="@+id/txtTickCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_icon_tick"
+                android:visibility="@{vm.paymentMethod !=0 ? View.VISIBLE : View.GONE}"/>
+
+            <TextView
+                style="@style/payment_method"
+                android:id="@+id/txtPaymentCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/imgCard"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:text="@string/card_credit" />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_icon_add" />
+
+        <TextView
+            android:onClick="@{(v)->vm.doAddMethod()}"
+            style="@style/roboto_bold"
+            android:id="@+id/textView12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:text="@string/payment_method_order"
+            android:textColor="@color/app_color"
+            android:textSize="@dimen/_14ssp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/background_book_small"
+            android:layout_gravity="bottom">
+            <Button
+                android:onClick="@{(v)->vm.confirm()}"
+                style = "@style/BookCarButton"
+                android:id="@+id/bntNote"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/app_button_background"
+                android:enabled="true"
+                android:text="@string/confirm"
+                android:textColor="@color/white"
+                />
+        </LinearLayout>
+    </FrameLayout>
+</layout>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="a"
+            type="ww.smartexpress.app.ui.rate.RateDriverActivity" />
+        <variable
+            name="vm"
+            type="ww.smartexpress.app.ui.rate.RateDriverViewModel" />
+        <import type="android.text.TextUtils"></import>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/linearLayout9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:padding="@dimen/_5sdp"
+                >
+
+                <ImageView
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="@dimen/_5ssp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:src="@drawable/ic_icon_back"
+                    android:onClick="@{()->vm.back()}">
+
+                </ImageView>
+
+                <TextView
+                    style="@style/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingLeft="@dimen/_20ssp"
+                    android:paddingRight="@dimen/_20ssp"
+                    android:text="@string/rating_title">
+
+                </TextView>
+            </FrameLayout>
+
+           <ScrollView
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:paddingBottom="@dimen/_60sdp">
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="vertical"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintStart_toStartOf="parent"
+                   >
+                   <de.hdodenhof.circleimageview.CircleImageView
+                       android:layout_width="@dimen/_48sdp"
+                       android:layout_height="@dimen/_48sdp"
+                       android:layout_gravity="center"
+                       android:layout_margin="@dimen/_15sdp"
+                       android:src="@{vm.image, default = @drawable/user_avatar}"
+                       app:civ_border_color="@color/app_color"
+                       app:civ_border_width="@dimen/_1sdp"></de.hdodenhof.circleimageview.CircleImageView>
+
+                   <TextView
+                       style="@style/title"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_gravity="center"
+                       android:text="@string/rating_subtitle">
+
+                   </TextView>
+
+                   <RatingBar
+                       android:id="@+id/ratingBarDriver"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_gravity="center"
+                       android:layout_marginTop="@dimen/_15sdp"
+                       android:layout_marginBottom="@dimen/_10sdp"
+                       android:isIndicator="false"
+                       android:numStars="5"
+                       android:progressBackgroundTint="@color/star_grey"
+                       android:progressTint="@color/yellow"
+                       android:secondaryProgressTint="@android:color/transparent"
+                       android:stepSize="1"
+                       android:rating="@={vm.rating}"
+                       >
+
+                   </RatingBar>
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content">
+
+                       <androidx.core.widget.NestedScrollView
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content">
+                           <androidx.recyclerview.widget.RecyclerView
+                               android:id="@+id/rcRateOption"
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"
+                               tools:listitem="@layout/item_rate_option"
+                               android:clipToPadding="false"
+                               android:paddingRight="@dimen/_10sdp"
+                               tools:itemCount="1">
+
+                           </androidx.recyclerview.widget.RecyclerView>
+                       </androidx.core.widget.NestedScrollView>
+                   </LinearLayout>
+
+                   <EditText
+                       style="@style/rating_note"
+                       android:layout_width="match_parent"
+                       android:layout_height="@dimen/_130sdp"
+                       android:maxHeight="@dimen/_130sdp"
+                       android:layout_marginVertical="@dimen/_20sdp"
+                       android:layout_marginHorizontal="@dimen/_12sdp"
+                       android:background="@drawable/bg_edt_rating"
+                       android:paddingTop="@dimen/_10sdp"
+                       android:gravity="top"
+                       android:hint="@string/rating_comment"
+                       android:textColorHint="@color/grey"
+                       android:inputType="textCapSentences|textMultiLine"
+                       android:maxLines="6"
+                       android:text="@={vm.customerReview}"
+                       android:maxLength="100">
+
+                   </EditText>
+               </LinearLayout>
+           </ScrollView>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_12sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/bg_bottom_btn_send"
+            android:elevation="@dimen/_5sdp">
+
+            <Button
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                style="@style/NextBtn"
+                android:enabled="@{((vm.rating == 0)||(!vm.onClick)) ? Boolean.FALSE : Boolean.TRUE}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/send"
+                android:onClick="@{()->a.createRating()}">
+
+            </Button>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

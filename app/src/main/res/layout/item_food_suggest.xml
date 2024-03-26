@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="ivm"
+            type="ww.smartexpress.app.data.model.api.response.FoodSuggest" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginVertical="@dimen/_6sdp"
+                    app:cardCornerRadius="@dimen/_7sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="MissingConstraints"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="@dimen/_4sdp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:gravity="center|top"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_4sdp">
+
+                            <ImageView
+                                android:id="@+id/imgProduct"
+                                android:layout_width="@dimen/_77sdp"
+                                android:layout_height="@dimen/_55sdp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/product">
+
+                            </ImageView>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    style="@style/roboto_medium"
+                                    android:id="@+id/txtProduct"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:text="@string/drinka_address"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:textColor="@color/title_home_page">
+                                </TextView>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:id="@+id/imageView19"
+                                        android:layout_width="@dimen/_15sdp"
+                                        android:layout_height="match_parent"
+                                        app:srcCompat="@drawable/ic_icon_star" />
+
+                                    <TextView
+                                        style="@style/roboto_medium"
+                                        android:id="@+id/textView32"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_7sdp"
+                                        android:text="@string/rating_star_value"
+                                        android:textColor="#A8000000"/>
+
+                                    <TextView
+                                        style="@style/roboto_medium"
+                                        android:id="@+id/textView33"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_weight="1"
+                                        android:text="@string/rate_count"
+                                        android:textColor="#7D342B2B"/>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="19dp"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="@dimen/_4sdp"
+                                        android:src="@drawable/ic_icon_location" />
+
+                                    <TextView
+                                        style="@style/roboto_medium"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="@dimen/_3sdp"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:gravity="center|left"
+                                        android:maxLines="1"
+                                        android:text="@string/kilomet_value"
+                                        android:textColor="#A8000000" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

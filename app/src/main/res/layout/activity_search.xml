@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="a"
+            type="ww.smartexpress.app.ui.search.SearchActivity" />
+        <variable
+            name="vm"
+            type="ww.smartexpress.app.ui.search.SearchViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
+
+            <ImageView
+                android:id="@+id/imageView9"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_200sdp"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/search_background_image" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_70sdp"
+                android:background="#FEF5F6"
+                android:layout_marginTop="@dimen/_180sdp">
+
+            </FrameLayout>
+
+            <TextView
+                style = "@style/roboto_bold"
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|top"
+                android:layout_marginTop="@dimen/_160sdp"
+                android:text="@string/where_go"
+                android:textSize="@dimen/_16ssp"
+                android:textColor="@color/title_home_page"
+                />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_190sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:orientation="vertical"
+                    android:background="@drawable/background_store_information"
+                    android:padding="@dimen/_15sdp"
+                    android:elevation="@dimen/_1sdp"
+                    >
+                    <LinearLayout
+                        android:onClick="@{(v)->vm.searchLocation()}"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_33sdp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/search_background"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/imageView10"
+                            android:layout_width="@dimen/_21sdp"
+                            android:layout_height="@dimen/_21sdp"
+                            app:srcCompat="@drawable/location_flag"
+                            android:layout_marginLeft="@dimen/_7sdp"/>
+
+                        <TextView
+                            style="@style/destination_save"
+                            android:textColorHint="#898A8D"
+                            android:id="@+id/searchView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginVertical="@dimen/_3sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:gravity="center|left"
+                            android:hint="@string/where_want_go"
+                            android:textColor="#979797"
+                            android:textSize="@dimen/_12ssp"
+                            android:maxLines="1"/>
+                    </LinearLayout>
+
+                   <androidx.recyclerview.widget.RecyclerView
+                       android:id="@+id/rcLocationSaved"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="@dimen/_9sdp"
+                       tools:listitem="@layout/item_location_saved"
+                       tools:itemCount="1">
+                   </androidx.recyclerview.widget.RecyclerView>
+
+                </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:padding="@dimen/_5sdp">
+
+                <ImageView
+                    android:id="@+id/imageView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|left"
+                    android:onClick="@{()->vm.back()}"
+                    android:paddingLeft="@dimen/_5ssp"
+                    android:paddingRight="@dimen/_20ssp"
+                    android:src="@drawable/ic_icon_back">
+
+                </ImageView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    app:cardCornerRadius="@dimen/_15sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <ImageButton
+                        android:id="@+id/imgBtnNotification"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_gravity="center|right"
+                        android:background="@color/white"
+                        android:onClick="@{(v)->vm.getNotifications()}"
+                        android:src="@drawable/ic_icon_notification" />
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
+
+        </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

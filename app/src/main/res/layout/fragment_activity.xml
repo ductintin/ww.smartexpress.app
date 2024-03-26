@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="f"
+            type="ww.smartexpress.app.ui.fragment.activity.ActivityFragment" />
+        <variable
+            name="vm"
+            type="ww.smartexpress.app.ui.fragment.activity.ActivityFragmentViewModel" />
+        <import type="android.view.View" />
+
+    </data>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:id="@+id/frameLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    android:padding="@dimen/_5sdp">
+
+                    <ImageView
+                        android:id="@+id/imageView11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:onClick="@{()->vm.doBack()}"
+                        android:paddingLeft="@dimen/_5ssp"
+                        android:paddingRight="@dimen/_20ssp"
+                        android:src="@drawable/ic_icon_back"
+                        android:visibility="gone">
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/textView10"
+                        style="@style/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text="@string/title_activity">
+                    </TextView>
+                </FrameLayout>
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/txtBookWin"
+                        style="@style/roboto_medium"
+                        android:background="@{vm.orderStatus==0 ?@drawable/background_order_status: @drawable/grey_background_drinks}"
+                        android:layout_width="@dimen/_65sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_5sdp"
+                        android:gravity="center"
+                        android:text="@string/book_win"
+                        android:textColor="@{vm.orderStatus==0 ?@color/white: @color/title_home_page}"/>
+                    <TextView
+                        android:id="@+id/txtDelivery"
+                        style="@style/roboto_medium"
+                        android:background="@{vm.orderStatus==1 ?@drawable/background_order_status: @drawable/grey_background_drinks}"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_width="@dimen/_65sdp"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="@dimen/_5sdp"
+                        android:gravity="center"
+                        android:text="@string/delivery"
+                        android:textColor="@{vm.orderStatus==1 ?@color/white: @color/title_home_page}"/>/>
+                    <TextView
+                        android:id="@+id/txtShopping"
+                        style="@style/roboto_medium"
+                        android:background="@{vm.orderStatus==2 ?@drawable/background_order_status: @drawable/grey_background_drinks}"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_width="@dimen/_65sdp"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="@dimen/_5sdp"
+                        android:gravity="center"
+                        android:text="@string/shopping"
+                        android:textColor="@{vm.orderStatus==2 ?@color/white: @color/title_home_page}"/>/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:visibility="@{vm.isEmpty ? View.VISIBLE : View.GONE}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/_50sdp">
+                    <ImageView
+                        android:layout_width="@dimen/_150sdp"
+                        android:layout_height="@dimen/_150sdp"
+                        android:src="@drawable/empty_activity">
+
+                    </ImageView>
+                    <TextView
+                        android:layout_marginTop="@dimen/_10sdp"
+                        style="@style/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empty_activity">
+
+                    </TextView>
+                </LinearLayout>
+
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcOrder"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:listitem="@layout/item_booking"
+                            tools:itemCount="1">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+                        <TextView
+                            android:onClick="@{()->vm.loadMore()}"
+                            style="@style/roboto_medium"
+                            android:id="@+id/loadMore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_button_stroke_green"
+                            android:layout_gravity="center|bottom"
+                            android:layout_marginVertical="@dimen/_5sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:paddingVertical="@dimen/_5sdp"
+                            android:text="@string/show_more"
+                            android:textSize="@dimen/_10ssp"
+                            android:visibility="@{vm.pageNumber+1 >= vm.pageTotal? View.GONE : View.VISIBLE}"/>
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+            </LinearLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+
+    </FrameLayout>
+</layout>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="ivm"
+            type="ww.smartexpress.app.data.model.api.response.SearchLocation" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:paddingTop="@dimen/_8sdp">
+        <FrameLayout
+            android:id="@+id/frameLayoutSearchLoc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_icon_rounded_location">
+
+                </ImageView>
+
+                <LinearLayout
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/destination_save"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:text="@{ivm.structured_formatting.main_text}">
+
+                    </TextView>
+
+                    <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
+                        style="@style/new_password_subtitle"
+                        android:textSize="@dimen/_8sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:text="@{ivm.description}">
+
+                    </TextView>
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_3sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayoutSearchLoc"
+            android:background="@drawable/bg_bottom_gray_line"
+            android:includeFontPadding="false">
+        </TextView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

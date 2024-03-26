@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:bottom="@dimen/_1sdp"
+        android:left="-2dp"
+        android:right="-2dp"
+        android:top="-2dp">
+        <shape android:shape="rectangle" >
+            <stroke
+                android:width="@dimen/_1sdp"
+                android:color="#DADADA" />
+
+            <padding android:bottom="@dimen/_20sdp"></padding>
+
+        </shape>
+    </item>
+
+</layer-list>

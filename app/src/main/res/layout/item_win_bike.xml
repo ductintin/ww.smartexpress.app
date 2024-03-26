@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="ivm"
+            type="ww.smartexpress.app.data.model.api.response.BookCar" />
+        <import type="android.view.View"></import>
+        <import type="ww.smartexpress.app.utils.NumberUtils"></import>
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginTop="@dimen/_10sdp">
+
+        <LinearLayout
+            android:id="@+id/itemLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imgWinBike"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:src="@{ivm.image, default=@drawable/car}" />
+
+                <TextView
+                    android:id="@+id/txtPrice"
+                    style="@style/item_win_bike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_toRightOf="@id/imgWinBike"
+                    android:text="@{ivm.name}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/txtWinBikeDiscount"
+                    style="@style/order_information_text_medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_toLeftOf="@id/txtWinBike"
+                    android:layout_weight="2"
+                    android:text="@{NumberUtils.formatDoubleNumber(ivm.price)}"
+                    android:visibility="@{ivm.discount!=0 ? View.VISIBLE : View.GONE}" />
+
+                <TextView
+                    android:id="@+id/txtWinBike"
+                    style="@style/item_win_bike"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_weight="2"
+                    android:text='@{NumberUtils.formatDoubleNumber(ivm.price) + " đ"}'
+                    android:textAlignment="textEnd" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</layout>

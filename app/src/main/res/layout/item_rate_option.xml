@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="ivm"
+            type="ww.smartexpress.app.data.model.api.response.RateOption" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/destination_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@{ivm.isSelected ? @drawable/bg_etv_rating_onclick : @drawable/bg_edt_rating}"
+            android:text="@{ivm.name}"
+            android:textColor="@{ivm.isSelected ? @color/white : @color/title_home_page}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="@dimen/_12sdp"
+            android:layout_marginRight="@dimen/_5sdp">
+        </TextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

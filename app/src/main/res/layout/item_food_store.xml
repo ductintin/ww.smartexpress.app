@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="ivm"
+            type="ww.smartexpress.app.data.model.api.response.FoodStore" />
+    </data>
+        <androidx.cardview.widget.CardView
+            android:layout_width="@dimen/_134sdp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/_7sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints"
+            >
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_4sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center|top"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_4sdp">
+
+                    <ImageView
+                        android:id="@+id/imgProduct"
+                        android:layout_width="@dimen/_115sdp"
+                        android:layout_height="@dimen/_80sdp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/product">
+
+                    </ImageView>
+
+                    <TextView
+                        style="@style/roboto_medium"
+                        android:id="@+id/txtProduct"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:text="Trà sữa Bubble"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:maxEms="8"
+                        android:textColor="@color/black">
+                    </TextView>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_3sdp">
+                        <TextView
+                            android:id="@+id/txtPrice"
+                            style="@style/roboto_medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:ellipsize="end"
+                            android:maxEms="8"
+                            android:maxLines="1"
+                            android:text='30.000đ'
+                            android:textColor="@color/app_color"/>
+
+                    </FrameLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imgAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|bottom"
+                    android:src="@drawable/ic_icon_add_cart"></ImageView>
+            </FrameLayout>
+
+        </androidx.cardview.widget.CardView>
+</layout>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="ivm"
+            type="ww.smartexpress.app.data.model.api.response.OrderOption" />
+        <import type="android.view.View"></import>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/_15sdp"
+                android:paddingHorizontal="@dimen/_20sdp">
+
+                <TextView
+                    style="@style/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@{ivm.name}">
+
+                </TextView>
+
+                <TextView
+                    android:visibility="@{ivm.isOptional ? View.VISIBLE : View.INVISIBLE}"
+                    style="@style/title"
+                    android:textSize="@dimen/_11ssp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_btn_red"
+                    android:text="@string/required"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/red_color">
+
+                </TextView>
+
+            </FrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcOrderOptionDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_radio_order_detail_option"
+                tools:itemCount="3">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <TextView
+                android:includeFontPadding="false"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_5sdp"
+                android:background="#EEF2F5"
+                >
+            </TextView>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

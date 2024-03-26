@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="a"
+            type="ww.smartexpress.app.ui.trip.cancel.TripCancelReasonActivity" />
+        <variable
+            name="vm"
+            type="ww.smartexpress.app.ui.trip.cancel.TripCancelReasonViewModel" />
+        <import type="android.text.TextUtils"></import>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <FrameLayout
+            android:id="@+id/frameLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:onClick="@{()->vm.back()}"
+                android:paddingLeft="@dimen/_5ssp"
+                android:paddingRight="@dimen/_5sdp"
+                android:src="@drawable/ic_icon_back">
+
+            </ImageView>
+
+            <TextView
+                style="@style/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingLeft="@dimen/_20ssp"
+                android:paddingRight="@dimen/_20ssp"
+                android:text="@string/cancel_title">
+
+            </TextView>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout3"
+            android:orientation="vertical"
+            android:padding="@dimen/_10sdp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel_reason_option1"
+                style="@style/new_password_subtitle"
+                android:layout_marginLeft="@dimen/_5sdp">
+
+            </TextView>
+
+            <EditText
+                android:id="@+id/edtNote"
+                style="@style/rating_note"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_70sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:background="@drawable/search_background"
+                android:paddingHorizontal="@dimen/_15sdp"
+                android:paddingVertical="@dimen/_5sdp"
+                android:textColor="#979797"
+                android:textSize="@dimen/_11ssp"
+                android:gravity="top"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLines="3"
+                android:hint="@string/cancel_reason_option1"
+                android:textColorHint="@color/grey_light"
+                android:text="@={vm.customerNote}"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:visibility="visible"
+                android:layout_marginVertical="@dimen/_10sdp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconDrawable="@drawable/ic_icon_expand">
+                <AutoCompleteTextView
+                    style="@style/destination_save"
+                    android:id="@+id/autoCompleteCR1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="none"
+                    android:editable="false" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <TextView
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel_reason_option2"
+                style="@style/new_password_subtitle"
+                android:layout_marginLeft="@dimen/_5sdp">
+
+            </TextView>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:visibility="gone"
+                android:layout_marginVertical="@dimen/_10sdp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconDrawable="@drawable/ic_icon_expand">
+                <AutoCompleteTextView
+                    style="@style/destination_save"
+                    android:id="@+id/autoCompleteCR2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="none"
+                    android:editable="false" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/bg_bottom_btn_send"
+            android:elevation="@dimen/_5sdp"
+            android:paddingHorizontal="@dimen/_12sdp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <Button
+                android:onClick="@{(v)->a.cancelTrip()}"
+                style="@style/NextBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:text="@string/cancel_confirm"
+                android:enabled="@{!TextUtils.isEmpty(vm.customerNote) || vm.isSelected1}">
+
+            </Button>
+
+        </LinearLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

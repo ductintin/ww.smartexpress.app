@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="a"
+            type="ww.smartexpress.app.ui.signin.SignInActivity" />
+        <variable
+            name="vm"
+            type="ww.smartexpress.app.ui.signin.SignInViewModel" />
+        <import type="android.text.TextUtils"></import>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:orientation="vertical">
+            <include
+                android:id="@+id/layoutHeader"
+                layout="@layout/layout_header"
+                bind:visible="@{vm.visibleBack}"
+                bind:title="@{@string/login_all_win}"
+                >
+
+            </include>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/phone"
+                style="@style/roboto_medium_gray_12ssp"
+                android:layout_marginTop="@dimen/_20sdp">
+
+            </TextView>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/bg_edt"
+                android:hint="@string/phone_hint"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:text="@={vm.phone}"
+                android:textColorHint="@color/grey_text"
+                style="@style/information_edit_text">
+
+            </EditText>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pw"
+                    style="@style/roboto_medium_gray_12ssp">
+
+                </TextView>
+                <TextView
+                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/required_star"
+                    android:textColor="@color/red_color">
+
+                </TextView>
+
+            </LinearLayout>
+
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:hintEnabled="false"-->
+<!--                app:hintAnimationEnabled="false"-->
+<!--                android:layout_marginTop="@dimen/_15sdp"-->
+<!--                app:passwordToggleEnabled="true">-->
+
+<!--                <AutoCompleteTextView-->
+<!--                    android:id="@+id/pw"-->
+<!--                    android:background="@drawable/bg_edt"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@={vm.password}"-->
+<!--                    android:hint="@string/password"-->
+<!--                    android:maxLines="1"-->
+<!--                    android:lines="1"-->
+<!--                    android:inputType="textPassword"-->
+<!--                    android:textColorHint="@color/grey_text"-->
+<!--                    style="@style/information_edit_text"/>-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp">
+                <EditText
+                    android:paddingRight="@dimen/_35sdp"
+                    android:id="@+id/edtPw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edt"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:textColorHint="@color/grey_text"
+                    style="@style/information_edit_text"
+                    android:text="@={vm.password}"
+                    android:maxLength="16">
+
+                </EditText>
+
+                <ImageView
+                    android:onClick="@{(v)->vm.setIsVisibilityPassword()}"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@{vm.isVisibility ? @drawable/ic_icon_visibility_off : @drawable/ic_icon_visibility}">
+
+                </ImageView>
+            </FrameLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnEPUpdate"
+            style="@style/AppButtonStyle"
+            android:layout_marginVertical="@dimen/_40sdp"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_all_win"
+            android:onClick="@{(v) -> a.doLogin()}">
+
+        </Button>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="@dimen/_10sdp" /> <!-- Điều này đặt bán kính cho viền bo tròn -->
+    <solid android:color="#7EA567" />
+    <padding android:left="@dimen/_18sdp"
+        android:right="@dimen/_18sdp"
+        android:top="@dimen/_2sdp"
+        android:bottom="@dimen/_2sdp">
+    </padding>
+</shape>

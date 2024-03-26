@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="a"
+            type="ww.smartexpress.app.ui.profile.ProfileFragment" />
+
+        <variable
+            name="vm"
+            type="ww.smartexpress.app.ui.profile.ProfileFragmentViewModel" />
+
+        <import type="android.view.View"></import>
+        <import type="android.text.TextUtils"></import>
+    </data>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            >
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@id/imageView3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView3">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_12sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_1sdp"
+                    >
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{(v) -> vm.navigateToEditProfile()}"
+                        android:orientation="horizontal"
+                        android:layout_margin="@dimen/_12sdp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/circleImageView"
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_50sdp"
+                                android:src="@{vm.profile.avatar, default=@drawable/user_avatar}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:civ_border_width="@dimen/_1sdp"
+                                app:civ_border_color="@color/app_color">
+
+                            </de.hdodenhof.circleimageview.CircleImageView>
+
+                            <LinearLayout
+                                android:id="@+id/linearLayout4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:layout_marginRight="@dimen/_20sdp"
+                                android:gravity="center_vertical"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/circleImageView"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    style="@style/profile_feature"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:text="@{vm.profile.name}"
+                                    android:textSize="@dimen/_13ssp">
+
+                                </TextView>
+
+                                <TextView
+                                    style="@style/new_password_subtitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:text="@{vm.profile.email}"
+                                    android:textAlignment="textStart">
+
+                                </TextView>
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <ImageView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_icon_expand"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_gravity="end">
+
+                        </ImageView>
+
+
+                    </FrameLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginVertical="@dimen/_3sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_1sdp">
+
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:stretchColumns="*">
+
+<!--                        <TableRow android:layout_width="match_parent"-->
+<!--                            android:visibility='@{!TextUtils.isEmpty(vm.token) &amp;&amp; !vm.token.equals("NULL") ? View.VISIBLE : View.GONE}'>-->
+<!--                            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="@dimen/_45sdp"-->
+<!--                                android:background="@drawable/textlines"-->
+<!--                                android:paddingTop="@dimen/_8sdp"-->
+<!--                                android:paddingBottom="@dimen/_8sdp"-->
+<!--                                android:paddingLeft="@dimen/_15sdp"-->
+<!--                                android:paddingRight="@dimen/_15sdp"-->
+<!--                                android:onClick="@{(v) -> vm.getStoredLocation()}">-->
+
+<!--                                <ImageView-->
+<!--                                    android:id="@+id/imageView4"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:src="@drawable/ic_icon_address"-->
+<!--                                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                                    app:layout_constraintTop_toTopOf="parent">-->
+
+<!--                                </ImageView>-->
+
+<!--                                <TextView-->
+<!--                                    style="@style/profile_feature"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="match_parent"-->
+<!--                                    android:layout_marginLeft="@dimen/_10sdp"-->
+<!--                                    android:ellipsize="end"-->
+<!--                                    android:maxLines="1"-->
+<!--                                    android:text="@string/storedLocation_feature"-->
+<!--                                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                                    app:layout_constraintStart_toEndOf="@+id/imageView4"-->
+<!--                                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                                    android:gravity="center">-->
+
+<!--                                </TextView>-->
+
+<!--                                <ImageView-->
+
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:src="@drawable/ic_icon_expand"-->
+<!--                                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                    app:layout_constraintTop_toTopOf="parent">-->
+
+<!--                                </ImageView>-->
+<!--                            </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--                        </TableRow>-->
+<!--                        <TableRow android:layout_width="match_parent"-->
+<!--                            android:visibility='@{!TextUtils.isEmpty(vm.token) &amp;&amp; !vm.token.equals("NULL") ? View.VISIBLE : View.GONE}'>-->
+<!--                            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="@dimen/_45sdp"-->
+<!--                                android:background="@drawable/textlines"-->
+<!--                                android:paddingTop="@dimen/_8sdp"-->
+<!--                                android:paddingBottom="@dimen/_8sdp"-->
+<!--                                android:paddingLeft="@dimen/_15sdp"-->
+<!--                                android:paddingRight="@dimen/_15sdp"-->
+<!--                                android:onClick="@{(v) -> vm.getPaymentMethod()}">-->
+
+<!--                                <ImageView-->
+<!--                                    android:id="@+id/imageView5"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:src="@drawable/ic_icon_card"-->
+<!--                                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                                    >-->
+
+<!--                                </ImageView>-->
+
+<!--                                <TextView-->
+<!--                                    style="@style/profile_feature"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="match_parent"-->
+<!--                                    android:layout_marginLeft="@dimen/_10sdp"-->
+<!--                                    android:ellipsize="end"-->
+<!--                                    android:maxLines="1"-->
+<!--                                    android:text="@string/payment_feature"-->
+<!--                                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                                    app:layout_constraintStart_toEndOf="@+id/imageView5"-->
+<!--                                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                                    android:gravity="center">-->
+
+<!--                                </TextView>-->
+
+<!--                                <ImageView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="match_parent"-->
+<!--                                    android:src="@drawable/ic_icon_expand"-->
+<!--                                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                    app:layout_constraintTop_toTopOf="parent">-->
+
+<!--                                </ImageView>-->
+<!--                            </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--                        </TableRow>-->
+
+<!--                        <TableRow android:layout_width="match_parent"-->
+<!--                            android:visibility='@{!TextUtils.isEmpty(vm.token) &amp;&amp; !vm.token.equals("NULL") ? View.VISIBLE : View.GONE}'>-->
+<!--                            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="@dimen/_45sdp"-->
+<!--                                android:background="@drawable/textlines"-->
+<!--                                android:paddingTop="@dimen/_8sdp"-->
+<!--                                android:paddingBottom="@dimen/_8sdp"-->
+<!--                                android:paddingLeft="@dimen/_15sdp"-->
+<!--                                android:paddingRight="@dimen/_15sdp"-->
+<!--                                android:onClick="@{(v) -> vm.getInformation()}">-->
+
+<!--                                <ImageView-->
+<!--                                    android:id="@+id/imageView6"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:src="@drawable/ic_icon_address"-->
+<!--                                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                                    app:layout_constraintTop_toTopOf="parent">-->
+
+<!--                                </ImageView>-->
+
+<!--                                <TextView-->
+<!--                                    style="@style/profile_feature"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginLeft="@dimen/_10sdp"-->
+<!--                                    android:ellipsize="end"-->
+<!--                                    android:maxLines="1"-->
+<!--                                    android:text="@string/info_feature"-->
+<!--                                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                                    app:layout_constraintStart_toEndOf="@+id/imageView6"-->
+<!--                                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                                    android:gravity="center">-->
+
+<!--                                </TextView>-->
+
+<!--                                <ImageView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="match_parent"-->
+<!--                                    android:src="@drawable/ic_icon_expand"-->
+<!--                                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                    app:layout_constraintTop_toTopOf="parent">-->
+
+<!--                                </ImageView>-->
+<!--                            </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--                        </TableRow>-->
+
+<!--                       <TableRow android:layout_width="match_parent"-->
+<!--                           android:visibility='@{!TextUtils.isEmpty(vm.token) &amp;&amp; !vm.token.equals("NULL") ? View.VISIBLE : View.GONE}'>-->
+<!--                           <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                               android:layout_width="match_parent"-->
+<!--                               android:layout_height="@dimen/_45sdp"-->
+<!--                               android:background="@drawable/textlines"-->
+<!--                               android:paddingTop="@dimen/_8sdp"-->
+<!--                               android:paddingBottom="@dimen/_8sdp"-->
+<!--                               android:paddingLeft="@dimen/_15sdp"-->
+<!--                               android:paddingRight="@dimen/_15sdp"-->
+<!--                               android:onClick="@{(v) -> vm.getLanguage()}">-->
+
+<!--                               <ImageView-->
+<!--                                   android:id="@+id/imageView7"-->
+<!--                                   android:layout_width="wrap_content"-->
+<!--                                   android:layout_height="wrap_content"-->
+<!--                                   android:src="@drawable/ic_icon_earth"-->
+<!--                                   app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                                   app:layout_constraintStart_toStartOf="parent"-->
+<!--                                   app:layout_constraintTop_toTopOf="parent">-->
+
+<!--                               </ImageView>-->
+
+<!--                               <TextView-->
+<!--                                   android:id="@+id/textView4"-->
+<!--                                   style="@style/profile_feature"-->
+<!--                                   android:layout_width="wrap_content"-->
+<!--                                   android:layout_height="match_parent"-->
+<!--                                   android:layout_marginLeft="@dimen/_10sdp"-->
+<!--                                   android:ellipsize="end"-->
+<!--                                   android:maxLines="1"-->
+<!--                                   android:text="@string/lang_feature"-->
+<!--                                   app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                                   app:layout_constraintStart_toEndOf="@+id/imageView7"-->
+<!--                                   app:layout_constraintTop_toTopOf="parent"-->
+<!--                                   android:gravity="center">-->
+
+<!--                               </TextView>-->
+
+<!--                               <TextView-->
+<!--                                   style="@style/profile_feature"-->
+<!--                                   android:layout_width="wrap_content"-->
+<!--                                   android:layout_height="match_parent"-->
+<!--                                   android:layout_marginRight="@dimen/_15sdp"-->
+<!--                                   android:ellipsize="end"-->
+<!--                                   android:maxLines="1"-->
+<!--                                   android:text="@{vm.lang}"-->
+<!--                                   android:textColor="#7EA567"-->
+<!--                                   app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                                   app:layout_constraintEnd_toStartOf="@+id/imageView8"-->
+<!--                                   app:layout_constraintTop_toTopOf="parent"-->
+<!--                                   android:gravity="center">-->
+
+<!--                               </TextView>-->
+
+<!--                               <ImageView-->
+<!--                                   android:id="@+id/imageView8"-->
+<!--                                   android:layout_width="wrap_content"-->
+<!--                                   android:layout_height="match_parent"-->
+<!--                                   android:src="@drawable/ic_icon_expand"-->
+<!--                                   app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                                   app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                   app:layout_constraintTop_toTopOf="parent">-->
+
+<!--                               </ImageView>-->
+<!--                           </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--                       </TableRow>-->
+
+                        <TableRow android:layout_width="match_parent"
+                            android:visibility='@{!TextUtils.isEmpty(vm.token) &amp;&amp; !vm.token.equals("NULL") ? View.VISIBLE : View.GONE}'>
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_45sdp"
+                                android:background="@drawable/textlines"
+                                android:paddingTop="@dimen/_8sdp"
+                                android:paddingBottom="@dimen/_8sdp"
+                                android:paddingLeft="@dimen/_15sdp"
+                                android:paddingRight="@dimen/_15sdp"
+                                android:onClick="@{(v) -> vm.doResetPassword()}">
+
+                                <ImageView
+                                    android:id="@+id/imageView25"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_icon_password"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                </ImageView>
+
+                                <TextView
+                                    style="@style/profile_feature"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="@dimen/_10sdp"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:text="@string/reset_password"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/imageView25"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:gravity="center">
+
+                                </TextView>
+
+                                <ImageView
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_icon_expand"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                </ImageView>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </TableRow>
+                        <TableRow android:layout_width="match_parent"
+                            android:visibility='@{!TextUtils.isEmpty(vm.token) &amp;&amp; !vm.token.equals("NULL") ? View.VISIBLE : View.GONE}'>
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_45sdp"
+                                android:paddingTop="@dimen/_8sdp"
+                                android:paddingBottom="@dimen/_8sdp"
+                                android:paddingLeft="@dimen/_15sdp"
+                                android:paddingRight="@dimen/_15sdp"
+                                android:onClick="@{(v) -> vm.doLogout()}">
+
+                                <ImageView
+                                    android:id="@+id/imageView26"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_icon_login"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                </ImageView>
+
+                                <TextView
+                                    style="@style/profile_feature"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="@dimen/_10sdp"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:text="@string/logout_all_win"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/imageView26"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:gravity="center">
+
+                                </TextView>
+
+                                <ImageView
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_icon_expand"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                </ImageView>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </TableRow>
+                        <TableRow android:layout_width="match_parent"
+                            android:visibility='@{TextUtils.isEmpty(vm.token) || vm.token.equals("NULL") ? View.VISIBLE : View.GONE}'>
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_45sdp"
+                                android:background="@drawable/textlines"
+                                android:paddingTop="@dimen/_8sdp"
+                                android:paddingBottom="@dimen/_8sdp"
+                                android:paddingLeft="@dimen/_15sdp"
+                                android:paddingRight="@dimen/_15sdp"
+                                android:onClick="@{(v) -> vm.doLogin()}">
+
+                                <ImageView
+                                    android:id="@+id/imageView11"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_icon_login"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                </ImageView>
+
+                                <TextView
+                                    style="@style/profile_feature"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="@dimen/_10sdp"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:text="@string/login_all_win"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/imageView11"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:gravity="center">
+
+                                </TextView>
+
+                                <ImageView
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_icon_expand"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                </ImageView>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </TableRow>
+                        <TableRow android:layout_width="match_parent"
+                            android:visibility='@{TextUtils.isEmpty(vm.token) || vm.token.equals("NULL") ? View.VISIBLE : View.GONE}'>
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_45sdp"
+                                android:paddingTop="@dimen/_8sdp"
+                                android:paddingBottom="@dimen/_8sdp"
+                                android:paddingLeft="@dimen/_15sdp"
+                                android:paddingRight="@dimen/_15sdp"
+                                android:onClick="@{(v) -> vm.doRegister()}">
+
+                                <ImageView
+                                    android:id="@+id/imageView9"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_icon_register"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                </ImageView>
+
+                                <TextView
+                                    android:id="@+id/textView9"
+                                    style="@style/profile_feature"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="@dimen/_10sdp"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:text="@string/register_all_win"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/imageView9"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:gravity="center">
+
+                                </TextView>
+
+                                <TextView
+                                    style="@style/profile_feature"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginRight="@dimen/_15sdp"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:text="@{vm.lang}"
+                                    android:textColor="#7EA567"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@+id/imageView9"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:gravity="center">
+
+                                </TextView>
+
+                                <ImageView
+                                    android:id="@+id/imageView10"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/ic_icon_expand"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                </ImageView>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </TableRow>
+                    </TableLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
