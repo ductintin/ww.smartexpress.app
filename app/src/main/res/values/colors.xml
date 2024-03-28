@@ -31,4 +31,10 @@
     <color name="green">#0FA958</color>
     <color name="gray">#C9424242</color>
     <color name="hint_gray">#9F9696</color>
+
+    <color name="color1">#F8F6E3</color>
+    <color name="color2">#97E7E1</color>
+    <color name="color3">#6AD4DD</color>
+    <color name="color4">#7AA2E3</color>
+
 </resources>

@@ -22,6 +22,7 @@ import ww.smartexpress.app.ui.purchase.PurchaseViewModel;
 import ww.smartexpress.app.ui.register.RegisterViewModel;
 import ww.smartexpress.app.ui.search.food.SearchFoodViewModel;
 import ww.smartexpress.app.ui.shipping.address.ShippingAddressViewModel;
+import ww.smartexpress.app.ui.shipping.address.info.ShippingInfoViewModel;
 import ww.smartexpress.app.ui.shipping.address.search.SearchAddressViewModel;
 import ww.smartexpress.app.ui.signin.SignInViewModel;
 import ww.smartexpress.app.ui.store.StoreViewModel;
@@ -341,5 +342,13 @@ public class ActivityModule {
         Supplier<ChatViewModel> supplier = () -> new ChatViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<ChatViewModel> factory = new ViewModelProviderFactory<>(ChatViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(ChatViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    ShippingInfoViewModel provideShippingInfoViewModel(Repository repository, Context application) {
+        Supplier<ShippingInfoViewModel> supplier = () -> new ShippingInfoViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<ShippingInfoViewModel> factory = new ViewModelProviderFactory<>(ShippingInfoViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(ShippingInfoViewModel.class);
     }
 }

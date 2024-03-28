@@ -14,6 +14,7 @@ import ww.smartexpress.app.ui.purchase.PurchaseActivity;
 import ww.smartexpress.app.ui.register.RegisterActivity;
 import ww.smartexpress.app.ui.search.food.SearchFoodActivity;
 import ww.smartexpress.app.ui.shipping.address.ShippingAddressActivity;
+import ww.smartexpress.app.ui.shipping.address.info.ShippingInfoActivity;
 import ww.smartexpress.app.ui.shipping.address.search.SearchAddressActivity;
 import ww.smartexpress.app.ui.signin.SignInActivity;
 import ww.smartexpress.app.ui.store.StoreActivity;
@@ -97,5 +98,6 @@ public interface ActivityComponent {
     void inject(SignInActivity signInActivity);
     void inject(ResetPasswordActivity resetPasswordActivity);
     void inject(ChatActivity chatActivity);
+    void inject(ShippingInfoActivity shippingInfoActivity);
 }
 

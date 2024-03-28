@@ -12,8 +12,8 @@ import ww.smartexpress.app.ui.shipping.address.ShippingAddressActivity;
 
 public class SearchAddressViewModel extends BaseViewModel {
 
-    public ObservableField<String> location = new ObservableField<>("150/17 Đinh Tiên Hoàng, Phường 26");
-    public ObservableField<String> searchLocation = new ObservableField<>();
+    public ObservableField<String> location = new ObservableField<>("");
+    public ObservableField<String> searchLocation = new ObservableField<>("");
     public SearchAddressViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
     }

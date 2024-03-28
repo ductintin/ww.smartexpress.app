@@ -41,25 +41,16 @@
         <ImageView
             android:id="@+id/imageView20"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_135sdp"
+            android:layout_height="@dimen/_130sdp"
             android:layout_gravity="top"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/background_top_delivery" />
-
-
-        <ImageView
-            android:id="@+id/imageView21"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:srcCompat="@drawable/background_bottom_delivery"
-            android:adjustViewBounds="true"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="@dimen/_150sdp">
+            android:layout_marginTop="@dimen/_140sdp">
 
 
             <LinearLayout
@@ -142,7 +133,7 @@
                                         android:layout_gravity="end"
                                         android:onClick="@{()->vm.deleteLocation()}"
                                         android:src="@drawable/ic_icon_delete"
-                                        android:visibility="@{!TextUtils.isEmpty(vm.searchLocation) ? View.INVISIBLE : View.VISIBLE}">
+                                        android:visibility="@{TextUtils.isEmpty(vm.location) ? View.INVISIBLE : View.VISIBLE}">
 
                                     </ImageView>
 
@@ -199,7 +190,7 @@
                                     android:layout_gravity="end"
                                     android:onClick="@{()->vm.deleteSearchLocation()}"
                                     android:src="@drawable/ic_icon_delete"
-                                    android:visibility="gone">
+                                    android:visibility="@{TextUtils.isEmpty(vm.searchLocation) ? View.INVISIBLE : View.VISIBLE}">
                                 </ImageView>
                             </LinearLayout>
                         </LinearLayout>
@@ -209,6 +200,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/lnSavedLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -264,6 +256,7 @@
 
                 </LinearLayout>
                 <Button
+                    android:visibility="gone"
                     android:onClick="@{(v)->vm.nextOrderInformation()}"
                     style="@style/BookCarButton"
                     android:layout_width="match_parent"
@@ -278,6 +271,17 @@
             </LinearLayout>
 
         </LinearLayout>
+
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageView21"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="bottom"-->
+<!--            app:srcCompat="@drawable/background_bottom_delivery"-->
+<!--            android:adjustViewBounds="true"/>-->
+
+
         <LinearLayout
             android:id="@+id/layoutAddCart"
             android:layout_width="match_parent"
@@ -285,8 +289,7 @@
             android:layout_gravity="bottom"
             android:gravity="center"
             android:background="@drawable/background_book_small"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:orientation="horizontal">
 
             <Button
                 android:onClick="@{(v)->vm.nextOrderInformation()}"
@@ -295,7 +298,7 @@
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginBottom="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
                 android:background="@drawable/app_button_background"
                 android:enabled="@{!TextUtils.isEmpty(vm.searchLocation) ? true : false}"
                 android:text="@string/welcome_button_continue"
