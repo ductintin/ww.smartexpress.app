@@ -1,9 +1,14 @@
 package ww.smartexpress.app.ui.order.information;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 
+import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.data.Repository;
@@ -14,6 +19,9 @@ public class OrderInformationViewModel extends BaseViewModel {
     public MutableLiveData<Integer> bonusService = new MutableLiveData<>(0);
 
     public MutableLiveData<Integer> itemSize = new MutableLiveData<>(0);
+    public ObservableField<Integer> size = new ObservableField<>(0);
+    public ObservableField<List<Bitmap>> bitmaps= new ObservableField<>(new ArrayList<>());
+
     public OrderInformationViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
     }

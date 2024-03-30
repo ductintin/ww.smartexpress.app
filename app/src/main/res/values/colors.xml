@@ -15,7 +15,7 @@
     <!-- -->
     <color name="welcome_color">#0F3663</color>
     <color name="grey_light">#C0C0C0</color>
-    <color name="app_color">#6AD4DD</color>
+    <color name="app_color">#6C94FC</color>
 
     <color name="grey_text">#969696</color>
     <color name="red_color">#F44336</color>
@@ -34,7 +34,7 @@
 
     <color name="color1">#F8F6E3</color>
     <color name="color2">#97E7E1</color>
-    <color name="color3">#6AD4DD</color>
+    <color name="color3">#6C94FC</color>
     <color name="color4">#7AA2E3</color>
 
 </resources>

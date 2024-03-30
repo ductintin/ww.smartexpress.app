@@ -132,25 +132,25 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
         });
     }
 
-    public void loadLocationType(){
-        List<LocationType> locationTypeList = new ArrayList<>();
-        locationTypeList.add(new LocationType("1", "Nhà riêng", ""));
-        locationTypeList.add(new LocationType("1", "Công ty", ""));
-        locationTypeList.add(new LocationType("1", "Thêm địa điểm", ""));
-
-        binding.setLifecycleOwner(this);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()
-                ,LinearLayoutManager.HORIZONTAL, false);
-
-        binding.rcLocationType.setLayoutManager(layoutManager);
-        binding.rcLocationType.setItemAnimator(new DefaultItemAnimator());
-        locationTypeAdapter = new LocationTypeAdapter(locationTypeList);
-        binding.rcLocationType.setAdapter(locationTypeAdapter);
-
-        locationTypeAdapter.setOnItemClickListener(locationType -> {
-
-        });
-    }
+//    public void loadLocationType(){
+//        List<LocationType> locationTypeList = new ArrayList<>();
+//        locationTypeList.add(new LocationType("1", "Nhà riêng", ""));
+//        locationTypeList.add(new LocationType("1", "Công ty", ""));
+//        locationTypeList.add(new LocationType("1", "Thêm địa điểm", ""));
+//
+//        binding.setLifecycleOwner(this);
+//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()
+//                ,LinearLayoutManager.HORIZONTAL, false);
+//
+//        binding.rcLocationType.setLayoutManager(layoutManager);
+//        binding.rcLocationType.setItemAnimator(new DefaultItemAnimator());
+//        locationTypeAdapter = new LocationTypeAdapter(locationTypeList);
+//        binding.rcLocationType.setAdapter(locationTypeAdapter);
+//
+//        locationTypeAdapter.setOnItemClickListener(locationType -> {
+//
+//        });
+//    }
 
     public class GenericTextWatcher implements TextWatcher {
         private View currentView;
@@ -162,7 +162,36 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
 
         @Override
         public void afterTextChanged(Editable editable) {
-            String text = editable.toString();
+//            String text = editable.toString();
+//
+//            switch (currentView.getId()){
+//                case R.id.edtSearchLocation:
+//                    if(!TextUtils.isEmpty(text)){
+//                        loadSearchLocation();
+//                    }else{
+//                        //loadSavedLocation();
+//                    }
+//                    break;
+//                case R.id.edtDeparture:
+//                    if(!TextUtils.isEmpty(text)){
+//                        loadDepartureLocation();
+//                    }else{
+//                        //loadSavedLocation();
+//                    }
+//                    break;
+//            }
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            // TODO: Implement as needed
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            // TODO: Implement as needed1
+            String text = charSequence.toString();
 
             switch (currentView.getId()){
                 case R.id.edtSearchLocation:
@@ -180,17 +209,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                     }
                     break;
             }
-
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            // TODO: Implement as needed
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            // TODO: Implement as needed1
         }
 
     }

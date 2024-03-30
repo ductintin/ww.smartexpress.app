@@ -90,6 +90,8 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:text="Đông Hòa"
+                                        android:maxLines="1"
+                                        android:ellipsize="end"
                                         android:textSize="@dimen/_12sdp">
 
                                     </TextView>
@@ -139,6 +141,8 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:text="Đông Hòa"
+                                        android:maxLines="1"
+                                        android:ellipsize="end"
                                         android:textSize="@dimen/_12sdp">
 
                                     </TextView>
@@ -196,11 +200,13 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:text="Dịch vụ"
+                                            android:maxLines="1"
+                                            android:ellipsize="end"
                                             android:textSize="@dimen/_12sdp">
 
                                         </TextView>
 
-                                        <EditText
+                                        <TextView
                                             android:text="Đề xuất dựa trên chi tiết món hàng"
                                             style="@style/new_password_subtitle"
                                             android:layout_width="wrap_content"
@@ -208,12 +214,9 @@
                                             android:layout_weight="1"
                                             android:background="@color/white"
                                             android:maxLines="1"
-                                            app:layout_constraintBottom_toBottomOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="parent"
-                                            android:inputType="text">
+                                            android:ellipsize="end">
 
-                                        </EditText>
+                                        </TextView>
 
                                     </LinearLayout>
 
@@ -266,12 +269,14 @@
                                             android:layout_height="wrap_content"
                                             android:text="Thêm chi tiết món hàng *"
                                             android:textColor="@color/color4"
-                                            android:textSize="@dimen/_12sdp">
+                                            android:textSize="@dimen/_12sdp"
+                                            android:maxLines="1"
+                                            android:ellipsize="end">
 
                                         </TextView>
 
 
-                                        <EditText
+                                        <TextView
                                             android:text="Đề xuất dựa trên chi tiết món hàng"
                                             style="@style/new_password_subtitle"
                                             android:layout_width="wrap_content"
@@ -279,12 +284,9 @@
                                             android:layout_weight="1"
                                             android:background="@color/white"
                                             android:maxLines="1"
-                                            app:layout_constraintBottom_toBottomOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="parent"
-                                            android:inputType="text">
+                                            android:ellipsize="end">
 
-                                        </EditText>
+                                        </TextView>
 
                                     </LinearLayout>
 
@@ -400,7 +402,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Ưu đãi 30% tối đa 30K">
+                            android:text="Ưu đãi 30% tối đa 30K"
+                            android:maxLines="1"
+                            android:ellipsize="end">
 
                         </TextView>
 
@@ -457,6 +461,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="85.000 đ"
+                        android:maxLines="1"
+                        android:maxLength="13"
+                        android:ellipsize="end"
+                        android:textAlignment="textEnd"
                         style="@style/new_password_text"
                         android:textSize="@dimen/_16ssp"
                         android:layout_marginRight="@dimen/_10sdp">
@@ -467,7 +475,11 @@
                         android:id="@+id/tvTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="85.000 đ"
+                        android:text="100000 đ"
+                        android:maxLines="1"
+                        android:maxLength="13"
+                        android:ellipsize="end"
+                        android:textAlignment="textEnd"
                         style="@style/new_password_text"
                         android:textSize="@dimen/_14ssp">
 
