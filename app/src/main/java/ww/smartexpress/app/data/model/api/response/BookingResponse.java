@@ -35,4 +35,14 @@ public class BookingResponse extends BaseResponse implements Serializable {
     private RatingResponse rating;
     private DriverVehicle driverVehicle;
     private Double averageRating;
+
+    private Double codPrice;
+    private String consigneeName;
+    private String consigneePhone;
+    private Boolean isCod;
+
+    private String deliveryImage;
+    private String senderName;
+    private String senderPhone;
+
 }

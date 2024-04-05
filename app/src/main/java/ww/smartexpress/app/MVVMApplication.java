@@ -35,6 +35,7 @@ import ww.smartexpress.app.others.MyTimberDebugTree;
 import ww.smartexpress.app.others.MyTimberReleaseTree;
 import ww.smartexpress.app.ui.bookcar.BookCarActivity;
 import ww.smartexpress.app.ui.chat.ChatActivity;
+import ww.smartexpress.app.ui.delivery.BookDeliveryActivity;
 import ww.smartexpress.app.ui.trip.TripActivity;
 import ww.smartexpress.app.ui.trip.complete.TripCompleteActivity;
 import ww.smartexpress.app.utils.DialogUtils;
@@ -143,6 +144,7 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
     }
 
     public void handleSocket(SocketEventModel socketEventModel){
+        Message message;
         if(!webSocketLiveData.isAppOnline()){
             return ;
         }
@@ -221,18 +223,18 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         Message message = socketEventModel.getMessage();
         DriverBookingResponse bookingResponse = message.getDataObject(DriverBookingResponse.class);
         driverBookingResponse = bookingResponse;
-        Intent intent = new Intent(currentActivity, BookCarActivity.class);
+
+        Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         currentActivity.startActivity(intent);
     }
 
     public void navigateToTripActivity(SocketEventModel socketEventModel){
         Message message = socketEventModel.getMessage();
-        Intent intent = new Intent(currentActivity, TripActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.CUSTOMER_BOOKING_ID, message.getDataObject(BookingDoneResponse.class).getBookingId());
-        bundle.putInt(Constants.BOOKING_STATE, 200);
-        intent.putExtras(bundle);
+//        DriverBookingResponse bookingResponse = message.getDataObject(DriverBookingResponse.class);
+//        driverBookingResponse = bookingResponse;
+
+        Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         currentActivity.startActivity(intent);
     }
@@ -248,14 +250,14 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
     }
 
     public void navigateToBookCarCancelActivity(SocketEventModel socketEventModel){
-        Intent intent = new Intent(currentActivity, BookCarActivity.class);
+        Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
         intent.putExtra(Constants.BOOKING_STATE, 0);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         currentActivity.startActivity(intent);
     }
 
     public void navigateToHomeActivity(SocketEventModel socketEventModel){
-        Intent intent = new Intent(currentActivity, BookCarActivity.class);
+        Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
         intent.putExtra(Constants.BOOKING_STATE, -100);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         currentActivity.startActivity(intent);
@@ -263,8 +265,8 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
 
     public void navigateToBookCarAcceptActivity(SocketEventModel socketEventModel){
         Message message = socketEventModel.getMessage();
-        if( currentActivity instanceof BookCarActivity){
-            Intent intent = new Intent(currentActivity, BookCarActivity.class);
+        if( currentActivity instanceof BookDeliveryActivity){
+            Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
             DriverPosition driverPosition = new DriverPosition();
             driverPosition = message.getDataObject(DriverPosition.class);
             intent.putExtra(Constants.DRIVER_POSITION, driverPosition.getLatitude() + "," + driverPosition.getLongitude());

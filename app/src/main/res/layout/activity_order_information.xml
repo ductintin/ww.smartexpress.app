@@ -104,7 +104,7 @@
                                    android:layout_height="match_parent"
                                    android:background="@color/white"
                                    android:maxLines="1"
-                                   android:text="@string/location_text"
+                                   android:text="@{vm.origin}"
                                    android:textColor="@color/title_home_page"/>
 
                            </LinearLayout>
@@ -154,7 +154,7 @@
                                    android:layout_height="match_parent"
                                    android:background="@color/white"
                                    android:maxLines="1"
-                                   android:text="@string/location_text"
+                                   android:text="@{vm.destination}"
                                    android:textColor="@color/title_home_page"/>
 
 
@@ -171,6 +171,7 @@
                         android:text="@string/sender_information" />
 
                     <EditText
+                        android:text="@={vm.senderName}"
                         style="@style/order_information_text_medium"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_35sdp"
@@ -185,6 +186,7 @@
                         android:ellipsize="end"
                         android:inputType="text"/>
                     <EditText
+                        android:text="@={vm.senderPhone}"
                         style="@style/order_information_text_medium"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_35sdp"
@@ -206,6 +208,7 @@
                         android:text="@string/receiver_information" />
 
                     <EditText
+                        android:text="@={vm.consigneeName}"
                         android:id="@+id/edtReceiver"
                         style="@style/order_information_text_medium"
                         android:layout_width="match_parent"
@@ -213,7 +216,6 @@
                         android:layout_marginHorizontal="@dimen/_12sdp"
                         android:layout_marginTop="@dimen/_15sdp"
                         android:background="@drawable/bg_information"
-                        android:drawableRight="@drawable/ic_icon_receiver"
                         android:hint="@string/receiver_name"
                         android:maxLines="1"
                         android:paddingVertical="@dimen/_5sdp"
@@ -223,6 +225,7 @@
                         android:inputType="text"/>
 
                     <EditText
+                        android:text="@={vm.consigneePhone}"
                         android:id="@+id/edtNote"
                         style="@style/order_information_text_medium"
                         android:layout_width="match_parent"
@@ -235,20 +238,142 @@
                         android:paddingLeft="@dimen/_15sdp"
                         android:paddingVertical="@dimen/_5sdp"
                         android:maxLines="1" />
-                    <TextView
-                        style="@style/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:layout_marginLeft="@dimen/_12sdp"
-                        android:text="@string/item_size" />
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
+                        <TextView
+                            style="@style/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:layout_marginLeft="@dimen/_12sdp"
+                            android:text="@string/item_size" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rcSize"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_7sdp"
+                                android:clipToPadding="false"
+                                android:paddingRight="@dimen/_12sdp"
+                                tools:listitem="@layout/item_commodity"
+                                tools:itemCount="1">
+
+                            </androidx.recyclerview.widget.RecyclerView>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_15sdp">
+
+                            <EditText
+                                style="@style/order_information_text_bold"
+                                android:textAlignment="center"
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_38sdp"
+                                android:layout_marginHorizontal="@dimen/_15sdp"
+                                android:background="@drawable/bg_information"
+                                android:maxLines="1"
+                                android:maxLength="5"
+                                android:ellipsize="end"
+                                android:paddingVertical="@dimen/_5sdp"
+                                android:inputType="text"/>
+                            <TextView
+                                style="@style/order_information_text_bold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/weight_unit" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_12sdp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="Chụp ảnh (không bắt buộc)" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/_12sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:orientation="horizontal">
+                                <View
+                                    android:layout_width="@dimen/_80sdp"
+                                    android:layout_height="@dimen/_80sdp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginHorizontal="@dimen/_12sdp"
+                                    android:background="@drawable/background_dashed_boder"
+                                    android:visibility="@{vm.size==0?View.VISIBLE:View.GONE}"/>
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/rcTaskPicture"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:clipToPadding="false"
+                                    android:paddingHorizontal="@dimen/_12sdp"
+                                    android:visibility="@{vm.size!=0?View.VISIBLE:View.GONE}"
+                                    />
+
+                                <FrameLayout
+                                    android:onClick="@{()->a.getNewAvatar()}"
+                                    android:layout_width="@dimen/_40sdp"
+                                    android:layout_height="@dimen/_40sdp"
+                                    android:layout_gravity="center_vertical"
+                                    android:background="@drawable/background_oval_blue"
+                                    android:visibility="@{vm.size &lt; 3 ? View.VISIBLE : View.GONE}">
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:padding="@dimen/_10sdp"
+                                        android:src="@drawable/ic_icon_camera" />
+                                </FrameLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:layout_marginHorizontal="@dimen/_12sdp">
+                            <TextView
+                                style="@style/title"
+                                android:textAlignment="textStart"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/style_item"
+                                android:layout_weight="1"/>
+
+                            <TextView
+                                android:visibility="gone"
+                                style="@style/show_new_password"
+                                android:textSize="@dimen/_11ssp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/show_more"
+                                android:textAlignment="textEnd"/>
+                        </LinearLayout>
+
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rcSize"
+                            android:id="@+id/rcCommodity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_7sdp"
@@ -258,122 +383,7 @@
                             tools:itemCount="1">
 
                         </androidx.recyclerview.widget.RecyclerView>
-
                     </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/_15sdp">
-
-                        <EditText
-                            style="@style/order_information_text_bold"
-                            android:textAlignment="center"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_38sdp"
-                            android:layout_marginHorizontal="@dimen/_15sdp"
-                            android:background="@drawable/bg_information"
-                            android:maxLines="1"
-                            android:maxLength="5"
-                            android:ellipsize="end"
-                            android:paddingVertical="@dimen/_5sdp"
-                            android:inputType="text"/>
-                        <TextView
-                            style="@style/order_information_text_bold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/weight_unit" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            style="@style/title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_12sdp"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="Chụp ảnh (không bắt buộc)" />
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/_12sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:orientation="horizontal">
-                            <View
-                                android:layout_width="@dimen/_80sdp"
-                                android:layout_height="@dimen/_80sdp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginHorizontal="@dimen/_12sdp"
-                                android:background="@drawable/background_dashed_boder"
-                                android:visibility="@{vm.size==0?View.VISIBLE:View.GONE}"/>
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rcTaskPicture"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:clipToPadding="false"
-                                android:paddingHorizontal="@dimen/_12sdp"
-                                android:visibility="@{vm.size!=0?View.VISIBLE:View.GONE}"
-                                />
-
-                            <FrameLayout
-                                android:onClick="@{()->a.getNewAvatar()}"
-                                android:layout_width="@dimen/_40sdp"
-                                android:layout_height="@dimen/_40sdp"
-                                android:layout_gravity="center_vertical"
-                                android:background="@drawable/background_oval_blue"
-                                android:visibility="@{vm.size &lt; 3 ? View.VISIBLE : View.GONE}">
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_gravity="center"
-                                    android:padding="@dimen/_10sdp"
-                                    android:src="@drawable/ic_icon_camera" />
-                            </FrameLayout>
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:layout_marginHorizontal="@dimen/_12sdp">
-                        <TextView
-                            style="@style/title"
-                            android:textAlignment="textStart"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/style_item"
-                            android:layout_weight="1"/>
-
-                        <TextView
-                            android:visibility="gone"
-                            style="@style/show_new_password"
-                            android:textSize="@dimen/_11ssp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/show_more"
-                            android:textAlignment="textEnd"/>
-                    </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rcCommodity"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_7sdp"
-                        android:clipToPadding="false"
-                        android:paddingRight="@dimen/_12sdp"
-                        tools:listitem="@layout/item_commodity"
-                        tools:itemCount="1">
-
-                    </androidx.recyclerview.widget.RecyclerView>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -396,7 +406,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_48sdp"
                             android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@{vm.bonusService==0 ? @drawable/payment_method_background:null}"
+                            android:background="@{vm.selectCOD ? @drawable/payment_method_background:null}"
                             android:gravity="center_vertical">
 
                             <ImageView
@@ -416,7 +426,7 @@
                                 android:layout_marginRight="@dimen/_10sdp"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/ic_icon_tick"
-                                android:visibility="@{vm.bonusService == 0 ? View.VISIBLE : View.GONE }"/>
+                                android:visibility="@{vm.selectCOD ? View.VISIBLE : View.GONE }"/>
 
 
                             <TextView
@@ -429,7 +439,23 @@
                                 android:text="@string/cod" />
                         </RelativeLayout>
 
+                        <EditText
+                            android:text="@={vm.codPrice}"
+                            android:visibility="@{vm.selectCOD ? View.VISIBLE : View.GONE }"
+                            style="@style/order_information_text_medium"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:background="@drawable/bg_information"
+                            android:hint="Số tiền thu hộ"
+                            android:inputType="phone"
+                            android:paddingLeft="@dimen/_15sdp"
+                            android:paddingVertical="@dimen/_5sdp"
+                            android:maxLines="1" />
+
+
                         <RelativeLayout
+                            android:visibility="gone"
                             android:id="@+id/layoutCreditPayment"
                             android:onClick="@{(v)->vm.selectHandDelivery()}"
                             android:layout_width="match_parent"
@@ -477,7 +503,7 @@
             android:background="@drawable/background_book_small"
             android:layout_gravity="bottom">
             <Button
-                android:onClick="@{(v)->vm.doNext()}"
+                android:onClick="@{(v)->a.doNext()}"
                 style = "@style/BookCarButton"
                 android:id="@+id/bntNote"
                 android:layout_width="match_parent"

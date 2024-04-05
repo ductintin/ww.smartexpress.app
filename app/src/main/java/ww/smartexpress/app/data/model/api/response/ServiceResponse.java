@@ -15,6 +15,8 @@ public class ServiceResponse implements Serializable {
     private String description;
     private String image;
     private String price;
+    private String weight;
+    private String size;
     private Integer kind;
     private CategoryResponse category;
 }

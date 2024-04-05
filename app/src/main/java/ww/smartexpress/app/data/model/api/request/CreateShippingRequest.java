@@ -1,13 +1,18 @@
 package ww.smartexpress.app.data.model.api.request;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateBookingRequest {
+public class CreateShippingRequest {
     private Double codPrice;
     private String consigneeName;
     private String consigneePhone;
@@ -25,6 +30,8 @@ public class CreateBookingRequest {
     private Double destinationLong;
     private Double distance;
     private Double money;
+
     private Double promotionMoney;
     private Long serviceId;
+
 }

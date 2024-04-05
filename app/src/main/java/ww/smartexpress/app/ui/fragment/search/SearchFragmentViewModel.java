@@ -6,6 +6,8 @@ import android.util.Log;
 
 import androidx.databinding.ObservableField;
 
+import com.google.gson.JsonObject;
+
 import io.reactivex.rxjava3.core.Observable;
 import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.R;
@@ -19,6 +21,7 @@ import ww.smartexpress.app.data.model.api.response.SearchLocationResponse;
 import ww.smartexpress.app.ui.base.activity.BaseViewModel;
 import ww.smartexpress.app.ui.base.fragment.BaseFragmentViewModel;
 import ww.smartexpress.app.ui.bookcar.BookCarActivity;
+import ww.smartexpress.app.ui.shipping.address.info.ShippingInfoActivity;
 
 public class SearchFragmentViewModel extends BaseFragmentViewModel {
     public ObservableField<String> location = new ObservableField<>("");
@@ -29,6 +32,7 @@ public class SearchFragmentViewModel extends BaseFragmentViewModel {
     public ObservableField<String> destinationId = new ObservableField<>("");
     public ObservableField<SearchLocation> origin = new ObservableField<>(new SearchLocation());
     public ObservableField<SearchLocation> destination = new ObservableField<>(new SearchLocation());
+    public ObservableField<String> latlng = new ObservableField<>("");
 
     public ObservableField<BookLocation> bookLocation = new ObservableField<>(new BookLocation());
     public ObservableField<Boolean> hasBooking = new ObservableField<>(false);
@@ -66,7 +70,7 @@ public class SearchFragmentViewModel extends BaseFragmentViewModel {
         if(originId.get().equals(destinationId.get())){
             showErrorMessage(application.getString(R.string.same_booking_location));
         }else{
-            Intent intent = new Intent(application.getCurrentActivity(), BookCarActivity.class);
+            Intent intent = new Intent(application.getCurrentActivity(), ShippingInfoActivity.class);
             Bundle bundle = new Bundle();
             //bundle.putLong(Constants.KEY_CATEGORY_ID, categoryId.get());
             bundle.putLong(Constants.KEY_SERVICE_ID, serviceId.get());
@@ -93,6 +97,13 @@ public class SearchFragmentViewModel extends BaseFragmentViewModel {
                     if(response.isResult()){
                         hasBooking.set(true);
                     }
+                });
+    }
+
+    Observable<JsonObject> getLocationInfo() {
+        return repository.getApiService().getLocationInfoByLatLng(latlng.get(), Constants.GEO_API_KEY)
+                .doOnNext(response -> {
+
                 });
     }
 }

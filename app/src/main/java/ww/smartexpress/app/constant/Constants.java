@@ -47,6 +47,7 @@ public class Constants {
     public static final String BOOKING_STATE= "BOOKING_STATE";
     public static final String ROOM_ID= "ROOM_ID";
     public static final String DRIVER_POSITION= "DRIVER_POSITION";
+    public static final String SHIPPING_INFO= "SHIPPING_INFO";
 
     private Constants() {
 

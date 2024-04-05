@@ -1,19 +1,33 @@
 package ww.smartexpress.app.ui.fragment.search;
 
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -33,12 +47,17 @@ import ww.smartexpress.app.ui.search.location.adapter.LocationTypeAdapter;
 import ww.smartexpress.app.ui.search.location.adapter.SavedLocationAdapter;
 import ww.smartexpress.app.ui.search.location.adapter.SearchLocationAdapter;
 
-public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFragmentViewModel> {
+public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFragmentViewModel> implements LocationListener {
     SavedLocationAdapter savedLocationAdapter;
     SearchLocationAdapter searchLocationAdapter;
     LocationTypeAdapter locationTypeAdapter;
     List<SearchLocation> fromLocations = new ArrayList<>();
     List<SearchLocation> toLocations  = new ArrayList<>();
+
+    private FusedLocationProviderClient fusedLocationClient;
+
+    private LatLng currentLocation;
+
 
     @Override
     public int getBindingVariable() {
@@ -68,8 +87,43 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
         //loadSearchLocation();
         //loadLocationType();
 
-        binding.edtDeparture.addTextChangedListener(new GenericTextWatcher(binding.edtDeparture));
-        binding.edtSearchLocation.addTextChangedListener(new GenericTextWatcher(binding.edtSearchLocation));
+        binding.setLifecycleOwner(this);
+        binding.edtSFSearchLocation.addTextChangedListener(new GenericTextWatcher(binding.edtSFSearchLocation));
+        binding.edtSFDeparture.addTextChangedListener(new GenericTextWatcher(binding.edtSFDeparture));
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+//        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+//                == PackageManager.PERMISSION_GRANTED) {
+//            fusedLocationClient.getLastLocation()
+//                    .addOnSuccessListener(getActivity(), location -> {
+//                        viewModel.latlng.set(String.valueOf(location.getLatitude())+","+String.valueOf(location.getLongitude()));
+//                        viewModel.compositeDisposable.add(viewModel.getLocationInfo()
+//                                .subscribeOn(Schedulers.io())
+//                                .observeOn(AndroidSchedulers.mainThread())
+//                                .subscribe(response -> {
+//                                    String status = response.get("status").getAsString();
+//                                    Log.d("TAG", status);
+//
+//                                    JsonArray results = response.getAsJsonArray("results");
+//                                    int index = results.size() - 1;
+//
+//                                    String component = results.get(0).getAsJsonObject().get("formatted_address").getAsString();
+//                                    String id = results.get(0).getAsJsonObject().get("place_id").getAsString();
+//                                    Log.d("TAG", "onLocationChanged: " + component);
+//
+//                                    viewModel.location.set(component);
+//                                    viewModel.originId.set(id);
+////
+//                                },error->{
+//                                    viewModel.hideLoading();
+//                                    viewModel.showErrorMessage(getString(R.string.network_error));
+//                                    error.printStackTrace();
+//                                })
+//                        );
+//                    });
+//        }
+
     }
 
     public void loadSavedLocation(){
@@ -92,9 +146,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
         });
     }
 
-    public void loadSearchLocation(){
-        loadSearch();
-        binding.setLifecycleOwner(this);
+    public void loadSearchLocation(String text){
+        loadSearch(text);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()
                 ,LinearLayoutManager.VERTICAL, false);
 
@@ -112,9 +165,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
         });
     }
 
-    public void loadDepartureLocation(){
-        loadDeparture();
-        binding.setLifecycleOwner(this);
+    public void loadDepartureLocation(String text){
+        loadDeparture(text);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()
                 ,LinearLayoutManager.VERTICAL, false);
 
@@ -130,6 +182,33 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
             viewModel.originId.set(location.getPlace_id());
             fromLocations.clear();
         });
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        viewModel.latlng.set(String.valueOf(location.getLatitude())+","+String.valueOf(location.getLongitude()));
+        viewModel.compositeDisposable.add(viewModel.getLocationInfo()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    String status = response.get("status").getAsString();
+                    if(status.equals("0K")){
+                        JsonArray results = response.getAsJsonArray("results");
+                        int index = results.size() - 1;
+
+                        String component = results.get(index).getAsJsonObject().get("formatted_address").getAsString();
+
+                        Log.d("TAG", "onLocationChanged: " + component);
+                    }
+                },error->{
+                    viewModel.hideLoading();
+                    viewModel.showErrorMessage(getString(R.string.network_error));
+                    error.printStackTrace();
+                })
+        );
+
+
     }
 
 //    public void loadLocationType(){
@@ -162,24 +241,26 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
 
         @Override
         public void afterTextChanged(Editable editable) {
-//            String text = editable.toString();
-//
-//            switch (currentView.getId()){
-//                case R.id.edtSearchLocation:
-//                    if(!TextUtils.isEmpty(text)){
-//                        loadSearchLocation();
-//                    }else{
-//                        //loadSavedLocation();
-//                    }
-//                    break;
-//                case R.id.edtDeparture:
-//                    if(!TextUtils.isEmpty(text)){
-//                        loadDepartureLocation();
-//                    }else{
-//                        //loadSavedLocation();
-//                    }
-//                    break;
-//            }
+            String text = editable.toString();
+
+            switch (currentView.getId()){
+                case R.id.edtSFSearchLocation:
+                    if(!TextUtils.isEmpty(text)){
+                        loadSearchLocation(text);
+                    }else{
+                        //loadSavedLocation();
+                    }
+                    break;
+                case R.id.edtSFDeparture:
+                    if(!TextUtils.isEmpty(text)){
+                        loadDepartureLocation(text);
+                    }else{
+                        //loadSavedLocation();
+                    }
+                    break;
+                default:
+                    break;
+            }
 
         }
 
@@ -191,30 +272,13 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             // TODO: Implement as needed1
-            String text = charSequence.toString();
 
-            switch (currentView.getId()){
-                case R.id.edtSearchLocation:
-                    if(!TextUtils.isEmpty(text)){
-                        loadSearchLocation();
-                    }else{
-                        //loadSavedLocation();
-                    }
-                    break;
-                case R.id.edtDeparture:
-                    if(!TextUtils.isEmpty(text)){
-                        loadDepartureLocation();
-                    }else{
-                        //loadSavedLocation();
-                    }
-                    break;
-            }
         }
 
     }
 
-    public void loadSearch(){
-        viewModel.compositeDisposable.add(viewModel.searchLocation(viewModel.searchLocation.get())
+    public void loadSearch(String text){
+        viewModel.compositeDisposable.add(viewModel.searchLocation(text)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
@@ -228,8 +292,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
         );
     }
 
-    public void loadDeparture(){
-        viewModel.compositeDisposable.add(viewModel.searchLocation(viewModel.location.get())
+    public void loadDeparture(String text){
+        viewModel.compositeDisposable.add(viewModel.searchLocation(text)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
@@ -268,8 +332,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
         viewModel.searchLocation.set("");
         viewModel.originId.set("");
         viewModel.destinationId.set("");
-        binding.edtDeparture.requestFocus();
-        binding.edtSearchLocation.clearFocus();
+        binding.edtSFDeparture.requestFocus();
+        binding.edtSFSearchLocation.clearFocus();
 
     }
 }

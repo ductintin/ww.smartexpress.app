@@ -5,14 +5,22 @@ import android.os.Bundle;
 
 import androidx.databinding.ObservableField;
 
+import com.google.gson.JsonObject;
+
+import io.reactivex.rxjava3.core.Observable;
 import ww.smartexpress.app.MVVMApplication;
+import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.Repository;
+import ww.smartexpress.app.data.model.api.ResponseListObj;
+import ww.smartexpress.app.data.model.api.ResponseWrapper;
+import ww.smartexpress.app.data.model.api.request.CreateBookingRequest;
+import ww.smartexpress.app.data.model.api.response.BookingResponse;
+import ww.smartexpress.app.data.model.api.response.ServiceResponse;
 import ww.smartexpress.app.ui.base.activity.BaseViewModel;
 import ww.smartexpress.app.ui.trip.TripActivity;
 
 public class BookDeliveryViewModel extends BaseViewModel {
     public ObservableField<String> location = new ObservableField<>("150/17 Đinh Tiên Hoàng, Phường 26, Quận 3");
-    public ObservableField<String> destination = new ObservableField<>("Masteri Thảo Điền - T5");
     public ObservableField<Integer> discount = new ObservableField<>();
     public ObservableField<String> deliveryMethod = new ObservableField<>();
     public ObservableField<String> vehicle = new ObservableField<>("Honda SH Mode");
@@ -23,6 +31,40 @@ public class BookDeliveryViewModel extends BaseViewModel {
     public ObservableField<Boolean> isChecked = new ObservableField<>(false);
     public ObservableField<Boolean> isBooking = new ObservableField<>(false);
     public ObservableField<Boolean> isFound = new ObservableField<>(false);
+    public ObservableField<Boolean> isShipping = new ObservableField<>(false);
+
+    public ObservableField<Boolean> selectCOD = new ObservableField<>(false);
+    public ObservableField<Double> originLat = new ObservableField<>();
+    public ObservableField<Double> originLng = new ObservableField<>();
+    public ObservableField<Double> destinationLat = new ObservableField<>();
+    public ObservableField<Double> destinationLng = new ObservableField<>();
+
+    public ObservableField<String> origin = new ObservableField<>("");
+    public ObservableField<String> originId = new ObservableField<>("");
+    public ObservableField<String> originLatLng = new ObservableField<>("");
+    public ObservableField<String> destination = new ObservableField<>("");
+    public ObservableField<String> destinationId = new ObservableField<>("");
+    public ObservableField<String> destinationLatLng = new ObservableField<>("");
+    public ObservableField<String> driverLatLng = new ObservableField<>("");
+    public ObservableField<String> consigneeName = new ObservableField<>("");
+    public ObservableField<String> consigneePhone = new ObservableField<>("");
+    public ObservableField<String> senderName = new ObservableField<>("");
+    public ObservableField<String> senderPhone = new ObservableField<>("");
+    public ObservableField<Boolean> isCod = new ObservableField<>(false);
+    public ObservableField<Integer> codPrice = new ObservableField<>(0);
+
+    public ObservableField<Long> distance = new ObservableField<>(0L);
+    public ObservableField<String> distanceKm = new ObservableField<>("");
+
+    public ObservableField<String> time = new ObservableField<>("6 phút");
+
+    public ObservableField<String> driverAvatar = new ObservableField<>("");
+
+    public ObservableField<BookingResponse> bookingResponse = new ObservableField<>();
+
+    public ObservableField<Long> roomId = new ObservableField<>(0L);
+
+
     public BookDeliveryViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
     }
@@ -50,4 +92,59 @@ public class BookDeliveryViewModel extends BaseViewModel {
     }
     public void callDriver(){}
     public void chatDriver(){}
+
+    Observable<ResponseWrapper<ResponseListObj<ServiceResponse>>> getService() {
+        return repository.getApiService().getServiceAutoComplete(null, null, null, null, null)
+                .doOnNext(response -> {
+
+                });
+    }
+
+    Observable<JsonObject> getLocationInfo(String id) {
+        return repository.getApiService().getLocationInfo(id, Constants.GEO_API_KEY)
+                .doOnNext(response -> {
+
+                });
+    }
+
+    Observable<JsonObject> getMapDirection() {
+        return repository.getApiService().getMapDirection(destinationLatLng.get(), "driving", originLatLng.get(), Constants.GEO_API_KEY)
+                .doOnNext(response -> {
+
+                });
+    }
+
+    Observable<JsonObject> getMapDriverDirection() {
+        return repository.getApiService().getMapDirection(driverLatLng.get(), "driving", originLatLng.get(), Constants.GEO_API_KEY)
+                .doOnNext(response -> {
+
+                });
+    }
+
+    Observable<JsonObject> getDistance() {
+        return repository.getApiService().getDistance(originLatLng.get(),  destinationLatLng.get(), Constants.GEO_API_KEY)
+                .doOnNext(response -> {
+
+                });
+    }
+
+    Observable<ResponseWrapper<BookingResponse>> createBooking(CreateBookingRequest request) {
+        return repository.getApiService().createBooking(request)
+                .doOnNext(response -> {
+
+                });
+    }
+
+    Observable<ResponseWrapper<BookingResponse>> getCurrentBooking() {
+        return repository.getApiService().getCurrentBooking()
+                .doOnNext(response -> {
+                    if(response.isResult()){
+                        if(response.getData().getRoom() != null){
+                            repository.getSharedPreferences().setLong(Constants.ROOM_ID, response.getData().getRoom().getId());
+
+                        }
+                    }
+                });
+    }
+
 }

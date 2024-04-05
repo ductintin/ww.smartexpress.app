@@ -76,4 +76,8 @@ public interface ApiService {
     Observable<ResponseWrapper<Room>> getMyRoom(@Path("id") Long id);
     @POST("/v1/rating/create")
     Observable<ResponseWrapper<String>> ratingBooking(@Body RatingBookingRequest request);
+
+    @GET("/geocode/json")
+    @Headers({"isSearchLocation:1"})
+    Observable<JsonObject> getLocationInfoByLatLng(@Query("latlng") String latlng, @Query("key") String api);
 }

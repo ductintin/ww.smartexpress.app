@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -21,15 +22,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
+import org.apache.commons.validator.routines.EmailValidator;
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.R;
+import ww.smartexpress.app.constant.Constants;
+import ww.smartexpress.app.data.model.api.ApiModelUtils;
+import ww.smartexpress.app.data.model.api.response.BookingResponse;
 import ww.smartexpress.app.data.model.api.response.Commodity;
+import ww.smartexpress.app.data.model.api.response.ShippingInfo;
 import ww.smartexpress.app.databinding.ActivityOrderInformationBinding;
 import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
@@ -77,6 +86,27 @@ public class OrderInformationActivity extends BaseActivity<ActivityOrderInformat
         viewBinding.setLifecycleOwner(this);
         loadCommodity();
         loadSize();
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+
+            ShippingInfo shippingInfo = ApiModelUtils.fromJson(bundle.getString(Constants.SHIPPING_INFO), ShippingInfo.class);
+            //viewModel.customerNote.set(getIntent().getStringExtra(Constants.CUSTOMER_BOOKING_NOTE));
+
+
+            Log.d("TAG", "dd: " + shippingInfo.toString());
+
+           if(shippingInfo != null){
+               viewModel.senderName.set(shippingInfo.getSenderName());
+               viewModel.senderPhone.set(shippingInfo.getSenderPhone());
+               viewModel.consigneeName.set(shippingInfo.getConsigneeName());
+               viewModel.consigneePhone.set(shippingInfo.getConsigneePhone());
+               viewModel.origin.set(shippingInfo.getOrigin());
+               viewModel.destination.set(shippingInfo.getDestination());
+               viewModel.selectCOD.set(shippingInfo.getIsCod());
+               viewModel.codPrice.set(String.valueOf(shippingInfo.getCodPrice()));
+           }
+        }
 
 
     }
@@ -263,6 +293,60 @@ public class OrderInformationActivity extends BaseActivity<ActivityOrderInformat
             }
             break;
         }
+    }
+
+    public Boolean isValidRegisterRequest(ShippingInfo request){
+        String phoneRegex = "^(0[3|5|7|8|9])+([0-9]{8})$";
+        Pattern phonePatter = Pattern.compile(phoneRegex);
+
+        if(TextUtils.isEmpty(request.getSenderName())){
+            viewModel.showErrorMessage("Vui lòng nhập tên người nhận");
+            return false;
+        }
+        if(TextUtils.isEmpty(request.getSenderPhone()) || request.getSenderPhone().length() != 10 || !phonePatter.matcher(request.getSenderPhone()).matches()){
+            viewModel.showErrorMessage("Số điện thoại người gửi không hợp lệ");
+            return false;
+        }
+
+
+        if(TextUtils.isEmpty(request.getSenderName())){
+            viewModel.showErrorMessage("Vui lòng nhập tên người nhận");
+            return false;
+        }
+
+        if(TextUtils.isEmpty(request.getConsigneeName()) || request.getConsigneeName().length() != 10 || !phonePatter.matcher(request.getConsigneeName()).matches()){
+            viewModel.showErrorMessage("Số điện thoại người nhận không hợp lệ");
+            return false;
+        }
+
+        if(request.getIsCod()){
+            if(request.getCodPrice() == 0){
+                viewModel.showErrorMessage("Vui lòng nhập số tiền thu hộ");
+                return false;
+            }
+        }
+
+        return true;
+    }
+    public void doNext(){
+        try {
+            ShippingInfo shippingInfo = ShippingInfo.builder()
+                    .senderName(viewModel.senderName.get())
+                    .senderPhone(viewModel.senderPhone.get())
+                    .consigneeName(viewModel.consigneeName.get())
+                    .consigneePhone(viewModel.consigneePhone.get())
+                    .isCod(viewModel.selectCOD.get())
+                    .codPrice(!viewModel.codPrice.get().isEmpty() && viewModel.selectCOD.get() ? Integer.parseInt(viewModel.codPrice.get()) : 0)
+                    .build();
+            if(isValidRegisterRequest(shippingInfo)){
+                EventBus.getDefault().postSticky(shippingInfo);
+                onBackPressed();
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 }

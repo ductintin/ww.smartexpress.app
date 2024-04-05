@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Winwin customer</string>
+    <string name="app_name">SmartExpress</string>
     <string name="msg_loading">Xin chờ...</string>
 
     <!--Network error-->
@@ -14,7 +14,7 @@
 
     <string name="location_request">Sử dụng vị trí của bạn và cho phép nhận thông báo</string>
     <string name="location_description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
-    <string name="welcome_winwin">Welcome to Allwin</string>
+    <string name="welcome_winwin">Welcome to SmartExpress</string>
     <string name="please_enter_phone">Vui lòng nhập số điện thoại của bạn</string>
     <string name="welcome_button_continue">Tiếp tục</string>
     <string name="your_phone_number">Số điện thoại của bạn</string>
@@ -78,8 +78,8 @@
     <string name="coupon_currency_tag">k</string>
     <string name="coupon_use_text">Dùng ngay</string>
     <string name="search_destination_title">Chọn điểm đến</string>
-    <string name="search_destination_subtitle">Vị trí của bạn"</string>
-    <string name="search_destination_hint">Nhập điểm đến ...</string>
+    <string name="search_destination_subtitle">Vị trí nhận hàng</string>
+    <string name="search_destination_hint">Nhập điểm giao đến ...</string>
     <string name="search_destination_save">Địa điểm đã lưu</string>
     <string name="search_destination_add">Thêm địa chỉ</string>
     <string name="trip_information">Thông tin chuyến đi</string>

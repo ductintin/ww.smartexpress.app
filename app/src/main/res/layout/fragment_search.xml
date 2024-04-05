@@ -92,7 +92,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingRight="@dimen/_10sdp"
-                                android:src="@drawable/ic_icon_destination">
+                                android:src="@drawable/ic_icon_my_location">
 
                             </ImageView>
 
@@ -116,19 +116,19 @@
                                     android:orientation="horizontal">
 
                                     <EditText
-                                        android:id="@+id/edtDeparture"
+                                        android:id="@+id/edtSFDeparture"
                                         style="@style/location_text"
                                         android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
+                                        android:layout_weight="1"
                                         android:background="@color/white"
-                                        android:maxLines="1"
                                         android:ellipsize="end"
+                                        android:inputType="text"
+                                        android:maxLines="1"
                                         android:text="@={vm.location}"
                                         app:layout_constraintBottom_toBottomOf="parent"
                                         app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent"
-                                        android:layout_weight="1"
-                                        android:inputType="text">
+                                        app:layout_constraintTop_toTopOf="parent">
 
                                     </EditText>
 
@@ -151,7 +151,7 @@
                             android:layout_height="@dimen/_1sdp"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_marginBottom="@dimen/_5sdp"
-                            android:background="#7EA567">
+                            android:background="#6C94FC">
 
                         </LinearLayout>
 
@@ -165,14 +165,14 @@
                                 android:layout_width="@dimen/_21sdp"
                                 android:layout_height="@dimen/_21sdp"
                                 android:layout_marginRight="@dimen/_5sdp"
-                                android:src="@drawable/location_flag"></ImageView>
+                                android:src="@drawable/ic_icon_search_location"></ImageView>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:orientation="horizontal">
                                 <EditText
-                                    android:id="@+id/edtSearchLocation"
+                                    android:id="@+id/edtSFSearchLocation"
                                     style="@style/destination_save"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
@@ -250,7 +250,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             tools:itemCount="2"
-                            tools:listitem="@layout/item_saved_location">
+                            tools:listitem="@layout/item_search_location">
 
                         </androidx.recyclerview.widget.RecyclerView>
 
