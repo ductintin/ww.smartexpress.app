@@ -1,7 +1,10 @@
 package ww.smartexpress.app.utils;
 
+import android.util.Log;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 
 import ww.smartexpress.app.constant.Constants;
 
@@ -19,6 +22,11 @@ public class NumberUtils {
         symbols.setGroupingSeparator(Constants.SYMBOLS);
         decimalFormat = new DecimalFormat("#,###", symbols);
         return decimalFormat.format(number);
+    }
+
+    public static Double parseDoubleNumber(String formattedNumber) throws NumberFormatException{
+        Log.d("TAG", "parseDoubleNumber: " + Double.parseDouble(formattedNumber.replace(".", "")));
+        return Double.parseDouble(formattedNumber.replace(".", ""));
     }
 
     public static String formatSecondsToTime(Long seconds) {

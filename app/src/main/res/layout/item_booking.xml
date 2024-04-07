@@ -70,16 +70,16 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
+
                             <TextView
                                 style="@style/roboto_medium"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_gravity="left"
-                                android:text="@string/trip_from"
                                 android:ellipsize="end"
                                 android:maxLines="1"
-                                android:textColor="@color/title_home_page">
-                            </TextView>
+                                android:text="@string/trip_from"
+                                android:textColor="@color/title_home_page"></TextView>
                             <TextView
                                 style="@style/roboto_bold"
                                 android:layout_width="wrap_content"

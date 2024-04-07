@@ -30,7 +30,7 @@ public class SearchFragmentViewModel extends BaseFragmentViewModel {
     public ObservableField<Long> serviceId = new ObservableField<>(0L);
     public ObservableField<String> originId = new ObservableField<>("");
     public ObservableField<String> destinationId = new ObservableField<>("");
-    public ObservableField<SearchLocation> origin = new ObservableField<>(new SearchLocation());
+    public ObservableField<SearchLocation> origin = new ObservableField<>(null);
     public ObservableField<SearchLocation> destination = new ObservableField<>(new SearchLocation());
     public ObservableField<String> latlng = new ObservableField<>("");
 
@@ -51,6 +51,7 @@ public class SearchFragmentViewModel extends BaseFragmentViewModel {
 
     public void deleteLocation(){
         location.set("");
+        origin.set(null);
         originId.set("");
     }
 
@@ -76,7 +77,7 @@ public class SearchFragmentViewModel extends BaseFragmentViewModel {
             bundle.putLong(Constants.KEY_SERVICE_ID, serviceId.get());
             bundle.putString(Constants.KEY_ORIGIN_ID, originId.get());
             bundle.putString(Constants.KEY_DESTINATION_ID, destinationId.get());
-            bundle.putString(Constants.KEY_ORIGIN_NAME, origin.get().getStructured_formatting().getMain_text());
+            bundle.putString(Constants.KEY_ORIGIN_NAME, origin.get() == null ? location.get() : origin.get().getStructured_formatting().getMain_text());
             bundle.putString(Constants.KEY_DESTINATION_NAME, destination.get().getStructured_formatting().getMain_text());
             intent.putExtras(bundle);
             application.getCurrentActivity().startActivity(intent);

@@ -377,7 +377,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
             }
         }
 
-        return money;
+        return Math.ceil(money/1000) * 1000;
     }
 
     public void getOrigin(){
@@ -460,6 +460,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                                 viewModel.distance.set(distance.get("value").getAsLong());
                                 viewModel.distanceKm.set(distance.get("text").getAsString());
                                 viewModel.time.set(duration.get("text").getAsString());
+                                viewModel.timeValue.set(duration.get("value").getAsLong());
                                 bookingRequest.setDistance(distance.get("value").getAsDouble());
 
                                 for(int k = 0; k < steps.size(); k++){
@@ -498,6 +499,11 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
 
                         loadService();
 
+                    }else{
+                        viewModel.showErrorMessage("Địa chỉ không hợp lệ. Vui lòng chọn lại địa chỉ khác");
+                        Intent intent = new Intent(BookDeliveryActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
 
                 }, err -> {

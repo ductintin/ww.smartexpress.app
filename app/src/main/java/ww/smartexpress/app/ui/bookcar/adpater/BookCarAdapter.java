@@ -43,7 +43,7 @@ public class BookCarAdapter extends RecyclerView.Adapter<BookCarAdapter.BookCarV
         if(position==selected){
             holder.mBinding.itemLayout.setBackgroundResource(R.drawable.item_win_bike_background);
         }else{
-            holder.mBinding.itemLayout.setBackgroundResource(R.color.white);
+            holder.mBinding.itemLayout.setBackgroundResource(R.drawable.bg_green_light_elevation);
         }
 
         if(bookCars.get(position).getDiscount()!=0){

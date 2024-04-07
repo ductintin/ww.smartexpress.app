@@ -35,6 +35,13 @@ public class TripViewModel extends BaseViewModel {
     public ObservableField<Double> distance = new ObservableField<>(0.0);
     public ObservableField<String> origin = new ObservableField<>("");
     public ObservableField<String> destination = new ObservableField<>("");
+    public ObservableField<String> senderName = new ObservableField<>("");
+    public ObservableField<String> senderPhone = new ObservableField<>("");
+    public ObservableField<String> consigneeName = new ObservableField<>("");
+    public ObservableField<String> consigneePhone = new ObservableField<>("");
+    public ObservableField<String> customerNote = new ObservableField<>("");
+    public ObservableField<Boolean> isCod = new ObservableField<>(false);
+    public ObservableField<Double> codPrice = new ObservableField<>(0.0);
     public ObservableField<String> code = new ObservableField<>("");
     public ObservableField<Long> bookingId = new ObservableField<>(0L);
     public ObservableField<Long> roomId = new ObservableField<>(0L);

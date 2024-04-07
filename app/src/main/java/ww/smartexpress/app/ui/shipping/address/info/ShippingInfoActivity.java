@@ -23,6 +23,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.R;
 import ww.smartexpress.app.constant.Constants;
@@ -68,10 +70,33 @@ public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBindi
             viewModel.destinationId.set(bundle.getString(Constants.KEY_DESTINATION_ID, ""));
             viewModel.origin.set(bundle.getString(Constants.KEY_ORIGIN_NAME, ""));
             viewModel.destination.set(bundle.getString(Constants.KEY_DESTINATION_NAME, ""));
+            getProfile();
         }
 
         bottomSheetLayout();
 
+    }
+
+    public void getProfile(){
+        viewModel.showLoading();
+        viewModel.compositeDisposable.add(viewModel.getProfile()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    if(response.isResult()){
+                        viewModel.senderName.set(response.getData().getName());
+                        viewModel.senderPhone.set(response.getData().getPhone());
+                        viewModel.hideLoading();
+                    }else {
+                        viewModel.hideLoading();
+                        viewModel.showErrorMessage(response.getMessage());
+                    }
+                },error->{
+                    viewModel.hideLoading();
+                    viewModel.showErrorMessage(getString(R.string.network_error));
+                    error.printStackTrace();
+                })
+        );
     }
 
     public void showDialog(){
@@ -138,7 +163,7 @@ public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBindi
             viewModel.isCod.set(event.getIsCod());
             viewModel.codPrice.set(event.getCodPrice());
         }
-        Log.d("TAG", "onDataEvent: " + viewModel.consigneeName.get());
+        Log.d("TAG", "onDataEvent: " + viewModel.isCod.get());
         // Xử lý dữ liệu ở đây
     }
 

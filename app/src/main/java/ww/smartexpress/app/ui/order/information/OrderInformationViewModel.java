@@ -40,8 +40,8 @@ public class OrderInformationViewModel extends BaseViewModel {
     public ObservableField<String> senderName = new ObservableField<>("");
     public ObservableField<String> senderPhone = new ObservableField<>("");
     public ObservableField<String> customerNote = new ObservableField<>("");
-
-    public ObservableField<String> codPrice = new ObservableField<>("");
+    public ObservableField<String> codPriceText = new ObservableField<>("");
+    public ObservableField<Integer> codPrice = new ObservableField<>(0);
 
 
     public OrderInformationViewModel(Repository repository, MVVMApplication application) {

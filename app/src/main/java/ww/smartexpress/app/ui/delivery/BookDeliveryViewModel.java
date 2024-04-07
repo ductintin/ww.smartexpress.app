@@ -58,6 +58,7 @@ public class BookDeliveryViewModel extends BaseViewModel {
     public ObservableField<String> distanceKm = new ObservableField<>("");
 
     public ObservableField<String> time = new ObservableField<>("6 phút");
+    public ObservableField<Long> timeValue = new ObservableField<>(0L);
 
     public ObservableField<String> driverAvatar = new ObservableField<>("");
 

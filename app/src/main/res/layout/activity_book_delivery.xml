@@ -13,6 +13,7 @@
             type="ww.smartexpress.app.ui.delivery.BookDeliveryViewModel" />
         <import type="android.view.View"></import>
         <import type="android.text.TextUtils"/>
+        <import type="ww.smartexpress.app.utils.NumberUtils"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -102,6 +103,7 @@
                     </TextView>
 
                     <LinearLayout
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -117,7 +119,8 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             android:layout_weight="1"
-                            android:inputType="none"
+                            android:inputType="text"
+                            android:ellipsize="end"
                             android:editable="false"
                             android:focusable="false">
 
@@ -156,16 +159,16 @@
                     android:orientation="horizontal">
                     <EditText
                         android:id="@+id/edtSearchLocation"
-                        style="@style/destination_save"
+                        style="@style/location_text"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:background="@color/white"
                         android:hint="@string/search_destination_hint"
                         android:text="@={vm.destination}"
-                        android:textSize="@dimen/_10sdp"
                         android:maxLines="1"
+                        android:ellipsize="end"
                         android:layout_weight="1"
-                        android:inputType="none"
+                        android:inputType="text"
                         android:editable="false"
                         android:focusable="false">
 
@@ -557,12 +560,23 @@
             app:behavior_peekHeight="@dimen/_260sdp"
             app:layout_behavior="@string/bottom_sheet">
 
+            <TextView
+                android:layout_marginTop="@dimen/_10sdp"
+                android:id="@+id/txtPrice"
+                style="@style/item_win_bike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_toRightOf="@id/imgWinBike"
+                android:text='@{vm.distance > 0 &amp;&amp; vm.timeValue > 0 ? vm.distanceKm + " - " +  NumberUtils.formatSecondsToTime(vm.timeValue)  : ""}' />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcWinDelivery"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_130sdp"
                 tools:itemCount="3"

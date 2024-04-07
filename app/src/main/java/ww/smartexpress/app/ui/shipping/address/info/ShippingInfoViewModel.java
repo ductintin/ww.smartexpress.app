@@ -5,10 +5,13 @@ import android.os.Bundle;
 
 import androidx.databinding.ObservableField;
 
+import io.reactivex.rxjava3.core.Observable;
 import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.Repository;
 import ww.smartexpress.app.data.model.api.ApiModelUtils;
+import ww.smartexpress.app.data.model.api.ResponseWrapper;
+import ww.smartexpress.app.data.model.api.response.ProfileResponse;
 import ww.smartexpress.app.data.model.api.response.ShippingInfo;
 import ww.smartexpress.app.ui.base.activity.BaseViewModel;
 import ww.smartexpress.app.ui.coupon.CouponActivity;
@@ -44,6 +47,11 @@ public class ShippingInfoViewModel extends BaseViewModel {
         super(repository, application);
     }
 
+    public void back(){
+        getApplication().getCurrentActivity().onBackPressed();
+        getApplication().getCurrentActivity().finish();
+    }
+
     public void toCouponActivity(){
         Intent intent = new Intent(application.getCurrentActivity(), CouponActivity.class);
         application.getCurrentActivity().startActivity(intent);
@@ -58,12 +66,20 @@ public class ShippingInfoViewModel extends BaseViewModel {
                 .senderPhone(senderPhone.get())
                 .consigneeName(consigneeName.get())
                 .consigneePhone(consigneePhone.get())
-                .isCod(false)
-                .codPrice(0)
+                .customerNote(customerNote.get())
+                .isCod(isCod.get())
+                .codPrice(codPrice.get())
                 .build();
         Bundle bundle = new Bundle();
         bundle.putString(Constants.SHIPPING_INFO, ApiModelUtils.toJson(shippingInfo));
         intent.putExtras(bundle);
         application.getCurrentActivity().startActivity(intent);
+    }
+
+    Observable<ResponseWrapper<ProfileResponse>> getProfile() {
+        return repository.getApiService().getProfile()
+                .doOnNext(response -> {
+
+                });
     }
 }

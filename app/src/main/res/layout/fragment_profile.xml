@@ -21,7 +21,24 @@
             android:background="@color/white"
             >
 
+            <TextView
+                android:id="@+id/tvTitle"
+                style="@style/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:padding="@dimen/_10sdp"
+                android:maxLines="1"
+                android:text="@string/title_account"
+                android:textSize="@dimen/_25ssp"
+                android:textAlignment="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </TextView>
+
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/imageView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,96 +54,178 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@id/imageView3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView3">
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle">
 
-                <androidx.cardview.widget.CardView
+                <!--                <androidx.cardview.widget.CardView-->
+                <!--                    -->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_margin="@dimen/_12sdp"-->
+                <!--                    app:cardCornerRadius="@dimen/_10sdp"-->
+                <!--                    app:cardElevation="@dimen/_1sdp"-->
+                <!--                    >-->
+
+                <!--                    <FrameLayout-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:onClick="@{(v) -> vm.navigateToEditProfile()}"-->
+                <!--                        android:orientation="horizontal"-->
+                <!--                        android:layout_margin="@dimen/_12sdp">-->
+
+                <!--                        <LinearLayout-->
+                <!--                            android:layout_width="match_parent"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:orientation="vertical"-->
+                <!--                            android:gravity="center_vertical">-->
+                <!--                            <de.hdodenhof.circleimageview.CircleImageView-->
+                <!--                                android:id="@+id/circleImageView"-->
+                <!--                                android:layout_width="@dimen/_80sdp"-->
+                <!--                                android:layout_height="@dimen/_80sdp"-->
+                <!--                                android:src="@{vm.profile.avatar, default=@drawable/user_avatar}"-->
+                <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                                app:layout_constraintStart_toStartOf="parent"-->
+                <!--                                app:layout_constraintTop_toTopOf="parent"-->
+                <!--                                android:layout_gravity="center">-->
+
+                <!--                            </de.hdodenhof.circleimageview.CircleImageView>-->
+
+                <!--                            <LinearLayout-->
+                <!--                                android:id="@+id/linearLayout4"-->
+                <!--                                android:layout_width="wrap_content"-->
+                <!--                                android:layout_height="match_parent"-->
+                <!--                                android:gravity="center_vertical"-->
+                <!--                                android:layout_gravity="center"-->
+                <!--                                android:orientation="vertical"-->
+                <!--                                android:layout_marginTop="@dimen/_10sdp"-->
+                <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                                app:layout_constraintStart_toEndOf="@+id/circleImageView"-->
+                <!--                                app:layout_constraintTop_toTopOf="parent">-->
+
+                <!--                                <TextView-->
+                <!--                                    style="@style/title"-->
+                <!--                                    android:layout_width="wrap_content"-->
+                <!--                                    android:layout_height="wrap_content"-->
+                <!--                                    android:ellipsize="end"-->
+                <!--                                    android:maxLines="1"-->
+                <!--                                    android:layout_gravity="center"-->
+                <!--                                    android:text="@{vm.profile.name}"-->
+                <!--                                    android:textAlignment="center">-->
+
+                <!--                                </TextView>-->
+
+                <!--                                <TextView-->
+                <!--                                    style="@style/new_password_subtitle"-->
+                <!--                                    android:layout_width="wrap_content"-->
+                <!--                                    android:layout_height="wrap_content"-->
+                <!--                                    android:layout_marginTop="@dimen/_5sdp"-->
+                <!--                                    android:ellipsize="end"-->
+                <!--                                    android:layout_gravity="center"-->
+                <!--                                    android:maxLines="1"-->
+                <!--                                    android:text="@{vm.profile.phone}"-->
+                <!--                                    android:textAlignment="center">-->
+
+                <!--                                </TextView>-->
+
+                <!--                            </LinearLayout>-->
+                <!--                        </LinearLayout>-->
+
+                <!--&lt;!&ndash;                        <ImageView&ndash;&gt;-->
+
+                <!--&lt;!&ndash;                            android:layout_width="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;                            android:layout_height="match_parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;                            android:src="@drawable/ic_icon_expand"&ndash;&gt;-->
+                <!--&lt;!&ndash;                            app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;                            app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;                            app:layout_constraintTop_toTopOf="parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;                            android:layout_gravity="end">&ndash;&gt;-->
+
+                <!--&lt;!&ndash;                        </ImageView>&ndash;&gt;-->
+
+
+                <!--                    </FrameLayout>-->
+                <!--                </androidx.cardview.widget.CardView>-->
+
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_12sdp"
-                    app:cardCornerRadius="@dimen/_10sdp"
-                    app:cardElevation="@dimen/_1sdp"
-                    >
+                    android:onClick="@{(v) -> vm.navigateToEditProfile()}"
+                    android:orientation="horizontal">
 
-                    <FrameLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:onClick="@{(v) -> vm.navigateToEditProfile()}"
-                        android:orientation="horizontal"
-                        android:layout_margin="@dimen/_12sdp">
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/circleImageView"
+                            android:layout_width="@dimen/_80sdp"
+                            android:layout_height="@dimen/_80sdp"
+                            android:layout_gravity="center"
+                            android:src="@{vm.profile.avatar, default=@drawable/user_avatar}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                        </de.hdodenhof.circleimageview.CircleImageView>
 
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/circleImageView"
-                                android:layout_width="@dimen/_50sdp"
-                                android:layout_height="@dimen/_50sdp"
-                                android:src="@{vm.profile.avatar, default=@drawable/user_avatar}"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:civ_border_width="@dimen/_1sdp"
-                                app:civ_border_color="@color/app_color">
-
-                            </de.hdodenhof.circleimageview.CircleImageView>
-
-                            <LinearLayout
-                                android:id="@+id/linearLayout4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="@dimen/_10sdp"
-                                android:layout_marginRight="@dimen/_20sdp"
-                                android:gravity="center_vertical"
-                                android:orientation="vertical"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toEndOf="@+id/circleImageView"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <TextView
-                                    style="@style/profile_feature"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:ellipsize="end"
-                                    android:maxLines="1"
-                                    android:text="@{vm.profile.name}"
-                                    android:textSize="@dimen/_13ssp">
-
-                                </TextView>
-
-                                <TextView
-                                    style="@style/new_password_subtitle"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:ellipsize="end"
-                                    android:maxLines="1"
-                                    android:text="@{vm.profile.email}"
-                                    android:textAlignment="textStart">
-
-                                </TextView>
-
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <ImageView
-
+                            android:id="@+id/linearLayout4"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:src="@drawable/ic_icon_expand"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:layout_gravity="end">
+                            app:layout_constraintStart_toEndOf="@+id/circleImageView"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                        </ImageView>
+                            <TextView
+                                style="@style/title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="@{vm.profile.name}"
+                                android:textAlignment="center">
+
+                            </TextView>
+
+                            <TextView
+                                style="@style/new_password_subtitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="@{vm.profile.phone}"
+                                android:textAlignment="center">
+
+                            </TextView>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!--                        <ImageView-->
+
+                    <!--                            android:layout_width="wrap_content"-->
+                    <!--                            android:layout_height="match_parent"-->
+                    <!--                            android:src="@drawable/ic_icon_expand"-->
+                    <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+                    <!--                            app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--                            app:layout_constraintTop_toTopOf="parent"-->
+                    <!--                            android:layout_gravity="end">-->
+
+                    <!--                        </ImageView>-->
 
 
-                    </FrameLayout>
-                </androidx.cardview.widget.CardView>
-
+                </FrameLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -146,6 +245,7 @@
                     app:cardElevation="@dimen/_1sdp">
 
                     <TableLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -592,6 +692,64 @@
                     </TableLayout>
 
                 </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/background_card_app"
+                    android:onClick="@{(v)->vm.doResetPassword()}"
+                    android:orientation="horizontal"
+                    android:paddingVertical="@dimen/_15sdp"
+                    android:paddingLeft="@dimen/_12sdp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_icon_password" />
+
+                    <TextView
+                        style="@style/app_text_b"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:layout_weight="1"
+                        android:maxLines="1"
+                        android:text="@string/reset_password" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/background_card_app"
+                    android:onClick="@{(v)->vm.doLogout()}"
+                    android:orientation="horizontal"
+                    android:paddingVertical="@dimen/_15sdp"
+                    android:paddingLeft="@dimen/_12sdp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_icon_login" />
+
+                    <TextView
+                        style="@style/app_text_b"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:layout_weight="1"
+                        android:maxLines="1"
+                        android:text="@string/logout_all_win" />
+
+                </LinearLayout>
 
             </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

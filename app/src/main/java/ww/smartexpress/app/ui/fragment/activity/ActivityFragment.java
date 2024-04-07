@@ -56,6 +56,7 @@ public class ActivityFragment extends BaseFragment<FragmentActivityBinding, Acti
         binding.swRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                viewModel.pageNumber.set(0);
                 viewModel.getBooking();
                 performDataBinding();
                 binding.swRefresh.setRefreshing(false);

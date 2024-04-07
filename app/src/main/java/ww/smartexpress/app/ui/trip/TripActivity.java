@@ -196,6 +196,13 @@ public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewMode
         viewModel.distance.set(bookingResponse.getDistance());
         viewModel.origin.set(bookingResponse.getPickupAddress());
         viewModel.destination.set(bookingResponse.getDestinationAddress());
+        viewModel.senderName.set(bookingResponse.getSenderName());
+        viewModel.senderPhone.set(bookingResponse.getSenderPhone());
+        viewModel.consigneeName.set(bookingResponse.getConsigneeName());
+        viewModel.consigneePhone.set(bookingResponse.getConsigneePhone());
+        viewModel.customerNote.set(bookingResponse.getCustomerNote());
+        viewModel.isCod.set(bookingResponse.getIsCod());
+        viewModel.codPrice.set(bookingResponse.getCodPrice());
         viewModel.createdDate.set(bookingResponse.getCreatedDate());
         viewModel.code.set(bookingResponse.getCode());
     }

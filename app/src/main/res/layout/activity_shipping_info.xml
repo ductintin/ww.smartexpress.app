@@ -13,6 +13,7 @@
             type="ww.smartexpress.app.ui.shipping.address.info.ShippingInfoViewModel" />
         <import type="android.text.TextUtils"/>
         <import type="android.view.View"/>
+        <import type="ww.smartexpress.app.utils.NumberUtils"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -102,7 +103,7 @@
                                         </TextView>
                                         <TextView
                                             android:layout_marginVertical="@dimen/_5sdp"
-                                            android:text='@{TextUtils.isEmpty(vm.senderName) ? "Nhập thông tin người gửi" : vm.senderName + " " + vm.senderPhone}'
+                                            android:text='@{TextUtils.isEmpty(vm.senderName) ? "Chưa có thông tin người gửi" : vm.senderName + " - " + vm.senderPhone}'
                                             style="@style/new_password_subtitle"
                                             android:layout_width="wrap_content"
                                             android:layout_height="match_parent"
@@ -153,7 +154,7 @@
                                         </TextView>
                                         <TextView
                                             android:layout_marginVertical="@dimen/_5sdp"
-                                            android:text='@{TextUtils.isEmpty(vm.consigneeName) ? "Nhập thông tin người nhận" : vm.consigneeName + " " + vm.consigneePhone}'
+                                            android:text='@{TextUtils.isEmpty(vm.consigneeName) ? "Chưa có thông tin người nhận" : vm.consigneeName + " - " + vm.consigneePhone}'
                                             style="@style/new_password_subtitle"
                                             android:layout_width="wrap_content"
                                             android:layout_height="match_parent"
@@ -277,7 +278,7 @@
                                                 style="@style/information_edit_text"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
-                                                android:text='@{vm.isCod ? "Thu hộ: " + vm.codPrice +" đ": "Thêm chi tiết món hàng *"}'
+                                                android:text='@{vm.isCod ? "Thu hộ: " + NumberUtils.formatNumber(vm.codPrice) +" VNĐ": TextUtils.isEmpty(vm.consigneeName) ? "Thêm chi tiết món hàng *" : "Chỉnh sửa thông tin món hàng"}'
                                                 android:textColor="@color/color4"
                                                 android:textSize="@dimen/_12sdp"
                                                 android:maxLines="1"

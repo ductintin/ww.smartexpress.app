@@ -82,7 +82,7 @@
     <string name="search_destination_hint">Nhập điểm giao đến ...</string>
     <string name="search_destination_save">Địa điểm đã lưu</string>
     <string name="search_destination_add">Thêm địa chỉ</string>
-    <string name="trip_information">Thông tin chuyến đi</string>
+    <string name="trip_information">Thông tin đơn hàng</string>
     <string name="driver_name">Lý Tiểu Long</string>
     <string name="bike_brand">Honda SH Model</string>
     <string name="vehicle_code">59-S2 57301</string>
@@ -125,7 +125,7 @@
     <string name="cart_header">Giỏ hàng</string>
     <string name="drinka_address">Trà sữa Bubble Tea, Ung Văn Khiêm</string>
     <string name="confirm">Xác nhận</string>
-    <string name="trip_from">Chuyến đi từ</string>
+    <string name="trip_from">Đơn hàng gửi từ</string>
     <string name="location_from">150/17 Đinh Tiên Hoàng, Phường 26, Quận 3, TP.HCM</string>
     <string name="location_to">Masteri Thảo Điền, P2, Q2, Tphcm</string>
     <string name="completed">Hoàn thành</string>
@@ -187,7 +187,7 @@
     <string name="cancel_reason_option2">Bạn đánh giá dịch vụ như thế nào</string>
     <string name="cancel_confirm">Xác nhận hủy</string>
     <string name="allwin_hello">Allwin xin chào</string>
-    <string name="trip_details">Chi tiết chuyến đi</string>
+    <string name="trip_details">Chi tiết đơn hàng</string>
     <string name="search_title">Tìm kiếm</string>
     <string name="hot_food">Đang hot</string>
     <string name="suggest">Gợi ý phù hợp</string>
@@ -225,8 +225,8 @@
     <string name="new_pw_hint">Nhập mật khẩu mới</string>
     <string name="confirm_new_pw">Xác nhận khẩu mới</string>
     <string name="update_password_success">Đặt lại mật khẩu thành công</string>
-    <string name="origin">Điểm đón</string>
-    <string name="destination">Điểm đến</string>
+    <string name="origin">Điểm gửi hàng</string>
+    <string name="destination">Điểm nhận hàng</string>
     <string name="code">Mã</string>
     <string name="do_note">Nhập ghi chú</string>
     <string name="cancel_trip_dialog_title">Bạn có muốn hủy chuyến?</string>

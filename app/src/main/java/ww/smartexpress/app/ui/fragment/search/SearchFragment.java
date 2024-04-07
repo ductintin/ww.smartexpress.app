@@ -93,36 +93,37 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-//        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-//                == PackageManager.PERMISSION_GRANTED) {
-//            fusedLocationClient.getLastLocation()
-//                    .addOnSuccessListener(getActivity(), location -> {
-//                        viewModel.latlng.set(String.valueOf(location.getLatitude())+","+String.valueOf(location.getLongitude()));
-//                        viewModel.compositeDisposable.add(viewModel.getLocationInfo()
-//                                .subscribeOn(Schedulers.io())
-//                                .observeOn(AndroidSchedulers.mainThread())
-//                                .subscribe(response -> {
-//                                    String status = response.get("status").getAsString();
-//                                    Log.d("TAG", status);
+        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(getActivity(), location -> {
+                        viewModel.latlng.set(String.valueOf(location.getLatitude())+","+String.valueOf(location.getLongitude()));
+                        viewModel.compositeDisposable.add(viewModel.getLocationInfo()
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(response -> {
+                                    String status = response.get("status").getAsString();
+                                    Log.d("TAG", status);
+
+                                    JsonArray results = response.getAsJsonArray("results");
+                                    int index = results.size() - 1;
+
+                                    String component = results.get(0).getAsJsonObject().get("formatted_address").getAsString();
+                                    String id = results.get(0).getAsJsonObject().get("place_id").getAsString();
+                                    Log.d("TAG", "onLocationChanged: " + component);
+
+                                    viewModel.location.set(component);
+                                    viewModel.originId.set(id);
+                                    binding.edtSFSearchLocation.requestFocus();
 //
-//                                    JsonArray results = response.getAsJsonArray("results");
-//                                    int index = results.size() - 1;
-//
-//                                    String component = results.get(0).getAsJsonObject().get("formatted_address").getAsString();
-//                                    String id = results.get(0).getAsJsonObject().get("place_id").getAsString();
-//                                    Log.d("TAG", "onLocationChanged: " + component);
-//
-//                                    viewModel.location.set(component);
-//                                    viewModel.originId.set(id);
-////
-//                                },error->{
-//                                    viewModel.hideLoading();
-//                                    viewModel.showErrorMessage(getString(R.string.network_error));
-//                                    error.printStackTrace();
-//                                })
-//                        );
-//                    });
-//        }
+                                },error->{
+                                    viewModel.hideLoading();
+                                    viewModel.showErrorMessage(getString(R.string.network_error));
+                                    error.printStackTrace();
+                                })
+                        );
+                    });
+        }
 
     }
 

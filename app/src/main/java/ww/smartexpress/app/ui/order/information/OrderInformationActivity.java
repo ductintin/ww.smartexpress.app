@@ -11,7 +11,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -46,6 +48,7 @@ import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
 import ww.smartexpress.app.ui.order.information.adapter.BitmapAdapter;
 import ww.smartexpress.app.ui.order.information.adapter.CommodityAdapter;
+import ww.smartexpress.app.utils.NumberUtils;
 
 public class OrderInformationActivity extends BaseActivity<ActivityOrderInformationBinding, OrderInformationViewModel> {
     
@@ -105,11 +108,51 @@ public class OrderInformationActivity extends BaseActivity<ActivityOrderInformat
                viewModel.consigneePhone.set(shippingInfo.getConsigneePhone());
                viewModel.origin.set(shippingInfo.getOrigin());
                viewModel.destination.set(shippingInfo.getDestination());
+               viewModel.customerNote.set(shippingInfo.getCustomerNote());
                viewModel.selectCOD.set(shippingInfo.getIsCod());
-               viewModel.codPrice.set(String.valueOf(shippingInfo.getCodPrice()));
-               getProfile();
+               viewModel.codPrice.set(shippingInfo.getCodPrice());
+               if(shippingInfo.getCodPrice() != 0){
+                   viewModel.codPriceText.set(NumberUtils.formatDoubleNumber(shippingInfo.getCodPrice().doubleValue()));
+               }
+
+               Log.d("TAG", "onCreate: ordership" + shippingInfo.getIsCod());
+               Log.d("TAG", "onCreate: order" + viewModel.selectCOD.get());
+               //getProfile();
            }
         }
+
+        viewBinding.edtCodPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!TextUtils.isEmpty(charSequence)){
+                    try {
+                        Double text = NumberUtils.parseDoubleNumber(charSequence.toString());
+                        String money = NumberUtils.formatDoubleNumber(text);
+                        Log.d("TAG", "onTextChanged: " + text);
+                        Log.d("TAG", "onTextChanged: ff " + money);
+                        if(!money.equals(viewModel.codPriceText)){
+                            viewModel.codPrice.set(text.intValue());
+                            viewModel.codPriceText.set(money);
+                            viewBinding.edtCodPrice.setSelection(viewModel.codPriceText.get().length());
+                        }
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     public void getProfile(){
@@ -324,27 +367,38 @@ public class OrderInformationActivity extends BaseActivity<ActivityOrderInformat
 
         if(TextUtils.isEmpty(request.getSenderName())){
             viewModel.showErrorMessage("Vui lòng nhập tên người nhận");
+            viewBinding.edtConsigneeName.requestFocus(request.getSenderName().length());
             return false;
         }
         if(TextUtils.isEmpty(request.getSenderPhone()) || request.getSenderPhone().length() != 10 || !phonePatter.matcher(request.getSenderPhone()).matches()){
             viewModel.showErrorMessage("Số điện thoại người gửi không hợp lệ");
+            viewBinding.edtSenderPhone.requestFocus(request.getSenderPhone().length());
             return false;
         }
 
 
         if(TextUtils.isEmpty(request.getConsigneeName())){
             viewModel.showErrorMessage("Vui lòng nhập tên người nhận");
+            viewBinding.edtConsigneeName.requestFocus(request.getConsigneeName().length());
             return false;
         }
 
         if(TextUtils.isEmpty(request.getConsigneePhone()) || request.getConsigneePhone().length() != 10 || !phonePatter.matcher(request.getConsigneePhone()).matches()){
             viewModel.showErrorMessage("Số điện thoại người nhận không hợp lệ");
+            viewBinding.edtConsigneePhone.requestFocus(request.getConsigneePhone().length());
             return false;
         }
 
         if(request.getIsCod()){
             if(request.getCodPrice() == 0){
                 viewModel.showErrorMessage("Vui lòng nhập số tiền thu hộ");
+                viewBinding.edtCodPrice.requestFocus(viewModel.codPriceText.get().length());
+                return false;
+            }
+
+            if(request.getCodPrice() < 1000){
+                viewModel.showErrorMessage("Số tiền thu hộ quá bé, hãy nhập lớn hơn 1000 VNĐ");
+                viewBinding.edtCodPrice.requestFocus(viewModel.codPriceText.get().length());
                 return false;
             }
         }
@@ -360,7 +414,7 @@ public class OrderInformationActivity extends BaseActivity<ActivityOrderInformat
                     .consigneePhone(viewModel.consigneePhone.get().trim())
                     .customerNote(viewModel.customerNote.get().trim())
                     .isCod(viewModel.selectCOD.get())
-                    .codPrice(!viewModel.codPrice.get().isEmpty() && viewModel.selectCOD.get() ? Integer.parseInt(viewModel.codPrice.get()) : 0)
+                    .codPrice(viewModel.selectCOD.get() ? viewModel.codPrice.get() : 0)
                     .build();
             if(isValidRegisterRequest(shippingInfo)){
                 EventBus.getDefault().postSticky(shippingInfo);

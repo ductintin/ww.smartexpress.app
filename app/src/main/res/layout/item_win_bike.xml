@@ -22,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginHorizontal="@dimen/_5sdp">
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
@@ -97,21 +98,50 @@
                 android:orientation="vertical"
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_5sdp">
-                <TextView
-                    style="@style/order_information_text_medium"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/imgWinBike"
-                    android:text='@{"Khối lượng tối đa: " + ivm.weight + " kg"}'
-                    android:layout_weight="1"/>
-                <TextView
-                    style="@style/order_information_text_medium"
-                    android:layout_width="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/order_information_text_medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/imgWinBike"
+                        android:text='Khối lượng tối đa: '/>
+
+                    <TextView
+                        style="@style/item_win_bike"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:textAlignment="textStart"
+                        android:layout_toRightOf="@id/imgWinBike"
+                        android:text='@{ivm.weight + " (kg)"}'
+                        android:layout_weight="1"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text='@{"Kích thước tối đa: " + ivm.size}'
-                    android:layout_weight="1"/>
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/order_information_text_medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/imgWinBike"
+                        android:text='Kích thước tối đa: '/>
+
+                    <TextView
+                        style="@style/item_win_bike"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="textStart"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/imgWinBike"
+                        android:text='@{ivm.size + " (cm)"}'
+                        android:layout_weight="1"/>
+                </LinearLayout>
 
             </LinearLayout>
 

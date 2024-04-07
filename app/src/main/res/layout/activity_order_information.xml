@@ -11,6 +11,7 @@
             name="vm"
             type="ww.smartexpress.app.ui.order.information.OrderInformationViewModel" />
         <import type="android.view.View" />
+        <import type="ww.smartexpress.app.utils.NumberUtils"/>
 
     </data>
     <FrameLayout
@@ -171,6 +172,7 @@
                         android:text="@string/sender_information" />
 
                     <EditText
+                        android:id="@+id/edtSenderName"
                         android:text="@={vm.senderName}"
                         style="@style/order_information_text_medium"
                         android:layout_width="match_parent"
@@ -186,6 +188,7 @@
                         android:ellipsize="end"
                         android:inputType="text"/>
                     <EditText
+                        android:id="@+id/edtSenderPhone"
                         android:text="@={vm.senderPhone}"
                         style="@style/order_information_text_medium"
                         android:layout_width="match_parent"
@@ -208,6 +211,7 @@
                         android:text="@string/receiver_information" />
 
                     <EditText
+                        android:id="@+id/edtConsigneeName"
                         android:text="@={vm.consigneeName}"
                         style="@style/order_information_text_medium"
                         android:layout_width="match_parent"
@@ -224,6 +228,7 @@
                         android:inputType="text"/>
 
                     <EditText
+                        android:id="@+id/edtConsigneePhone"
                         android:text="@={vm.consigneePhone}"
                         style="@style/order_information_text_medium"
                         android:layout_width="match_parent"
@@ -464,19 +469,38 @@
                                 android:text="@string/cod" />
                         </RelativeLayout>
 
-                        <EditText
-                            android:text="@={vm.codPrice}"
+                        <LinearLayout
                             android:visibility="@{vm.selectCOD ? View.VISIBLE : View.GONE }"
-                            style="@style/order_information_text_medium"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_35sdp"
-                            android:layout_marginTop="@dimen/_15sdp"
-                            android:background="@drawable/bg_information"
-                            android:hint="Số tiền thu hộ"
-                            android:inputType="number"
-                            android:paddingLeft="@dimen/_15sdp"
-                            android:paddingVertical="@dimen/_5sdp"
-                            android:maxLines="1" />
+                            android:orientation="horizontal"
+                            android:layout_marginVertical="@dimen/_15sdp"
+                            android:background="@drawable/bg_information">
+                            <EditText
+                                android:id="@+id/edtCodPrice"
+                                android:text='@={vm.codPriceText}'
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                style="@style/order_information_text_medium"
+                                android:hint="Số tiền thu hộ"
+                                android:background="@null"
+                                android:inputType="phone"
+                                android:maxLength="9"
+                                android:paddingLeft="@dimen/_15sdp"
+                                android:paddingVertical="@dimen/_5sdp"
+                                android:maxLines="1"
+                                android:layout_weight="1"/>
+                            <TextView
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="VNĐ"
+                                style="@style/location_text"
+                                android:layout_marginRight="@dimen/_10sdp"
+                                >
+
+                            </TextView>
+                        </LinearLayout>
 
 
                         <RelativeLayout
