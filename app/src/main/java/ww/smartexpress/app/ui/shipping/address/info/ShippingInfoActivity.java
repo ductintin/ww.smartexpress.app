@@ -134,6 +134,7 @@ public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBindi
             viewModel.senderPhone.set(event.getSenderPhone());
             viewModel.consigneeName.set(event.getConsigneeName());
             viewModel.consigneePhone.set(event.getConsigneePhone());
+            viewModel.customerNote.set(event.getCustomerNote());
             viewModel.isCod.set(event.getIsCod());
             viewModel.codPrice.set(event.getCodPrice());
         }
@@ -165,6 +166,7 @@ public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBindi
                 .senderPhone(viewModel.senderPhone.get())
                 .consigneeName(viewModel.consigneeName.get())
                 .consigneePhone(viewModel.consigneePhone.get())
+                .customerNote(viewModel.customerNote.get())
                 .isCod(viewModel.isCod.get())
                 .codPrice(viewModel.codPrice.get())
                 .build();

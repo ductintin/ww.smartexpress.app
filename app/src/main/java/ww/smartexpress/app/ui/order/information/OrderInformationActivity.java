@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.R;
 import ww.smartexpress.app.constant.Constants;
@@ -105,10 +107,31 @@ public class OrderInformationActivity extends BaseActivity<ActivityOrderInformat
                viewModel.destination.set(shippingInfo.getDestination());
                viewModel.selectCOD.set(shippingInfo.getIsCod());
                viewModel.codPrice.set(String.valueOf(shippingInfo.getCodPrice()));
+               getProfile();
            }
         }
+    }
 
-
+    public void getProfile(){
+        viewModel.showLoading();
+        viewModel.compositeDisposable.add(viewModel.getProfile()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    if(response.isResult()){
+                        viewModel.senderName.set(response.getData().getName());
+                        viewModel.senderPhone.set(response.getData().getPhone());
+                        viewModel.hideLoading();
+                    }else {
+                        viewModel.hideLoading();
+                        viewModel.showErrorMessage(response.getMessage());
+                    }
+                },error->{
+                    viewModel.hideLoading();
+                    viewModel.showErrorMessage(getString(R.string.network_error));
+                    error.printStackTrace();
+                })
+        );
     }
 
     private void loadCommodity(){
@@ -309,12 +332,12 @@ public class OrderInformationActivity extends BaseActivity<ActivityOrderInformat
         }
 
 
-        if(TextUtils.isEmpty(request.getSenderName())){
+        if(TextUtils.isEmpty(request.getConsigneeName())){
             viewModel.showErrorMessage("Vui lòng nhập tên người nhận");
             return false;
         }
 
-        if(TextUtils.isEmpty(request.getConsigneeName()) || request.getConsigneeName().length() != 10 || !phonePatter.matcher(request.getConsigneeName()).matches()){
+        if(TextUtils.isEmpty(request.getConsigneePhone()) || request.getConsigneePhone().length() != 10 || !phonePatter.matcher(request.getConsigneePhone()).matches()){
             viewModel.showErrorMessage("Số điện thoại người nhận không hợp lệ");
             return false;
         }
@@ -331,10 +354,11 @@ public class OrderInformationActivity extends BaseActivity<ActivityOrderInformat
     public void doNext(){
         try {
             ShippingInfo shippingInfo = ShippingInfo.builder()
-                    .senderName(viewModel.senderName.get())
-                    .senderPhone(viewModel.senderPhone.get())
-                    .consigneeName(viewModel.consigneeName.get())
-                    .consigneePhone(viewModel.consigneePhone.get())
+                    .senderName(viewModel.senderName.get().trim())
+                    .senderPhone(viewModel.senderPhone.get().trim())
+                    .consigneeName(viewModel.consigneeName.get().trim())
+                    .consigneePhone(viewModel.consigneePhone.get().trim())
+                    .customerNote(viewModel.customerNote.get().trim())
                     .isCod(viewModel.selectCOD.get())
                     .codPrice(!viewModel.codPrice.get().isEmpty() && viewModel.selectCOD.get() ? Integer.parseInt(viewModel.codPrice.get()) : 0)
                     .build();

@@ -36,6 +36,7 @@ public class ShippingInfoViewModel extends BaseViewModel {
     public ObservableField<String> consigneePhone = new ObservableField<>("");
     public ObservableField<String> senderName = new ObservableField<>("");
     public ObservableField<String> senderPhone = new ObservableField<>("");
+    public ObservableField<String> customerNote = new ObservableField<>("");
     public ObservableField<Boolean> isCod = new ObservableField<>(false);
     public ObservableField<Integer> codPrice = new ObservableField<>(0);
 

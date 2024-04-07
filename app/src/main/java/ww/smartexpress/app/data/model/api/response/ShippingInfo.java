@@ -22,6 +22,7 @@ public class ShippingInfo extends BaseResponse implements Serializable{
     private String senderPhone;
     private String consigneeName;
     private String consigneePhone;
+    private String customerNote;
     private Boolean isCod;
     private Integer codPrice;
 }

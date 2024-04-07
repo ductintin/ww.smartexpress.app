@@ -186,7 +186,7 @@ public class BookCarActivity extends BaseActivity<ActivityBookCarBinding, BookCa
 
         for(ServiceResponse sr: serviceResponses){
             ServicePrice servicePrice = ApiModelUtils.fromJson(sr.getPrice(), ServicePrice.class);
-            bookCars.add(new BookCar(sr.getId(), sr.getName(), sr.getImage(), calculatePrice(viewModel.distance.get(), servicePrice), 0.0));
+            bookCars.add(new BookCar(sr.getId(), sr.getName(), sr.getImage(), calculatePrice(viewModel.distance.get(), servicePrice), 0.0, "", ""));
         }
 
         bookingRequest.setPromotionMoney(0.0);

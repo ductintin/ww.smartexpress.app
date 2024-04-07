@@ -209,7 +209,6 @@
 
                     <EditText
                         android:text="@={vm.consigneeName}"
-                        android:id="@+id/edtReceiver"
                         style="@style/order_information_text_medium"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_35sdp"
@@ -226,7 +225,6 @@
 
                     <EditText
                         android:text="@={vm.consigneePhone}"
-                        android:id="@+id/edtNote"
                         style="@style/order_information_text_medium"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_35sdp"
@@ -238,6 +236,33 @@
                         android:paddingLeft="@dimen/_15sdp"
                         android:paddingVertical="@dimen/_5sdp"
                         android:maxLines="1" />
+
+
+                    <TextView
+                        style="@style/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_12sdp"
+                        android:text="Ghi chú cho tài xế" />
+
+                    <EditText
+                        android:text="@={vm.customerNote}"
+                        android:id="@+id/edtCusNote"
+                        style="@style/order_information_text_medium"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_70sdp"
+                        android:layout_marginHorizontal="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/bg_information"
+                        android:hint="Ghi chú"
+                        android:maxLines="2"
+                        android:paddingVertical="@dimen/_5sdp"
+                        android:paddingLeft="@dimen/_15sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:ellipsize="end"
+                        android:gravity="top"
+                        android:inputType="textCapSentences|textMultiLine"/>
 
                     <LinearLayout
                         android:visibility="gone"
@@ -448,7 +473,7 @@
                             android:layout_marginTop="@dimen/_15sdp"
                             android:background="@drawable/bg_information"
                             android:hint="Số tiền thu hộ"
-                            android:inputType="phone"
+                            android:inputType="number"
                             android:paddingLeft="@dimen/_15sdp"
                             android:paddingVertical="@dimen/_5sdp"
                             android:maxLines="1" />

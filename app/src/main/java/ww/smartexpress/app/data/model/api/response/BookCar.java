@@ -13,4 +13,6 @@ public class BookCar {
     private String image;
     private Double price;
     private Double discount;
+    private String size;
+    private String weight;
 }

@@ -12,9 +12,15 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.data.Repository;
+import ww.smartexpress.app.data.model.api.ResponseWrapper;
+import ww.smartexpress.app.data.model.api.response.ProfileResponse;
 import ww.smartexpress.app.data.model.api.response.ShippingInfo;
+import ww.smartexpress.app.data.model.room.UserEntity;
 import ww.smartexpress.app.ui.base.activity.BaseViewModel;
 import ww.smartexpress.app.ui.delivery.BookDeliveryActivity;
 
@@ -33,6 +39,7 @@ public class OrderInformationViewModel extends BaseViewModel {
     public ObservableField<String> consigneePhone = new ObservableField<>("");
     public ObservableField<String> senderName = new ObservableField<>("");
     public ObservableField<String> senderPhone = new ObservableField<>("");
+    public ObservableField<String> customerNote = new ObservableField<>("");
 
     public ObservableField<String> codPrice = new ObservableField<>("");
 
@@ -63,5 +70,12 @@ public class OrderInformationViewModel extends BaseViewModel {
     }
     public void bigSize(){
         itemSize.setValue(3);
+    }
+
+    Observable<ResponseWrapper<ProfileResponse>> getProfile() {
+        return repository.getApiService().getProfile()
+                .doOnNext(response -> {
+
+                });
     }
 }

@@ -277,7 +277,7 @@
                                                 style="@style/information_edit_text"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
-                                                android:text='@{vm.isCod ? "Thu hộ:" + vm.codPrice +" đ": "Thêm chi tiết món hàng *"}'
+                                                android:text='@{vm.isCod ? "Thu hộ: " + vm.codPrice +" đ": "Thêm chi tiết món hàng *"}'
                                                 android:textColor="@color/color4"
                                                 android:textSize="@dimen/_12sdp"
                                                 android:maxLines="1"
@@ -286,17 +286,17 @@
                                             </TextView>
 
 
-                                            <TextView
-                                                android:text="Đề xuất dựa trên chi tiết món hàng"
-                                                style="@style/new_password_subtitle"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="match_parent"
-                                                android:layout_weight="1"
-                                                android:background="@color/white"
-                                                android:maxLines="1"
-                                                android:ellipsize="end">
+<!--                                            <TextView-->
+<!--                                                android:text="Đề xuất dựa trên chi tiết món hàng"-->
+<!--                                                style="@style/new_password_subtitle"-->
+<!--                                                android:layout_width="wrap_content"-->
+<!--                                                android:layout_height="match_parent"-->
+<!--                                                android:layout_weight="1"-->
+<!--                                                android:background="@color/white"-->
+<!--                                                android:maxLines="1"-->
+<!--                                                android:ellipsize="end">-->
 
-                                            </TextView>
+<!--                                            </TextView>-->
 
                                         </LinearLayout>
 
@@ -504,6 +504,7 @@
 
                 <Button
                     android:onClick="@{() -> a.toDelivery()}"
+                    android:enabled="@{!TextUtils.isEmpty(vm.senderPhone) &amp;&amp; !TextUtils.isEmpty(vm.senderName) &amp;&amp; !TextUtils.isEmpty(vm.consigneePhone) &amp;&amp; !TextUtils.isEmpty(vm.consigneeName)}"
                     style="@style/BookCarButton"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"

@@ -58,6 +58,7 @@ import ww.smartexpress.app.data.model.api.response.DriverBookingResponse;
 import ww.smartexpress.app.data.model.api.response.ServicePrice;
 import ww.smartexpress.app.data.model.api.response.ServiceResponse;
 import ww.smartexpress.app.data.model.api.response.ShippingInfo;
+import ww.smartexpress.app.data.model.api.response.Size;
 import ww.smartexpress.app.databinding.ActivityBookDeliveryBinding;
 import ww.smartexpress.app.databinding.BaseDialogBinding;
 import ww.smartexpress.app.di.component.ActivityComponent;
@@ -123,6 +124,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 viewModel.consigneePhone.set(shippingInfo.getConsigneePhone());
                 viewModel.origin.set(shippingInfo.getOrigin());
                 viewModel.destination.set(shippingInfo.getDestination());
+                viewModel.customerNote.set(shippingInfo.getCustomerNote());
                 viewModel.selectCOD.set(shippingInfo.getIsCod());
                 viewModel.codPrice.set(shippingInfo.getCodPrice());
 
@@ -132,6 +134,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 bookingRequest.setSenderPhone(shippingInfo.getSenderPhone());
                 bookingRequest.setConsigneeName(shippingInfo.getConsigneeName());
                 bookingRequest.setConsigneePhone(shippingInfo.getConsigneePhone());
+                bookingRequest.setCustomerNote(shippingInfo.getCustomerNote());
                 bookingRequest.setIsCod(shippingInfo.getIsCod());
                 bookingRequest.setCodPrice(shippingInfo.getCodPrice().doubleValue());
 
@@ -203,7 +206,9 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
 
         for(ServiceResponse sr: serviceResponses){
             ServicePrice servicePrice = ApiModelUtils.fromJson(sr.getPrice(), ServicePrice.class);
-            bookCars.add(new BookCar(sr.getId(), sr.getName(), sr.getImage(), calculatePrice(viewModel.distance.get(), servicePrice), 0.0));
+            Size size = ApiModelUtils.fromJson(sr.getSize(), Size.class);
+            String textSize = size.getHeight() + "x" + size.getWidth() + "x" + size.getLength();
+            bookCars.add(new BookCar(sr.getId(), sr.getName(), sr.getImage(), calculatePrice(viewModel.distance.get(), servicePrice), 0.0, textSize, sr.getWeight()));
         }
 
         bookingRequest.setPromotionMoney(0.0);

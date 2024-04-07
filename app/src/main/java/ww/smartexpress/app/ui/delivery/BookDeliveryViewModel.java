@@ -50,6 +50,7 @@ public class BookDeliveryViewModel extends BaseViewModel {
     public ObservableField<String> consigneePhone = new ObservableField<>("");
     public ObservableField<String> senderName = new ObservableField<>("");
     public ObservableField<String> senderPhone = new ObservableField<>("");
+    public ObservableField<String> customerNote = new ObservableField<>("");
     public ObservableField<Boolean> isCod = new ObservableField<>(false);
     public ObservableField<Integer> codPrice = new ObservableField<>(0);
 
@@ -88,7 +89,7 @@ public class BookDeliveryViewModel extends BaseViewModel {
         bundle.putBoolean("isCompleted", false);
         intent.putExtras(bundle);
         application.getCurrentActivity().startActivity(intent);
-        application.getCurrentActivity().finish();
+        //application.getCurrentActivity().finish();
     }
     public void callDriver(){}
     public void chatDriver(){}
