@@ -15,28 +15,74 @@
         <import type="android.view.View"></import>
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
 
-        <ImageView
-            android:visibility="gone"
-            android:id="@+id/btnBackBookCar"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:background="@drawable/oval_background"
-            android:onClick="@{()->vm.back()}"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:elevation="@dimen/_15sdp"
+        <LinearLayout
+            android:id="@+id/frameLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
             android:padding="@dimen/_5sdp"
-            android:src="@drawable/ic_icon_back"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:visibility="invisible"
+                android:id="@+id/imageView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center"
+                android:onClick="@{()->vm.back()}"
+                android:paddingLeft="@dimen/_5ssp"
+                android:paddingRight="@dimen/_20ssp"
+                android:src="@drawable/ic_icon_back">
+
+            </ImageView>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/textView10"
+                style="@style/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/search_destination_title">
+
+            </TextView>
+
+            <androidx.cardview.widget.CardView
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                app:cardCornerRadius="@dimen/_15sdp"
+                app:cardElevation="@dimen/_2sdp">
+
+                <ImageButton
+                    android:id="@+id/imgBtnNotification"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_gravity="center"
+                    android:background="@color/white"
+                    android:onClick="@{(v)->vm.getNotifications()}"
+                    android:src="@drawable/ic_icon_notification" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
         <FrameLayout
+            android:id="@+id/frameLayout4"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
             android:background="#478D99"
-            android:layout_marginTop="@dimen/_130sdp">
+            app:layout_constraintTop_toBottomOf="@+id/imageView20">
 
         </FrameLayout>
 
@@ -46,239 +92,263 @@
             android:layout_height="@dimen/_130sdp"
             android:layout_gravity="top"
             android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/background_top_delivery" />
 
         <LinearLayout
+            android:id="@+id/linearLayout8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="@dimen/_120sdp">
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/frameLayout4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout4">
 
-
-            <LinearLayout
-                android:id="@+id/linearLayout8"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/_10sdp"
-                android:paddingRight="@dimen/_10sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/frameLayout2">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginRight="@dimen/_5sdp"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_15sdp"
-                    app:cardCornerRadius="@dimen/_15sdp"
-                    app:cardElevation="@dimen/_1sdp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_10sdp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingRight="@dimen/_10sdp"
-                                android:src="@drawable/ic_icon_my_location">
-
-                            </ImageView>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    style="@style/new_password_subtitle"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/search_destination_subtitle"
-                                    android:textSize="@dimen/_8sdp">
-
-                                </TextView>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <EditText
-                                        android:id="@+id/edtSFDeparture"
-                                        style="@style/location_text"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="1"
-                                        android:background="@color/white"
-                                        android:ellipsize="end"
-                                        android:inputType="text"
-                                        android:maxLines="1"
-                                        android:text="@={vm.location}"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent">
-
-                                    </EditText>
-
-                                    <ImageView
-                                        android:visibility="@{TextUtils.isEmpty(vm.location) ? View.INVISIBLE : View.VISIBLE}"
-                                        android:layout_gravity="end"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:src="@drawable/ic_icon_delete"
-                                        android:onClick="@{()->vm.deleteLocation()}">
-
-                                    </ImageView>
-
-                                </LinearLayout>
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_1sdp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_marginBottom="@dimen/_5sdp"
-                            android:background="#6C94FC">
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingVertical="@dimen/_5sdp">
-
-                            <ImageView
-                                android:layout_width="@dimen/_21sdp"
-                                android:layout_height="@dimen/_21sdp"
-                                android:layout_marginRight="@dimen/_5sdp"
-                                android:src="@drawable/ic_icon_search_location"></ImageView>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="horizontal">
-                                <EditText
-                                    android:id="@+id/edtSFSearchLocation"
-                                    style="@style/destination_save"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:background="@color/white"
-                                    android:hint="@string/search_destination_hint"
-                                    android:text="@={vm.searchLocation}"
-                                    android:textSize="@dimen/_11sdp"
-                                    android:maxLines="1"
-                                    android:ellipsize="end"
-                                    android:layout_weight="1"
-                                    android:inputType="text"
-                                    android:textColorHint="#898A8D">
-
-                                </EditText>
-
-                                <ImageView
-                                    android:visibility="@{TextUtils.isEmpty(vm.searchLocation) ? View.GONE : View.VISIBLE}"
-                                    android:layout_gravity="end"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_icon_delete"
-                                    android:onClick="@{()->vm.deleteSearchLocation()}">
-
-                                </ImageView>
-                            </LinearLayout>
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                app:cardCornerRadius="@dimen/_15sdp"
+                app:cardElevation="@dimen/_1sdp">
 
                 <LinearLayout
-                    android:visibility="@{!TextUtils.isEmpty(vm.searchLocation) ? View.GONE : View.VISIBLE}"
-                    android:id="@+id/lnSavedLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp">
+
                     <LinearLayout
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_15sdp"
-                        android:layout_marginBottom="@dimen/_10sdp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:onClick="@{()->vm.getSavedLocation()}"
-                            android:src="@drawable/ic_icon_mark_full">
+                            android:paddingRight="@dimen/_10sdp"
+                            android:src="@drawable/ic_icon_my_location">
 
                         </ImageView>
 
-                        <TextView
-                            style="@style/destination_save"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:text="@string/search_destination_save">
+                            android:orientation="vertical">
 
-                        </TextView>
+                            <TextView
+                                style="@style/new_password_subtitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/search_destination_subtitle"
+                                android:textSize="@dimen/_8sdp">
+
+                            </TextView>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    android:id="@+id/edtDeparture"
+                                    style="@style/location_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@color/white"
+                                    android:ellipsize="end"
+                                    android:inputType="text"
+                                    android:maxLines="1"
+                                    android:text="@={vm.location}"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                </EditText>
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:onClick="@{()->vm.deleteLocation()}"
+                                    android:src="@drawable/ic_icon_delete"
+                                    android:visibility="@{TextUtils.isEmpty(vm.location) ? View.INVISIBLE : View.VISIBLE}">
+
+                                </ImageView>
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:background="#7EA567">
+
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView11">
+                        android:orientation="horizontal"
+                        android:paddingVertical="@dimen/_5sdp">
+
+                        <ImageView
+                            android:layout_width="@dimen/_21sdp"
+                            android:layout_height="@dimen/_21sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:src="@drawable/ic_icon_search_location"></ImageView>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/edtSearchLocation"
+                                style="@style/destination_save"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@color/white"
+                                android:ellipsize="end"
+                                android:hint="@string/search_destination_hint"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:text="@={vm.searchLocation}"
+                                android:textColorHint="#898A8D"
+                                android:textSize="@dimen/_11sdp">
+
+                            </EditText>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:onClick="@{()->vm.deleteSearchLocation()}"
+                                android:src="@drawable/ic_icon_delete"
+                                android:visibility="@{TextUtils.isEmpty(vm.searchLocation) ? View.GONE : View.VISIBLE}">
+
+                            </ImageView>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/lnSavedLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{()->vm.getSavedLocation()}"
+                        android:src="@drawable/ic_icon_mark_full">
+
+                    </ImageView>
+
+                    <TextView
+                        style="@style/destination_save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:text="@string/search_destination_save">
+
+                    </TextView>
+                </LinearLayout>
+
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_15sdp"
+                        android:orientation="horizontal">
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rcSavedLocation"
+                            android:id="@+id/rcLocationType"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            tools:itemCount="2"
-                            tools:listitem="@layout/item_search_location">
-
-                        </androidx.recyclerview.widget.RecyclerView>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rcSearchLocation"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            tools:listitem="@layout/item_search_location">
+                            tools:listitem="@layout/item_location_type">
 
                         </androidx.recyclerview.widget.RecyclerView>
 
                     </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
 
-                </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_5sdp"
+            android:background="#EEF2F5"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
 
-        <!--        <ImageView-->
-        <!--            android:id="@+id/imageView21"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_gravity="bottom"-->
-        <!--            app:srcCompat="@drawable/background_bottom_delivery"-->
-        <!--            android:adjustViewBounds="true"/>-->
+        </TextView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/_15sdp"
+            android:paddingRight="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView11">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcSavedLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_saved_location">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcSearchLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:listitem="@layout/item_search_location">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -303,5 +373,6 @@
                 android:text="@string/next"
                 android:textColor="@color/white" />
         </LinearLayout>
-    </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

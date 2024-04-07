@@ -41,6 +41,7 @@ public class SearchLocationAdapter extends RecyclerView.Adapter<SearchLocationAd
 
     public void clearItems() {
         searchLocations.clear();
+        notifyDataSetChanged();
     }
 
     @Override

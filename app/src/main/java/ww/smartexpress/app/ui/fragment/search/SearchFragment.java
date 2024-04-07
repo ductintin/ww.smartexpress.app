@@ -87,9 +87,10 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
         //loadSearchLocation();
         //loadLocationType();
 
-        binding.setLifecycleOwner(this);
-        binding.edtSFSearchLocation.addTextChangedListener(new GenericTextWatcher(binding.edtSFSearchLocation));
-        binding.edtSFDeparture.addTextChangedListener(new GenericTextWatcher(binding.edtSFDeparture));
+        //binding.setLifecycleOwner(this);
+
+        binding.edtDeparture.addTextChangedListener(new GenericTextWatcher(binding.edtDeparture));
+        binding.edtSearchLocation.addTextChangedListener(new GenericTextWatcher(binding.edtSearchLocation));
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
@@ -114,7 +115,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
 
                                     viewModel.location.set(component);
                                     viewModel.originId.set(id);
-                                    binding.edtSFSearchLocation.requestFocus();
+                                    binding.edtSearchLocation.requestFocus();
 //
                                 },error->{
                                     viewModel.hideLoading();
@@ -147,8 +148,9 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
         });
     }
 
-    public void loadSearchLocation(String text){
-        loadSearch(text);
+    public void loadSearchLocation(){
+        loadSearch();
+        binding.setLifecycleOwner(this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()
                 ,LinearLayoutManager.VERTICAL, false);
 
@@ -166,8 +168,9 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
         });
     }
 
-    public void loadDepartureLocation(String text){
-        loadDeparture(text);
+    public void loadDepartureLocation(){
+        loadDeparture();
+        binding.setLifecycleOwner(this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()
                 ,LinearLayoutManager.VERTICAL, false);
 
@@ -212,25 +215,25 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
 
     }
 
-//    public void loadLocationType(){
-//        List<LocationType> locationTypeList = new ArrayList<>();
-//        locationTypeList.add(new LocationType("1", "Nhà riêng", ""));
-//        locationTypeList.add(new LocationType("1", "Công ty", ""));
-//        locationTypeList.add(new LocationType("1", "Thêm địa điểm", ""));
-//
-//        binding.setLifecycleOwner(this);
-//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()
-//                ,LinearLayoutManager.HORIZONTAL, false);
-//
-//        binding.rcLocationType.setLayoutManager(layoutManager);
-//        binding.rcLocationType.setItemAnimator(new DefaultItemAnimator());
-//        locationTypeAdapter = new LocationTypeAdapter(locationTypeList);
-//        binding.rcLocationType.setAdapter(locationTypeAdapter);
-//
-//        locationTypeAdapter.setOnItemClickListener(locationType -> {
-//
-//        });
-//    }
+    public void loadLocationType(){
+        List<LocationType> locationTypeList = new ArrayList<>();
+        locationTypeList.add(new LocationType("1", "Nhà riêng", ""));
+        locationTypeList.add(new LocationType("1", "Công ty", ""));
+        locationTypeList.add(new LocationType("1", "Thêm địa điểm", ""));
+
+        binding.setLifecycleOwner(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()
+                ,LinearLayoutManager.HORIZONTAL, false);
+
+        binding.rcLocationType.setLayoutManager(layoutManager);
+        binding.rcLocationType.setItemAnimator(new DefaultItemAnimator());
+        locationTypeAdapter = new LocationTypeAdapter(locationTypeList);
+        binding.rcLocationType.setAdapter(locationTypeAdapter);
+
+        locationTypeAdapter.setOnItemClickListener(locationType -> {
+
+        });
+    }
 
     public class GenericTextWatcher implements TextWatcher {
         private View currentView;
@@ -245,21 +248,25 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
             String text = editable.toString();
 
             switch (currentView.getId()){
-                case R.id.edtSFSearchLocation:
+                case R.id.edtSearchLocation:
                     if(!TextUtils.isEmpty(text)){
-                        loadSearchLocation(text);
+                        loadSearchLocation();
                     }else{
                         //loadSavedLocation();
+                        toLocations.clear();
+                        searchLocationAdapter.clearItems();
+                        Log.d("TAG", "afterTextChanged:1 ");
                     }
                     break;
-                case R.id.edtSFDeparture:
+                case R.id.edtDeparture:
                     if(!TextUtils.isEmpty(text)){
-                        loadDepartureLocation(text);
+                        loadDepartureLocation();
                     }else{
                         //loadSavedLocation();
+                        fromLocations.clear();
+                        searchLocationAdapter.clearItems();
+                        Log.d("TAG", "afterTextChanged:2 ");
                     }
-                    break;
-                default:
                     break;
             }
 
@@ -273,13 +280,12 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             // TODO: Implement as needed1
-
         }
 
     }
 
-    public void loadSearch(String text){
-        viewModel.compositeDisposable.add(viewModel.searchLocation(text)
+    public void loadSearch(){
+        viewModel.compositeDisposable.add(viewModel.searchLocation(viewModel.searchLocation.get())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
@@ -293,8 +299,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
         );
     }
 
-    public void loadDeparture(String text){
-        viewModel.compositeDisposable.add(viewModel.searchLocation(text)
+    public void loadDeparture(){
+        viewModel.compositeDisposable.add(viewModel.searchLocation(viewModel.location.get())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
@@ -333,8 +339,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
         viewModel.searchLocation.set("");
         viewModel.originId.set("");
         viewModel.destinationId.set("");
-        binding.edtSFDeparture.requestFocus();
-        binding.edtSFSearchLocation.clearFocus();
+        binding.edtDeparture.requestFocus();
+        binding.edtSearchLocation.clearFocus();
 
     }
 }
