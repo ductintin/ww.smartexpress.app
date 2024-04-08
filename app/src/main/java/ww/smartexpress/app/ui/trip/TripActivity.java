@@ -157,11 +157,14 @@ public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewMode
                         viewModel.driverAvatar.set(response.getData().getDriver().getAvatar());
                         viewModel.driverLicense.set(response.getData().getDriverVehicle().getPlate());
                         viewModel.driverVehicle.set(response.getData().getDriverVehicle().getName());
+
                         if(response.getData().getState() != 300){
                             viewModel.driverAvgRate.set((response.getData().getAverageRating().floatValue()));
                         }
                         viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getCode());
                         viewModel.getApplication().getWebSocketLiveData().sendPing();
+
+
                     }else{
 
                     }
@@ -205,6 +208,7 @@ public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewMode
         viewModel.codPrice.set(bookingResponse.getCodPrice());
         viewModel.createdDate.set(bookingResponse.getCreatedDate());
         viewModel.code.set(bookingResponse.getCode());
+        viewModel.bookingState.set(bookingResponse.getState());
     }
 
     public void getMyBooking(Long id){

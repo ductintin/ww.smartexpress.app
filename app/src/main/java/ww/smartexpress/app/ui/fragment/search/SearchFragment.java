@@ -1,5 +1,6 @@
 package ww.smartexpress.app.ui.fragment.search;
 
+
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -42,10 +43,12 @@ import ww.smartexpress.app.databinding.FragmentSearchBinding;
 import ww.smartexpress.app.di.component.FragmentComponent;
 import ww.smartexpress.app.ui.base.fragment.BaseFragment;
 import ww.smartexpress.app.ui.bookcar.BookCarActivity;
+import ww.smartexpress.app.ui.home.HomeActivity;
 import ww.smartexpress.app.ui.search.location.SearchLocationActivity;
 import ww.smartexpress.app.ui.search.location.adapter.LocationTypeAdapter;
 import ww.smartexpress.app.ui.search.location.adapter.SavedLocationAdapter;
 import ww.smartexpress.app.ui.search.location.adapter.SearchLocationAdapter;
+import ww.smartexpress.app.utils.LocationUtils;
 
 public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFragmentViewModel> implements LocationListener {
     SavedLocationAdapter savedLocationAdapter;
@@ -96,34 +99,36 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
 
         if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(getActivity(), location -> {
-                        viewModel.latlng.set(String.valueOf(location.getLatitude())+","+String.valueOf(location.getLongitude()));
-                        viewModel.compositeDisposable.add(viewModel.getLocationInfo()
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(response -> {
-                                    String status = response.get("status").getAsString();
-                                    Log.d("TAG", status);
+            if(LocationUtils.isLocationEnabled(getContext())){
+                fusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(getActivity(), location -> {
+                            viewModel.latlng.set(String.valueOf(location.getLatitude())+","+String.valueOf(location.getLongitude()));
+                            viewModel.compositeDisposable.add(viewModel.getLocationInfo()
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(response -> {
+                                                String status = response.get("status").getAsString();
+                                                Log.d("TAG", status);
 
-                                    JsonArray results = response.getAsJsonArray("results");
-                                    int index = results.size() - 1;
+                                                JsonArray results = response.getAsJsonArray("results");
+                                                int index = results.size() - 1;
 
-                                    String component = results.get(0).getAsJsonObject().get("formatted_address").getAsString();
-                                    String id = results.get(0).getAsJsonObject().get("place_id").getAsString();
-                                    Log.d("TAG", "onLocationChanged: " + component);
+                                                String component = results.get(0).getAsJsonObject().get("formatted_address").getAsString();
+                                                String id = results.get(0).getAsJsonObject().get("place_id").getAsString();
+                                                Log.d("TAG", "onLocationChanged: " + component);
 
-                                    viewModel.location.set(component);
-                                    viewModel.originId.set(id);
-                                    binding.edtSearchLocation.requestFocus();
+                                                viewModel.location.set(component);
+                                                viewModel.originId.set(id);
+                                                binding.edtSearchLocation.requestFocus();
 //
-                                },error->{
-                                    viewModel.hideLoading();
-                                    viewModel.showErrorMessage(getString(R.string.network_error));
-                                    error.printStackTrace();
-                                })
-                        );
-                    });
+                                            },error->{
+                                                viewModel.hideLoading();
+                                                viewModel.showErrorMessage(getString(R.string.network_error));
+                                                error.printStackTrace();
+                                            })
+                            );
+                        });
+            }
         }
 
     }

@@ -77,8 +77,8 @@ public class SearchFragmentViewModel extends BaseFragmentViewModel {
             bundle.putLong(Constants.KEY_SERVICE_ID, serviceId.get());
             bundle.putString(Constants.KEY_ORIGIN_ID, originId.get());
             bundle.putString(Constants.KEY_DESTINATION_ID, destinationId.get());
-            bundle.putString(Constants.KEY_ORIGIN_NAME, origin.get() == null ? location.get() : origin.get().getStructured_formatting().getMain_text());
-            bundle.putString(Constants.KEY_DESTINATION_NAME, destination.get().getStructured_formatting().getMain_text());
+            bundle.putString(Constants.KEY_ORIGIN_NAME, origin.get() == null ? location.get() : origin.get().getDescription());
+            bundle.putString(Constants.KEY_DESTINATION_NAME, destination.get().getDescription());
             intent.putExtras(bundle);
             application.getCurrentActivity().startActivity(intent);
         }

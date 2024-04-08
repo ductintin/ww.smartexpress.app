@@ -43,6 +43,8 @@ public class TripViewModel extends BaseViewModel {
     public ObservableField<Boolean> isCod = new ObservableField<>(false);
     public ObservableField<Double> codPrice = new ObservableField<>(0.0);
     public ObservableField<String> code = new ObservableField<>("");
+    public ObservableField<String> pickupImage = new ObservableField<>("");
+    public ObservableField<String> deliveryImage = new ObservableField<>("");
     public ObservableField<Long> bookingId = new ObservableField<>(0L);
     public ObservableField<Long> roomId = new ObservableField<>(0L);
     public ObservableField<Integer> bookingState = new ObservableField<>(-1);
@@ -72,6 +74,7 @@ public class TripViewModel extends BaseViewModel {
                 .doOnNext(response -> {
                     if(response.isResult()){
                         bookingResponse.set(response.getData());
+                        bookingState.set(bookingResponse.get().getState());
                         driverName.set(bookingResponse.get().getDriver().getFullName());
                         money.set(bookingResponse.get().getMoney());
                         distance.set(bookingResponse.get().getDistance());
@@ -82,6 +85,15 @@ public class TripViewModel extends BaseViewModel {
                         if(response.getData().getDriver() != null){
                             driverAvatar.set(response.getData().getDriver().getAvatar());
                         }
+
+                        isCod.set(bookingResponse.get().getIsCod());
+                        codPrice.set(bookingResponse.get().getCodPrice());
+                        senderName.set(bookingResponse.get().getSenderName());
+                        senderPhone.set(bookingResponse.get().getSenderPhone());
+                        consigneeName.set(bookingResponse.get().getConsigneeName());
+                        consigneePhone.set(bookingResponse.get().getConsigneePhone());
+                        pickupImage.set(bookingResponse.get().getPickupImage());
+                        deliveryImage.set(bookingResponse.get().getDeliveryImage());
                     }
                 });
     }

@@ -75,6 +75,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     Handler handler = new Handler();
     Runnable runnable;
 
+    float zoomLevel = 0f;
     List<BookCar> bookCars = new ArrayList<>();
     List<ServiceResponse> serviceResponses = new ArrayList<>();
     //PolylineOptions polylineOptions;
@@ -138,7 +139,6 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 bookingRequest.setIsCod(shippingInfo.getIsCod());
                 bookingRequest.setCodPrice(shippingInfo.getCodPrice().doubleValue());
 
-
                 SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.mapShip);
                 mapFragment.getMapAsync(this);
@@ -148,6 +148,13 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 getOrigin();
 
             }
+        }else{
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.mapShip);
+            mapFragment.getMapAsync(this);
+
+            getCurrentBooking();
+
         }
 
         viewBinding.bntBook.setOnClickListener(new View.OnClickListener() {
@@ -180,6 +187,13 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                zoomLevel = mMap.getCameraPosition().zoom;
+                Log.d("TAG", "onCameraIdle: " + zoomLevel);
+            }
+        });
         // Add a marker in Sydney and move the camera
 //        LatLng sydney = new LatLng(-34, 151);
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
@@ -271,9 +285,6 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     }
 
     public void findingDriver(){
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.mapShip);
-        mapFragment.getMapAsync(this);
 
         viewModel.compositeDisposable.add(viewModel.createBooking(bookingRequest)
                 .subscribeOn(Schedulers.io())
@@ -381,30 +392,34 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     }
 
     public void getOrigin(){
-        viewModel.compositeDisposable.add(viewModel.getLocationInfo(viewModel.originId.get())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                    String status = response.get("status").getAsString();
-                    if(status.equals("OK")){
-                        JsonArray results = response.getAsJsonArray("results");
-                        for(int i = 0; i< results.size(); i++){
-                            JsonObject geometry = results.get(i).getAsJsonObject().getAsJsonObject("geometry");
-                            JsonObject location = geometry.getAsJsonObject("location");
-                            viewModel.originLat.set(location.get("lat").getAsDouble());
-                            viewModel.originLng.set(location.get("lng").getAsDouble());
-                            bookingRequest.setPickupLat(location.get("lat").getAsDouble());
-                            bookingRequest.setPickupLong(location.get("lng").getAsDouble());
-                            viewModel.originLatLng.set(String.valueOf(location.get("lat").getAsDouble())+","+String.valueOf(location.get("lng").getAsDouble()));
+        if(!TextUtils.isEmpty(viewModel.originId.get()) && !TextUtils.isEmpty(viewModel.destinationId.get())){
+            viewModel.compositeDisposable.add(viewModel.getLocationInfo(viewModel.originId.get())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(response -> {
+                        String status = response.get("status").getAsString();
+                        if(status.equals("OK")){
+                            JsonArray results = response.getAsJsonArray("results");
+                            for(int i = 0; i< results.size(); i++){
+                                JsonObject geometry = results.get(i).getAsJsonObject().getAsJsonObject("geometry");
+                                JsonObject location = geometry.getAsJsonObject("location");
+                                viewModel.originLat.set(location.get("lat").getAsDouble());
+                                viewModel.originLng.set(location.get("lng").getAsDouble());
+                                bookingRequest.setPickupLat(location.get("lat").getAsDouble());
+                                bookingRequest.setPickupLong(location.get("lng").getAsDouble());
+                                viewModel.originLatLng.set(String.valueOf(location.get("lat").getAsDouble())+","+String.valueOf(location.get("lng").getAsDouble()));
+                            }
+                            getDestination();
                         }
-                        getDestination();
-                    }
 
-                },error->{
-                    viewModel.showErrorMessage(getString(R.string.network_error));
-                    error.printStackTrace();
-                })
-        );
+                    },error->{
+                        viewModel.showErrorMessage(getString(R.string.network_error));
+                        error.printStackTrace();
+                    })
+            );
+        }else{
+            loadMapDirection();
+        }
     }
 
     public void getDestination(){
@@ -573,7 +588,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         getWindowManager().getDefaultDisplay().getSize(point);
 
                         //mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, point.x, 150, 20));
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(des, 17.0f));
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(des,zoomLevel > 3.0f ? zoomLevel : 17.0f ));
 
 
                     }

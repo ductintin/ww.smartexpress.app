@@ -41,6 +41,7 @@ public class BookingResponse extends BaseResponse implements Serializable {
     private String consigneePhone;
     private Boolean isCod;
 
+    private String pickupImage;
     private String deliveryImage;
     private String senderName;
     private String senderPhone;

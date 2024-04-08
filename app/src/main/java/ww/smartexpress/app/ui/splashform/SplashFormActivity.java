@@ -18,6 +18,7 @@ import ww.smartexpress.app.databinding.ActivitySplashFormBinding;
 import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
 import ww.smartexpress.app.ui.bookcar.BookCarActivity;
+import ww.smartexpress.app.ui.delivery.BookDeliveryActivity;
 import ww.smartexpress.app.ui.home.HomeActivity;
 import ww.smartexpress.app.ui.index.IndexActivity;
 import ww.smartexpress.app.ui.input.phone.PhoneActivity;
@@ -93,10 +94,10 @@ public class SplashFormActivity extends BaseActivity<ActivitySplashFormBinding, 
     }
 
     public void navigateToBookActivity(){
-        Intent intent = new Intent(SplashFormActivity.this, BookCarActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.CUSTOMER_BOOKING_OBJECT, ApiModelUtils.toJson(bookingResponse));
-        intent.putExtras(bundle);
+        Intent intent = new Intent(SplashFormActivity.this, BookDeliveryActivity.class);
+//        Bundle bundle = new Bundle();
+//        bundle.putString(Constants.CUSTOMER_BOOKING_OBJECT, ApiModelUtils.toJson(bookingResponse));
+//        intent.putExtras(bundle);
         startActivity(intent);
         finish();
     }
