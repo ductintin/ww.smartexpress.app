@@ -558,10 +558,11 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:elevation="0dp"
                         app:cardElevation="0dp"
-                        app:cardCornerRadius="@dimen/_8sdp">
+                        app:cardCornerRadius="@dimen/_8sdp"
+                        tools:ignore="MissingConstraints">
                         <ImageView
                             android:id="@+id/imgPickupImage"
-                            android:src="@{vm.pickupImage}"
+                            android:src="@{vm.pickupImage, default=@drawable/smartexpress_splash_logo}"
                             android:layout_width="@dimen/_80sdp"
                             android:layout_height="@dimen/_80sdp"/>
                     </androidx.cardview.widget.CardView>
@@ -581,10 +582,11 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:elevation="0dp"
                         app:cardElevation="0dp"
-                        app:cardCornerRadius="@dimen/_8sdp">
+                        app:cardCornerRadius="@dimen/_8sdp"
+                        tools:ignore="MissingConstraints">
                         <ImageView
                             android:id="@+id/imgDeliveryImage"
-                            android:src="@{vm.deliveryImage}"
+                            android:src="@{vm.deliveryImage, default=@drawable/smartexpress_splash_logo}"
                             android:layout_width="@dimen/_80sdp"
                             android:layout_height="@dimen/_80sdp"/>
                     </androidx.cardview.widget.CardView>
