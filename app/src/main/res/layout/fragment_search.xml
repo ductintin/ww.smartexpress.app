@@ -324,12 +324,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/_15sdp"
-            android:paddingRight="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView11">
 
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tvSavedLocation"
+                style="@style/destination_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:text="Tìm kiếm gần đây">
+
+            </TextView>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcSavedLocation"
                 android:layout_width="match_parent"

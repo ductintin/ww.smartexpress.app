@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -12,8 +13,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableField;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.R;
@@ -165,6 +169,25 @@ public class ProfileFragmentViewModel extends BaseFragmentViewModel {
         dialog.setCanceledOnTouchOutside(false);
 
         dialogLogoutBinding.btnLogout.setOnClickListener(view -> {
+            Long userId = repository.getSharedPreferences().getLongVal(Constants.KEY_USER_ID);
+            repository.getRoomService().addressDao().deleteAddressByUserId(userId).subscribeOn(Schedulers.io()) // Chọn Scheduler để thực thi trên luồng I/O
+                    .observeOn(AndroidSchedulers.mainThread()) // Chọn Scheduler để xử lý kết quả trên luồng chính (UI thread)
+                    .subscribe(new CompletableObserver() {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            Log.d("TAG", "onComplete: ooo" );
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            e.printStackTrace();
+                        }
+                    });
             clearToken();
             Intent intent = new Intent(application.getCurrentActivity(), IndexActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

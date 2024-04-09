@@ -5,10 +5,21 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.databinding.ObservableField;
+import androidx.room.Transaction;
 
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.R;
 import ww.smartexpress.app.constant.Constants;
@@ -18,6 +29,8 @@ import ww.smartexpress.app.data.model.api.response.BookLocation;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
 import ww.smartexpress.app.data.model.api.response.SearchLocation;
 import ww.smartexpress.app.data.model.api.response.SearchLocationResponse;
+import ww.smartexpress.app.data.model.room.AddressEntity;
+import ww.smartexpress.app.data.model.room.UserWithAddresses;
 import ww.smartexpress.app.ui.base.activity.BaseViewModel;
 import ww.smartexpress.app.ui.base.fragment.BaseFragmentViewModel;
 import ww.smartexpress.app.ui.bookcar.BookCarActivity;
@@ -67,10 +80,68 @@ public class SearchFragmentViewModel extends BaseFragmentViewModel {
     public void getNotifications(){
 
     }
+
+    @Transaction
     public void nextBooking(){
         if(originId.get().equals(destinationId.get())){
             showErrorMessage(application.getString(R.string.same_booking_location));
         }else{
+            Long userId = repository.getSharedPreferences().getLongVal(Constants.KEY_USER_ID);
+            Log.d("TAG", "insertAddress: us" + userId);
+            List<AddressEntity> addressEntitiesToInsert = new ArrayList<>();
+            if(origin.get() != null){
+                addressEntitiesToInsert.add(
+                        AddressEntity.builder()
+                                .place_id(originId.get())
+                                .description(origin.get().getDescription())
+                                .main_text(origin.get().getStructured_formatting().getMain_text())
+                                .userId(userId)
+                                .build());
+            }
+            addressEntitiesToInsert.add(
+                    AddressEntity.builder()
+                            .place_id(destinationId.get())
+                            .description(destination.get().getDescription())
+                            .main_text(destination.get().getStructured_formatting().getMain_text())
+                            .userId(userId)
+                            .build());
+
+            Log.d("TAG", "nextBooking: " + addressEntitiesToInsert);
+            repository.getRoomService().addressDao().loadAllAddressByUserId(userId).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new SingleObserver<List<AddressEntity>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                        }
+
+                        @Override
+                        public void onSuccess(List<AddressEntity> addressEntities) {
+                            Log.d("TAG", "onSuccess: load" + addressEntities.toString());
+                            if(addressEntities.size() > 0){
+                                int size = addressEntities.size();
+                                for (AddressEntity address : addressEntitiesToInsert) {
+                                    int count =  repository.getRoomService().addressDao().getAddressCount(address.getPlace_id());
+                                    Log.d("TAG", "onSuccess: count" + count);
+                                    if(count > 0)
+                                        continue;
+                                    else{
+                                        if(size >= 6){
+                                            deleteAddressByIdAndInsert(addressEntities.get(0).getId(), address);
+                                        }else {
+                                            insertAddress(address);
+                                        }
+                                    }
+                                }
+                            }else{
+                                insertAddress(addressEntitiesToInsert);
+                          }
+                        }
+                        @Override
+                        public void onError(Throwable e) {
+                            e.printStackTrace();
+                        }
+                    });
+
             Intent intent = new Intent(application.getCurrentActivity(), ShippingInfoActivity.class);
             Bundle bundle = new Bundle();
             //bundle.putLong(Constants.KEY_CATEGORY_ID, categoryId.get());
@@ -83,6 +154,74 @@ public class SearchFragmentViewModel extends BaseFragmentViewModel {
             application.getCurrentActivity().startActivity(intent);
         }
         
+    }
+
+    Single<List<AddressEntity>> getAllSavedAddress(){
+        Long userId = repository.getSharedPreferences().getLongVal(Constants.KEY_USER_ID);
+        //List<SearchLocation> searchLocations = new ArrayList<>();
+        return repository.getRoomService().addressDao().loadAllAddressByUserId(userId);
+    }
+
+    public void deleteAddressByIdAndInsert(Long id, AddressEntity address){
+        repository.getRoomService().addressDao().deleteAddressById(id).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                       insertAddress(address);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        e.printStackTrace();
+                    }
+                });
+    }
+    public void insertAddress(AddressEntity address){
+        repository.getRoomService().addressDao().insert(address).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+    public void insertAddress(List<AddressEntity> addresses){
+        repository.getRoomService().addressDao().insertAll(addresses).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        e.printStackTrace();
+                    }
+                });
     }
 
     Observable<SearchLocationResponse> searchLocation(String location) {

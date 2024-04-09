@@ -1,12 +1,14 @@
 package ww.smartexpress.app.data.model.api.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class SearchLocation {
     private String id;
     private String name;
@@ -18,6 +20,7 @@ public class SearchLocation {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
+    @Builder
     public static class Structure{
         private String main_text;
         private String secondary_text;

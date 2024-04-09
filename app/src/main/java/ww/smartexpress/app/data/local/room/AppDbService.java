@@ -17,6 +17,11 @@ public class AppDbService implements RoomService {
         return mAppDatabase.getUserDao();
     }
 
+    @Override
+    public DbAddressDao addressDao() {
+        return mAppDatabase.getAddressDao();
+    }
+
 //    @Override
 //    public DbOrderDao orderDao() {
 //        return mAppDatabase.getOrderDao();

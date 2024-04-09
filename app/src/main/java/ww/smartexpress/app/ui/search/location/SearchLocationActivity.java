@@ -74,10 +74,10 @@ public class SearchLocationActivity extends BaseActivity<ActivitySearchLocationB
     }
 
     public void loadSavedLocation(){
-        List<SavedLocation> savedLocationList = new ArrayList<>();
-        savedLocationList.add(new SavedLocation("1", "Masteri Thảo Điền", "Thảo Điền, Thủ Đức, Hồ Chí Minh"));
-        savedLocationList.add(new SavedLocation("1", "Masteri Thảo Điền", "Thảo Điền, Thủ Đức, Hồ Chí Minh"));
-        savedLocationList.add(new SavedLocation("1", "Masteri Thảo Điền", "Thảo Điền, Thủ Đức, Hồ Chí Minh"));
+        List<SearchLocation> savedLocationList = new ArrayList<>();
+//        savedLocationList.add(new SavedLocation("1", "Masteri Thảo Điền", "Thảo Điền, Thủ Đức, Hồ Chí Minh"));
+//        savedLocationList.add(new SavedLocation("1", "Masteri Thảo Điền", "Thảo Điền, Thủ Đức, Hồ Chí Minh"));
+//        savedLocationList.add(new SavedLocation("1", "Masteri Thảo Điền", "Thảo Điền, Thủ Đức, Hồ Chí Minh"));
 
         viewBinding.setLifecycleOwner(this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext()

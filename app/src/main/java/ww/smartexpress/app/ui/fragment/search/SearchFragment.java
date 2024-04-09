@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.R;
@@ -39,6 +41,7 @@ import ww.smartexpress.app.data.model.api.response.BookLocation;
 import ww.smartexpress.app.data.model.api.response.LocationType;
 import ww.smartexpress.app.data.model.api.response.SavedLocation;
 import ww.smartexpress.app.data.model.api.response.SearchLocation;
+import ww.smartexpress.app.data.model.room.AddressEntity;
 import ww.smartexpress.app.databinding.FragmentSearchBinding;
 import ww.smartexpress.app.di.component.FragmentComponent;
 import ww.smartexpress.app.ui.base.fragment.BaseFragment;
@@ -118,6 +121,11 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                                                 Log.d("TAG", "onLocationChanged: " + component);
 
                                                 viewModel.location.set(component);
+//                                                viewModel.origin.set(
+//                                                        SearchLocation.builder()
+//                                                                .place_id(id)
+//                                                                .description(component)
+//                                                        .build());
                                                 viewModel.originId.set(id);
                                                 binding.edtSearchLocation.requestFocus();
 //
@@ -128,69 +136,153 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                                             })
                             );
                         });
+            }else{
+                loadSavedLocationForOrigin();
             }
+        }else{
+            loadSavedLocationForOrigin();
         }
 
     }
 
-    public void loadSavedLocation(){
-        List<SavedLocation> savedLocationList = new ArrayList<>();
-        savedLocationList.add(new SavedLocation("1", "Masteri Thảo Điền", "Thảo Điền, Thủ Đức, Hồ Chí Minh"));
-        savedLocationList.add(new SavedLocation("1", "Masteri Thảo Điền", "Thảo Điền, Thủ Đức, Hồ Chí Minh"));
-        savedLocationList.add(new SavedLocation("1", "Masteri Thảo Điền", "Thảo Điền, Thủ Đức, Hồ Chí Minh"));
+    public void loadSavedLocationForOrigin(){
+        List<SearchLocation> savedLocationList = new ArrayList<>();
+//        savedLocationList.add(new SavedLocation("1", "Masteri Thảo Điền", "Thảo Điền, Thủ Đức, Hồ Chí Minh"));
+//        savedLocationList.add(new SavedLocation("1", "Masteri Thảo Điền", "Thảo Điền, Thủ Đức, Hồ Chí Minh"));
+//        savedLocationList.add(new SavedLocation("1", "Masteri Thảo Điền", "Thảo Điền, Thủ Đức, Hồ Chí Minh"));
 
         binding.setLifecycleOwner(this);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()
-                ,LinearLayoutManager.VERTICAL, false);
 
-        binding.rcSavedLocation.setLayoutManager(layoutManager);
-        binding.rcSavedLocation.setItemAnimator(new DefaultItemAnimator());
-        savedLocationAdapter = new SavedLocationAdapter(savedLocationList);
-        binding.rcSavedLocation.setAdapter(savedLocationAdapter);
+        viewModel.getAllSavedAddress().subscribeOn(Schedulers.io()) // Chọn Scheduler để thực thi trên luồng I/O
+                .observeOn(AndroidSchedulers.mainThread()) // Chọn Scheduler để xử lý kết quả trên luồng chính (UI thread)
+                .subscribe(new SingleObserver<List<AddressEntity>>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
-        savedLocationAdapter.setOnItemClickListener(location -> {
-            viewModel.searchLocation.set(location.getAddress());
-        });
+                    }
+
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull List<AddressEntity> addressEntities) {
+                        if(addressEntities.size() > 0){
+                            for (AddressEntity address : addressEntities) {
+                                savedLocationList.add(SearchLocation
+                                        .builder()
+                                        .place_id(address.getPlace_id())
+                                        .description(address.getDescription())
+                                        .structured_formatting(
+                                                SearchLocation.Structure.
+                                                        builder()
+                                                        .main_text(address.getMain_text())
+                                                        .build())
+                                        .build()
+                                );
+                            }
+                            Log.d("TAG", "onSuccess: " + addressEntities.toString());
+
+                            Log.d("TAG", "loadSavedLocationForOrigin: " + savedLocationList);
+
+                            binding.tvSavedLocation.setVisibility(View.VISIBLE);
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()
+                                    ,LinearLayoutManager.VERTICAL, false);
+
+                            binding.rcSavedLocation.setLayoutManager(layoutManager);
+                            binding.rcSavedLocation.setItemAnimator(new DefaultItemAnimator());
+                            savedLocationAdapter = new SavedLocationAdapter(savedLocationList);
+                            binding.rcSavedLocation.setAdapter(savedLocationAdapter);
+
+                            savedLocationAdapter.setOnItemClickListener(location -> {
+                                viewModel.location.set(location.getDescription());
+                                viewModel.origin.set(location);
+                                viewModel.bookLocation.get().setOrigin(location);
+                                viewModel.originId.set(location.getPlace_id());
+                                fromLocations.clear();
+                            });
+                        }else{
+                            binding.tvSavedLocation.setVisibility(View.GONE);
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+                    }
+                });
+
+    }
+
+    public void loadSavedLocationForDestination(){
+        List<SearchLocation> savedLocationList = new ArrayList<>();
+//        savedLocationList.add(new SavedLocation("1", "Masteri Thảo Điền", "Thảo Điền, Thủ Đức, Hồ Chí Minh"));
+//        savedLocationList.add(new SavedLocation("1", "Masteri Thảo Điền", "Thảo Điền, Thủ Đức, Hồ Chí Minh"));
+//        savedLocationList.add(new SavedLocation("1", "Masteri Thảo Điền", "Thảo Điền, Thủ Đức, Hồ Chí Minh"));
+
+        binding.setLifecycleOwner(this);
+        viewModel.getAllSavedAddress().subscribeOn(Schedulers.io()) // Chọn Scheduler để thực thi trên luồng I/O
+                .observeOn(AndroidSchedulers.mainThread()) // Chọn Scheduler để xử lý kết quả trên luồng chính (UI thread)
+                .subscribe(new SingleObserver<List<AddressEntity>>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull List<AddressEntity> addressEntities) {
+                        if(addressEntities.size() > 0){
+                            for (AddressEntity address : addressEntities) {
+                                savedLocationList.add(SearchLocation
+                                        .builder()
+                                        .place_id(address.getPlace_id())
+                                        .description(address.getDescription())
+                                        .structured_formatting(
+                                                SearchLocation.Structure.
+                                                        builder()
+                                                        .main_text(address.getMain_text())
+                                                        .build())
+                                        .build()
+                                );
+                            }
+                            Log.d("TAG", "onSuccess: " + addressEntities.toString());
+                            Log.d("TAG", "loadSavedLocationForDestination: " + savedLocationList);
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()
+                                    ,LinearLayoutManager.VERTICAL, false);
+
+                            binding.tvSavedLocation.setVisibility(View.VISIBLE);
+
+                            binding.rcSavedLocation.setLayoutManager(layoutManager);
+                            binding.rcSavedLocation.setItemAnimator(new DefaultItemAnimator());
+                            savedLocationAdapter = new SavedLocationAdapter(savedLocationList);
+                            binding.rcSavedLocation.setAdapter(savedLocationAdapter);
+
+                            savedLocationAdapter.setOnItemClickListener(location -> {
+                                viewModel.searchLocation.set(location.getDescription());
+                                viewModel.destination.set(location);
+                                viewModel.bookLocation.get().setDestination(location);
+                                viewModel.destinationId.set(location.getPlace_id());
+                                toLocations.clear();
+                            });
+                        }else{
+                            binding.tvSavedLocation.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+                    }
+                });
+
+
     }
 
     public void loadSearchLocation(){
         loadSearch();
-        binding.setLifecycleOwner(this);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()
-                ,LinearLayoutManager.VERTICAL, false);
 
-        binding.rcSavedLocation.setLayoutManager(layoutManager);
-        binding.rcSavedLocation.setItemAnimator(new DefaultItemAnimator());
-        searchLocationAdapter = new SearchLocationAdapter(toLocations);
-        binding.rcSavedLocation.setAdapter(searchLocationAdapter);
-
-        searchLocationAdapter.setOnItemClickListener(location -> {
-            viewModel.searchLocation.set(location.getDescription());
-            viewModel.destination.set(location);
-            viewModel.bookLocation.get().setDestination(location);
-            viewModel.destinationId.set(location.getPlace_id());
-            toLocations.clear();
-        });
     }
 
     public void loadDepartureLocation(){
         loadDeparture();
-        binding.setLifecycleOwner(this);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()
-                ,LinearLayoutManager.VERTICAL, false);
 
-        binding.rcSavedLocation.setLayoutManager(layoutManager);
-        binding.rcSavedLocation.setItemAnimator(new DefaultItemAnimator());
-        searchLocationAdapter = new SearchLocationAdapter(fromLocations);
-        binding.rcSavedLocation.setAdapter(searchLocationAdapter);
-
-        searchLocationAdapter.setOnItemClickListener(location -> {
-            viewModel.location.set(location.getDescription());
-            viewModel.origin.set(location);
-            viewModel.bookLocation.get().setOrigin(location);
-            viewModel.originId.set(location.getPlace_id());
-            fromLocations.clear();
-        });
     }
 
     @Override
@@ -250,26 +342,22 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
 
         @Override
         public void afterTextChanged(Editable editable) {
-            String text = editable.toString();
+            String text = editable.toString().trim();
 
             switch (currentView.getId()){
                 case R.id.edtSearchLocation:
                     if(!TextUtils.isEmpty(text)){
-                        loadSearchLocation();
+                        loadSearch();
                     }else{
-                        //loadSavedLocation();
-                        toLocations.clear();
-                        searchLocationAdapter.clearItems();
+                        loadSavedLocationForDestination();
                         Log.d("TAG", "afterTextChanged:1 ");
                     }
                     break;
                 case R.id.edtDeparture:
                     if(!TextUtils.isEmpty(text)){
-                        loadDepartureLocation();
+                        loadDeparture();
                     }else{
-                        //loadSavedLocation();
-                        fromLocations.clear();
-                        searchLocationAdapter.clearItems();
+                        loadSavedLocationForOrigin();
                         Log.d("TAG", "afterTextChanged:2 ");
                     }
                     break;
@@ -295,7 +383,24 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     toLocations = response.getPredictions();
+                    binding.setLifecycleOwner(this);
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()
+                            ,LinearLayoutManager.VERTICAL, false);
 
+
+                    binding.tvSavedLocation.setVisibility(View.GONE);
+                    binding.rcSavedLocation.setLayoutManager(layoutManager);
+                    binding.rcSavedLocation.setItemAnimator(new DefaultItemAnimator());
+                    searchLocationAdapter = new SearchLocationAdapter(toLocations);
+                    binding.rcSavedLocation.setAdapter(searchLocationAdapter);
+
+                    searchLocationAdapter.setOnItemClickListener(location -> {
+                        viewModel.searchLocation.set(location.getDescription());
+                        viewModel.destination.set(location);
+                        viewModel.bookLocation.get().setDestination(location);
+                        viewModel.destinationId.set(location.getPlace_id());
+                        toLocations.clear();
+                    });
                 },error->{
                     viewModel.hideLoading();
                     viewModel.showErrorMessage(getString(R.string.network_error));
@@ -310,7 +415,23 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     fromLocations = response.getPredictions();
+                    binding.setLifecycleOwner(this);
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext()
+                            ,LinearLayoutManager.VERTICAL, false);
 
+                    binding.tvSavedLocation.setVisibility(View.GONE);
+                    binding.rcSavedLocation.setLayoutManager(layoutManager);
+                    binding.rcSavedLocation.setItemAnimator(new DefaultItemAnimator());
+                    searchLocationAdapter = new SearchLocationAdapter(fromLocations);
+                    binding.rcSavedLocation.setAdapter(searchLocationAdapter);
+
+                    searchLocationAdapter.setOnItemClickListener(location -> {
+                        viewModel.location.set(location.getDescription());
+                        viewModel.origin.set(location);
+                        viewModel.bookLocation.get().setOrigin(location);
+                        viewModel.originId.set(location.getPlace_id());
+                        fromLocations.clear();
+                    });
                 },error->{
                     viewModel.hideLoading();
                     viewModel.showErrorMessage(getString(R.string.network_error));

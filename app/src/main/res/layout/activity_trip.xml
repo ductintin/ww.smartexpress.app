@@ -561,6 +561,7 @@
                         app:cardCornerRadius="@dimen/_8sdp"
                         tools:ignore="MissingConstraints">
                         <ImageView
+                            android:onClick="@{(v) -> vm.zoomImage(vm.pickupImage)}"
                             android:id="@+id/imgPickupImage"
                             android:src="@{vm.pickupImage, default=@drawable/smartexpress_splash_logo}"
                             android:layout_width="@dimen/_80sdp"
@@ -585,6 +586,7 @@
                         app:cardCornerRadius="@dimen/_8sdp"
                         tools:ignore="MissingConstraints">
                         <ImageView
+                            android:onClick="@{(v) -> vm.zoomImage(vm.deliveryImage)}"
                             android:id="@+id/imgDeliveryImage"
                             android:src="@{vm.deliveryImage, default=@drawable/smartexpress_splash_logo}"
                             android:layout_width="@dimen/_80sdp"

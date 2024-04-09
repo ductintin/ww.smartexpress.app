@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "e4a2556b08c77e307f3ea854f2177127",
+    "version": 2,
+    "identityHash": "ca7453cc35892db09645be8291a21762",
     "entities": [
       {
         "tableName": "user",
@@ -56,7 +56,7 @@
       },
       {
         "tableName": "address",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`address_id` INTEGER PRIMARY KEY AUTOINCREMENT, `place_id` TEXT, `main_text` TEXT, `description` TEXT, `userId` INTEGER, FOREIGN KEY(`userId`) REFERENCES `user`(`user_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`address_id` INTEGER PRIMARY KEY AUTOINCREMENT, `place_id` TEXT, `main_text` TEXT, `description` TEXT, `user_id` INTEGER, FOREIGN KEY(`user_id`) REFERENCES `user`(`user_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -84,7 +84,7 @@
           },
           {
             "fieldPath": "userId",
-            "columnName": "userId",
+            "columnName": "user_id",
             "affinity": "INTEGER",
             "notNull": false
           }
@@ -102,7 +102,7 @@
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
-              "userId"
+              "user_id"
             ],
             "referencedColumns": [
               "user_id"
@@ -114,7 +114,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e4a2556b08c77e307f3ea854f2177127')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ca7453cc35892db09645be8291a21762')"
     ]
   }
 }

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="ivm"
-            type="ww.smartexpress.app.data.model.api.response.SavedLocation" />
+            type="ww.smartexpress.app.data.model.api.response.SearchLocation" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,7 +51,9 @@
                         style="@style/destination_save"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{ivm.name}">
+                        android:text="@{ivm.structured_formatting.main_text}"
+                        android:maxLines="1"
+                        android:ellipsize="end">
 
                     </TextView>
 
@@ -61,18 +63,20 @@
                         android:textSize="@dimen/_8sdp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{ivm.address}">
+                        android:text="@{ivm.description}"
+                        android:maxLines="1"
+                        android:ellipsize="end">
 
                     </TextView>
                 </LinearLayout>
             </LinearLayout>
 
             <ImageView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
-                android:src="@drawable/ic_icon_mark_empty"
-                >
+                android:src="@drawable/ic_icon_mark_empty">
 
             </ImageView>
 

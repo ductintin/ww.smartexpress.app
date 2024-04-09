@@ -208,6 +208,8 @@ public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewMode
         viewModel.codPrice.set(bookingResponse.getCodPrice());
         viewModel.createdDate.set(bookingResponse.getCreatedDate());
         viewModel.code.set(bookingResponse.getCode());
+        viewModel.pickupImage.set(bookingResponse.getPickupImage());
+        viewModel.deliveryImage.set(bookingResponse.getDeliveryImage());
         viewModel.bookingState.set(bookingResponse.getState());
     }
 
