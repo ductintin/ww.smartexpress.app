@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="a"
+            type="ww.smartexpress.app.ui.map.MapActivity" />
+        <variable
+            name="vm"
+            type="ww.smartexpress.app.ui.map.MapViewModel" />
+        <import type="android.text.TextUtils"/>
+        <import type="android.view.View"/>
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:onClick="@{()-> a.onBackPressed()}"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:background="@drawable/oval_background"
+            android:elevation="@dimen/_15sdp"
+            android:padding="@dimen/_5sdp"
+            android:layout_margin="@dimen/_15ssp"
+            android:src="@drawable/ic_icon_back"
+            android:layout_gravity="top|left"
+            />
+
+        <FrameLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <fragment
+                android:id="@+id/mapMark"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_order_detail"
+            android:elevation="@dimen/_35sdp"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="@dimen/_15sdp">
+
+                <TextView
+                    android:text="@{vm.description}"
+                    style="@style/destination_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end">
+
+                </TextView>
+
+                <TextView
+                    android:text="@{vm.mainText}"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    style="@style/new_password_subtitle"
+                    android:textSize="@dimen/_8sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:ellipsize="end">
+
+                </TextView>
+            </LinearLayout>
+            <Button
+                style="@style/BookCarButton"
+                android:enabled="@{!TextUtils.isEmpty(vm.placeId)}"
+                android:onClick="@{()->a.chooseAddress()}"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:background="@drawable/app_button_background"
+                android:text='@{TextUtils.isEmpty(vm.placeId) ? "" : "Chọn địa điểm này"}'
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+    </FrameLayout>
+</layout>

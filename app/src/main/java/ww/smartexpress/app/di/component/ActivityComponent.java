@@ -7,6 +7,7 @@ import ww.smartexpress.app.ui.chat.ChatActivity;
 import ww.smartexpress.app.ui.delivery.BookDeliveryActivity;
 import ww.smartexpress.app.ui.delivery.order.DeliveryActivity;
 import ww.smartexpress.app.ui.index.IndexActivity;
+import ww.smartexpress.app.ui.map.MapActivity;
 import ww.smartexpress.app.ui.order.details.OrderDetailsActivity;
 import ww.smartexpress.app.ui.order.information.OrderInformationActivity;
 import ww.smartexpress.app.ui.password.reset.ResetPasswordActivity;
@@ -99,5 +100,7 @@ public interface ActivityComponent {
     void inject(ResetPasswordActivity resetPasswordActivity);
     void inject(ChatActivity chatActivity);
     void inject(ShippingInfoActivity shippingInfoActivity);
+
+    void inject(MapActivity mapActivity);
 }
 

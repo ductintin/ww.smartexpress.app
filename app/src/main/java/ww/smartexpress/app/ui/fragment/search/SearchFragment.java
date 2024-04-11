@@ -1,6 +1,7 @@
 package ww.smartexpress.app.ui.fragment.search;
 
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -26,6 +27,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -37,16 +42,20 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.R;
 import ww.smartexpress.app.constant.Constants;
+import ww.smartexpress.app.data.model.api.response.AddressMap;
 import ww.smartexpress.app.data.model.api.response.BookLocation;
 import ww.smartexpress.app.data.model.api.response.LocationType;
+import ww.smartexpress.app.data.model.api.response.Note;
 import ww.smartexpress.app.data.model.api.response.SavedLocation;
 import ww.smartexpress.app.data.model.api.response.SearchLocation;
+import ww.smartexpress.app.data.model.api.response.ShippingInfo;
 import ww.smartexpress.app.data.model.room.AddressEntity;
 import ww.smartexpress.app.databinding.FragmentSearchBinding;
 import ww.smartexpress.app.di.component.FragmentComponent;
 import ww.smartexpress.app.ui.base.fragment.BaseFragment;
 import ww.smartexpress.app.ui.bookcar.BookCarActivity;
 import ww.smartexpress.app.ui.home.HomeActivity;
+import ww.smartexpress.app.ui.map.MapActivity;
 import ww.smartexpress.app.ui.search.location.SearchLocationActivity;
 import ww.smartexpress.app.ui.search.location.adapter.LocationTypeAdapter;
 import ww.smartexpress.app.ui.search.location.adapter.SavedLocationAdapter;
@@ -95,6 +104,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
 
         //binding.setLifecycleOwner(this);
 
+        EventBus.getDefault().register(this);
+
         binding.edtDeparture.addTextChangedListener(new GenericTextWatcher(binding.edtDeparture));
         binding.edtSearchLocation.addTextChangedListener(new GenericTextWatcher(binding.edtSearchLocation));
 
@@ -120,14 +131,17 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                                                 String id = results.get(0).getAsJsonObject().get("place_id").getAsString();
                                                 Log.d("TAG", "onLocationChanged: " + component);
 
-                                                viewModel.location.set(component);
+                                                if(fromLocations.size() == 0 && viewModel.destinationId.get().isEmpty()){
+                                                    viewModel.location.set(component);
 //                                                viewModel.origin.set(
 //                                                        SearchLocation.builder()
 //                                                                .place_id(id)
 //                                                                .description(component)
 //                                                        .build());
-                                                viewModel.originId.set(id);
-                                                binding.edtSearchLocation.requestFocus();
+                                                    viewModel.originId.set(id);
+                                                    binding.edtSearchLocation.requestFocus();
+                                                    loadSavedLocationForDestination();
+                                                }
 //
                                             },error->{
                                                 viewModel.hideLoading();
@@ -144,6 +158,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
         }
 
     }
+
 
     public void loadSavedLocationForOrigin(){
         List<SearchLocation> savedLocationList = new ArrayList<>();
@@ -337,7 +352,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
 
         public GenericTextWatcher(View currentView) {
             this.currentView = currentView;
-
         }
 
         @Override
@@ -461,12 +475,51 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
     @Override
     public void onResume() {
         super.onResume();
-        viewModel.location.set("");
-        viewModel.searchLocation.set("");
-        viewModel.originId.set("");
-        viewModel.destinationId.set("");
-        binding.edtDeparture.requestFocus();
-        binding.edtSearchLocation.clearFocus();
+//        viewModel.location.set("");
+//        viewModel.searchLocation.set("");
+//        viewModel.originId.set("");
+//        viewModel.destinationId.set("");
+//        binding.edtDeparture.requestFocus();
+//        binding.edtSearchLocation.clearFocus();
 
+    }
+
+    public void openMap(int kind){
+        Intent intent = new Intent(getActivity(), MapActivity.class);
+        intent.putExtra("KIND", kind);
+        startActivity(intent);
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onDataEvent(AddressMap event) {
+        if(event != null){
+            SearchLocation searchLocation = SearchLocation.builder()
+                    .description(event.getDescription())
+                    .place_id(event.getId())
+                    .structured_formatting(
+                            SearchLocation.Structure.builder()
+                                    .main_text(event.getDescription())
+                                    .build())
+                    .build();
+
+            if(event.getKind() == 1){
+                viewModel.origin.set(searchLocation);
+                viewModel.location.set(event.getDescription());
+                viewModel.originId.set(event.getId());
+            }else{
+                viewModel.destination.set(searchLocation);
+                viewModel.searchLocation.set(event.getDescription());
+                viewModel.destinationId.set(event.getId());
+            }
+            Log.d("TAG", "onDataEvent: " + event.getDescription());
+        }
+        // Xử lý dữ liệu ở đây
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        EventBus.getDefault().removeStickyEvent(Note.class);
     }
 }

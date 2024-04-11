@@ -14,6 +14,7 @@ import ww.smartexpress.app.ui.chat.ChatViewModel;
 import ww.smartexpress.app.ui.delivery.BookDeliveryViewModel;
 import ww.smartexpress.app.ui.delivery.order.DeliveryViewModel;
 import ww.smartexpress.app.ui.index.IndexViewModel;
+import ww.smartexpress.app.ui.map.MapViewModel;
 import ww.smartexpress.app.ui.order.OrderViewModel;
 import ww.smartexpress.app.ui.order.details.OrderDetailsViewModel;
 import ww.smartexpress.app.ui.order.information.OrderInformationViewModel;
@@ -350,5 +351,13 @@ public class ActivityModule {
         Supplier<ShippingInfoViewModel> supplier = () -> new ShippingInfoViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<ShippingInfoViewModel> factory = new ViewModelProviderFactory<>(ShippingInfoViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(ShippingInfoViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    MapViewModel provideMapViewModel(Repository repository, Context application) {
+        Supplier<MapViewModel> supplier = () -> new MapViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<MapViewModel> factory = new ViewModelProviderFactory<>(MapViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(MapViewModel.class);
     }
 }
