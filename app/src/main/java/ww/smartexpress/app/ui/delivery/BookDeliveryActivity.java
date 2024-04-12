@@ -350,8 +350,10 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
 
     @Override
     public void onBackPressed() {
-        if(!viewModel.isFound.get()){
+        if(!viewModel.isFound.get() && !viewModel.isBooking.get() && !viewModel.isShipping.get()){
             super.onBackPressed();
+        }else if(viewModel.isFound.get() || viewModel.isBooking.get() || viewModel.isShipping.get()){
+            finishAffinity();
         }else{
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -510,7 +512,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         LatLngBounds bounds = new LatLngBounds.Builder().include(origin).include(des).build();
                         Point point = new Point();
                         getWindowManager().getDefaultDisplay().getSize(point);
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, point.x, 150, 10));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, point.x, 150, 10));
 
                         loadService();
 
@@ -588,7 +590,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         getWindowManager().getDefaultDisplay().getSize(point);
 
                         //mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, point.x, 150, 20));
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(des,zoomLevel > 3.0f ? zoomLevel : 17.0f ));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(des,zoomLevel > 3.0f ? zoomLevel : 17.0f ));
 
 
                     }

@@ -50,6 +50,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
     public void clearItems() {
         bookings.clear();
+        notifyDataSetChanged();
     }
 
     public class BookingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

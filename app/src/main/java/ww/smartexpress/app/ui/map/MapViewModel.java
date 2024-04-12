@@ -18,6 +18,8 @@ public class MapViewModel extends BaseViewModel {
     public ObservableField<String> description = new ObservableField<>("");
     public ObservableField<String> mainText = new ObservableField<>("");
     public ObservableField<String> placeId = new ObservableField<>("");
+    public ObservableField<String> country = new ObservableField<>("");
+    public ObservableField<Boolean> isValidLocation = new ObservableField<>(false);
     public ObservableField<Integer> kind = new ObservableField<>(0);
     public MapViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);

@@ -47,55 +47,116 @@
                 />
         </FrameLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_order_detail"
-            android:elevation="@dimen/_35sdp"
             android:layout_gravity="bottom"
-            android:orientation="vertical">
+            android:background="@drawable/bg_order_detail"
+            android:elevation="@dimen/_35sdp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="@dimen/_15sdp">
-
-                <TextView
-                    android:text="@{vm.description}"
-                    style="@style/destination_save"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:ellipsize="end">
-
-                </TextView>
-
-                <TextView
-                    android:text="@{vm.mainText}"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    style="@style/new_password_subtitle"
-                    android:textSize="@dimen/_8sdp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="2"
-                    android:ellipsize="end">
-
-                </TextView>
-            </LinearLayout>
-            <Button
-                style="@style/BookCarButton"
-                android:enabled="@{!TextUtils.isEmpty(vm.placeId)}"
-                android:onClick="@{()->a.chooseAddress()}"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
-                android:background="@drawable/app_button_background"
-                android:text='@{TextUtils.isEmpty(vm.placeId) ? "" : "Chọn địa điểm này"}'
-                android:textColor="@color/white" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="@dimen/_15sdp">
+
+
+                    <TextView
+                        style="@style/destination_save"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@{vm.description}">
+
+                    </TextView>
+
+                    <TextView
+                        android:text="@{vm.mainText}"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        style="@style/new_password_subtitle"
+                        android:textSize="@dimen/_8sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:ellipsize="end">
+
+                    </TextView>
+                </LinearLayout>
+                <Button
+                    style="@style/BookCarButton"
+                    android:enabled="@{!TextUtils.isEmpty(vm.placeId) &amp;&amp; vm.isValidLocation}"
+                    android:onClick="@{()->a.chooseAddress()}"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:background="@drawable/app_button_background"
+                    android:text='@{TextUtils.isEmpty(vm.placeId) ? "" : vm.isValidLocation ? "Chọn địa điểm này" : "Địa điểm không khả dụng"}'
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_view_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/_55sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_order_detail"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_margin="@dimen/_15sdp">
+
+
+                        <TextView
+                            style="@style/destination_save"
+                            android:background="@color/grey_light"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1">
+
+                        </TextView>
+
+                        <TextView
+                            android:background="@color/grey_light"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            style="@style/new_password_subtitle"
+                            android:textSize="@dimen/_8sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:ellipsize="end">
+
+                        </TextView>
+                    </LinearLayout>
+                    <Button
+                        style="@style/BookCarButton"
+                        android:enabled="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_marginBottom="@dimen/_15sdp"
+                        android:background="@drawable/app_button_background"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+        </RelativeLayout>
 
     </FrameLayout>
 </layout>

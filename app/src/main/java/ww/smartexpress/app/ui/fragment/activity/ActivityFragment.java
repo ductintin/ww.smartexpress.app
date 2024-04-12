@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -53,12 +54,57 @@ public class ActivityFragment extends BaseFragment<FragmentActivityBinding, Acti
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        getBooking();
+
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        binding.rcOrder.setLayoutManager(manager);
+
+//        binding.rcOrder.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//
+//                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+//
+//                Log.d("TAG", "onScrolled: ");
+//                int visibleItemCount = manager.getChildCount();
+//                int totalCount = manager.getItemCount();
+//                int firstVisibleItemPosition = manager.findFirstVisibleItemPosition();
+//
+//                if (dy == recyclerView.getChildAt(0).getMeasuredHeight() - recyclerView.getMeasuredHeight()) {
+//                    Log.d("TAG", "onScrolled: bt");
+//                }
+//                if(firstVisibleItemPosition >= 0 && (visibleItemCount + firstVisibleItemPosition) >= totalCount){
+//                    Log.d("TAG", "onScrolled: d");
+//                }
+//
+//                if(linearLayoutManager.findLastCompletelyVisibleItemPosition() == bookingResponses.size() - 1){
+//                    Log.d("TAG", "onScrolled: enddd");
+//                }
+//                super.onScrolled(recyclerView, dx, dy);
+//            }
+//        });
+
+        binding.nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+                    Log.d("TAG", "onScrollChange: endndd");
+                    if(viewModel.pageNumber.get() <= viewModel.pageTotal.get()){
+                        loadMore();
+                    }
+                }
+            }
+        });
         binding.swRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 viewModel.pageNumber.set(0);
-                viewModel.getBooking();
-                performDataBinding();
+                viewModel.pageTotal.set(0);
+                if(bookingAdapter != null){
+                    bookingAdapter.clearItems();
+                }
+                getBooking();
                 binding.swRefresh.setRefreshing(false);
             }
         });
@@ -66,26 +112,27 @@ public class ActivityFragment extends BaseFragment<FragmentActivityBinding, Acti
 
     @Override
     protected void performDataBinding() {
+        binding.setF(this);
         //loadOrder();
-        binding.setLifecycleOwner(this);
-        bookingAdapter = new BookingAdapter();
-        bookingResponses = new ArrayList<>();
-
-        viewModel.bookingList.observe(this, bookings -> {
-            if(bookingResponses == null || bookingResponses.isEmpty()){
-                bookingResponses = bookings;
-            }else {
-                bookingResponses.addAll(bookings);
-            }
-            bookingAdapter.setBookings(bookingResponses);
-            if(bookingResponses == null || bookingResponses.isEmpty()){
-                viewModel.isEmpty.set(true);
-            }
-
-        });
-
-
-        loadBooking();
+//        binding.setLifecycleOwner(this);
+//        bookingAdapter = new BookingAdapter();
+//        bookingResponses = new ArrayList<>();
+//
+//        viewModel.bookingList.observe(this, bookings -> {
+//            if(bookingResponses == null || bookingResponses.isEmpty()){
+//                bookingResponses = bookings;
+//            }else {
+//                bookingResponses.addAll(bookings);
+//            }
+//            bookingAdapter.setBookings(bookingResponses);
+//            if(bookingResponses == null || bookingResponses.isEmpty()){
+//                viewModel.isEmpty.set(true);
+//            }
+//
+//        });
+//
+//
+//        loadBooking();
 
         //getMyBooking();
         binding.txtBookWin.setOnClickListener(new View.OnClickListener() {
@@ -214,5 +261,48 @@ public class ActivityFragment extends BaseFragment<FragmentActivityBinding, Acti
     public void onResume() {
         super.onResume();
         //getMyBooking();
+    }
+
+    public void getBooking(){
+        if(viewModel.pageNumber.get() == 0){
+            binding.shimmerViewContainer.setVisibility(View.VISIBLE);
+            binding.shimmerViewContainer.startShimmer();
+        }
+        viewModel.compositeDisposable.add(viewModel.getBooking()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    if(response.isResult()){
+                        if(viewModel.pageNumber.get() == 0){
+                            binding.shimmerViewContainer.setVisibility(View.GONE);
+                            binding.shimmerViewContainer.stopShimmer();
+                        }
+                        viewModel.bookingList.setValue(response.getData().getContent());
+                        viewModel.pageTotal.set(response.getData().getTotalPages());
+                        if(bookingResponses.isEmpty()){
+                            bookingResponses = response.getData().getContent();
+                        }else{
+                            bookingResponses.addAll(response.getData().getContent());
+                        }
+                        if(bookingResponses.size() == 0 && viewModel.pageNumber.get() == 0){
+                            viewModel.isEmpty.set(true);
+                        }else{
+                            loadBooking();
+                        }
+                        Log.d("TAG", "getMyBooking: "+ viewModel.pageTotal.get());
+                    }else {
+                        viewModel.showErrorMessage(response.getMessage());
+                    }
+                },error->{
+                    viewModel.showErrorMessage(getActivity().getString(R.string.network_error));
+                    error.printStackTrace();
+                })
+        );
+    }
+
+    public void loadMore(){
+        int pageCurrent = viewModel.pageNumber.get();
+        viewModel.pageNumber.set(pageCurrent+1);
+        getBooking();
     }
 }

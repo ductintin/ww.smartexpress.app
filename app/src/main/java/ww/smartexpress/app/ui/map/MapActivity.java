@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -193,6 +194,8 @@ public class MapActivity extends BaseActivity<ActivityMapBinding, MapViewModel> 
                 viewModel.description.set("");
                 viewModel.placeId.set("");
                 viewModel.mainText.set("");
+                viewBinding.shimmerViewContainer.setVisibility(View.VISIBLE);
+                viewBinding.shimmerViewContainer.startShimmer();
                 currentLatLng = mMap.getCameraPosition().target;
                 marker.setPosition(currentLatLng);
             }
@@ -211,7 +214,10 @@ public class MapActivity extends BaseActivity<ActivityMapBinding, MapViewModel> 
                             String status = response.get("status").getAsString();
                             Log.d("TAG", status);
                             if(status.equals("OK")){
+                                viewBinding.shimmerViewContainer.stopShimmer();
+                                viewBinding.shimmerViewContainer.setVisibility(View.INVISIBLE);
                                 JsonArray results = response.getAsJsonArray("results");
+                                int lastIndex = results.size() - 1;
                                 String component = results.get(0).getAsJsonObject().get("formatted_address").getAsString();
                                 String id = results.get(0).getAsJsonObject().get("place_id").getAsString();
                                 String locationType = results.get(0).getAsJsonObject().get("geometry").getAsJsonObject().get("location_type").getAsString();
@@ -221,14 +227,21 @@ public class MapActivity extends BaseActivity<ActivityMapBinding, MapViewModel> 
                                     types.add(element.getAsString());
                                 }
 
+                                String country = results.get(lastIndex).getAsJsonObject().get("formatted_address").getAsString();
                                 Log.d("TAG", "setOnCameraIdleListener: com " + component);
                                 Log.d("TAG", "setOnCameraIdleListener: id "  + id);
                                 Log.d("TAG", "setOnCameraIdleListener: location_type "  + locationType);
+                                Log.d("TAG", "setOnCameraIdleListener: country "  + country);
 
                                 marker.setTitle(component);
                                 viewModel.description.set(component);
                                 viewModel.mainText.set(component);
                                 viewModel.placeId.set(id);
+                                if(country.equals("Vietnam")){
+                                    viewModel.isValidLocation.set(true);
+                                }else{
+                                    viewModel.isValidLocation.set(false);
+                                }
                             }
 
                         },error->{
