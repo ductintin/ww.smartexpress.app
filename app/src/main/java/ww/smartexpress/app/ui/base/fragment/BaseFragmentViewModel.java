@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import lombok.Getter;
 import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.data.Repository;
 import ww.smartexpress.app.data.model.other.ToastMessage;
@@ -14,6 +15,7 @@ import lombok.Setter;
 public class BaseFragmentViewModel extends ViewModel {
 
     protected final Repository repository;
+    @Getter
     protected final MVVMApplication application;
     protected final MutableLiveData<ToastMessage> mErrorMessage = new MutableLiveData<>();
     protected final ObservableBoolean mIsLoading = new ObservableBoolean();

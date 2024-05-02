@@ -36,6 +36,7 @@ import ww.smartexpress.app.ui.fragment.activity.adapter.OrderShoppingAdapter;
 import ww.smartexpress.app.ui.order.details.OrderDetailsActivity;
 import ww.smartexpress.app.ui.search.SearchActivity;
 import ww.smartexpress.app.ui.trip.TripActivity;
+import ww.smartexpress.app.ui.trip.detail.TripDetailActivity;
 
 public class ActivityFragment extends BaseFragment<FragmentActivityBinding, ActivityFragmentViewModel> {
     OrderAdapter orderAdapter;
@@ -243,19 +244,9 @@ public class ActivityFragment extends BaseFragment<FragmentActivityBinding, Acti
         binding.rcOrder.setAdapter(bookingAdapter);
 
         bookingAdapter.setOnItemClickListener(booking -> {
-            Intent intent = new Intent(getActivity(), TripActivity.class);
+            Intent intent = new Intent(getActivity(), TripDetailActivity.class);
             Bundle bundle = new Bundle();
             bundle.putLong(Constants.CUSTOMER_BOOKING_DETAIL_ID, booking.getId());
-            bundle.putString(Constants.CUSTOMER_BOOKING_DETAIL_OBJECT, ApiModelUtils.toJson(booking));
-            if(booking.getState() == -100 || booking.getState() == 400){
-                bundle.putBoolean(Constants.BOOKING_COMPLETE_STATE, false);
-                bundle.putBoolean(Constants.BOOKING_CANCEL_STATE, true);
-                Log.d("TAG", "loadBooking: " + booking.getState());
-            }else{
-                bundle.putBoolean(Constants.BOOKING_COMPLETE_STATE, true);
-                bundle.putBoolean(Constants.BOOKING_CANCEL_STATE, false);
-                Log.d("TAG", "jdjdjjdd: " + booking.getState());
-            }
             intent.putExtras(bundle);
             startActivity(intent);
         });

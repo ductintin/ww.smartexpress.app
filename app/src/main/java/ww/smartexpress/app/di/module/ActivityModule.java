@@ -45,6 +45,7 @@ import ww.smartexpress.app.ui.search.location.SearchLocationViewModel;
 import ww.smartexpress.app.ui.trip.cancel.TripCancelReasonViewModel;
 import ww.smartexpress.app.ui.trip.complete.TripCompleteViewModel;
 import ww.smartexpress.app.ui.trip.TripViewModel;
+import ww.smartexpress.app.ui.trip.detail.TripDetailViewModel;
 import ww.smartexpress.app.ui.welcome.WelcomeViewModel;
 import ww.smartexpress.app.ui.splashform.SplashFormViewModel;
 import ww.smartexpress.app.utils.GetInfo;
@@ -359,5 +360,13 @@ public class ActivityModule {
         Supplier<MapViewModel> supplier = () -> new MapViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<MapViewModel> factory = new ViewModelProviderFactory<>(MapViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(MapViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    TripDetailViewModel provideTripDetailViewModel(Repository repository, Context application) {
+        Supplier<TripDetailViewModel> supplier = () -> new TripDetailViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<TripDetailViewModel> factory = new ViewModelProviderFactory<>(TripDetailViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(TripDetailViewModel.class);
     }
 }

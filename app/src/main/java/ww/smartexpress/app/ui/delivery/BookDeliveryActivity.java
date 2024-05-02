@@ -765,6 +765,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                     bundle.putBoolean(Constants.BOOKING_COMPLETE_STATE, true);
                     bundle.putString(Constants.CUSTOMER_BOOKING_ID, viewModel.bookingId.get().toString());
                     intentToTrip.putExtras(bundle);
+                    startActivity(intentToTrip);
                 }
                 break;
             case 5: // Tai xe huy chuyen nay

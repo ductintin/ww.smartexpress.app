@@ -38,6 +38,7 @@ import ww.smartexpress.app.ui.search.location.SearchLocationActivity;
 import ww.smartexpress.app.ui.trip.TripActivity;
 import ww.smartexpress.app.ui.trip.cancel.TripCancelReasonActivity;
 import ww.smartexpress.app.ui.trip.complete.TripCompleteActivity;
+import ww.smartexpress.app.ui.trip.detail.TripDetailActivity;
 import ww.smartexpress.app.ui.welcome.WelcomeActivity;
 import ww.smartexpress.app.ui.input.phone.PhoneActivity;
 import ww.smartexpress.app.ui.splashform.SplashFormActivity;
@@ -102,5 +103,6 @@ public interface ActivityComponent {
     void inject(ShippingInfoActivity shippingInfoActivity);
 
     void inject(MapActivity mapActivity);
+    void inject(TripDetailActivity tripDetailActivity);
 }
 

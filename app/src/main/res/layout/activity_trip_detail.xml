@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="a"
+            type="ww.smartexpress.app.ui.trip.detail.TripDetailActivity" />
+        <variable
+            name="vm"
+            type="ww.smartexpress.app.ui.trip.detail.TripDetailViewModel" />
+        <import type="android.view.View"/>
+        <import type="ww.smartexpress.app.utils.NumberUtils"/>
+        <import type="ww.smartexpress.app.utils.DateUtils"></import>
+        <import type="android.text.TextUtils"></import>
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.github.ybq.android.spinkit.SpinKitView
+            android:visibility="@{!vm.isLoading ? View.GONE : View.VISIBLE}"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            app:SpinKit_Style="ThreeBounce"
+            app:SpinKit_Color="@color/color3">
+
+        </com.github.ybq.android.spinkit.SpinKitView>
+        <FrameLayout
+            android:visibility="@{vm.isLoading ? View.GONE : View.VISIBLE}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:layout_marginBottom="@dimen/_60sdp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/_30sdp">
+
+                    <FrameLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50sdp">
+
+                        <ImageView
+                            android:onClick="@{(v)->a.onBackPressed()}"
+                            android:id="@+id/imgBack"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|left"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:src="@drawable/ic_icon_back" />
+
+                        <TextView
+                            style="@style/roboto_medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textAlignment="center"
+                            android:text="@string/trip_information"
+                            android:textColor="@color/title_home_page"
+                            android:textSize="@dimen/_14ssp"
+                            android:maxLines="1"/>
+
+                    </FrameLayout>
+                    <RelativeLayout
+                        android:visibility="@{(vm.bookingResponse.state == -100 || vm.bookingResponse.state == 400) ? View.GONE : View.VISIBLE}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/driver_information_background"
+                        android:padding="@dimen/_10sdp">
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/driverAvt"
+                                android:layout_width="@dimen/_45sdp"
+                                android:layout_height="@dimen/_45sdp"
+                                android:src="@{vm.bookingResponse.driver.avatar, default=@drawable/user_avatar}"
+                                app:civ_border_color="@color/app_color"
+                                app:civ_border_width="@dimen/_1sdp"
+                                android:translationY="@{vm.bookingResponse.averageRating == 0 ? @dimen/_8ssp : 0}">
+
+                            </de.hdodenhof.circleimageview.CircleImageView>
+
+                            <LinearLayout
+                                android:visibility="@{vm.bookingResponse.averageRating > 0 ? View.VISIBLE : View.INVISIBLE}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView17"
+                                    style="@style/trip_information_text_medium"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="@dimen/_4sdp"
+                                    android:gravity="bottom"
+                                    android:text="@{String.valueOf(vm.bookingResponse.averageRating)}" />
+
+                                <ImageView
+                                    android:id="@+id/imageView15"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:srcCompat="@drawable/ic_icon_star" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/linearLayout1"
+                            android:layout_alignBottom="@+id/linearLayout1"
+                            android:layout_alignParentRight="true"
+                            android:orientation="vertical"
+                            android:weightSum="3">
+
+                            <TextView
+                                android:id="@+id/textView14"
+                                style="@style/trip_information_text_bold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="@{vm.bookingResponse.driver.fullName}"
+                                android:textColor="@color/title_home_page"
+                                android:textSize="@dimen/_14ssp" />
+
+                            <TextView
+                                android:visibility="@{!TextUtils.isEmpty(vm.bookingResponse.driverVehicle.name) ? View.VISIBLE : View.GONE}"
+                                android:id="@+id/textView15"
+                                style="@style/trip_information_text_medium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_gravity="center"
+                                android:text="@{vm.bookingResponse.driverVehicle.name}"
+                                android:maxLines="1"
+                                android:ellipsize="end"/>
+
+                            <TextView
+                                android:visibility="@{!TextUtils.isEmpty(vm.bookingResponse.driverVehicle.licenseNo) ? View.VISIBLE : View.GONE}"
+                                android:id="@+id/textView16"
+                                style="@style/trip_information_text_medium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:background="@drawable/grey_background"
+                                android:gravity="right|center"
+                                android:paddingHorizontal="@dimen/_5sdp"
+                                android:text="@{vm.bookingResponse.driverVehicle.licenseNo}"
+                                android:maxLines="1"
+                                android:ellipsize="end"/>
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:visibility="@{(vm.bookingResponse.state == 300 &amp;&amp; vm.bookingResponse.rating.star > 0)? View.VISIBLE : View.GONE}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="@dimen/_15sdp">
+                        <TextView
+                            style="@style/trip_information_text_bold"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rating_driver"
+                            android:textColor="@color/title_home_page"
+                            android:textSize="@dimen/_14ssp"
+                            android:textAlignment="center">
+
+                        </TextView>
+
+                        <RatingBar
+                            android:id="@+id/ratingBarDriver"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:isIndicator="true"
+                            android:numStars="5"
+                            android:progressBackgroundTint="@color/star_grey"
+                            android:progressTint="@color/yellow"
+                            android:secondaryProgressTint="@android:color/transparent"
+                            android:stepSize="1"
+                            android:rating="@{vm.bookingResponse.rating != null ? Float.parseFloat(vm.bookingResponse.rating.star.toString()) : 0}"
+                            >
+
+                        </RatingBar>
+
+                        <TextView
+                            style="@style/trip_information_text_medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.bookingResponse.rating.message}"
+                            android:layout_gravity="center"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:paddingHorizontal="@dimen/_20sdp">
+
+                        </TextView>
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="#EEF2F5">
+
+                    </FrameLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/trip_information_text_bold"
+                            android:id="@+id/textView18"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/payment" />
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/_10sdp">
+                            <TextView
+                                style="@style/trip_information_text_medium"
+                                android:id="@+id/textView20"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/fee" />
+
+                            <TextView
+                                style="@style/trip_information_text_medium"
+                                android:id="@+id/textView19"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:gravity="right"
+                                android:text='@{NumberUtils.formatDoubleNumber(vm.bookingResponse.money.doubleValue()) + " đ"}' />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/_10sdp">
+                            <TextView
+                                style="@style/trip_information_text_medium"
+                                android:id="@+id/txtDiscount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/discount" />
+
+                            <TextView
+                                style="@style/trip_information_text_medium"
+                                android:id="@+id/txtDiscountPrice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:gravity="right"
+                                android:text="@string/discount_price" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_below="@+id/linearLayout1"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:background="#EEF2F5"></FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/trip_information_text_bold"
+                                android:id="@+id/textView21"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/payment_cash" />
+
+                            <ImageView
+                                android:id="@+id/imageView16"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                app:srcCompat="@drawable/ic_icon_money"/>
+
+                            <TextView
+                                style="@style/trip_information_text_bold"
+                                android:id="@+id/textView22"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right"
+                                android:text='@{NumberUtils.formatDoubleNumber(vm.bookingResponse.money.doubleValue()) + " đ"}'
+                                android:maxLines="1"
+                                android:ellipsize="end"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="#EEF2F5">
+
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:orientation="vertical">
+                        <TextView
+                            style="@style/trip_information_text_bold"
+                            android:id="@+id/textView23"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/trip_details" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:orientation="horizontal">
+                            <TextView
+                                style="@style/trip_information_text_medium"
+                                android:id="@+id/textView24"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/_10sdp"
+                                android:text='@{!TextUtils.isEmpty(vm.bookingResponse.code) ? @string/code + ": " + vm.bookingResponse.code : ""}' />
+                            <TextView
+                                style="@style/trip_information_text_medium"
+                                android:id="@+id/textView25"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text='@{!TextUtils.isEmpty(vm.bookingResponse.createdDate) ? DateUtils.dateFormat(vm.bookingResponse.createdDate) : ""}'
+                                />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="@dimen/_10sdp"
+                                android:src="@drawable/ic_icon_destination">
+
+                            </ImageView>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    style="@style/new_password_subtitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/origin"
+                                    android:textSize="@dimen/_8sdp">
+
+                                </TextView>
+
+                                <TextView
+                                    style="@style/trip_information_text_medium"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/white"
+                                    android:maxLines="1"
+                                    android:text="@{vm.bookingResponse.pickupAddress}"
+                                    android:ellipsize="end"/>
+
+                                <TextView
+                                    android:visibility='@{!TextUtils.isEmpty(vm.bookingResponse.senderName) ? View.VISIBLE : View.GONE}'
+                                    style="@style/trip_information_text_medium"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/white"
+                                    android:maxLines="1"
+                                    android:text='@{!TextUtils.isEmpty(vm.bookingResponse.senderName) ? vm.bookingResponse.senderName + " - " + vm.bookingResponse.senderPhone : ""}'
+                                    android:ellipsize="end"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <FrameLayout
+                            android:layout_width="@dimen/_5sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:background="@drawable/line_dashed_border">
+
+                        </FrameLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/_21sdp"
+                                android:layout_height="@dimen/_21sdp"
+                                android:layout_marginRight="@dimen/_5sdp"
+                                android:src="@drawable/location_flag">
+
+                            </ImageView>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:visibility="@{vm.bookingResponse.distance != null ? View.VISIBLE : View.INVISIBLE}"
+                                    style="@style/new_password_subtitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text='@{vm.bookingResponse.distance != null ? @string/destination + " " + NumberUtils.formatDistance(vm.bookingResponse.distance) : "0"}'
+                                    android:textSize="@dimen/_8sdp">
+
+                                </TextView>
+
+                                <TextView
+                                    style="@style/trip_information_text_medium"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/white"
+                                    android:maxLines="1"
+                                    android:text="@{vm.bookingResponse.destinationAddress}"
+                                    android:ellipsize="end"/>
+
+                                <TextView
+                                    android:visibility='@{!TextUtils.isEmpty(vm.bookingResponse.consigneeName) ? View.VISIBLE : View.GONE}'
+                                    style="@style/trip_information_text_medium"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/white"
+                                    android:maxLines="1"
+                                    android:text='@{!TextUtils.isEmpty(vm.bookingResponse.consigneeName) ? vm.bookingResponse.consigneeName + " - " + vm.bookingResponse.consigneePhone : ""}'
+                                    android:ellipsize="end"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:visibility='@{vm.bookingResponse.state == 100 || vm.bookingResponse.state == -100 ? View.GONE : View.VISIBLE}'
+                            android:layout_marginVertical="@dimen/_10sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/trip_information_text_bold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hình ảnh gửi hàng" />
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:elevation="0dp"
+                                app:cardElevation="0dp"
+                                app:cardCornerRadius="@dimen/_8sdp">
+                                <ImageView
+                                    android:id="@+id/imgPickupImage"
+                                    android:src="@{vm.bookingResponse.pickupImage, default=@drawable/smartexpress_splash_logo}"
+                                    android:layout_width="@dimen/_80sdp"
+                                    android:layout_height="@dimen/_80sdp"/>
+                            </androidx.cardview.widget.CardView>
+
+                            <TextView
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:visibility="@{vm.bookingResponse.state == 300 ? View.VISIBLE : View.GONE}"
+                                style="@style/trip_information_text_bold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Hình ảnh nhận hàng" />
+
+                            <androidx.cardview.widget.CardView
+                                android:visibility="@{vm.bookingResponse.state == 300 ? View.VISIBLE : View.GONE}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:elevation="0dp"
+                                app:cardElevation="0dp"
+                                app:cardCornerRadius="@dimen/_8sdp">
+                                <ImageView
+                                    android:id="@+id/imgDeliveryImage"
+                                    android:src="@{vm.bookingResponse.deliveryImage, default=@drawable/smartexpress_splash_logo}"
+                                    android:layout_width="@dimen/_80sdp"
+                                    android:layout_height="@dimen/_80sdp"/>
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:visibility='@{vm.bookingResponse.isCod ? View.VISIBLE : View.GONE}'
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/trip_information_text_bold"
+                            android:text='@{vm.bookingResponse.isCod ? "Số tiền thu hộ: " + NumberUtils.formatDoubleNumber(vm.bookingResponse.codPrice) + " VNĐ" : ""}'
+                            />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </ScrollView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/background_book_small"
+                android:layout_gravity="bottom">
+                <Button
+                    android:background="@{ vm.bookingResponse.state == -100 ? @drawable/bg_btn_red : vm.bookingResponse.state == 300 ? @drawable/bg_btn_complete : @drawable/bg_pending_button}"
+                    style = "@style/BookCarButton"
+                    android:id="@+id/btnCancelBook"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:enabled="false"
+                    android:text="@{vm.bookingResponse.state == -100  ? @string/canceled : vm.bookingResponse.state == 300  ? @string/completed : @string/pending }"
+                    android:textColor="@{vm.bookingResponse.state == -100 ? @color/red_color : vm.bookingResponse.state == 300 ? @color/green : @color/pending_color}"
+                    />
+            </LinearLayout>
+        </FrameLayout>
+    </FrameLayout>
+</layout>

@@ -119,7 +119,7 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src='@{ivm.state == 300 ? @drawable/ic_icon_status : @drawable/ic_icon_status_cancel}' />
+                                android:src='@{ivm.state == 300 ? @drawable/ic_icon_status : ivm.state == -100 ? @drawable/ic_icon_status_cancel : @drawable/ic_icon_status_orange}' />
                             <TextView
                                 android:id="@+id/txtPrice"
                                 style="@style/roboto_bold"
@@ -130,8 +130,8 @@
                                 android:ellipsize="end"
                                 android:maxEms="8"
                                 android:maxLines="1"
-                                android:text='@{ivm.state == 300 ? @string/completed : @string/canceled}'
-                                android:textColor='@{ivm.state == 300 ? @color/green : @color/cancel_color}' />
+                                android:text='@{ivm.state == 300 ? @string/completed : ivm.state == -100 ? @string/canceled : @string/pending}'
+                                android:textColor='@{ivm.state == 300 ? @color/green : ivm.state == -100 ? @color/cancel_color : @color/pending_color}' />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

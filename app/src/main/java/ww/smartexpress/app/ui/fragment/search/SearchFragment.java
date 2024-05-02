@@ -26,7 +26,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.SingleObserver;
@@ -92,25 +94,37 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
-                    if(response.isResult() && response.getData().getTotalElements() > 0){
-                        currentBookingList = response.getData().getContent();
-                        bookingAdapter = new BookingAdapter(currentBookingList);
+                    if(response.isResult()){
+                        if(response.getData().getTotalElements() > 0){
+                            currentBookingList = response.getData().getContent();
+                            bookingAdapter = new BookingAdapter(currentBookingList);
 
-                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext()
-                                ,LinearLayoutManager.VERTICAL, false);
-
-                        binding.rcCurrentBooking.setLayoutManager(layoutManager);
-                        binding.rcCurrentBooking.setItemAnimator(new DefaultItemAnimator());
-
-                        binding.rcCurrentBooking.setAdapter(bookingAdapter);
-
-                        bookingAdapter.setOnItemClickListener(new BookingAdapter.OnItemClickListener() {
-                            @Override
-                            public void itemClick(BookingResponse booking) {
-                                goToShippingActivity(booking);
+                            Set<String> codeBooking = new HashSet<>();
+                            for(BookingResponse br: currentBookingList){
+                                codeBooking.add(br.getCode());
                             }
-                        });
 
+                            viewModel.getApplication().getWebSocketLiveData().setCodeBooking(codeBooking);
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext()
+                                    ,LinearLayoutManager.VERTICAL, false);
+
+                            binding.rcCurrentBooking.setLayoutManager(layoutManager);
+                            binding.rcCurrentBooking.setItemAnimator(new DefaultItemAnimator());
+
+                            binding.rcCurrentBooking.setAdapter(bookingAdapter);
+
+                            bookingAdapter.setOnItemClickListener(new BookingAdapter.OnItemClickListener() {
+                                @Override
+                                public void itemClick(BookingResponse booking) {
+                                    goToShippingActivity(booking);
+                                }
+                            });
+
+                        }else{
+                            if(bookingAdapter != null){
+                                bookingAdapter.clearItems();
+                            }
+                        }
                     }else{
 
                     }

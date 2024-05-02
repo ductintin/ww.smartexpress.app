@@ -72,6 +72,8 @@ public interface ApiService {
     Observable<ResponseWrapper<String>> cancelBooking(@Body CancelBookingRequest request);
     @GET("/v1/booking/my-booking")
     Observable<ResponseWrapper<ResponseListObj<BookingResponse>>> getMyBooking(@Query("code") String code, @Query("id") Long id, @Query("page") Integer pageNumber, @Query("size") Integer pageSize);
+    @GET("/v1/booking/detail-booking/{id}")
+    Observable<ResponseWrapper<BookingResponse>> getBookingById(@Path("id") Long id);
     @GET("/v1/room/get/{id}")
     Observable<ResponseWrapper<Room>> getMyRoom(@Path("id") Long id);
     @POST("/v1/rating/create")

@@ -2,6 +2,7 @@ package ww.smartexpress.app;
 
 import android.app.Application;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Lifecycle;
@@ -33,6 +34,8 @@ import ww.smartexpress.app.others.MyTimberDebugTree;
 import ww.smartexpress.app.others.MyTimberReleaseTree;
 import ww.smartexpress.app.ui.chat.ChatActivity;
 import ww.smartexpress.app.ui.delivery.BookDeliveryActivity;
+import ww.smartexpress.app.ui.fragment.search.SearchFragment;
+import ww.smartexpress.app.ui.home.HomeActivity;
 import ww.smartexpress.app.utils.DialogUtils;
 
 public class MVVMApplication extends Application implements LifecycleObserver, SocketListener {
@@ -246,6 +249,15 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
             intent.putExtra("BOOKING_ID", message.getDataObject(DriverBookingResponse.class).getBookingId());
             intent.putExtra("STATE_BOOKING", 4);
             currentActivity.startActivity(intent);
+        }else if(currentActivity instanceof HomeActivity){
+            HomeActivity homeActivity = ((HomeActivity) currentActivity);
+
+            if(homeActivity.activeFragment instanceof SearchFragment){
+                Log.d("TAG", "navigateFromBookingDoneToBookDeliveryActivity: in search fragment");
+                Intent intent = new Intent(currentActivity, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                currentActivity.startActivity(intent);
+            }
         }
     }
 

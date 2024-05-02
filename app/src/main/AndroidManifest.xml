@@ -49,6 +49,11 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize|stateHidden">
 
+        <activity android:name="ww.smartexpress.app.ui.trip.detail.TripDetailActivity"
+            android:theme="@style/WhiteAppTheme"
+            android:exported="true">
+        </activity>
+
         <activity android:name="ww.smartexpress.app.ui.map.MapActivity"
             android:theme="@style/WhiteAppTheme"
             android:exported="true">
@@ -114,6 +119,7 @@
 
         <activity android:name="ww.smartexpress.app.ui.search.location.SearchLocationActivity"
             android:theme="@style/WhiteAppTheme"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true">
         </activity>
 

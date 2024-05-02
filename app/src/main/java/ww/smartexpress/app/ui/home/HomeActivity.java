@@ -200,9 +200,9 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding, HomeViewMode
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
                     viewModel.hideLoading();
-                    if(response.isResult()){
+                    if(response.isResult() && response.getData().getTotalElements() > 0){
                         bookingResponse = response.getData().getContent().get(0);
-                        navigateToBookActivity();
+                        //navigateToBookActivity();
                     }
                 }, err -> {
                     viewModel.hideLoading();
@@ -223,5 +223,13 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding, HomeViewMode
     protected void onDestroy() {
         super.onDestroy();
         connectivityManager.unregisterNetworkCallback(networkCallback);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if(activeFragment instanceof SearchFragment){
+            searchFragment.loadCurrentBooking();
+        }
     }
 }

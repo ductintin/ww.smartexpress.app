@@ -172,6 +172,7 @@
     <string name="trip_complete">Chuyến đi đã hoàn tất</string>
     <string name="agree">Đồng ý</string>
     <string name="canceled">Đã hủy</string>
+    <string name="pending">Đang xử lý</string>
     <string name="note_restaurant">Nhập ghi chú cho nhà hàng</string>
     <string name="product_unit">món</string>
     <string name="weight_unit">kg</string>
