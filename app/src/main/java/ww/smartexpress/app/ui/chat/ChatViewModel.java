@@ -24,6 +24,7 @@ public class ChatViewModel extends BaseViewModel {
     public ObservableField<String> message = new ObservableField<>();
     public ObservableField<Long> roomId = new ObservableField<>(0L);
     public ObservableField<String> driverName = new ObservableField<>("");
+    public ObservableField<String> codeBooking = new ObservableField<>("");
     public ObservableField<String> driverAvatar = new ObservableField<>("");
     public ObservableField<Long> driverId = new ObservableField<>(0L);
     public MutableLiveData<ChatDetail> messageChat = new MutableLiveData<>(null);
@@ -45,7 +46,7 @@ public class ChatViewModel extends BaseViewModel {
             return;
         }
         ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setCodeBooking(application.getWebSocketLiveData().getCodeBooking());
+        chatMessage.setCodeBooking(codeBooking.get());
         chatMessage.setMessage(message.get().trim());
         chatMessage.setMessageId(String.valueOf((new Date()).getTime()));
 

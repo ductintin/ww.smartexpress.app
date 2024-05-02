@@ -10,6 +10,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.stream.Collectors;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -44,7 +45,7 @@ public class WebSocketLiveData implements Runnable{
 
     @Getter
     @Setter
-    private String codeBooking = "000000";
+    private Set<String> codeBooking = new HashSet<>();
 
     @Setter
     @Getter
@@ -195,15 +196,13 @@ public class WebSocketLiveData implements Runnable{
                 }
                 socketState = SOCKET_STATE_WAITING_RESPONSE;
                 Message message = new Message();
-                List<String> codeList = new ArrayList<>();
-                codeList.add(codeBooking);
                 message.setCmd(Command.COMMAND_PING);
                 message.setPlatform(0);
                 message.setClientVersion("1.0");
                 message.setLang("vi");
                 message.setToken(session);
                 message.setApp(Constants.APP_CUSTOMER);
-                message.setData(new BookingCode(codeList));
+                message.setData(new BookingCode(codeBooking.stream().collect(Collectors.toList())));
 //            String cmd = "{ \"cmd\": \"CLIENT_PING\", \"platform\": 1, \"token\": \""+session+"\" }";
                 webSocket.send(message.getPayload());
                 Timber.d("========>SEND: %s", message.getPayload());
@@ -250,15 +249,13 @@ public class WebSocketLiveData implements Runnable{
                 socketState = SOCKET_STATE_CONNECTED;
                 if(isAppOnline && socketListener != null){
                     Message message = new Message();
-                    List<String> codeList = new ArrayList<>();
-                    codeList.add(codeBooking);
                     message.setCmd(Command.COMMAND_CLIENT_INFO);
                     message.setPlatform(0);
                     message.setClientVersion("1.0");
                     message.setLang("vi");
                     message.setToken(session);
                     message.setApp(Constants.APP_CUSTOMER);
-                    message.setData(new BookingCode(codeList));
+                    message.setData(new BookingCode(codeBooking.stream().collect(Collectors.toList())));
                     webSocket.send(message.getPayload());
                     Timber.d("SEND: %s", message.getPayload());
                     socketListener.onConnected();
@@ -395,4 +392,11 @@ public class WebSocketLiveData implements Runnable{
         requests.clear();
     }
 
+    public void addBookingCode(String code){
+        codeBooking.add(code);
+    }
+
+    public void removeBookingCode(String code){
+        codeBooking.remove(code);
+    }
 }

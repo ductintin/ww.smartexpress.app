@@ -305,7 +305,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         viewModel.bookingResponse.set(response.getData());
                         viewModel.bookingCode.set(response.getData().getCode());
                         viewModel.bookingId.set(response.getData().getId());
-                        viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getCode());
+                        viewModel.getApplication().getWebSocketLiveData().addBookingCode(response.getData().getCode());
                         viewModel.getApplication().getWebSocketLiveData().sendPing();
                         Log.d("TAG", "findingDriver: " + response.getData().getCode());
 
@@ -363,8 +363,6 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     public void onBackPressed() {
         if(!viewModel.isFound.get() && !viewModel.isBooking.get() && !viewModel.isShipping.get()){
             super.onBackPressed();
-        }else if(viewModel.isFound.get() || viewModel.isBooking.get() || viewModel.isShipping.get()){
-            finishAffinity();
         }else{
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -541,7 +539,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     }
 
     public void loadMapDriverDirection(){
-        viewModel.compositeDisposable.add(viewModel.getMapDriverDirection(bookingResponse.getState() == 200 ? viewModel.destinationLatLng.get() : viewModel.originLatLng.get())
+        viewModel.compositeDisposable.add(viewModel.getMapDriverDirection(bookingResponse != null && bookingResponse.getState() == 200 ? viewModel.destinationLatLng.get() : viewModel.originLatLng.get())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
@@ -654,7 +652,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                     if(response.isResult() && response.getData().getTotalElements() > 0){
                         bookingResponse = response.getData().getContent().get(0);
                         viewModel.bookingId.set(response.getData().getContent().get(0).getId());
-                        viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getContent().get(0).getCode());
+                        viewModel.getApplication().getWebSocketLiveData().addBookingCode(response.getData().getContent().get(0).getCode());
                         viewModel.getApplication().getWebSocketLiveData().sendPing();
                         viewModel.bookingResponse.set(response.getData().getContent().get(0));
                         if(bookingResponse.getRoom() != null){
@@ -667,7 +665,6 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         viewModel.originLatLng.set(viewModel.originLat.get() + "," + viewModel.originLng.get());
                         viewModel.destinationLatLng.set(viewModel.destinationLat.get() + "," + viewModel.destinationLng.get());
                         //viewModel.originLatLng.set(viewModel.originLat.get() + "," + viewModel.originLng.get());
-                        viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getContent().get(0).getCode());
 
                         Log.d("TAG", "getCurrentBooking: " + bookingResponse.getState());
                         switch (bookingResponse.getState()){
@@ -755,6 +752,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 Log.d("TAG", "onNewIntent: ID vm " + viewModel.bookingId.get());
                 Log.d("TAG", "onNewIntent: id " + intent.getLongExtra("BOOKING_ID", -1L));
                 if(viewModel.bookingId.get().equals(intent.getLongExtra("BOOKING_ID", 1L)))
+                    preCameraPosition = null;
                     getCurrentBooking();
                 break;
             case 4: // Chuyen di hoan thanh

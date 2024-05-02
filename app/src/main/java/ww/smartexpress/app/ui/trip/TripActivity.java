@@ -159,7 +159,7 @@ public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewMode
                         if(response.getData().getContent().get(0).getState() != 300){
                             viewModel.driverAvgRate.set((response.getData().getContent().get(0).getAverageRating().floatValue()));
                         }
-                        viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getContent().get(0).getCode());
+                        viewModel.getApplication().getWebSocketLiveData().addBookingCode(response.getData().getContent().get(0).getCode());
                         viewModel.getApplication().getWebSocketLiveData().sendPing();
 
 
@@ -220,7 +220,7 @@ public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewMode
                     viewModel.hideLoading();
                     if(response.isResult()){
                         bookingResponse = response.getData().getContent().get(0);
-                        viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getContent().get(0).getCode());
+                        viewModel.getApplication().getWebSocketLiveData().addBookingCode(response.getData().getContent().get(0).getCode());
                         viewModel.getApplication().getWebSocketLiveData().sendPing();
                         loadBooking();
                     }else{

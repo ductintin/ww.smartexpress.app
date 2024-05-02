@@ -109,6 +109,7 @@ public class BookCarViewModel extends BaseViewModel {
         Intent intent = new Intent(application.getCurrentActivity(), ChatActivity.class);
         Bundle bundle = new Bundle();
         bundle.putLong(Constants.ROOM_ID, roomId.get());
+        bundle.putString("BOOKING_CODE", codeBooking.get());
         intent.putExtras(bundle);
         application.getCurrentActivity().startActivity(intent);
     }
