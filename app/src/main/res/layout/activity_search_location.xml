@@ -30,6 +30,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:visibility="invisible"
                 android:id="@+id/imageView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -42,6 +43,7 @@
             </ImageView>
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/textView10"
                 style="@style/title"
                 android:layout_width="wrap_content"
@@ -53,6 +55,7 @@
             </TextView>
 
             <androidx.cardview.widget.CardView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -74,6 +77,26 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
 
+        <FrameLayout
+            android:id="@+id/frameLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:background="#478D99"
+            app:layout_constraintTop_toBottomOf="@+id/imageView20">
+
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/imageView20"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_130sdp"
+            android:layout_gravity="top"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/background_top_delivery" />
+
         <LinearLayout
             android:id="@+id/linearLayout8"
             android:layout_width="match_parent"
@@ -81,16 +104,16 @@
             android:orientation="vertical"
             android:paddingLeft="@dimen/_10sdp"
             android:paddingRight="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/frameLayout4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout2">
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout4">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginRight="@dimen/_5sdp"
-                android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_15sdp"
                 app:cardCornerRadius="@dimen/_15sdp"
                 app:cardElevation="@dimen/_1sdp">
@@ -111,7 +134,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingRight="@dimen/_10sdp"
-                            android:src="@drawable/ic_icon_destination">
+                            android:src="@drawable/ic_icon_my_location">
 
                         </ImageView>
 
@@ -139,29 +162,41 @@
                                     style="@style/location_text"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
+                                    android:layout_weight="1"
                                     android:background="@color/white"
-                                    android:maxLines="1"
                                     android:ellipsize="end"
+                                    android:inputType="text"
+                                    android:maxLines="1"
                                     android:text="@={vm.location}"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    android:layout_weight="1"
-                                    android:inputType="text">
+                                    app:layout_constraintTop_toTopOf="parent">
 
                                 </EditText>
 
                                 <ImageView
-                                    android:visibility="@{!TextUtils.isEmpty(vm.searchLocation) ? View.INVISIBLE : View.VISIBLE}"
-                                    android:layout_gravity="end"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:onClick="@{()->vm.deleteLocation()}"
                                     android:src="@drawable/ic_icon_delete"
-                                    android:onClick="@{()->vm.deleteLocation()}">
+                                    android:visibility="@{TextUtils.isEmpty(vm.location) ? View.INVISIBLE : View.VISIBLE}">
 
                                 </ImageView>
 
                             </LinearLayout>
+
+                            <TextView
+                                android:background="@drawable/bg_tv_vehicle_number"
+                                android:onClick="@{()-> a.openMap(1)}"
+                                style="@style/destination_save"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="@dimen/_10sdp"
+                                android:textAlignment="center"
+                                android:layout_weight="1"
+                                android:text="Chọn từ bản đồ">
+                            </TextView>
                         </LinearLayout>
                     </LinearLayout>
 
@@ -184,39 +219,58 @@
                             android:layout_width="@dimen/_21sdp"
                             android:layout_height="@dimen/_21sdp"
                             android:layout_marginRight="@dimen/_5sdp"
-                            android:src="@drawable/location_flag"></ImageView>
+                            android:src="@drawable/ic_icon_search_location"></ImageView>
 
-                       <LinearLayout
-                           android:layout_width="match_parent"
-                           android:layout_height="match_parent"
-                           android:orientation="horizontal">
-                           <EditText
-                               android:id="@+id/edtSearchLocation"
-                               style="@style/destination_save"
-                               android:layout_width="wrap_content"
-                               android:layout_height="match_parent"
-                               android:background="@color/white"
-                               android:hint="@string/search_destination_hint"
-                               android:text="@={vm.searchLocation}"
-                               android:textSize="@dimen/_11sdp"
-                               android:maxLines="1"
-                               android:ellipsize="end"
-                               android:layout_weight="1"
-                               android:inputType="text"
-                               android:textColorHint="#898A8D">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
 
-                           </EditText>
+                                <EditText
+                                    android:id="@+id/edtSearchLocation"
+                                    style="@style/destination_save"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@color/white"
+                                    android:ellipsize="end"
+                                    android:hint="@string/search_destination_hint"
+                                    android:inputType="text"
+                                    android:maxLines="1"
+                                    android:text="@={vm.searchLocation}"
+                                    android:textColorHint="#898A8D"
+                                    android:textSize="@dimen/_11sdp">
 
-                           <ImageView
-                               android:visibility="@{TextUtils.isEmpty(vm.searchLocation) ? View.GONE : View.VISIBLE}"
-                               android:layout_gravity="end"
-                               android:layout_width="wrap_content"
-                               android:layout_height="wrap_content"
-                               android:src="@drawable/ic_icon_delete"
-                               android:onClick="@{()->vm.deleteSearchLocation()}">
+                                </EditText>
 
-                           </ImageView>
-                       </LinearLayout>
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:onClick="@{()->vm.deleteSearchLocation()}"
+                                    android:src="@drawable/ic_icon_delete"
+                                    android:visibility="@{TextUtils.isEmpty(vm.searchLocation) ? View.GONE : View.VISIBLE}">
+
+                                </ImageView>
+                            </LinearLayout>
+                            <TextView
+                                android:background="@drawable/bg_tv_vehicle_number"
+                                android:onClick="@{()-> a.openMap(2)}"
+                                style="@style/destination_save"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:textAlignment="center"
+                                android:layout_weight="1"
+                                android:text="Chọn từ bản đồ">
+                            </TextView>
+                        </LinearLayout>
+
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -224,18 +278,20 @@
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
-                android:visibility="@{!TextUtils.isEmpty(vm.searchLocation) ? View.GONE : View.VISIBLE}"
                 android:id="@+id/lnSavedLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_15sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -259,6 +315,7 @@
                 <androidx.core.widget.NestedScrollView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -266,6 +323,7 @@
                         android:layout_marginRight="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_15sdp"
                         android:orientation="horizontal">
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rcLocationType"
                             android:layout_width="match_parent"
@@ -278,14 +336,14 @@
                 </androidx.core.widget.NestedScrollView>
 
             </LinearLayout>
-            </LinearLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView11"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_5sdp"
             android:background="#EEF2F5"
-            android:visibility="@{!TextUtils.isEmpty(vm.searchLocation) ? View.GONE : View.VISIBLE}"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
@@ -296,12 +354,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/_15sdp"
-            android:paddingRight="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView11">
 
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tvSavedLocation"
+                style="@style/destination_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:text="Tìm kiếm gần đây">
+
+            </TextView>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcSavedLocation"
                 android:layout_width="match_parent"
@@ -326,7 +395,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@drawable/background_book_small"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -341,7 +409,7 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_15sdp"
                 android:background="@drawable/app_button_background"
-                android:enabled="@{!TextUtils.isEmpty(vm.originId) &amp;&amp; !TextUtils.isEmpty(vm.destinationId)}"
+                android:enabled="@{!TextUtils.isEmpty(vm.originId) &amp;&amp; !TextUtils.isEmpty(vm.destinationId)  &amp;&amp; vm.hasBooking == Boolean.FALSE }"
                 android:onClick="@{(v)->vm.nextBooking()}"
                 android:text="@string/next"
                 android:textColor="@color/white" />

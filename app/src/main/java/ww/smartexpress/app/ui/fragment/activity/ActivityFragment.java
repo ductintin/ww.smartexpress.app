@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.facebook.shimmer.Shimmer;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +43,7 @@ public class ActivityFragment extends BaseFragment<FragmentActivityBinding, Acti
     OrderShoppingAdapter orderShoppingAdapter;
     BookingAdapter bookingAdapter;
     List<BookingResponse> bookingResponses = new ArrayList<>();
+
     @Override
     public int getBindingVariable() {
         return BR.vm;
@@ -55,6 +58,9 @@ public class ActivityFragment extends BaseFragment<FragmentActivityBinding, Acti
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.shimmerViewContainer.setShimmer(new Shimmer.AlphaHighlightBuilder()
+                .setDuration(2000) // Đặt thời gian shimmer là 2000 milliseconds (2 giây)
+                .build());
         getBooking();
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
@@ -90,7 +96,7 @@ public class ActivityFragment extends BaseFragment<FragmentActivityBinding, Acti
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
                     Log.d("TAG", "onScrollChange: endndd");
-                    if(viewModel.pageNumber.get() <= viewModel.pageTotal.get()){
+                    if(viewModel.pageNumber.get() < viewModel.pageTotal.get()){
                         loadMore();
                     }
                 }

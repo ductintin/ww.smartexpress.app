@@ -31,6 +31,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -53,6 +54,7 @@ import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.model.api.ApiModelUtils;
 import ww.smartexpress.app.data.model.api.request.CreateBookingRequest;
 import ww.smartexpress.app.data.model.api.response.BookCar;
+import ww.smartexpress.app.data.model.api.response.BookingDoneResponse;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
 import ww.smartexpress.app.data.model.api.response.DriverBookingResponse;
 import ww.smartexpress.app.data.model.api.response.ServicePrice;
@@ -66,6 +68,7 @@ import ww.smartexpress.app.ui.base.activity.BaseActivity;
 import ww.smartexpress.app.ui.bookcar.adpater.BookCarAdapter;
 import ww.smartexpress.app.ui.home.HomeActivity;
 import ww.smartexpress.app.ui.trip.cancel.TripCancelReasonActivity;
+import ww.smartexpress.app.ui.trip.complete.TripCompleteActivity;
 
 public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBinding, BookDeliveryViewModel> implements OnMapReadyCallback, LocationListener, GoogleMap.OnMarkerDragListener {
     private GoogleMap mMap;
@@ -84,7 +87,8 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     BookingResponse bookingResponse;
     DriverBookingResponse driverBookingResponse;
 
-
+    CameraPosition preCameraPosition = null;
+    CameraPosition currentCameraPosition = null;
     @Override
     public int getLayoutId() {
         return R.layout.activity_book_delivery;
@@ -105,8 +109,11 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
 
         super.onCreate(savedInstanceState);
 
+        Intent intent = getIntent();
+        viewModel.bookingId.set(intent.getLongExtra("BOOKING_ID", 0L));
+        viewModel.bookingCode.set(intent.getStringExtra("BOOKING_CODE") != null ? intent.getStringExtra("BOOKING_CODE") : "");
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
+        if(bundle != null && viewModel.bookingCode.get().equals("")){
 
             ShippingInfo shippingInfo = ApiModelUtils.fromJson(bundle.getString(Constants.SHIPPING_INFO), ShippingInfo.class);
             //viewModel.customerNote.set(getIntent().getStringExtra(Constants.CUSTOMER_BOOKING_NOTE));
@@ -191,9 +198,12 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
             @Override
             public void onCameraIdle() {
                 zoomLevel = mMap.getCameraPosition().zoom;
+                currentCameraPosition = mMap.getCameraPosition();
+
                 Log.d("TAG", "onCameraIdle: " + zoomLevel);
             }
         });
+
         // Add a marker in Sydney and move the camera
 //        LatLng sydney = new LatLng(-34, 151);
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
@@ -285,7 +295,6 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     }
 
     public void findingDriver(){
-
         viewModel.compositeDisposable.add(viewModel.createBooking(bookingRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -294,6 +303,8 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                     if(response.isResult()){
                         viewModel.isBooking.set(true);
                         viewModel.bookingResponse.set(response.getData());
+                        viewModel.bookingCode.set(response.getData().getCode());
+                        viewModel.bookingId.set(response.getData().getId());
                         viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getCode());
                         viewModel.getApplication().getWebSocketLiveData().sendPing();
                         Log.d("TAG", "findingDriver: " + response.getData().getCode());
@@ -530,7 +541,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     }
 
     public void loadMapDriverDirection(){
-        viewModel.compositeDisposable.add(viewModel.getMapDriverDirection()
+        viewModel.compositeDisposable.add(viewModel.getMapDriverDirection(bookingResponse.getState() == 200 ? viewModel.destinationLatLng.get() : viewModel.originLatLng.get())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
@@ -572,7 +583,13 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         mMap.addPolyline(polylineOptions);
 
                         BitmapDescriptor originIc = BitmapDescriptorFactory.fromResource(R.drawable.origin_pin);
-                        LatLng origin = new LatLng(viewModel.originLat.get(), viewModel.originLng.get());
+                        LatLng origin;
+                        if(bookingResponse.getState() == 200){
+                            origin = new LatLng(viewModel.destinationLat.get(), viewModel.destinationLng.get());
+                        }else{
+                            origin = new LatLng(viewModel.originLat.get(), viewModel.originLng.get());
+                        }
+
                         LatLng des = new LatLng(Double.valueOf(viewModel.driverLatLng.get().split(",")[0]), Double.valueOf(viewModel.driverLatLng.get().split(",")[1]));
 
                         if(bookingResponse.getService().getKind() == 1){
@@ -590,7 +607,14 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         getWindowManager().getDefaultDisplay().getSize(point);
 
                         //mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, point.x, 150, 20));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(des,zoomLevel > 3.0f ? zoomLevel : 17.0f ));
+
+                        if(preCameraPosition != null){
+                            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(currentCameraPosition));
+                        }else{
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(des,zoomLevel > 17.0f ? zoomLevel : 17.0f));
+                            preCameraPosition = currentCameraPosition;
+                        }
+
 
 
                     }
@@ -627,11 +651,12 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
                     viewModel.hideLoading();
-                    if(response.isResult()){
-                        bookingResponse = response.getData();
-                        viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getCode());
+                    if(response.isResult() && response.getData().getTotalElements() > 0){
+                        bookingResponse = response.getData().getContent().get(0);
+                        viewModel.bookingId.set(response.getData().getContent().get(0).getId());
+                        viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getContent().get(0).getCode());
                         viewModel.getApplication().getWebSocketLiveData().sendPing();
-                        viewModel.bookingResponse.set(response.getData());
+                        viewModel.bookingResponse.set(response.getData().getContent().get(0));
                         if(bookingResponse.getRoom() != null){
                             viewModel.roomId.set(bookingResponse.getRoom().getId());
                         }
@@ -642,7 +667,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         viewModel.originLatLng.set(viewModel.originLat.get() + "," + viewModel.originLng.get());
                         viewModel.destinationLatLng.set(viewModel.destinationLat.get() + "," + viewModel.destinationLng.get());
                         //viewModel.originLatLng.set(viewModel.originLat.get() + "," + viewModel.originLng.get());
-                        viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getCode());
+                        viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getContent().get(0).getCode());
 
                         Log.d("TAG", "getCurrentBooking: " + bookingResponse.getState());
                         switch (bookingResponse.getState()){
@@ -658,6 +683,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                             case 200:
                                 viewModel.isFound.set(false);
                                 viewModel.isShipping.set(true);
+                                foundDriver();
                                 break;
                         }
 
@@ -700,27 +726,57 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
             return;
         }
 
-        if(intent.getStringExtra(Constants.DRIVER_POSITION) != null){
-            String driverPos = intent.getStringExtra(Constants.DRIVER_POSITION);
-            viewModel.driverLatLng.set(driverPos);
-            loadMapDriverDirection();
-
-            Log.d("TAG", "onNewIntent: driverpos " + driverPos);
-            Log.d("TAG", "onNewIntent: driverpos " + Double.valueOf(viewModel.driverLatLng.get().split(",")[0]));
-            Log.d("TAG", "onNewIntent: driverpos " + Double.valueOf(viewModel.driverLatLng.get().split(",")[1]));
-            return;
+        Integer codeCase = intent.getIntExtra("STATE_BOOKING", -1);
+        Log.d("TAG", "onNewIntent: coedcase " + codeCase);
+        switch (codeCase){
+            case 1: //Tai xe accept
+                Log.d("TAG", "onNewIntent: case 1 " + codeCase);
+                Log.d("TAG", "onNewIntent: codebooking vm" + viewModel.bookingCode.get());
+                Log.d("TAG", "onNewIntent: codebooking" + intent.getStringExtra("BOOKING_CODE"));
+                if(viewModel.bookingCode.get().equals(intent.getStringExtra("BOOKING_CODE"))){
+                    getCurrentBooking();
+                }
+                break;
+            case 2: // Tai xe update vi tri
+                Log.d("TAG", "onNewIntent: case 2 " + codeCase);
+                Log.d("TAG", "onNewIntent: codebooking vm " + viewModel.bookingCode.get());
+                Log.d("TAG", "onNewIntent: codebooking " + intent.getStringExtra("BOOKING_CODE"));
+                if(viewModel.bookingCode.get().equals(intent.getStringExtra("BOOKING_CODE"))){
+                    String driverPos = intent.getStringExtra(Constants.DRIVER_POSITION);
+                    viewModel.driverLatLng.set(driverPos);
+                    Log.d("TAG", "onNewIntent: driverpos " + driverPos);
+                    Log.d("TAG", "onNewIntent: driverpos " + Double.valueOf(viewModel.driverLatLng.get().split(",")[0]));
+                    Log.d("TAG", "onNewIntent: driverpos " + Double.valueOf(viewModel.driverLatLng.get().split(",")[1]));
+                    loadMapDriverDirection();
+                }
+                break;
+            case 3: // Tai xe don
+                Log.d("TAG", "onNewIntent: case 3 " + codeCase);
+                Log.d("TAG", "onNewIntent: ID vm " + viewModel.bookingId.get());
+                Log.d("TAG", "onNewIntent: id " + intent.getLongExtra("BOOKING_ID", -1L));
+                if(viewModel.bookingId.get().equals(intent.getLongExtra("BOOKING_ID", 1L)))
+                    getCurrentBooking();
+                break;
+            case 4: // Chuyen di hoan thanh
+                Log.d("TAG", "onNewIntent: case 4  " + codeCase);
+                Log.d("TAG", "onNewIntent: ID vm " + viewModel.bookingId.get());
+                Log.d("TAG", "onNewIntent: id " + intent.getLongExtra("BOOKING_ID", -1L));
+                if(viewModel.bookingId.get() == (intent.getLongExtra("BOOKING_ID", -1L))){
+                    Intent intentToTrip = new Intent(BookDeliveryActivity.this, TripCompleteActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putBoolean(Constants.BOOKING_COMPLETE_STATE, true);
+                    bundle.putString(Constants.CUSTOMER_BOOKING_ID, viewModel.bookingId.get().toString());
+                    intentToTrip.putExtras(bundle);
+                }
+                break;
+            case 5: // Tai xe huy chuyen nay
+                Log.d("TAG", "onNewIntent: case 5 " + codeCase);
+                Log.d("TAG", "onNewIntent: codebooking vm" + viewModel.bookingCode.get());
+                Log.d("TAG", "onNewIntent: codebooking" + intent.getStringExtra("BOOKING_CODE"));
+                if(viewModel.bookingCode.get().equals(intent.getStringExtra("BOOKING_CODE"))){
+                    getCurrentBooking();
+                }
+                break;
         }
-
-        if(viewModel.getApplication().getDriverBookingResponse() != null){
-            driverBookingResponse = viewModel.getApplication().getDriverBookingResponse();
-            getCurrentBooking();
-        }else {
-            viewModel.isShipping.set(true);
-            viewModel.isFound.set(false);
-            viewModel.getApplication().getWebSocketLiveData().sendPing();
-            Log.d("TAG", "onNewIntent: đã đoán");
-        }
-
-
     }
 }

@@ -55,9 +55,7 @@ public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewMode
     @Override
     public void onBackPressed() {
         handler.removeCallbacks(runnable);
-        if(viewModel.bookingState.get() == 200){
-            finishAffinity();
-        }
+
         if(viewModel.isCanceled.get() || viewModel.isCompleted.get() ){
             Intent intent = new Intent(getApplication(), HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -152,16 +150,16 @@ public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewMode
                 .subscribe(response ->{
                     viewModel.hideLoading();
                     if(response.isResult()){
-                        viewModel.bookingResponse.set(response.getData());
-                        viewModel.driverName.set(response.getData().getDriver().getFullName());
-                        viewModel.driverAvatar.set(response.getData().getDriver().getAvatar());
-                        viewModel.driverLicense.set(response.getData().getDriverVehicle().getPlate());
-                        viewModel.driverVehicle.set(response.getData().getDriverVehicle().getName());
+                        viewModel.bookingResponse.set(response.getData().getContent().get(0));
+                        viewModel.driverName.set(response.getData().getContent().get(0).getDriver().getFullName());
+                        viewModel.driverAvatar.set(response.getData().getContent().get(0).getDriver().getAvatar());
+                        viewModel.driverLicense.set(response.getData().getContent().get(0).getDriverVehicle().getPlate());
+                        viewModel.driverVehicle.set(response.getData().getContent().get(0).getDriverVehicle().getName());
 
-                        if(response.getData().getState() != 300){
-                            viewModel.driverAvgRate.set((response.getData().getAverageRating().floatValue()));
+                        if(response.getData().getContent().get(0).getState() != 300){
+                            viewModel.driverAvgRate.set((response.getData().getContent().get(0).getAverageRating().floatValue()));
                         }
-                        viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getCode());
+                        viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getContent().get(0).getCode());
                         viewModel.getApplication().getWebSocketLiveData().sendPing();
 
 

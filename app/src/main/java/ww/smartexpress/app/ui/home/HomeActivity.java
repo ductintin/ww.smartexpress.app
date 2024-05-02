@@ -201,7 +201,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding, HomeViewMode
                 .subscribe(response ->{
                     viewModel.hideLoading();
                     if(response.isResult()){
-                        bookingResponse = response.getData();
+                        bookingResponse = response.getData().getContent().get(0);
                         navigateToBookActivity();
                     }
                 }, err -> {

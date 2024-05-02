@@ -565,10 +565,10 @@ public class BookCarActivity extends BaseActivity<ActivityBookCarBinding, BookCa
                 .subscribe(response ->{
                     viewModel.hideLoading();
                     if(response.isResult()){
-                        bookingResponse = response.getData();
-                        viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getCode());
+                        bookingResponse = response.getData().getContent().get(0);
+                        viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getContent().get(0).getCode());
                         viewModel.getApplication().getWebSocketLiveData().sendPing();
-                        viewModel.bookingResponse.set(response.getData());
+                        viewModel.bookingResponse.set(response.getData().getContent().get(0));
                         if(bookingResponse.getRoom() != null){
                             viewModel.roomId.set(bookingResponse.getRoom().getId());
                         }
@@ -579,7 +579,7 @@ public class BookCarActivity extends BaseActivity<ActivityBookCarBinding, BookCa
                         viewModel.originLatLng.set(viewModel.originLat.get() + "," + viewModel.originLng.get());
                         viewModel.destinationLatLng.set(viewModel.destinationLat.get() + "," + viewModel.destinationLng.get());
                         viewModel.customerPos.set(viewModel.originLat.get() + "," + viewModel.originLng.get());
-                        viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getCode());
+                        viewModel.getApplication().getWebSocketLiveData().setCodeBooking(response.getData().getContent().get(0).getCode());
 
                         switch (bookingResponse.getState()){
                             case 0:

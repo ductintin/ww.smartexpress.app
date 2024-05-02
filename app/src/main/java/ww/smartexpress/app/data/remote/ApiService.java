@@ -67,7 +67,7 @@ public interface ApiService {
     @POST("/v1/booking/create")
     Observable<ResponseWrapper<BookingResponse>> createBooking(@Body CreateBookingRequest request);
     @GET("/v1/booking/my-current-booking")
-    Observable<ResponseWrapper<BookingResponse>> getCurrentBooking();
+    Observable<ResponseWrapper<ResponseListObj<BookingResponse>>> getCurrentBooking(@Query("code") String code);
     @PUT("/v1/booking/cancel")
     Observable<ResponseWrapper<String>> cancelBooking(@Body CancelBookingRequest request);
     @GET("/v1/booking/my-booking")

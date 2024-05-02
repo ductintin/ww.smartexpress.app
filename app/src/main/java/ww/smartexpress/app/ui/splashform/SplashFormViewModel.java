@@ -10,6 +10,7 @@ import io.reactivex.rxjava3.core.Observable;
 import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.Repository;
+import ww.smartexpress.app.data.model.api.ResponseListObj;
 import ww.smartexpress.app.data.model.api.ResponseWrapper;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
 import ww.smartexpress.app.ui.home.HomeActivity;
@@ -37,11 +38,11 @@ public class SplashFormViewModel extends WelcomeViewModel {
 //        getApplication().getCurrentActivity().finish();
     }
 
-    Observable<ResponseWrapper<BookingResponse>> getCurrentBooking() {
-        return repository.getApiService().getCurrentBooking()
+    Observable<ResponseWrapper<ResponseListObj<BookingResponse>>> getCurrentBooking() {
+        return repository.getApiService().getCurrentBooking(null)
                 .doOnNext(response -> {
                     if(response.isResult()){
-                        state.set(response.getData().getState());
+                        state.set(response.getData().getContent().get(0).getState());
                     }
                 });
     }

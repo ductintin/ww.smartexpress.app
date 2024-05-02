@@ -2,7 +2,9 @@ package ww.smartexpress.app.data.websocket;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
@@ -193,13 +195,15 @@ public class WebSocketLiveData implements Runnable{
                 }
                 socketState = SOCKET_STATE_WAITING_RESPONSE;
                 Message message = new Message();
+                List<String> codeList = new ArrayList<>();
+                codeList.add(codeBooking);
                 message.setCmd(Command.COMMAND_PING);
                 message.setPlatform(0);
                 message.setClientVersion("1.0");
                 message.setLang("vi");
                 message.setToken(session);
                 message.setApp(Constants.APP_CUSTOMER);
-                message.setData(new BookingCode(codeBooking));
+                message.setData(new BookingCode(codeList));
 //            String cmd = "{ \"cmd\": \"CLIENT_PING\", \"platform\": 1, \"token\": \""+session+"\" }";
                 webSocket.send(message.getPayload());
                 Timber.d("========>SEND: %s", message.getPayload());
@@ -246,13 +250,15 @@ public class WebSocketLiveData implements Runnable{
                 socketState = SOCKET_STATE_CONNECTED;
                 if(isAppOnline && socketListener != null){
                     Message message = new Message();
+                    List<String> codeList = new ArrayList<>();
+                    codeList.add(codeBooking);
                     message.setCmd(Command.COMMAND_CLIENT_INFO);
                     message.setPlatform(0);
                     message.setClientVersion("1.0");
                     message.setLang("vi");
                     message.setToken(session);
                     message.setApp(Constants.APP_CUSTOMER);
-                    message.setData(new BookingCode(codeBooking));
+                    message.setData(new BookingCode(codeList));
                     webSocket.send(message.getPayload());
                     Timber.d("SEND: %s", message.getPayload());
                     socketListener.onConnected();

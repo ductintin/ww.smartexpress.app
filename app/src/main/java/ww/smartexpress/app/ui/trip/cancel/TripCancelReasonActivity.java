@@ -99,7 +99,7 @@ public class TripCancelReasonActivity extends BaseActivity<ActivityTripCancelRea
                 .subscribe(response ->{
                     viewModel.hideLoading();
                     if(response.isResult()){
-                        bookingResponse = response.getData();
+                        bookingResponse = response.getData().getContent().get(0);
                         //navigateToBookActivity();
                     }else{
                         //navigateToHomeActivity();

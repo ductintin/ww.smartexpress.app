@@ -53,6 +53,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         notifyDataSetChanged();
     }
 
+
     public class BookingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private ItemBookingBinding mBinding;
         private BookingResponse booking;

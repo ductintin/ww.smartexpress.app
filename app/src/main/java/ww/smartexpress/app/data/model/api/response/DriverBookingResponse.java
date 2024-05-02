@@ -11,4 +11,6 @@ public class DriverBookingResponse {
     private String driverId;
     private String driverLatitude;
     private String driverLongitude;
+    private String codeBooking;
+    private Long bookingId;
 }

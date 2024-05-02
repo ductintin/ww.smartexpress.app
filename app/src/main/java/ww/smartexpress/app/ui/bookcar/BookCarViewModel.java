@@ -31,6 +31,7 @@ import ww.smartexpress.app.ui.search.SearchActivity;
 import ww.smartexpress.app.ui.trip.TripActivity;
 
 public class BookCarViewModel extends BaseViewModel {
+    public ObservableField<String> codeBooking = new ObservableField<>("000000");
     public ObservableField<String> time = new ObservableField<>("6 phút");
     public ObservableField<String> vehicle = new ObservableField<>("");
     public ObservableField<String> licensePlates = new ObservableField<>("");
@@ -178,13 +179,13 @@ public class BookCarViewModel extends BaseViewModel {
                 });
     }
 
-    Observable<ResponseWrapper<BookingResponse>> getCurrentBooking() {
-        return repository.getApiService().getCurrentBooking()
+    Observable<ResponseWrapper<ResponseListObj<BookingResponse>>> getCurrentBooking() {
+        return repository.getApiService().getCurrentBooking(null)
                 .doOnNext(response -> {
                     if(response.isResult()){
-                        if(response.getData().getRoom() != null){
-                            repository.getSharedPreferences().setLong(Constants.ROOM_ID, response.getData().getRoom().getId());
-                            roomId.set(response.getData().getRoom().getId());
+                        if(response.getData().getContent().get(0).getRoom() != null){
+                            repository.getSharedPreferences().setLong(Constants.ROOM_ID, response.getData().getContent().get(0).getRoom().getId());
+                            roomId.set(response.getData().getContent().get(0).getRoom().getId());
                         }
                     }
                 });

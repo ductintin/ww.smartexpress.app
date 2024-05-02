@@ -5,6 +5,7 @@ import androidx.databinding.ObservableField;
 import io.reactivex.rxjava3.core.Observable;
 import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.data.Repository;
+import ww.smartexpress.app.data.model.api.ResponseListObj;
 import ww.smartexpress.app.data.model.api.ResponseWrapper;
 import ww.smartexpress.app.data.model.api.request.CreateBookingRequest;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
@@ -16,11 +17,11 @@ public class HomeViewModel extends BaseViewModel {
         super(repository, application);
     }
 
-    Observable<ResponseWrapper<BookingResponse>> getCurrentBooking() {
-        return repository.getApiService().getCurrentBooking()
+    Observable<ResponseWrapper<ResponseListObj<BookingResponse>>> getCurrentBooking() {
+        return repository.getApiService().getCurrentBooking(null)
                 .doOnNext(response -> {
                     if(response.isResult()){
-                        state.set(response.getData().getState());
+                        state.set(response.getData().getContent().get(0).getState());
                     }
                 });
     }

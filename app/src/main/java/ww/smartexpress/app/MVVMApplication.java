@@ -2,7 +2,6 @@ package ww.smartexpress.app;
 
 import android.app.Application;
 import android.content.Intent;
-import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Lifecycle;
@@ -20,7 +19,6 @@ import lombok.Getter;
 import lombok.Setter;
 import timber.log.Timber;
 import ww.smartexpress.app.constant.Constants;
-import ww.smartexpress.app.data.model.api.response.BookingDoneResponse;
 import ww.smartexpress.app.data.model.api.response.ChatMessage;
 import ww.smartexpress.app.data.model.api.response.DriverBookingResponse;
 import ww.smartexpress.app.data.model.api.response.DriverPosition;
@@ -33,11 +31,8 @@ import ww.smartexpress.app.di.component.AppComponent;
 import ww.smartexpress.app.di.component.DaggerAppComponent;
 import ww.smartexpress.app.others.MyTimberDebugTree;
 import ww.smartexpress.app.others.MyTimberReleaseTree;
-import ww.smartexpress.app.ui.bookcar.BookCarActivity;
 import ww.smartexpress.app.ui.chat.ChatActivity;
 import ww.smartexpress.app.ui.delivery.BookDeliveryActivity;
-import ww.smartexpress.app.ui.trip.TripActivity;
-import ww.smartexpress.app.ui.trip.complete.TripCompleteActivity;
 import ww.smartexpress.app.utils.DialogUtils;
 
 public class MVVMApplication extends Application implements LifecycleObserver, SocketListener {
@@ -152,25 +147,25 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
             if(socketEventModel.getMessage().getResponseCode() == 200){
                 switch (socketEventModel.getMessage().getCmd()){
                     case Command.CMD_DRIVER_ACCEPTED:
-                        navigateToBookCarActivity(socketEventModel);
+                        navigateFromDriverAcceptToBookDeliveryActivity(socketEventModel);
                         break;
                     case Command.CMD_DRIVER_PICKUP_SUCCESS:
-                        navigateToTripActivity(socketEventModel);
+                        navigateFromDriverPickUpToBookDeliveryActivity(socketEventModel);
                         break;
                     case Command.CMD_DRIVER_DONE_BOOKING:
-                        navigateToTripCompleteActivity(socketEventModel);
+                        navigateFromBookingDoneToBookDeliveryActivity(socketEventModel);
                         break;
                     case Command.CM_SEND_MESSAGE:
                         navigateToChat(socketEventModel);
                         break;
                     case Command.CMD_DRIVER_CANCEL_BOOKING:
-                        navigateToBookCarCancelActivity(socketEventModel);
+                        navigateFromDriverCancelBookingToBookDeliveryActivity(socketEventModel);
                         break;
                     case Command.CMD_NOT_FOUND_DRIVER:
                         navigateToHomeActivity(socketEventModel);
                         break;
                     case Command.CMD_DRIVER_UPDATE_POSITION:
-                        navigateToBookCarAcceptActivity(socketEventModel);
+                        navigateFromDriverUpdatePositionToBookDeliveryActivity(socketEventModel);
                         break;
                     default:
                         break;
@@ -219,41 +214,56 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         currentActivity.startActivity(intent);
     }
 
-    public void navigateToBookCarActivity(SocketEventModel socketEventModel){
+    public void navigateFromDriverAcceptToBookDeliveryActivity(SocketEventModel socketEventModel){
         Message message = socketEventModel.getMessage();
-        DriverBookingResponse bookingResponse = message.getDataObject(DriverBookingResponse.class);
-        driverBookingResponse = bookingResponse;
-
-        Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        currentActivity.startActivity(intent);
+        if(currentActivity instanceof BookDeliveryActivity){
+            DriverBookingResponse bookingResponse = message.getDataObject(DriverBookingResponse.class);
+            driverBookingResponse = bookingResponse;
+            Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
+            intent.putExtra("BOOKING_CODE", bookingResponse.getCodeBooking());
+            intent.putExtra("STATE_BOOKING", 1);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            currentActivity.startActivity(intent);
+        }
     }
 
-    public void navigateToTripActivity(SocketEventModel socketEventModel){
+    public void navigateFromDriverPickUpToBookDeliveryActivity(SocketEventModel socketEventModel){
         Message message = socketEventModel.getMessage();
-//        DriverBookingResponse bookingResponse = message.getDataObject(DriverBookingResponse.class);
-//        driverBookingResponse = bookingResponse;
-
-        Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        currentActivity.startActivity(intent);
+        if(currentActivity instanceof BookDeliveryActivity){
+            Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            intent.putExtra("BOOKING_ID", message.getDataObject(DriverBookingResponse.class).getBookingId());
+            intent.putExtra("STATE_BOOKING", 3);
+            currentActivity.startActivity(intent);
+        }
     }
 
-    public void navigateToTripCompleteActivity(SocketEventModel socketEventModel){
+    public void navigateFromBookingDoneToBookDeliveryActivity(SocketEventModel socketEventModel){
         Message message = socketEventModel.getMessage();
-        Intent intent = new Intent(currentActivity, TripCompleteActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(Constants.BOOKING_COMPLETE_STATE, true);
-        bundle.putString(Constants.CUSTOMER_BOOKING_ID, message.getDataObject(BookingDoneResponse.class).getBookingId());
-        intent.putExtras(bundle);
-        currentActivity.startActivity(intent);
+        if(currentActivity instanceof BookDeliveryActivity){
+            Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            intent.putExtra("BOOKING_ID", message.getDataObject(DriverBookingResponse.class).getBookingId());
+            intent.putExtra("STATE_BOOKING", 4);
+            currentActivity.startActivity(intent);
+        }
     }
 
-    public void navigateToBookCarCancelActivity(SocketEventModel socketEventModel){
-        Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
-        intent.putExtra(Constants.BOOKING_STATE, 0);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        currentActivity.startActivity(intent);
+    public void navigateFromDriverCancelBookingToBookDeliveryActivity(SocketEventModel socketEventModel){
+        Message message = socketEventModel.getMessage();
+
+//        Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
+//        intent.putExtra(Constants.BOOKING_STATE, 0);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//        currentActivity.startActivity(intent);
+
+        if( currentActivity instanceof BookDeliveryActivity){
+            Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
+            intent.putExtra("STATE_BOOKING", 5);
+            intent.putExtra("BOOKING_ID", message.getDataObject(DriverBookingResponse.class).getBookingId());
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            currentActivity.startActivity(intent);
+        }
     }
 
     public void navigateToHomeActivity(SocketEventModel socketEventModel){
@@ -263,12 +273,13 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         currentActivity.startActivity(intent);
     }
 
-    public void navigateToBookCarAcceptActivity(SocketEventModel socketEventModel){
+    public void navigateFromDriverUpdatePositionToBookDeliveryActivity(SocketEventModel socketEventModel){
         Message message = socketEventModel.getMessage();
         if( currentActivity instanceof BookDeliveryActivity){
             Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
-            DriverPosition driverPosition = new DriverPosition();
-            driverPosition = message.getDataObject(DriverPosition.class);
+            DriverPosition driverPosition =  message.getDataObject(DriverPosition.class);
+            intent.putExtra("STATE_BOOKING", 2);
+            intent.putExtra("BOOKING_CODE", driverPosition.getCodeBooking());
             intent.putExtra(Constants.DRIVER_POSITION, driverPosition.getLatitude() + "," + driverPosition.getLongitude());
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             currentActivity.startActivity(intent);

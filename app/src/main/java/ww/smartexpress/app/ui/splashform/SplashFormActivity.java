@@ -13,6 +13,8 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.JsonArray;
 
+import java.util.List;
+
 import eu.davidea.flexibleadapter.databinding.BR;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -33,7 +35,7 @@ import ww.smartexpress.app.ui.welcome.WelcomeActivity;
 import ww.smartexpress.app.utils.LocationUtils;
 
 public class SplashFormActivity extends BaseActivity<ActivitySplashFormBinding, SplashFormViewModel> {
-    BookingResponse bookingResponse;
+    List<BookingResponse> bookingResponse;
     private FusedLocationProviderClient fusedLocationClient;
 
     @Override
@@ -61,7 +63,8 @@ public class SplashFormActivity extends BaseActivity<ActivitySplashFormBinding, 
             public void run() {
                 if (checkLocationPermissions()) {
                     if(viewModel.checkToken()){
-                        getCurrentBooking();
+                        //getCurrentBooking();
+                        navigateToHomeActivity();
                     }else{
                         navigateToIndexActivity();
                     }
@@ -78,18 +81,19 @@ public class SplashFormActivity extends BaseActivity<ActivitySplashFormBinding, 
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
                     viewModel.hideLoading();
-                    if(response.isResult()){
-                        bookingResponse = response.getData();
-                        switch (bookingResponse.getState()){
-                            case 0 : case 100:
-                                navigateToBookActivity();
-                                break;
-                            case 200:
-                                navigateToTripActivity();
-                                break;
-                            default:
-                                break;
-                        }
+                    if(response.isResult() && response.getData().getTotalElements() > 0 && response.getData().getTotalElements() <= 10){
+                        bookingResponse = response.getData().getContent();
+//                        switch (bookingResponse.getState()){
+//                            case 0 : case 100:
+//                                navigateToBookActivity();
+//                                break;
+//                            case 200:
+//                                navigateToTripActivity();
+//                                break;
+//                            default:
+//                                break;
+//                        }
+                        navigateToBookActivity();
                     }else{
                         navigateToHomeActivity();
                     }

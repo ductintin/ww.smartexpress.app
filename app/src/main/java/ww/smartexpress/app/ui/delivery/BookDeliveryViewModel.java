@@ -20,6 +20,9 @@ import ww.smartexpress.app.ui.base.activity.BaseViewModel;
 import ww.smartexpress.app.ui.trip.TripActivity;
 
 public class BookDeliveryViewModel extends BaseViewModel {
+    public ObservableField<Long> bookingId = new ObservableField<>(0L);
+    public ObservableField<String> bookingCode = new ObservableField<>("");
+
     public ObservableField<String> location = new ObservableField<>("150/17 Đinh Tiên Hoàng, Phường 26, Quận 3");
     public ObservableField<Integer> discount = new ObservableField<>();
     public ObservableField<String> deliveryMethod = new ObservableField<>();
@@ -116,8 +119,8 @@ public class BookDeliveryViewModel extends BaseViewModel {
                 });
     }
 
-    Observable<JsonObject> getMapDriverDirection() {
-        return repository.getApiService().getMapDirection(driverLatLng.get(), "driving", originLatLng.get(), Constants.GEO_API_KEY)
+    Observable<JsonObject> getMapDriverDirection(String latLng) {
+        return repository.getApiService().getMapDirection(driverLatLng.get(), "driving", latLng, Constants.GEO_API_KEY)
                 .doOnNext(response -> {
 
                 });
@@ -137,12 +140,12 @@ public class BookDeliveryViewModel extends BaseViewModel {
                 });
     }
 
-    Observable<ResponseWrapper<BookingResponse>> getCurrentBooking() {
-        return repository.getApiService().getCurrentBooking()
+    Observable<ResponseWrapper<ResponseListObj<BookingResponse>>> getCurrentBooking() {
+        return repository.getApiService().getCurrentBooking(bookingCode.get())
                 .doOnNext(response -> {
-                    if(response.isResult()){
-                        if(response.getData().getRoom() != null){
-                            repository.getSharedPreferences().setLong(Constants.ROOM_ID, response.getData().getRoom().getId());
+                    if(response.isResult() && response.getData().getTotalElements() > 0){
+                        if(response.getData().getContent().get(0).getRoom() != null){
+                            repository.getSharedPreferences().setLong(Constants.ROOM_ID, response.getData().getContent().get(0).getRoom().getId());
 
                         }
                     }

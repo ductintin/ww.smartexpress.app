@@ -79,11 +79,11 @@ public class TripViewModel extends BaseViewModel {
         application.getCurrentActivity().onBackPressed();
     }
 
-    Observable<ResponseWrapper<BookingResponse>> getCurrentBooking() {
-        return repository.getApiService().getCurrentBooking()
+    Observable<ResponseWrapper<ResponseListObj<BookingResponse>>> getCurrentBooking() {
+        return repository.getApiService().getCurrentBooking(null)
                 .doOnNext(response -> {
                     if(response.isResult()){
-                        bookingResponse.set(response.getData());
+                        bookingResponse.set(response.getData().getContent().get(0));
                         bookingState.set(bookingResponse.get().getState());
                         driverName.set(bookingResponse.get().getDriver().getFullName());
                         money.set(bookingResponse.get().getMoney());
@@ -92,8 +92,8 @@ public class TripViewModel extends BaseViewModel {
                         destination.set(bookingResponse.get().getDestinationAddress());
                         createdDate.set(bookingResponse.get().getCreatedDate());
                         code.set(bookingResponse.get().getCode());
-                        if(response.getData().getDriver() != null){
-                            driverAvatar.set(response.getData().getDriver().getAvatar());
+                        if(response.getData().getContent().get(0).getDriver() != null){
+                            driverAvatar.set(response.getData().getContent().get(0).getDriver().getAvatar());
                         }
 
                         isCod.set(bookingResponse.get().getIsCod());
