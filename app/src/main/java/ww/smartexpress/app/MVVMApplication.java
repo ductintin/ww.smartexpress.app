@@ -1,10 +1,18 @@
 package ww.smartexpress.app;
 
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
@@ -13,6 +21,7 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.Objects;
+import java.util.Random;
 
 import es.dmoral.toasty.Toasty;
 import io.reactivex.rxjava3.subjects.PublishSubject;
@@ -219,6 +228,8 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
 
     public void navigateFromDriverAcceptToBookDeliveryActivity(SocketEventModel socketEventModel){
         Message message = socketEventModel.getMessage();
+        createNotification(message, 1);
+
         if(currentActivity instanceof BookDeliveryActivity){
             DriverBookingResponse bookingResponse = message.getDataObject(DriverBookingResponse.class);
             driverBookingResponse = bookingResponse;
@@ -232,6 +243,8 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
 
     public void navigateFromDriverPickUpToBookDeliveryActivity(SocketEventModel socketEventModel){
         Message message = socketEventModel.getMessage();
+        createNotification(message, 2);
+
         if(currentActivity instanceof BookDeliveryActivity){
             Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -296,5 +309,66 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             currentActivity.startActivity(intent);
         }
+    }
+
+    public void createNotification(Message message, int option){
+        String id = "hello";
+        String title = "";
+        String content = "";
+        DriverBookingResponse bookingResponse = message.getDataObject(DriverBookingResponse.class);
+
+        Intent notificationIntent = new Intent(getCurrentActivity(), BookDeliveryActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+
+        switch (option){
+            case 1: //accept
+                title = "Đã tìm thấy tài xế giao hàng";
+                content = "Đơn hàng: " + bookingResponse.getCodeBooking() + " .Tài xế đang trên đường đến lấy.";
+                notificationIntent.putExtra("BOOKING_CODE", bookingResponse.getCodeBooking());
+                notificationIntent.putExtra("STATE_BOOKING", 1);
+                break;
+            case 2: // pickup
+                title = "Tài xế đã nhận đơn hàng";
+                content = "Đơn hàng: " + bookingResponse.getBookingId() + " .Tài xế đang trên đường giao đến điểm nhận.";
+                notificationIntent.putExtra("BOOKING_ID", bookingResponse.getBookingId());
+                notificationIntent.putExtra("STATE_BOOKING", 3);
+                break;
+        }
+
+
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = manager.getNotificationChannel(id);
+            if(channel == null){
+                channel = new NotificationChannel(id, "Channel Title", NotificationManager.IMPORTANCE_HIGH);
+
+                channel.setDescription("[Channel Description]");
+                channel.enableVibration(true);
+                channel.setVibrationPattern(new long[]{100,1000,200,340});
+                channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+                manager.createNotificationChannel(channel);
+            }
+        }
+
+        PendingIntent contentIntent = PendingIntent.getActivity(getCurrentActivity(), 0, notificationIntent, 0);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, id)
+                .setSmallIcon(R.drawable.ic_icon_activity)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.car_vehicle))
+                .setStyle(new NotificationCompat.BigPictureStyle()
+                        .bigLargeIcon(null)
+                )
+                .setContentTitle(title)
+                .setContentText(content)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setVibrate(new long[]{100,1000,200,340})
+                .setAutoCancel(false)
+                .setTicker("Notification");
+
+        builder.setContentIntent(contentIntent);
+
+        NotificationManagerCompat m = NotificationManagerCompat.from(getApplicationContext());
+        m.notify(new Random().nextInt(), builder.build());
+
+
     }
 }

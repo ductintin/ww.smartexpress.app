@@ -12,10 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.R;
 
+import ww.smartexpress.app.data.model.api.response.ProfileResponse;
+import ww.smartexpress.app.data.model.room.UserEntity;
 import ww.smartexpress.app.databinding.FragmentProfileBinding;
 import ww.smartexpress.app.di.component.FragmentComponent;
 import ww.smartexpress.app.ui.base.fragment.BaseFragment;
@@ -92,37 +96,44 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         getProfile();
     }
 
-    public void loadProfile(){
-//        viewModel.compositeDisposable.add(viewModel.setProfile()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(response -> {
-//                    if(response.isResult()){
-//                        viewModel.hideLoading();
-//                    }else {
-//                        viewModel.hideLoading();
-//                        viewModel.showErrorMessage(response.getMessage());
-//                    }
-//                },error->{
-//                    viewModel.hideLoading();
-//                    viewModel.showErrorMessage(getActivity().getString(R.string.newtwork_error));
-//                    error.printStackTrace();
-//                })
-//        );
-
-        viewModel.loadProfile();
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-        //loadProfile();
         getProfile();
     }
 
     public void getProfile(){
-        viewModel.showLoading();
-        viewModel.compositeDisposable.add(viewModel.setProfile()
+        viewModel.loadProfile()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<UserEntity>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull UserEntity userEntity) {
+                        ProfileResponse profileResponse = ProfileResponse.builder()
+                                .id(userEntity.getId())
+                                .avatar(userEntity.getAvatar())
+                                .email(userEntity.getEmail())
+                                .name(userEntity.getName())
+                                .phone(userEntity.getPhone())
+                                .build();
+
+                        viewModel.profile.set(profileResponse);
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        loadProfile();
+                    }
+                });
+    }
+
+    public void loadProfile(){
+        viewModel.compositeDisposable.add(viewModel.getProfile()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
@@ -138,6 +149,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
                     error.printStackTrace();
                 })
         );
+
     }
 
 }

@@ -24,6 +24,8 @@ import java.io.InputStream;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -403,9 +405,31 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
         viewBinding.setA(this);
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        loadProfile();
+        getProfileLocal();
     }
 
+    public void getProfileLocal(){
+        viewModel.getProfileLocal().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<UserEntity>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull UserEntity userEntity) {
+                        viewModel.avatar.set(userEntity.getAvatar());
+                        viewModel.fullName.set(userEntity.getName());
+                        viewModel.email.set(userEntity.getEmail());
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+                    }
+                });
+    }
     public void updateAvatar(){
         if(updatedAvatar != null){
             // Upload avatar then update profile

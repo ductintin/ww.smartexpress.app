@@ -40,7 +40,7 @@
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="@dimen/_50sdp"
-                        android:src="@drawable/user_avatar"/>
+                        android:src="@{vm.profile.avatar, default=@drawable/user_avatar}"/>
 
                     <androidx.cardview.widget.CardView
                         android:onClick="@{()->a.goToSearchLocationActivity()}"

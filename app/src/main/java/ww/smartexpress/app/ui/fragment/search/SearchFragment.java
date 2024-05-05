@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -42,6 +43,7 @@ import ww.smartexpress.app.data.model.api.response.LocationType;
 import ww.smartexpress.app.data.model.api.response.Note;
 import ww.smartexpress.app.data.model.api.response.SearchLocation;
 import ww.smartexpress.app.data.model.room.AddressEntity;
+import ww.smartexpress.app.data.model.room.UserEntity;
 import ww.smartexpress.app.databinding.FragmentSearchBinding;
 import ww.smartexpress.app.di.component.FragmentComponent;
 import ww.smartexpress.app.ui.base.fragment.BaseFragment;
@@ -79,7 +81,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        loadProfile();
         loadCurrentBooking();
     }
 
@@ -88,6 +90,46 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
 
     }
 
+    public void loadProfile(){
+        viewModel.compositeDisposable.add(viewModel.getProfile()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response ->{
+                    if(response.isResult()){
+
+                        UserEntity userEntity = UserEntity.builder()
+                                .id(response.getData().getId())
+                                .avatar(response.getData().getAvatar())
+                                .name(response.getData().getName())
+                                .phone(response.getData().getPhone())
+                                .email(response.getData().getEmail())
+                                .build();
+
+                        viewModel.insertUser(userEntity)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new CompletableObserver() {
+                                    @Override
+                                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                                    }
+
+                                    @Override
+                                    public void onComplete() {
+                                        viewModel.profile.set(response.getData());
+                                    }
+
+                                    @Override
+                                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+                                    }
+                                });
+                    }
+                }, err -> {
+                    viewModel.showErrorMessage(getString(R.string.network_error));
+                    err.printStackTrace();
+                }));
+    }
 
     public void loadCurrentBooking(){
         viewModel.compositeDisposable.add(viewModel.getCurrentBooking()

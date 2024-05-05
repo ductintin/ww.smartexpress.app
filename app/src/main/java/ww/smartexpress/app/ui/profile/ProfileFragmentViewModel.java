@@ -37,10 +37,6 @@ import ww.smartexpress.app.ui.signin.SignInActivity;
 public class ProfileFragmentViewModel extends BaseFragmentViewModel {
 
     public ObservableField<ProfileResponse> profile = new ObservableField<>(new ProfileResponse());
-    public ObservableField<String> avatar = new ObservableField<>("");
-    public ObservableField<String> fullName = new ObservableField<>("Tran Nguyen");
-    public ObservableField<String> email = new ObservableField<>("Nguyen@gmail.com");
-
     public ObservableField<String> lang = new ObservableField<>("Tiếng Việt");
     public ObservableField<String> token = new ObservableField<>("");
     public ProfileFragmentViewModel(Repository repository, MVVMApplication application) {
@@ -79,75 +75,18 @@ public class ProfileFragmentViewModel extends BaseFragmentViewModel {
         Intent intent = new Intent(application.getCurrentActivity(), RegisterActivity.class);
         application.getCurrentActivity().startActivity(intent);
     }
-    Observable<ResponseWrapper<ProfileResponse>> setProfile() {
+    Observable<ResponseWrapper<ProfileResponse>> getProfile() {
         return repository.getApiService().getProfile()
                 .doOnNext(response -> {
-                    if(response.isResult()){
+                    if(response.isResult()) {
                         profile.set(response.getData());
-
-                        UserEntity userEntity = new UserEntity();
-                        userEntity.setId(response.getData().getId());
-                        userEntity.setName(response.getData().getName());
-                        userEntity.setAvatar(response.getData().getAvatar());
-                        userEntity.setPhone(response.getData().getPhone());
-                        userEntity.setEmail(response.getData().getEmail());
-                        userEntity.setStatus(response.getData().getStatus());
-                        repository.getRoomService().userDao().insert(userEntity)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(() -> {
-
-                                }, throwable -> {
-
-                                });
-
                     }
                 });
     }
 
-//    public void loadProfile(){
-//        showLoading();
-//        String token = repository.getToken();
-//        if(token.equals("NULL") || token.isEmpty()){
-//            Intent intent = new Intent(application.getCurrentActivity(), SignInActivity.class);
-//            application.getCurrentActivity().startActivity(intent);
-//        }
-//
-//        compositeDisposable.add(repository.getApiService().getProfile()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(response -> {
-//                    if(response.isResult()){
-//                        profile.set(response.getData());
-//                        hideLoading();
-//                    }else {
-//                        hideLoading();
-//                        showErrorMessage(response.getMessage());
-//                    }
-//                },error->{
-//                    hideLoading();
-//                    showErrorMessage(application.getString(R.string.network_error));
-//                    error.printStackTrace();
-//                })
-//        );
-//    }
-
-    public boolean loadProfile(){
+    Single<UserEntity> loadProfile(){
         Long userId = repository.getSharedPreferences().getLongVal(Constants.KEY_USER_ID);
-        if(userId != 0){
-            Single<UserEntity> userEntity = repository.getRoomService().userDao().findById(userId);
-            if(userEntity.blockingGet() != null){
-                ProfileResponse profileResponse = new ProfileResponse();
-                profileResponse.setId(userEntity.blockingGet().getId());
-                profileResponse.setName(userEntity.blockingGet().getName());
-                profileResponse.setPhone(userEntity.blockingGet().getPhone());
-                profileResponse.setAvatar(userEntity.blockingGet().getAvatar());
-                profileResponse.setEmail(userEntity.blockingGet().getEmail());
-                profile.set(profileResponse);
-                return true;
-            }
-        }
-        return false;
+        return repository.getRoomService().userDao().findById(userId);
     }
 
     public void doLogout(){

@@ -3,8 +3,11 @@ package ww.smartexpress.app.ui.profile;
 import androidx.databinding.ObservableField;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.RequestBody;
 import ww.smartexpress.app.MVVMApplication;
@@ -48,6 +51,7 @@ public class EditProfileViewModel extends BaseViewModel {
         fullName.set(profile.get().getName());
         email.set(profile.get().getEmail());
         avatar.set(profile.get().getAvatar());
+        storeProfile(userId.get(), avatar.get(), fullName.get());
     }
 
     Observable<ResponseWrapper<ProfileResponse>> getProfileObserve() {
@@ -59,27 +63,6 @@ public class EditProfileViewModel extends BaseViewModel {
                 });
     }
 
-    public boolean getProfileStored(){
-        showLoading();
-        userId.set(repository.getSharedPreferences().getLongVal(Constants.KEY_USER_ID));
-        if(userId.get() != 0){
-            Single<UserEntity> userEntity = repository.getRoomService().userDao().findById(userId.get());
-            hideLoading();
-            if(userEntity != null){
-                ProfileResponse profileResponse = new ProfileResponse();
-                profileResponse.setId(userEntity.blockingGet().getId());
-                profileResponse.setName(userEntity.blockingGet().getName());
-                profileResponse.setPhone(userEntity.blockingGet().getPhone());
-                profileResponse.setAvatar(userEntity.blockingGet().getAvatar());
-                profileResponse.setEmail(userEntity.blockingGet().getEmail());
-                setProfile(profileResponse);
-                return true;
-            }
-        }else{
-            hideLoading();
-        }
-        return false;
-    }
 
     Observable<ResponseWrapper<String>> updateProfile(UpdateProfileRequest request) {
         return repository.getApiService().updateProfile(request)
@@ -88,16 +71,6 @@ public class EditProfileViewModel extends BaseViewModel {
                 });
     }
 
-    public void storeProfile(){
-        repository.getRoomService().userDao().insert(userEntityObservableField.get())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-
-                }, throwable -> {
-
-                });
-    }
 
     public void setIsVisibilityPassword(){
         isVisibility.set(!isVisibility.get());
@@ -105,5 +78,32 @@ public class EditProfileViewModel extends BaseViewModel {
 
     public Observable<ResponseWrapper<UploadFileResponse>> uploadAvatar(RequestBody requestBody){
         return repository.getApiService().uploadFile(requestBody);
+    }
+
+    Single<UserEntity> getProfileLocal(){
+        userId.set(repository.getSharedPreferences().getLongVal(Constants.KEY_USER_ID));
+        return repository.getRoomService().userDao().findById(userId.get());
+    }
+
+    public void storeProfile(Long id, String avatar, String name){
+        repository.getRoomService().userDao().update(id, avatar, name)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
     }
 }

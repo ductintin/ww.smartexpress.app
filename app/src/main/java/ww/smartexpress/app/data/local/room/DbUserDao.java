@@ -42,4 +42,7 @@ public interface DbUserDao {
     @Query("SELECT * FROM `user` WHERE user_id=:userId")
     Single<List<UserWithAddresses>> loadAllAddressByUserId(Long userId);
 
+    @Query("UPDATE  `user` SET avatar=:avatar, name=:name WHERE user_id=:id")
+    Completable update(Long id, String avatar, String name);
+
 }
