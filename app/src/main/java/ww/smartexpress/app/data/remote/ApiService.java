@@ -24,6 +24,7 @@ import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import ww.smartexpress.app.data.model.api.response.ProfileResponse;
+import ww.smartexpress.app.data.model.api.response.Promotion;
 import ww.smartexpress.app.data.model.api.response.Room;
 import ww.smartexpress.app.data.model.api.response.SearchLocationResponse;
 import ww.smartexpress.app.data.model.api.response.ServiceResponse;
@@ -82,4 +83,8 @@ public interface ApiService {
     @GET("/geocode/json")
     @Headers({"isSearchLocation:1"})
     Observable<JsonObject> getLocationInfoByLatLng(@Query("latlng") String latlng, @Query("key") String api);
+    @GET("/v1/promotion/client-list")
+    Observable<ResponseWrapper<ResponseListObj<Promotion>>> getPromotions(@Query("page") Integer pageNumber, @Query("size") Integer pageSize);
+    @GET("/v1/promotion/get/{id}")
+    Observable<ResponseWrapper<Promotion>> getPromotionById(@Path("id") Integer id);
 }

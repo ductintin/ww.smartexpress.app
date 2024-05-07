@@ -6,187 +6,154 @@
     <data>
         <variable
             name="ivm"
-            type="ww.smartexpress.app.data.model.api.response.Coupon" />
+            type="ww.smartexpress.app.data.model.api.response.Promotion" />
+        <import type="ww.smartexpress.app.utils.NumberUtils"/>
+        <import type="ww.smartexpress.app.utils.DateUtils"/>
+        <import type="android.view.View"/>
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:background="@drawable/bg_green_light_elevation"
+        android:alpha="@{ivm.isExpired || ivm.isInValid ? 0.5f : 1f}"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/_10sdp"
-        android:paddingRight="@dimen/_10sdp"
-        android:paddingBottom="@dimen/_5sdp"
-        android:elevation="@dimen/_5sdp"
-       >
+        android:layout_height="@dimen/_110sdp"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp"
+        android:elevation="@dimen/_3sdp"
+        android:layout_margin="@dimen/_10sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:src="@{ivm.avatar , default = @drawable/promotion_avatar_placeholder}">
+
+            </ImageView>
+
             <LinearLayout
-                android:background="@drawable/bg_green_light_elevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/_10sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginBottom="@dimen/_10sdp">
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="@dimen/_50sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:src="@{ivm.image}">
-
-                    </ImageView>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                style="@style/title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/coupon_text">
-
-                            </TextView>
-
-                            <TextView
-                                android:layout_marginLeft="@dimen/_5sdp"
-                                android:maxLines="1"
-                                style="@style/title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@{ivm.value}">
-
-                            </TextView>
-
-                            <TextView
-                                style="@style/title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/vn_currency">
-
-                            </TextView>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                style="@style/coupon_subtitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/coupon_subtext">
-
-                            </TextView>
-
-                            <TextView
-                                android:layout_marginLeft="@dimen/_5sdp"
-                                style="@style/coupon_subtitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@{ivm.applyFor}"
-                                android:maxLines="1">
-
-                            </TextView>
-
-                            <TextView
-                                style="@style/coupon_subtitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/coupon_currency_tag">
-
-                            </TextView>
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_5sdp"
-                    android:background="@drawable/dashed_border"
-                    android:layerType="software">
-
-                </LinearLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp">
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout7"
+                    <TextView
+                        style="@style/title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:text="@string/coupon_text">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/ic_icon_clock">
+                    </TextView>
 
-                        </ImageView>
+                    <TextView
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:maxLines="1"
+                        style="@style/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{ivm.kind == 0?  ivm.discountValue.toString() + " K" : ivm.discountValue + " %"}'>
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:orientation="horizontal">
+                    </TextView>
 
-                            <TextView
-                                style="@style/coupon_expiry"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/coupon_expiry">
+                </LinearLayout>
 
-                            </TextView>
-
-                            <TextView
-                                android:layout_marginLeft="@dimen/_5sdp"
-                                style="@style/coupon_expiry"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@{ivm.expiry}"
-                                android:maxLines="1">
-
-                            </TextView>
-
-                        </LinearLayout>
-                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
                         style="@style/coupon_subtitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_btn_coupon"
-                        android:includeFontPadding="false"
-                        android:text="@string/coupon_use_text"
-                        android:textColor="#7EA567"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:text='@{ivm.limitValueMin != null ? @string/coupon_subtext + " " + ivm.limitValueMin.toString() + " VNĐ" : "Không giới hạn giá trị đơn"}'>
 
                     </TextView>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
             </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_5sdp"
+            android:background="@drawable/dashed_border"
+            android:layerType="software">
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp">
+
+            <LinearLayout
+                android:id="@+id/linearLayout7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_icon_clock">
+
+                </ImageView>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/coupon_expiry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/coupon_expiry">
+
+                    </TextView>
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        style="@style/coupon_expiry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="@{DateUtils.dateFormat(ivm.endDate)}">
+
+                    </TextView>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                style="@style/coupon_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_btn_coupon"
+                android:includeFontPadding="false"
+                android:text="@string/coupon_use_text"
+                android:textColor="#7EA567"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </TextView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

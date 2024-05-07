@@ -11,12 +11,15 @@ import io.reactivex.rxjava3.core.Observable;
 import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.Repository;
+import ww.smartexpress.app.data.model.api.ApiModelUtils;
 import ww.smartexpress.app.data.model.api.ResponseListObj;
 import ww.smartexpress.app.data.model.api.ResponseWrapper;
 import ww.smartexpress.app.data.model.api.request.CreateBookingRequest;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
+import ww.smartexpress.app.data.model.api.response.ServicePromotion;
 import ww.smartexpress.app.data.model.api.response.ServiceResponse;
 import ww.smartexpress.app.ui.base.activity.BaseViewModel;
+import ww.smartexpress.app.ui.coupon.CouponActivity;
 import ww.smartexpress.app.ui.trip.TripActivity;
 
 public class BookDeliveryViewModel extends BaseViewModel {
@@ -24,7 +27,7 @@ public class BookDeliveryViewModel extends BaseViewModel {
     public ObservableField<String> bookingCode = new ObservableField<>("");
 
     public ObservableField<String> location = new ObservableField<>("150/17 Đinh Tiên Hoàng, Phường 26, Quận 3");
-    public ObservableField<Integer> discount = new ObservableField<>();
+    public ObservableField<Double> discount = new ObservableField<>();
     public ObservableField<String> deliveryMethod = new ObservableField<>();
     public ObservableField<String> vehicle = new ObservableField<>("Honda SH Mode");
     public ObservableField<String> licensePlates = new ObservableField<>("59-S2 57301");
@@ -69,6 +72,8 @@ public class BookDeliveryViewModel extends BaseViewModel {
 
     public ObservableField<Long> roomId = new ObservableField<>(0L);
 
+    public ObservableField<ServicePromotion> selectedService = new ObservableField<>(null);
+    public ObservableField<Integer> selectedServiceIndex = new ObservableField<>(0);
 
     public BookDeliveryViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
@@ -79,7 +84,11 @@ public class BookDeliveryViewModel extends BaseViewModel {
     }
     public void deleteDestination(){}
     public void selectPayment(){}
-    public void selectDiscountCard(){}
+    public void selectDiscountCard(){
+        Intent intent = new Intent(getApplication().getCurrentActivity(), CouponActivity.class);
+        intent.putExtra("SERVICE", ApiModelUtils.toJson(selectedService.get()));
+        getApplication().getCurrentActivity().startActivity(intent);
+    }
     public void timeSetUp(){}
     public void setIsChecked(){
         isChecked.set(!isChecked.get());

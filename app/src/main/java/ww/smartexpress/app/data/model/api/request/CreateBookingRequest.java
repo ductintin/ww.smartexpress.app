@@ -26,5 +26,6 @@ public class CreateBookingRequest {
     private Double distance;
     private Double money;
     private Double promotionMoney;
+    private Long promotionId;
     private Long serviceId;
 }

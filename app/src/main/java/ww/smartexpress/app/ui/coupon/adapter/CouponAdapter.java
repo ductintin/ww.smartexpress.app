@@ -12,16 +12,17 @@ import java.util.List;
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.data.model.api.response.Category;
 import ww.smartexpress.app.data.model.api.response.Coupon;
+import ww.smartexpress.app.data.model.api.response.Promotion;
 import ww.smartexpress.app.databinding.ItemCouponBinding;
 import ww.smartexpress.app.ui.fragment.home.adapter.CategoryAdapter;
 
 public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponViewHolder>{
 
-    List<Coupon> coupons;
+    List<Promotion> coupons;
 
     private OnItemClickListener onItemClickListener;
 
-    public CouponAdapter(List<Coupon> coupons){
+    public CouponAdapter(List<Promotion> coupons){
         this.coupons = coupons;
     }
 
@@ -43,7 +44,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponView
         return coupons == null ? 0 : coupons.size();
     }
 
-    public void addItems(List<Coupon> coupons){
+    public void addItems(List<Promotion> coupons){
         this.coupons = coupons;
         notifyDataSetChanged();
     }
@@ -55,7 +56,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponView
     public class CouponViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private ItemCouponBinding mBinding;
         private OnItemClickListener onItemClickListener;
-        private Coupon coupon;
+        private Promotion coupon;
 
 
         public CouponViewHolder(@NonNull ItemCouponBinding binding, OnItemClickListener onItemClickListener) {
@@ -78,7 +79,7 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponView
     }
 
     public interface OnItemClickListener{
-        void itemClick(Coupon coupon);
+        void itemClick(Promotion coupon);
     }
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
         this.onItemClickListener = onItemClickListener;

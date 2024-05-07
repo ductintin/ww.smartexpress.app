@@ -179,6 +179,7 @@ public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBindi
         super.onPause();
         EventBus.getDefault().unregister(this);
         EventBus.getDefault().removeStickyEvent(Note.class);
+        EventBus.getDefault().removeStickyEvent(ShippingInfo.class);
     }
 
     public void toDelivery(){

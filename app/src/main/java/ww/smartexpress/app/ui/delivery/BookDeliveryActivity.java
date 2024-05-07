@@ -43,6 +43,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.maps.android.PolyUtil;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +61,9 @@ import ww.smartexpress.app.data.model.api.response.BookCar;
 import ww.smartexpress.app.data.model.api.response.BookingDoneResponse;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
 import ww.smartexpress.app.data.model.api.response.DriverBookingResponse;
+import ww.smartexpress.app.data.model.api.response.Promotion;
 import ww.smartexpress.app.data.model.api.response.ServicePrice;
+import ww.smartexpress.app.data.model.api.response.ServicePromotion;
 import ww.smartexpress.app.data.model.api.response.ServiceResponse;
 import ww.smartexpress.app.data.model.api.response.ShippingInfo;
 import ww.smartexpress.app.data.model.api.response.Size;
@@ -186,8 +192,6 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 //handler.removeCallbacks(runnable);
             }
         });
-
-
     }
 
     @Override
@@ -235,6 +239,14 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
             bookCars.add(new BookCar(sr.getId(), sr.getName(), sr.getImage(), calculatePrice(viewModel.distance.get(), servicePrice), 0.0, textSize, sr.getWeight()));
         }
 
+        ServicePromotion servicePromotion = ServicePromotion.builder()
+                .money(bookCars.get(0).getPrice())
+                .service(serviceResponses.get(0))
+                .build();
+
+        viewModel.selectedService.set(servicePromotion);
+        viewModel.selectedServiceIndex.set(0);
+
         bookingRequest.setPromotionMoney(0.0);
         bookingRequest.setServiceId(serviceResponses.get(0).getId());
         bookingRequest.setMoney(bookCars.get(0).getPrice());
@@ -247,7 +259,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
         viewBinding.rcWinDelivery.setAdapter(bookCarAdapter);
 
         viewModel.deliveryMethod.set(bookCars.get(0).getName());
-        viewModel.discount.set(bookCars.get(0).getDiscount().intValue());
+        viewModel.discount.set(bookCars.get(0).getDiscount());
 
         bookCarAdapter.setOnItemClickListener(bookCar -> {
             if(sheetBehavior.getState()==BottomSheetBehavior.STATE_EXPANDED){
@@ -257,6 +269,19 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 bookingRequest.setPromotionMoney(bookCar.getDiscount());
                 bookCarAdapter.setSelected(bookCars.indexOf(bookCar));
                 viewModel.deliveryMethod.set(bookCar.getName());
+
+                servicePromotion.setMoney(bookCar.getPrice());
+                servicePromotion.setService(serviceResponses.get(bookCars.indexOf(bookCar)));
+                viewModel.selectedService.set(servicePromotion);
+                if(bookCars.indexOf(bookCar) != viewModel.selectedServiceIndex.get()){
+                    bookCars.get(viewModel.selectedServiceIndex.get()).setDiscount(0.0);
+                    viewModel.selectedServiceIndex.set(bookCars.indexOf(bookCar));
+                    viewModel.discount.set(0.0);
+                    bookingRequest.setPromotionId(null);
+                    bookingRequest.setPromotionMoney(0.0);
+                }
+
+
                 bookCarAdapter.notifyDataSetChanged();
 
                 viewBinding.rcWinDelivery.smoothScrollToPosition(bookCars.indexOf(bookCar));
@@ -777,5 +802,63 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 }
                 break;
         }
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventPromotion(Promotion promotion) {
+
+        if(promotion != null){
+            double discount = 0;
+            double promotionMoney = 0;
+            int index = viewModel.selectedServiceIndex.get();
+            if(promotion.getKind() == 0){
+                discount = this.bookCars.get(index).getPrice() - promotion.getDiscountValue();
+                if(discount > 0){
+                    promotionMoney = promotion.getDiscountValue();
+                    this.bookCars.get(index).setDiscount(discount);
+                }else{
+                    promotionMoney = this.bookCars.get(index).getPrice();
+                    this.bookCars.get(index).setDiscount(promotion.getDiscountValue());
+                }
+            }else{
+                //neu tien giam nhieu hon max
+                if(this.bookCars.get(index).getPrice() * promotion.getDiscountValue() / 100 > promotion.getLimitValueMax()){
+                    discount = promotion.getLimitValueMax();
+                    promotionMoney = discount;
+                }else{
+                    discount = this.bookCars.get(index).getPrice() - this.bookCars.get(index).getPrice() * promotion.getDiscountValue() / 100;
+                    promotionMoney = this.bookCars.get(index).getPrice() * promotion.getDiscountValue() / 100;
+                }
+
+                this.bookCars.get(index).setDiscount(discount);
+
+            }
+
+            bookCarAdapter.notifyDataSetChanged();
+            viewModel.discount.set(promotionMoney);
+            bookingRequest.setPromotionMoney(promotionMoney);
+            bookingRequest.setPromotionId(promotion.getId());
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+        EventBus.getDefault().removeStickyEvent(Promotion.class);
+    }
+
+    public void deletePromotion(){
+        viewModel.discount.set(0.0);
+        bookingRequest.setPromotionMoney(0.0);
+        bookingRequest.setPromotionId(null);
+        bookCars.get(viewModel.selectedServiceIndex.get()).setDiscount(0.0);
+        bookCarAdapter.notifyDataSetChanged();
     }
 }

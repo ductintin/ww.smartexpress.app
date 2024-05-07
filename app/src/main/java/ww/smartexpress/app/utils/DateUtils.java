@@ -180,4 +180,16 @@ public class DateUtils {
         }
         return outputFormat.format(date);
     }
+
+    public static Date convertStringToDate(String dateString) {
+        SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        outputFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date = null;
+        try {
+            date = outputFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
 }
