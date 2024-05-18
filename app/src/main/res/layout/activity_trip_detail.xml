@@ -270,6 +270,26 @@
                         </FrameLayout>
 
                         <FrameLayout
+                            android:visibility="@{vm.bookingResponse.promotionMoney != 0.0 ? View.VISIBLE : View.GONE}"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/_10sdp">
+                            <TextView
+                                style="@style/trip_information_text_medium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/discount" />
+
+                            <TextView
+                                style="@style/trip_information_text_medium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:gravity="right"
+                                android:text='@{"- " + NumberUtils.formatDoubleNumber(vm.bookingResponse.promotionMoney.doubleValue()) + " đ"}' />
+                        </FrameLayout>
+
+                        <FrameLayout
                             android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"

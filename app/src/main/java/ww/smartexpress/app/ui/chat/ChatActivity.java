@@ -1,5 +1,6 @@
 package ww.smartexpress.app.ui.chat;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -113,18 +114,37 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
     }
 
 
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        ChatMessage chatDetail = viewModel.getApplication().getChatDetail();
+//        if(chatDetail != null){
+//            ChatDetail messageChat1 = new ChatDetail();
+//            messageChat1.setMsg(chatDetail.getMessage());
+//            messageChat1.setSender(viewModel.driverId.get());
+//            messageChat1.setSenderAvatar(viewModel.driverAvatar.get());
+//            viewModel.messageChat.setValue(messageChat1);
+//            viewModel.getApplication().setChatDetail(null);
+//        }
+//    }
+
     @Override
-    protected void onResume() {
-        super.onResume();
-        ChatMessage chatDetail = viewModel.getApplication().getChatDetail();
-        if(chatDetail != null){
-            ChatDetail messageChat1 = new ChatDetail();
-            messageChat1.setMsg(chatDetail.getMessage());
-            messageChat1.setSender(viewModel.driverId.get());
-            messageChat1.setSenderAvatar(viewModel.driverAvatar.get());
-            viewModel.messageChat.setValue(messageChat1);
-            viewModel.getApplication().setChatDetail(null);
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if(intent == null){
+            return;
+        }
+
+        if(intent.getStringExtra("BOOKING_CODE").equals(viewModel.codeBooking.get())){
+            ChatMessage chatDetail = viewModel.getApplication().getChatDetail();
+            if(chatDetail != null){
+                ChatDetail messageChat1 = new ChatDetail();
+                messageChat1.setMsg(chatDetail.getMessage());
+                messageChat1.setSender(viewModel.driverId.get());
+                messageChat1.setSenderAvatar(viewModel.driverAvatar.get());
+                viewModel.messageChat.setValue(messageChat1);
+                viewModel.getApplication().setChatDetail(null);
+            }
         }
     }
-
 }

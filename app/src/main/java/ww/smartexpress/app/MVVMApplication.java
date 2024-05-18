@@ -219,11 +219,14 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
     }
 
     public void navigateToChat(SocketEventModel socketEventModel){
-        Message message = socketEventModel.getMessage();
-        chatDetail = message.getDataObject(ChatMessage.class);
-        Intent intent = new Intent(currentActivity, ChatActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        currentActivity.startActivity(intent);
+        if(currentActivity instanceof ChatActivity){
+            Message message = socketEventModel.getMessage();
+            chatDetail = message.getDataObject(ChatMessage.class);
+            Intent intent = new Intent(currentActivity, ChatActivity.class);
+            intent.putExtra("BOOKING_CODE", chatDetail.getCodeBooking());
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            currentActivity.startActivity(intent);
+        }
     }
 
     public void navigateFromDriverAcceptToBookDeliveryActivity(SocketEventModel socketEventModel){

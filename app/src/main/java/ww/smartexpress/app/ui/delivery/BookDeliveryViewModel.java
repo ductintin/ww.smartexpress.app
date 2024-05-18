@@ -19,6 +19,7 @@ import ww.smartexpress.app.data.model.api.response.BookingResponse;
 import ww.smartexpress.app.data.model.api.response.ServicePromotion;
 import ww.smartexpress.app.data.model.api.response.ServiceResponse;
 import ww.smartexpress.app.ui.base.activity.BaseViewModel;
+import ww.smartexpress.app.ui.chat.ChatActivity;
 import ww.smartexpress.app.ui.coupon.CouponActivity;
 import ww.smartexpress.app.ui.trip.TripActivity;
 
@@ -105,7 +106,13 @@ public class BookDeliveryViewModel extends BaseViewModel {
         //application.getCurrentActivity().finish();
     }
     public void callDriver(){}
-    public void chatDriver(){}
+    public void chatDriver(){
+        Intent intent = new Intent(application.getCurrentActivity(), ChatActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putLong(Constants.ROOM_ID, roomId.get());
+        intent.putExtras(bundle);
+        application.getCurrentActivity().startActivity(intent);
+    }
 
     Observable<ResponseWrapper<ResponseListObj<ServiceResponse>>> getService() {
         return repository.getApiService().getServiceAutoComplete(null, null, null, null, null)

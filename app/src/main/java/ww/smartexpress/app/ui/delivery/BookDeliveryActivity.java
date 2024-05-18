@@ -167,7 +167,6 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
             mapFragment.getMapAsync(this);
 
             getCurrentBooking();
-
         }
 
         viewBinding.bntBook.setOnClickListener(new View.OnClickListener() {

@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.di.component.DaggerActivityComponent;
 import ww.smartexpress.app.di.module.ActivityModule;
+import ww.smartexpress.app.ui.signin.SignInActivity;
 import ww.smartexpress.app.utils.DialogUtils;
 
 import javax.inject.Inject;
@@ -137,7 +139,11 @@ public abstract class BaseActivity<B extends ViewDataBinding, V extends BaseView
 
     public void doExpireSession() {
         //implement later
-
+        Log.d("TAG", "doExpireSession: hết hạn token");
+        Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getApplicationContext().startActivity(intent);
+        this.finish();
     }
 
     @TargetApi(Build.VERSION_CODES.M)

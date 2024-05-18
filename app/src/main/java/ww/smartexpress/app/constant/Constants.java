@@ -18,7 +18,7 @@ public class Constants {
     public static final String KEY_SERVICE_ID = "KEY_SERVICE_ID";
     public static final String KEY_USER_ID = "KEY_USER_ID";
     public static final String FILE_TYPE_AVATAR = "AVATAR";
-    public static final String GEO_API_KEY = "AIzaSyAQWUevZCTLaVd9a1Z2WEA2_e2gO9iW8rU";
+    public static final String GEO_API_KEY = "AIzaSyDQFJ-AGut2GL97rVRvf2q1SJLwABJjWOU";
     public static final String GEO_API_URL = "https://maps.googleapis.com/maps/api";
     public static final String KEY_ORIGIN_ID = "KEY_ORIGIN_ID";
     public static final String KEY_DESTINATION_ID = "KEY_DESTINATION_ID";
