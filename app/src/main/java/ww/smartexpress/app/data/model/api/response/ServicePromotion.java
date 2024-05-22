@@ -14,4 +14,5 @@ import lombok.Setter;
 public class ServicePromotion extends BaseResponse{
     private Double money;
     private ServiceResponse service;
+    private Long selectedId;
 }

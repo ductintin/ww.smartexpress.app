@@ -33,4 +33,5 @@ public class Promotion {
     private List<ServiceResponse> services;
     private Boolean isExpired;
     private Boolean isInValid;
+    private Boolean isSelected;
 }

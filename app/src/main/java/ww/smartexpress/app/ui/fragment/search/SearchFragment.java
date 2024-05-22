@@ -26,8 +26,10 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -57,7 +59,7 @@ import ww.smartexpress.app.ui.search.location.adapter.SearchLocationAdapter;
 
 public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFragmentViewModel> implements LocationListener {
     BookingAdapter bookingAdapter;
-    List<BookingResponse> currentBookingList;
+    List<BookingResponse> currentBookingList = new ArrayList<>();
     @Override
     public int getBindingVariable() {
         return BR.vm;
@@ -141,9 +143,9 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                             currentBookingList = response.getData().getContent();
                             bookingAdapter = new BookingAdapter(currentBookingList);
 
-                            Set<String> codeBooking = new HashSet<>();
+                            Map<Long, String> codeBooking = new HashMap<>();
                             for(BookingResponse br: currentBookingList){
-                                codeBooking.add(br.getCode());
+                                codeBooking.put(br.getId(),br.getCode());
                             }
 
                             viewModel.getApplication().getWebSocketLiveData().setCodeBooking(codeBooking);
@@ -185,7 +187,11 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
     }
 
     public void goToSearchLocationActivity(){
-        Intent intent = new Intent(getActivity(), SearchLocationActivity.class);
-        startActivity(intent);
+        if(currentBookingList != null && currentBookingList.size() < 10){
+            Intent intent = new Intent(getActivity(), SearchLocationActivity.class);
+            startActivity(intent);
+        }else{
+            viewModel.showErrorMessage("Bạn đã đạt giới hạn 10 đơn hàng cùng lúc!");
+        }
     }
 }

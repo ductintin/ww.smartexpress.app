@@ -51,11 +51,11 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             viewModel.roomId.set(bundle.getLong(Constants.ROOM_ID));
+            viewModel.bookingId.set(bundle.getLong("BOOKING_ID"));
             viewModel.codeBooking.set(bundle.getString("BOOKING_CODE"));
             getMessage();
         }else{
             viewModel.getRoomId();
-
             getMessage();
         }
 

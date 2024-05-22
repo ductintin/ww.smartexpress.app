@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_btn_coupon"
                 android:includeFontPadding="false"
-                android:text="@string/coupon_use_text"
+                android:text='@{ivm.isExpired ? "Hết hạn" : ivm.isInValid ? "Không khả dụng" : ivm.isSelected ? "Đang sử dụng" : @string/coupon_use_text}'
                 android:textColor="#7EA567"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

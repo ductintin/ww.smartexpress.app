@@ -3,8 +3,10 @@ package ww.smartexpress.app.data.websocket;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
@@ -45,7 +47,7 @@ public class WebSocketLiveData implements Runnable{
 
     @Getter
     @Setter
-    private Set<String> codeBooking = new HashSet<>();
+    private Map<Long, String> codeBooking = new HashMap<>();
 
     @Setter
     @Getter
@@ -202,7 +204,7 @@ public class WebSocketLiveData implements Runnable{
                 message.setLang("vi");
                 message.setToken(session);
                 message.setApp(Constants.APP_CUSTOMER);
-                message.setData(new BookingCode(codeBooking.stream().collect(Collectors.toList())));
+                message.setData(new BookingCode(codeBooking.values().stream().collect(Collectors.toList())));
 //            String cmd = "{ \"cmd\": \"CLIENT_PING\", \"platform\": 1, \"token\": \""+session+"\" }";
                 webSocket.send(message.getPayload());
                 Timber.d("========>SEND: %s", message.getPayload());
@@ -255,7 +257,7 @@ public class WebSocketLiveData implements Runnable{
                     message.setLang("vi");
                     message.setToken(session);
                     message.setApp(Constants.APP_CUSTOMER);
-                    message.setData(new BookingCode(codeBooking.stream().collect(Collectors.toList())));
+                    message.setData(new BookingCode(codeBooking.values().stream().collect(Collectors.toList())));
                     webSocket.send(message.getPayload());
                     Timber.d("SEND: %s", message.getPayload());
                     socketListener.onConnected();
@@ -392,11 +394,11 @@ public class WebSocketLiveData implements Runnable{
         requests.clear();
     }
 
-    public void addBookingCode(String code){
-        codeBooking.add(code);
+    public void addBookingCode(Long key, String code){
+        codeBooking.put(key, code);
     }
 
-    public void removeBookingCode(String code){
-        codeBooking.remove(code);
+    public void removeBookingCode(Long key){
+        codeBooking.remove(key);
     }
 }

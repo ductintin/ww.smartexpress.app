@@ -45,6 +45,7 @@ import ww.smartexpress.app.ui.chat.ChatActivity;
 import ww.smartexpress.app.ui.delivery.BookDeliveryActivity;
 import ww.smartexpress.app.ui.fragment.search.SearchFragment;
 import ww.smartexpress.app.ui.home.HomeActivity;
+import ww.smartexpress.app.ui.trip.TripActivity;
 import ww.smartexpress.app.utils.DialogUtils;
 
 public class MVVMApplication extends Application implements LifecycleObserver, SocketListener {
@@ -223,9 +224,11 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
             Message message = socketEventModel.getMessage();
             chatDetail = message.getDataObject(ChatMessage.class);
             Intent intent = new Intent(currentActivity, ChatActivity.class);
-            intent.putExtra("BOOKING_CODE", chatDetail.getCodeBooking());
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            currentActivity.startActivity(intent);
+            if(chatDetail != null){
+                intent.putExtra("BOOKING_CODE", chatDetail.getCodeBooking());
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                currentActivity.startActivity(intent);
+            }
         }
     }
 
@@ -259,22 +262,28 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
 
     public void navigateFromBookingDoneToBookDeliveryActivity(SocketEventModel socketEventModel){
         Message message = socketEventModel.getMessage();
+        DriverBookingResponse response = message.getDataObject(DriverBookingResponse.class);
         if(currentActivity instanceof BookDeliveryActivity){
             Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            intent.putExtra("BOOKING_ID", message.getDataObject(DriverBookingResponse.class).getBookingId());
+            intent.putExtra("BOOKING_ID",response.getBookingId());
             intent.putExtra("STATE_BOOKING", 4);
             currentActivity.startActivity(intent);
         }else if(currentActivity instanceof HomeActivity){
             HomeActivity homeActivity = ((HomeActivity) currentActivity);
-
             if(homeActivity.activeFragment instanceof SearchFragment){
                 Log.d("TAG", "navigateFromBookingDoneToBookDeliveryActivity: in search fragment");
                 Intent intent = new Intent(currentActivity, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 currentActivity.startActivity(intent);
             }
+        }else if(currentActivity instanceof TripActivity){
+            Intent intent = new Intent(currentActivity, TripActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            intent.putExtra("BOOKING_ID",response.getBookingId());
+            currentActivity.startActivity(intent);
         }
+        webSocketLiveData.removeBookingCode(response.getBookingId());
     }
 
     public void navigateFromDriverCancelBookingToBookDeliveryActivity(SocketEventModel socketEventModel){

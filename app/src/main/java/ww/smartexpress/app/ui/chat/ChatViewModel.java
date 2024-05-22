@@ -23,6 +23,7 @@ import ww.smartexpress.app.ui.base.activity.BaseViewModel;
 public class ChatViewModel extends BaseViewModel {
     public ObservableField<String> message = new ObservableField<>();
     public ObservableField<Long> roomId = new ObservableField<>(0L);
+    public ObservableField<Long> bookingId = new ObservableField<>(0L);
     public ObservableField<String> driverName = new ObservableField<>("");
     public ObservableField<String> codeBooking = new ObservableField<>("");
     public ObservableField<String> driverAvatar = new ObservableField<>("");
@@ -47,6 +48,8 @@ public class ChatViewModel extends BaseViewModel {
         }
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setCodeBooking(codeBooking.get());
+        chatMessage.setBookingId(bookingId.get().toString());
+        chatMessage.setRoomId(roomId.get().toString());
         chatMessage.setMessage(message.get().trim());
         chatMessage.setMessageId(String.valueOf((new Date()).getTime()));
 

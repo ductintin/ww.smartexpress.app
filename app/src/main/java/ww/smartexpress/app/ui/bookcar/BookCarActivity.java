@@ -259,7 +259,7 @@ public class BookCarActivity extends BaseActivity<ActivityBookCarBinding, BookCa
                     if(response.isResult()){
                         viewModel.isBooking.set(true);
                         viewModel.bookingResponse.set(response.getData());
-                        viewModel.getApplication().getWebSocketLiveData().addBookingCode(response.getData().getCode());
+                        viewModel.getApplication().getWebSocketLiveData().addBookingCode(response.getData().getId(), response.getData().getCode());
                         viewModel.getApplication().getWebSocketLiveData().sendPing();
                         Log.d("TAG", "findingDriver: " + response.getData().getCode());
 
@@ -566,7 +566,7 @@ public class BookCarActivity extends BaseActivity<ActivityBookCarBinding, BookCa
                     viewModel.hideLoading();
                     if(response.isResult()){
                         bookingResponse = response.getData().getContent().get(0);
-                        viewModel.getApplication().getWebSocketLiveData().addBookingCode(response.getData().getContent().get(0).getCode());
+                        viewModel.getApplication().getWebSocketLiveData().addBookingCode(response.getData().getContent().get(0).getId(),response.getData().getContent().get(0).getCode());
                         viewModel.getApplication().getWebSocketLiveData().sendPing();
                         viewModel.bookingResponse.set(response.getData().getContent().get(0));
                         if(bookingResponse.getRoom() != null){
@@ -579,7 +579,7 @@ public class BookCarActivity extends BaseActivity<ActivityBookCarBinding, BookCa
                         viewModel.originLatLng.set(viewModel.originLat.get() + "," + viewModel.originLng.get());
                         viewModel.destinationLatLng.set(viewModel.destinationLat.get() + "," + viewModel.destinationLng.get());
                         viewModel.customerPos.set(viewModel.originLat.get() + "," + viewModel.originLng.get());
-                        viewModel.getApplication().getWebSocketLiveData().addBookingCode(response.getData().getContent().get(0).getCode());
+                        viewModel.getApplication().getWebSocketLiveData().addBookingCode(response.getData().getContent().get(0).getId(), response.getData().getContent().get(0).getCode());
 
                         switch (bookingResponse.getState()){
                             case 0:

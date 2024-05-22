@@ -133,7 +133,7 @@
                             android:layout_height="wrap_content"
                             style="@style/location_text"
                             android:layout_marginHorizontal="@dimen/_10sdp"
-                            android:text="Danh sách đơn hàng đang hoạt động"/>
+                            android:text='@{"Danh sách đơn hàng đang hoạt động: " + vm.totalBookingElements}'/>
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rcCurrentBooking"

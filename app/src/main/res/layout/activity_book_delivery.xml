@@ -16,591 +16,607 @@
         <import type="ww.smartexpress.app.utils.NumberUtils"/>
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.github.ybq.android.spinkit.SpinKitView
+            android:visibility="@{!vm.isLoading ? View.GONE : View.VISIBLE}"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/_5sdp"
-            android:elevation="@dimen/_50sdp">
+            app:SpinKit_Style="ThreeBounce"
+            app:SpinKit_Color="@color/color3">
 
-            <FrameLayout
-                android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        </com.github.ybq.android.spinkit.SpinKitView>
 
-                <ImageView
-                    android:id="@+id/btnBackBookCar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:onClick="@{()->vm.back()}"
-                    android:paddingLeft="@dimen/_5ssp"
-                    android:paddingRight="@dimen/_5sdp"
-                    android:src="@drawable/ic_icon_back">
-
-                </ImageView>
-
-                <TextView
-                    android:id="@+id/tvDeliveryTitle"
-                    style="@style/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:paddingLeft="@dimen/_20ssp"
-                    android:paddingRight="@dimen/_20ssp"
-                    android:text="@string/delivery">
-
-                </TextView>
-
-            </FrameLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
-            android:id="@+id/llDeliveryAddress"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:visibility="@{vm.isLoading ? View.GONE : View.VISIBLE}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_50sdp"
-            android:layout_marginHorizontal="@dimen/_15sdp"
-            android:background="@drawable/bg_green_light_elevation">
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/_5sdp"
+                android:elevation="@dimen/_50sdp">
+
+                <FrameLayout
+                    android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/btnBackBookCar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:onClick="@{()->vm.back()}"
+                        android:paddingLeft="@dimen/_5ssp"
+                        android:paddingRight="@dimen/_5sdp"
+                        android:src="@drawable/ic_icon_back">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/tvDeliveryTitle"
+                        style="@style/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingLeft="@dimen/_20ssp"
+                        android:paddingRight="@dimen/_20ssp"
+                        android:text="@string/delivery">
+
+                    </TextView>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
+                android:id="@+id/llDeliveryAddress"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                >
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/_10sdp"
-                    android:src="@drawable/ic_icon_destination">
-
-                </ImageView>
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_50sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:background="@drawable/bg_green_light_elevation">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    >
 
-                    <TextView
-                        style="@style/new_password_subtitle"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/search_destination_subtitle"
-                        android:textSize="@dimen/_8sdp">
+                        android:paddingRight="@dimen/_10sdp"
+                        android:src="@drawable/ic_icon_destination">
 
-                    </TextView>
+                    </ImageView>
 
                     <LinearLayout
-                        android:layout_marginTop="@dimen/_5sdp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
+                        <TextView
+                            style="@style/new_password_subtitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/search_destination_subtitle"
+                            android:textSize="@dimen/_8sdp">
+
+                        </TextView>
+
+                        <LinearLayout
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                style="@style/location_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@color/white"
+                                android:maxLines="1"
+                                android:text="@={vm.origin}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_weight="1"
+                                android:inputType="text"
+                                android:ellipsize="end"
+                                android:editable="false"
+                                android:focusable="false">
+
+                            </EditText>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="#7EA567">
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginVertical="@dimen/_5sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_21sdp"
+                        android:layout_height="@dimen/_21sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:src="@drawable/location_flag"></ImageView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
                         <EditText
+                            android:id="@+id/edtSearchLocation"
                             style="@style/location_text"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:background="@color/white"
+                            android:hint="@string/search_destination_hint"
+                            android:text="@={vm.destination}"
                             android:maxLines="1"
-                            android:text="@={vm.origin}"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            android:ellipsize="end"
                             android:layout_weight="1"
                             android:inputType="text"
-                            android:ellipsize="end"
                             android:editable="false"
                             android:focusable="false">
 
                         </EditText>
 
+                        <!--                    <ImageView-->
+                        <!--                        android:layout_gravity="end"-->
+                        <!--                        android:layout_width="wrap_content"-->
+                        <!--                        android:layout_height="wrap_content"-->
+                        <!--                        android:src="@drawable/ic_icon_delete"-->
+                        <!--                        android:onClick="@{()->vm.deleteDestination()}">-->
+
+                        <!--                    </ImageView>-->
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bottomLayoutSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:elevation="@dimen/_35sdp"
+                android:background="@drawable/bg_order_detail"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
+                    android:id="@+id/llDeliveryInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/llPayment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+                            <ImageView
+                                android:id="@+id/imageView12"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                app:srcCompat="@drawable/ic_icon_money" />
+
+                            <TextView
+                                android:id="@+id/textView7"
+                                style="@style/book_car_properties"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:onClick="@{(v)->vm.selectPayment()}"
+                                android:paddingLeft="@dimen/_10sdp"
+                                android:text="@string/money" />
+                        </LinearLayout>
+
+                        <FrameLayout
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_width="@dimen/_1sdp"
+                            android:layout_height="match_parent"
+                            android:background="#97979780"></FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="1">
+                            <TextView
+                                android:id="@+id/textView11"
+                                style="@style/book_car_properties"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:onClick="@{(v)->vm.selectDiscountCard()}"
+                                android:text='@{vm.discount != 0.0 ? @string/discount_text + " " + NumberUtils.formatDoubleNumber(vm.discount) + " " + "đ" : "Chọn mã giảm giá"}' />
+                            <ImageView
+                                android:visibility="@{vm.discount != 0.0 ? View.VISIBLE : View.GONE}"
+                                android:onClick="@{()-> a.deletePromotion()}"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:src="@drawable/ic_icon_delete">
+
+                            </ImageView>
+                        </LinearLayout>
+                        <!--                    <FrameLayout-->
+                        <!--                        android:layout_width="@dimen/_1sdp"-->
+                        <!--                        android:layout_height="match_parent"-->
+                        <!--                        android:background="#97979780"></FrameLayout>-->
+
+                        <!--                    <TextView-->
+                        <!--                        android:layout_marginHorizontal="@dimen/_10sdp"-->
+                        <!--                        android:visibility='@{TextUtils.isEmpty(vm.customerNote) ? View.GONE : View.VISIBLE}'-->
+                        <!--                        android:id="@+id/textView10"-->
+                        <!--                        style="@style/book_car_properties"-->
+                        <!--                        android:layout_width="wrap_content"-->
+                        <!--                        android:layout_height="match_parent"-->
+                        <!--                        android:layout_weight="1"-->
+                        <!--                        android:maxLines="1"-->
+                        <!--                        android:ellipsize="end"-->
+                        <!--                        android:onClick="@{(v)->vm.timeSetUp()}"-->
+                        <!--                        android:text='@{TextUtils.isEmpty(vm.customerNote) ? "" : "Ghi chú: " + vm.customerNote}' />-->
+
                     </LinearLayout>
 
+
+                    <TextView
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_3sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:background="@drawable/bg_bottom_gray_line"
+                        android:includeFontPadding="false">
+                    </TextView>
+
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginVertical="@dimen/_5sdp">
+                        <CheckBox
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_marginHorizontal="@dimen/_15sdp"
+                            android:theme="@style/checkbox"
+                            android:onClick="@{(v)->vm.setIsChecked()}"
+                            android:checked="@{vm.isChecked}">
+                        </CheckBox>
+                        <TextView
+                            style="@style/book_car_properties"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/delivery_checkbox">
+                        </TextView>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/bntBook"
+                        style="@style/NextBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:background="@drawable/app_button_background"
+                        android:onClick="@{(v)->vm.doBookWinDelivery()}"
+                        android:text="@{vm.deliveryMethod}"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:layout_marginBottom="@dimen/_15sdp"/>
+
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:background="#7EA567">
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginVertical="@dimen/_5sdp">
-
-                <ImageView
-                    android:layout_width="@dimen/_21sdp"
-                    android:layout_height="@dimen/_21sdp"
-                    android:layout_marginRight="@dimen/_5sdp"
-                    android:src="@drawable/location_flag"></ImageView>
-
                 <LinearLayout
+                    android:visibility="@{(vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
+                    android:id="@+id/llFindDriver"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
-                    <EditText
-                        android:id="@+id/edtSearchLocation"
-                        style="@style/location_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:background="@color/white"
-                        android:hint="@string/search_destination_hint"
-                        android:text="@={vm.destination}"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:layout_weight="1"
-                        android:inputType="text"
-                        android:editable="false"
-                        android:focusable="false">
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:orientation="vertical"
+                    android:weightSum="3"
+                    >
+                    <ProgressBar
+                        android:id="@+id/progressBarFindDriver"
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/_5sdp"
+                        style="?android:attr/progressBarStyle"
+                        android:indeterminateDrawable="@drawable/custom_progressbar">
 
-                    </EditText>
+                    </ProgressBar>
+                    <TextView
+                        android:layout_marginTop="@dimen/_10sdp"
+                        style="@style/item_win_bike"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/finding_delivery_driver_title">
 
-<!--                    <ImageView-->
-<!--                        android:layout_gravity="end"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:src="@drawable/ic_icon_delete"-->
-<!--                        android:onClick="@{()->vm.deleteDestination()}">-->
+                    </TextView>
 
-<!--                    </ImageView>-->
+                    <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        style="@style/rating_note"
+                        android:textAlignment="center"
+                        android:textColor="#52424242"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/finding_delivery_driver_subtitle">
+
+                    </TextView>
+                    <Button
+                        android:id="@+id/bntCancelBook"
+                        style="@style/BookCarButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:background="@drawable/bg_btn_cancel_find_driver"
+                        android:enabled="true"
+                        android:onClick="@{(v)->vm.cancelFinding()}"
+                        android:text="@string/cancel"
+                        android:textColor="@color/app_color"
+                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:layout_marginBottom="@dimen/_15sdp"/>
                 </LinearLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/bottomLayoutSmall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:elevation="@dimen/_35sdp"
-            android:background="@drawable/bg_order_detail"
-            android:orientation="vertical">
-            <LinearLayout
-                android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
-                android:id="@+id/llDeliveryInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/llPayment"
+                    android:visibility="@{(vm.isFound || vm.isShipping) ? View.VISIBLE : View.GONE}"
+                    android:id="@+id/llFoundDriver"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:layout_marginVertical="@dimen/_10sdp"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:orientation="vertical"
+                    android:onClick="@{(v)->vm.showDeliveryDetail()}"
+                    >
 
-                   <LinearLayout
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:layout_weight="1">
-                       <ImageView
-                           android:id="@+id/imageView12"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:layout_marginLeft="@dimen/_5sdp"
-                           app:srcCompat="@drawable/ic_icon_money" />
+                    <TextView
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_5sdp"
+                        android:background="@drawable/bg_node"
+                        android:layout_gravity="center">
 
-                       <TextView
-                           android:id="@+id/textView7"
-                           style="@style/book_car_properties"
-                           android:layout_width="wrap_content"
-                           android:layout_height="match_parent"
-                           android:onClick="@{(v)->vm.selectPayment()}"
-                           android:paddingLeft="@dimen/_10sdp"
-                           android:text="@string/money" />
-                   </LinearLayout>
+                    </TextView>
 
-                    <FrameLayout
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:layout_width="@dimen/_1sdp"
-                        android:layout_height="match_parent"
-                        android:background="#97979780"></FrameLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center">
+                        <TextView
+                            android:layout_marginTop="@dimen/_10sdp"
+                            style="@style/item_win_bike"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text='@{vm.isFound ? @string/found_delivery_driver_title : "Tài xế đang giao hàng đến điểm nhận"}'>
+
+                        </TextView>
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_weight="1">
-                        <TextView
-                            android:id="@+id/textView11"
-                            style="@style/book_car_properties"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:onClick="@{(v)->vm.selectDiscountCard()}"
-                            android:text='@{vm.discount != 0.0 ? @string/discount_text + " " + NumberUtils.formatDoubleNumber(vm.discount) + " " + "đ" : "Chọn mã giảm giá"}' />
-                        <ImageView
-                            android:visibility="@{vm.discount != 0.0 ? View.VISIBLE : View.GONE}"
-                            android:onClick="@{()-> a.deletePromotion()}"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:src="@drawable/ic_icon_delete">
-
-                        </ImageView>
-                    </LinearLayout>
-<!--                    <FrameLayout-->
-<!--                        android:layout_width="@dimen/_1sdp"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:background="#97979780"></FrameLayout>-->
-
-<!--                    <TextView-->
-<!--                        android:layout_marginHorizontal="@dimen/_10sdp"-->
-<!--                        android:visibility='@{TextUtils.isEmpty(vm.customerNote) ? View.GONE : View.VISIBLE}'-->
-<!--                        android:id="@+id/textView10"-->
-<!--                        style="@style/book_car_properties"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:maxLines="1"-->
-<!--                        android:ellipsize="end"-->
-<!--                        android:onClick="@{(v)->vm.timeSetUp()}"-->
-<!--                        android:text='@{TextUtils.isEmpty(vm.customerNote) ? "" : "Ghi chú: " + vm.customerNote}' />-->
-
-                </LinearLayout>
-
-
-                <TextView
-                    android:layout_marginHorizontal="@dimen/_20sdp"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_3sdp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:background="@drawable/bg_bottom_gray_line"
-                    android:includeFontPadding="false">
-                </TextView>
-
-                <LinearLayout
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginVertical="@dimen/_5sdp">
-                    <CheckBox
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_marginHorizontal="@dimen/_15sdp"
-                        android:theme="@style/checkbox"
-                        android:onClick="@{(v)->vm.setIsChecked()}"
-                        android:checked="@{vm.isChecked}">
-                    </CheckBox>
-                    <TextView
-                        style="@style/book_car_properties"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/delivery_checkbox">
-                    </TextView>
-
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/bntBook"
-                    style="@style/NextBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:background="@drawable/app_button_background"
-                    android:onClick="@{(v)->vm.doBookWinDelivery()}"
-                    android:text="@{vm.deliveryMethod}"
-                    android:textColor="@color/white"
-                    android:layout_marginLeft="@dimen/_20sdp"
-                    android:layout_marginBottom="@dimen/_15sdp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:visibility="@{(vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
-                android:id="@+id/llFindDriver"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:orientation="vertical"
-                android:weightSum="3"
-                >
-                <ProgressBar
-                    android:id="@+id/progressBarFindDriver"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:layout_gravity="center"
-                    android:padding="@dimen/_5sdp"
-                    style="?android:attr/progressBarStyle"
-                    android:indeterminateDrawable="@drawable/custom_progressbar">
-
-                </ProgressBar>
-                <TextView
-                    android:layout_marginTop="@dimen/_10sdp"
-                    style="@style/item_win_bike"
-                    android:textAlignment="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/finding_delivery_driver_title">
-
-                </TextView>
-
-                <TextView
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    style="@style/rating_note"
-                    android:textAlignment="center"
-                    android:textColor="#52424242"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/finding_delivery_driver_subtitle">
-
-                </TextView>
-                <Button
-                    android:id="@+id/bntCancelBook"
-                    style="@style/BookCarButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:background="@drawable/bg_btn_cancel_find_driver"
-                    android:enabled="true"
-                    android:onClick="@{(v)->vm.cancelFinding()}"
-                    android:text="@string/cancel"
-                    android:textColor="@color/app_color"
-                    android:layout_marginLeft="@dimen/_20sdp"
-                    android:layout_marginBottom="@dimen/_15sdp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:visibility="@{(vm.isFound || vm.isShipping) ? View.VISIBLE : View.GONE}"
-                android:id="@+id/llFoundDriver"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:layout_marginVertical="@dimen/_10sdp"
-                android:orientation="vertical"
-                android:onClick="@{(v)->vm.showDeliveryDetail()}"
-                >
-
-                <TextView
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_5sdp"
-                    android:background="@drawable/bg_node"
-                    android:layout_gravity="center">
-
-                </TextView>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center">
-                    <TextView
+                        android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_10sdp"
-                        style="@style/item_win_bike"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text='@{vm.isFound ? @string/found_delivery_driver_title : "Tài xế đang giao hàng đến điểm nhận"}'>
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:gravity="center">
+                        <TextView
+                            style="@style/location_text"
+                            android:textAlignment="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.vehicle}"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            >
 
-                    </TextView>
+                        </TextView>
+                        <TextView
+                            style="@style/location_text"
+                            android:textAlignment="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.licensePlates}"
+                            android:background="@drawable/bg_tv_vehicle_number"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            >
+
+                        </TextView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginVertical="@dimen/_10sdp">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_50sdp"
+                            android:src="@{vm.driverAvatar, default = @drawable/user_avatar}"
+                            app:civ_border_width="@dimen/_1sdp"
+                            app:civ_border_color="@color/app_color"
+                            android:layout_marginRight="@dimen/_20sdp">
+
+                        </de.hdodenhof.circleimageview.CircleImageView>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            >
+                            <TextView
+                                style="@style/item_win_bike"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.driverName}">
+
+                            </TextView>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="@dimen/_5sdp">
+                                <TextView
+                                    style="@style/location_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{String.valueOf(vm.rate)}">
+
+                                </TextView>
+                                <RatingBar
+                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:id="@+id/rating"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    style="?android:attr/ratingBarStyleSmall"
+                                    android:numStars="5"
+                                    android:stepSize="0.1"
+                                    android:isIndicator="true"
+                                    android:progressBackgroundTint="@color/grey_light"
+                                    android:progressTint="@color/yellow"
+                                    android:secondaryProgressTint="@android:color/transparent"
+                                    android:rating="@{vm.rate}"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="@{vm.isFound ? View.VISIBLE : View.GONE}"
+                    android:id="@+id/llFoundDriverAction"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:paddingHorizontal="@dimen/_10sdp"
-                    android:gravity="center">
-                    <TextView
-                        style="@style/location_text"
-                        android:textAlignment="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{vm.vehicle}"
-                        android:layout_marginRight="@dimen/_5sdp"
-                        >
-
-                    </TextView>
-                    <TextView
-                        style="@style/location_text"
-                        android:textAlignment="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{vm.licensePlates}"
-                        android:background="@drawable/bg_tv_vehicle_number"
-                        android:layout_marginLeft="@dimen/_5sdp"
-                        >
-
-                    </TextView>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginVertical="@dimen/_10sdp">
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="@dimen/_50sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:src="@{vm.driverAvatar, default = @drawable/user_avatar}"
-                        app:civ_border_width="@dimen/_1sdp"
-                        app:civ_border_color="@color/app_color"
-                        android:layout_marginRight="@dimen/_20sdp">
-
-                    </de.hdodenhof.circleimageview.CircleImageView>
+                    android:background="@drawable/bg_bottom_btn_send"
+                    android:paddingTop="@dimen/_20sdp"
+                    android:paddingHorizontal="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_15sdp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        >
-                        <TextView
-                            style="@style/item_win_bike"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{vm.driverName}">
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_btn_chat">
 
-                        </TextView>
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="@dimen/_5sdp">
-                            <TextView
-                                style="@style/location_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@{String.valueOf(vm.rate)}">
+                        <ImageView
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:src="@drawable/ic_icon_chat"
+                            android:onClick="@{(v)->vm.chatDriver()}">
 
-                            </TextView>
-                            <RatingBar
-                                android:layout_marginLeft="@dimen/_5sdp"
-                                android:id="@+id/rating"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                style="?android:attr/ratingBarStyleSmall"
-                                android:numStars="5"
-                                android:stepSize="0.1"
-                                android:isIndicator="true"
-                                android:progressBackgroundTint="@color/grey_light"
-                                android:progressTint="@color/yellow"
-                                android:secondaryProgressTint="@android:color/transparent"
-                                android:rating="@{vm.rate}"/>
-                        </LinearLayout>
+                        </ImageView>
+
                     </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnCancelBookPickUp"
+                        android:layout_gravity="center"
+                        style="@style/BookCarButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        android:background="@drawable/app_button_background"
+                        android:enabled="true"
+                        android:text="@string/cancel"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        />
+
                 </LinearLayout>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:visibility="@{vm.isFound ? View.VISIBLE : View.GONE}"
-                android:id="@+id/llFoundDriverAction"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/bg_bottom_btn_send"
-                android:paddingTop="@dimen/_20sdp"
-                android:paddingHorizontal="@dimen/_15sdp"
-                android:layout_marginBottom="@dimen/_15sdp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_btn_chat">
-
-                    <ImageView
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:src="@drawable/ic_icon_chat"
-                        android:onClick="@{(v)->vm.chatDriver()}">
-
-                    </ImageView>
-
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/btnCancelBookPickUp"
-                    android:layout_gravity="center"
-                    style="@style/BookCarButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
-                    android:background="@drawable/app_button_background"
-                    android:enabled="true"
-                    android:text="@string/cancel"
-                    android:textColor="@color/white"
-                    android:layout_marginLeft="@dimen/_15sdp"
-                    />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <FrameLayout
-            android:visibility="@{(vm.isBooking || vm.isFound || vm.isShipping) ? View.VISIBLE : View.GONE}"
-            android:id="@+id/frameLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:elevation="@dimen/_10sdp">
-                                    <fragment
-                                        android:id="@+id/mapShip"
-                                        android:name="com.google.android.gms.maps.SupportMapFragment"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        />
-        </FrameLayout>
-
-        <LinearLayout
-            android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
-            android:id="@+id/bottomLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/backgroud_book"
-            android:elevation="@dimen/_20sdp"
-            android:orientation="vertical"
-            app:behavior_hideable="false"
-            app:behavior_peekHeight="@dimen/_260sdp"
-            app:layout_behavior="@string/bottom_sheet">
-
-            <TextView
-                android:layout_marginTop="@dimen/_10sdp"
-                android:id="@+id/txtPrice"
-                style="@style/item_win_bike"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:layout_toRightOf="@id/imgWinBike"
-                android:text='@{vm.distance > 0 &amp;&amp; vm.timeValue > 0 ? vm.distanceKm + " - " +  NumberUtils.formatSecondsToTime(vm.timeValue)  : ""}' />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcWinDelivery"
+            <FrameLayout
+                android:visibility="@{(vm.isBooking || vm.isFound || vm.isShipping) ? View.VISIBLE : View.GONE}"
+                android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_130sdp"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_win_bike" />
+                android:elevation="@dimen/_10sdp">
+                <fragment
+                    android:id="@+id/mapShip"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+            </FrameLayout>
 
-        </LinearLayout>
+            <LinearLayout
+                android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
+                android:id="@+id/bottomLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/backgroud_book"
+                android:elevation="@dimen/_20sdp"
+                android:orientation="vertical"
+                app:behavior_hideable="false"
+                app:behavior_peekHeight="@dimen/_260sdp"
+                app:layout_behavior="@string/bottom_sheet">
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <TextView
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:id="@+id/txtPrice"
+                    style="@style/item_win_bike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_toRightOf="@id/imgWinBike"
+                    android:text='@{vm.distance > 0 &amp;&amp; vm.timeValue > 0 ? vm.distanceKm + " - " +  NumberUtils.formatSecondsToTime(vm.timeValue)  : ""}' />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcWinDelivery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_130sdp"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_win_bike" />
+
+            </LinearLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </FrameLayout>
 </layout>

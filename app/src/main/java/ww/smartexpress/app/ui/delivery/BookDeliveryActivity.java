@@ -214,16 +214,14 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     }
 
     public void loadService(){
-        viewModel.showLoading();
         viewModel.compositeDisposable.add(viewModel.getService()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
-                    viewModel.hideLoading();
+                    viewModel.isLoading.set(false);
                     serviceResponses = response.getData().getContent().subList(4, response.getData().getContent().size());
                     loadBookCar();
                 }, err -> {
-                    viewModel.hideLoading();
                     viewModel.showErrorMessage(getString(R.string.network_error));
                     err.printStackTrace();
                 }));
@@ -329,7 +327,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         viewModel.bookingResponse.set(response.getData());
                         viewModel.bookingCode.set(response.getData().getCode());
                         viewModel.bookingId.set(response.getData().getId());
-                        viewModel.getApplication().getWebSocketLiveData().addBookingCode(response.getData().getCode());
+                        viewModel.getApplication().getWebSocketLiveData().addBookingCode(response.getData().getId(), response.getData().getCode());
                         viewModel.getApplication().getWebSocketLiveData().sendPing();
                         Log.d("TAG", "findingDriver: " + response.getData().getCode());
 
@@ -676,7 +674,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                     if(response.isResult() && response.getData().getTotalElements() > 0){
                         bookingResponse = response.getData().getContent().get(0);
                         viewModel.bookingId.set(response.getData().getContent().get(0).getId());
-                        viewModel.getApplication().getWebSocketLiveData().addBookingCode(response.getData().getContent().get(0).getCode());
+                        //viewModel.getApplication().getWebSocketLiveData().addBookingCode(response.getData().getContent().get(0).getId(), response.getData().getContent().get(0).getCode());
                         viewModel.getApplication().getWebSocketLiveData().sendPing();
                         viewModel.bookingResponse.set(response.getData().getContent().get(0));
                         if(bookingResponse.getRoom() != null){
@@ -710,7 +708,11 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
 
 
                     }else{
-
+                        viewModel.hideLoading();
+                        viewModel.showErrorMessage("Không tìm thấy đơn hàng");
+                        Intent intent = new Intent(BookDeliveryActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
 
                     getOrigin();
@@ -729,6 +731,63 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
         viewModel.rate.set(bookingResponse.getAverageRating().floatValue());
         viewModel.licensePlates.set(bookingResponse.getDriverVehicle().getPlate());
         viewModel.vehicle.set(bookingResponse.getDriverVehicle().getName());
+    }
+
+    public void getCurrentBooking2(){
+        viewModel.compositeDisposable.add(viewModel.getCurrentBooking()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response ->{
+                    viewModel.hideLoading();
+                    if(response.isResult() && response.getData().getTotalElements() > 0){
+                        bookingResponse = response.getData().getContent().get(0);
+                        viewModel.bookingId.set(response.getData().getContent().get(0).getId());
+                        //viewModel.getApplication().getWebSocketLiveData().addBookingCode(response.getData().getContent().get(0).getId(), response.getData().getContent().get(0).getCode());
+                        viewModel.getApplication().getWebSocketLiveData().sendPing();
+                        viewModel.bookingResponse.set(response.getData().getContent().get(0));
+                        if(bookingResponse.getRoom() != null){
+                            viewModel.roomId.set(bookingResponse.getRoom().getId());
+                        }
+                        viewModel.originLat.set(bookingResponse.getPickupLat());
+                        viewModel.originLng.set(bookingResponse.getPickupLong());
+                        viewModel.destinationLat.set(bookingResponse.getDestinationLat());
+                        viewModel.destinationLng.set(bookingResponse.getDestinationLong());
+                        viewModel.originLatLng.set(viewModel.originLat.get() + "," + viewModel.originLng.get());
+                        viewModel.destinationLatLng.set(viewModel.destinationLat.get() + "," + viewModel.destinationLng.get());
+                        //viewModel.originLatLng.set(viewModel.originLat.get() + "," + viewModel.originLng.get());
+
+                        Log.d("TAG", "getCurrentBooking: " + bookingResponse.getState());
+                        switch (bookingResponse.getState()){
+                            case 0:
+                                viewModel.isBooking.set(true);
+                                viewModel.isFound.set(false);
+                                break;
+                            case 100:
+                                viewModel.isBooking.set(false);
+                                viewModel.isFound.set(true);
+                                foundDriver();
+                                break;
+                            case 200:
+                                viewModel.isFound.set(false);
+                                viewModel.isShipping.set(true);
+                                foundDriver();
+                                break;
+                        }
+
+
+                    }else{
+                        viewModel.hideLoading();
+                        viewModel.showErrorMessage("Không tìm thấy đơn hàng");
+                        Intent intent = new Intent(BookDeliveryActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                }, err -> {
+                    viewModel.hideLoading();
+                    viewModel.showErrorMessage(getString(R.string.network_error));
+                    err.printStackTrace();
+                }));
     }
 
     @Override
@@ -755,7 +814,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 Log.d("TAG", "onNewIntent: codebooking vm" + viewModel.bookingCode.get());
                 Log.d("TAG", "onNewIntent: codebooking" + intent.getStringExtra("BOOKING_CODE"));
                 if(viewModel.bookingCode.get().equals(intent.getStringExtra("BOOKING_CODE"))){
-                    getCurrentBooking();
+                    getCurrentBooking2();
                 }
                 break;
             case 2: // Tai xe update vi tri
@@ -777,7 +836,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 Log.d("TAG", "onNewIntent: id " + intent.getLongExtra("BOOKING_ID", -1L));
                 if(viewModel.bookingId.get().equals(intent.getLongExtra("BOOKING_ID", 1L)))
                     preCameraPosition = null;
-                    getCurrentBooking();
+                    getCurrentBooking2();
                 break;
             case 4: // Chuyen di hoan thanh
                 Log.d("TAG", "onNewIntent: case 4  " + codeCase);
@@ -797,7 +856,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 Log.d("TAG", "onNewIntent: codebooking vm" + viewModel.bookingCode.get());
                 Log.d("TAG", "onNewIntent: codebooking" + intent.getStringExtra("BOOKING_CODE"));
                 if(viewModel.bookingCode.get().equals(intent.getStringExtra("BOOKING_CODE"))){
-                    getCurrentBooking();
+                    getCurrentBooking2();
                 }
                 break;
         }
@@ -835,6 +894,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
 
             bookCarAdapter.notifyDataSetChanged();
             viewModel.discount.set(promotionMoney);
+            viewModel.selectedService.get().setSelectedId(promotion.getId());
             bookingRequest.setPromotionMoney(promotionMoney);
             bookingRequest.setPromotionId(promotion.getId());
         }

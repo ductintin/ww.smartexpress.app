@@ -24,6 +24,7 @@ import ww.smartexpress.app.ui.coupon.CouponActivity;
 import ww.smartexpress.app.ui.trip.TripActivity;
 
 public class BookDeliveryViewModel extends BaseViewModel {
+    public ObservableField<Boolean> isLoading = new ObservableField<>(true);
     public ObservableField<Long> bookingId = new ObservableField<>(0L);
     public ObservableField<String> bookingCode = new ObservableField<>("");
 
@@ -99,17 +100,17 @@ public class BookDeliveryViewModel extends BaseViewModel {
     public void showDeliveryDetail(){
         Intent intent = new Intent(application.getCurrentActivity(), TripActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putBoolean("isCanceled", false);
-        bundle.putBoolean("isCompleted", false);
+        bundle.putLong(Constants.CUSTOMER_BOOKING_DETAIL_ID, bookingId.get());
         intent.putExtras(bundle);
         application.getCurrentActivity().startActivity(intent);
-        //application.getCurrentActivity().finish();
     }
     public void callDriver(){}
     public void chatDriver(){
         Intent intent = new Intent(application.getCurrentActivity(), ChatActivity.class);
         Bundle bundle = new Bundle();
         bundle.putLong(Constants.ROOM_ID, roomId.get());
+        bundle.putLong("BOOKING_ID", bookingId.get());
+        bundle.putString("BOOKING_CODE", bookingCode.get());
         intent.putExtras(bundle);
         application.getCurrentActivity().startActivity(intent);
     }

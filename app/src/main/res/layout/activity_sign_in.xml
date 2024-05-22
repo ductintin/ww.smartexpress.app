@@ -148,5 +148,23 @@
             android:onClick="@{(v) -> a.doLogin()}">
 
         </Button>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hoặc đăng nhập với"
+            style="@style/app_text_b"
+            android:gravity="center"
+            />
+
+        <ImageView
+            android:id="@+id/imvLoginGG"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:onClick="@{()->a.loginGoogle()}"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:src="@drawable/ic_icon_google"
+            android:layout_gravity="center">
+        </ImageView>
     </LinearLayout>
 </layout>

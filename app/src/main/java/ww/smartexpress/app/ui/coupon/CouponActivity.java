@@ -59,6 +59,7 @@ public class CouponActivity extends BaseActivity<ActivityCouponBinding, CouponVi
         if(servicePromotion != null){
             Log.d("TAG", "onCreate: " + servicePromotion.getMoney());
             Log.d("TAG", "onCreate: date " + date);
+            Log.d("TAG", "onCreate: id " + servicePromotion.getSelectedId());
             getPromotion();
         }
     }
@@ -127,6 +128,12 @@ public class CouponActivity extends BaseActivity<ActivityCouponBinding, CouponVi
             pr.setIsInValid(true);
             Log.d("TAG", "checkPromotion: it tien hon limit");
             return pr;
+        }
+
+        if(servicePromotion.getSelectedId()!=null){
+            if(servicePromotion.getSelectedId() == pr.getId()){
+                pr.setIsSelected(true);
+            }
         }
 
         pr.setIsExpired(false);
