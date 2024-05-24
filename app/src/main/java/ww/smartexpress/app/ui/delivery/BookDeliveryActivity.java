@@ -366,6 +366,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
 
         dialogLogoutBinding.btnLogout.setOnClickListener(view -> {
             Intent intent = new Intent(BookDeliveryActivity.this, TripCancelReasonActivity.class);
+            intent.putExtra("BOOKING_ID", viewModel.bookingResponse.get().getId());
             startActivity(intent);
             dialog.dismiss();
         });

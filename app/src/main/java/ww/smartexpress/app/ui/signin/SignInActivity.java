@@ -8,6 +8,11 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.IntentSenderRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.databinding.Observable;
 
@@ -69,14 +74,67 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
                 .setGoogleIdTokenRequestOptions(BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                         .setSupported(true)
                         // Your server's client ID, not your Android client ID.
-                        .setServerClientId("367901481589-9kugf1qmc1hnntj7jolikkstqa465ol0.apps.googleusercontent.com")
+                        .setServerClientId("405398622435-dh5bri8b1qovi8g9gu9bgl75hmr548ms.apps.googleusercontent.com")
                         // Only show accounts previously used to sign in.
-                        .setFilterByAuthorizedAccounts(true)
+                        .setFilterByAuthorizedAccounts(false)
                         .build())
                 // Automatically sign in when exactly one credential is retrieved.
                 .setAutoSelectEnabled(true)
                 .build();
 
+        ActivityResultLauncher<IntentSenderRequest> activityResultLauncher =
+                registerForActivityResult(new ActivityResultContracts.StartIntentSenderForResult(), new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if(result.getResultCode() == REQ_ONE_TAP){
+                            try {
+                                SignInCredential credential = oneTapClient.getSignInCredentialFromIntent(result.getData());
+                                String idToken = credential.getGoogleIdToken();
+                                String username = credential.getId();
+                                String password = credential.getPassword();
+
+                                if (idToken !=  null) {
+                                    // Got an ID token from Google. Use it to authenticate
+                                    // with your backend.
+                                    Log.d("TAG", "Got ID token. " + idToken);
+
+                                } else if (password != null) {
+                                    // Got a saved username and password. Use them to authenticate
+                                    // with your backend.
+                                    Log.d("TAG", "Got password.");
+                                }
+                            } catch (ApiException e) {
+                                // ...
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+                });
+
+
+        viewBinding.imvLoginGG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                oneTapClient.beginSignIn(signInRequest)
+                        .addOnSuccessListener(SignInActivity.this, new OnSuccessListener<BeginSignInResult>() {
+                            @Override
+                            public void onSuccess(BeginSignInResult result) {
+                                IntentSenderRequest intentSenderRequest =
+                                        new IntentSenderRequest.Builder(result.getPendingIntent().getIntentSender()).build();
+                                activityResultLauncher.launch(intentSenderRequest);
+                            }
+                        })
+                        .addOnFailureListener(SignInActivity.this, new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // No saved credentials found. Launch the One Tap sign-up flow, or
+                                // do nothing and continue presenting the signed-out UI.
+                                Log.d("TAG", e.getLocalizedMessage());
+                            }
+                        });
+            }
+        });
         Log.d("TAG", "onCreate: " + signInRequest.toString());
 
         viewBinding.layoutHeader.imgBack.setOnClickListener(new View.OnClickListener() {
@@ -154,60 +212,7 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
         finish();
     }
 
-    public void loginGoogle(){
-        oneTapClient.beginSignIn(signInRequest)
-                .addOnSuccessListener(this, new OnSuccessListener<BeginSignInResult>() {
-                    @Override
-                    public void onSuccess(BeginSignInResult result) {
-                        try {
-                            startIntentSenderForResult(
-                                    result.getPendingIntent().getIntentSender(), REQ_ONE_TAP,
-                                    null, 0, 0, 0);
-                        } catch (IntentSender.SendIntentException e) {
-                            Log.e("TAG", "Couldn't start One Tap UI: " + e.getLocalizedMessage());
-                        }
-                    }
-                })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // No saved credentials found. Launch the One Tap sign-up flow, or
-                        // do nothing and continue presenting the signed-out UI.
-                        Log.d("TAG", e.getLocalizedMessage());
-                    }
-                });
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQ_ONE_TAP:
-                try {
-                    SignInCredential credential = oneTapClient.getSignInCredentialFromIntent(data);
-                    String idToken = credential.getGoogleIdToken();
-                    String username = credential.getId();
-                    String password = credential.getPassword();
-
-                    if (idToken !=  null) {
-                        // Got an ID token from Google. Use it to authenticate
-                        // with your backend.
-                        Log.d("TAG", "Got ID token. " + idToken);
-                        navigateToCreatePassword();
-
-                    } else if (password != null) {
-                        // Got a saved username and password. Use them to authenticate
-                        // with your backend.
-                        Log.d("TAG", "Got password.");
-                    }
-                } catch (ApiException e) {
-                    // ...
-                    viewModel.showErrorMessage("Lỗi kết nối. Vui lòng thử lại!");
-                    e.printStackTrace();
-                }
-                break;
-        }
-    }
 
     public void navigateToCreatePassword(){
 

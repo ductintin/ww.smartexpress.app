@@ -22,13 +22,15 @@ import ww.smartexpress.app.data.model.api.response.CancelReason;
 import ww.smartexpress.app.databinding.ActivityTripCancelReasonBinding;
 import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
+import ww.smartexpress.app.ui.home.HomeActivity;
 import ww.smartexpress.app.ui.trip.adapter.CancelReasonAdapter;
 import ww.smartexpress.app.ui.trip.complete.TripCompleteActivity;
 
 public class TripCancelReasonActivity extends BaseActivity<ActivityTripCancelReasonBinding, TripCancelReasonViewModel> {
     private CancelReasonAdapter cancelReasonAdapter1;
     private CancelReasonAdapter cancelReasonAdapter2;
-    BookingResponse bookingResponse;
+
+    Long id;
     @Override
     public int getLayoutId() {
         return R.layout.activity_trip_cancel_reason;
@@ -47,8 +49,18 @@ public class TripCancelReasonActivity extends BaseActivity<ActivityTripCancelRea
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getCurrentBooking();
-        load();
+        id = getIntent().getLongExtra("BOOKING_ID", 0L);
+        if(id != 0L){
+            load();
+        }else{
+            viewModel.showErrorMessage("Không tìm thấy đơn hàng!");
+            Intent intent = new Intent(TripCancelReasonActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+        //getCurrentBooking();
+        //load();
     }
 
     public void load(){
@@ -92,28 +104,11 @@ public class TripCancelReasonActivity extends BaseActivity<ActivityTripCancelRea
 
     }
 
-    public void getCurrentBooking(){
-        viewModel.compositeDisposable.add(viewModel.getCurrentBooking()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response ->{
-                    viewModel.hideLoading();
-                    if(response.isResult()){
-                        bookingResponse = response.getData().getContent().get(0);
-                        //navigateToBookActivity();
-                    }else{
-                        //navigateToHomeActivity();
-                    }
-                }, err -> {
-                    viewModel.hideLoading();
-                    viewModel.showErrorMessage(getString(R.string.network_error));
-                    err.printStackTrace();
-                }));
-    }
+
 
     public void cancelTrip(){
         CancelBookingRequest request = new CancelBookingRequest();
-        request.setId(bookingResponse.getId());
+        request.setId(id);
         request.setNote(viewModel.customerNote.get().trim() + " - " + viewModel.textNote.get());
         viewModel.compositeDisposable.add(viewModel.cancelBooking(request)
                 .subscribeOn(Schedulers.io())

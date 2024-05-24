@@ -35,8 +35,8 @@ public class OrderInformationViewModel extends BaseViewModel {
 
     public ObservableField<String> origin = new ObservableField<>("");
     public ObservableField<String> destination = new ObservableField<>("");
-    public ObservableField<String> consigneeName = new ObservableField<>("");
-    public ObservableField<String> consigneePhone = new ObservableField<>("");
+    public ObservableField<String> consigneeName = new ObservableField<>("Nguyễn Công Phát");
+    public ObservableField<String> consigneePhone = new ObservableField<>("0366986120");
     public ObservableField<String> senderName = new ObservableField<>("");
     public ObservableField<String> senderPhone = new ObservableField<>("");
     public ObservableField<String> customerNote = new ObservableField<>("");
