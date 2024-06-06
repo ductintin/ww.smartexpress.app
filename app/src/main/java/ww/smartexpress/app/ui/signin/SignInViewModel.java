@@ -2,6 +2,7 @@ package ww.smartexpress.app.ui.signin;
 
 import androidx.databinding.ObservableField;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.constant.Constants;
@@ -9,7 +10,9 @@ import ww.smartexpress.app.data.Repository;
 import ww.smartexpress.app.data.model.api.ResponseWrapper;
 import ww.smartexpress.app.data.model.api.request.LoginRequest;
 import ww.smartexpress.app.data.model.api.response.LoginResponse;
+import ww.smartexpress.app.data.model.room.UserEntity;
 import ww.smartexpress.app.ui.base.activity.BaseViewModel;
+import ww.smartexpress.app.utils.AES;
 
 public class SignInViewModel extends BaseViewModel {
     public ObservableField<LoginRequest> request = new ObservableField<>(new LoginRequest());
@@ -25,12 +28,22 @@ public class SignInViewModel extends BaseViewModel {
         return repository.getApiService().login(request)
                 .doOnNext(response -> {
                     if(response.isResult()){
+                        AES aes = new AES();
+                        aes.init();
+
                         repository.getSharedPreferences().setToken(response.getData().getAccessToken());
                         repository.getSharedPreferences().setLong(Constants.KEY_USER_ID, response.getData().getUserId());
+
+
+
                     }
                 });
     }
     public void setIsVisibilityPassword(){
         isVisibility.set(!isVisibility.get());
+    }
+
+    Completable insertUser(UserEntity userEntity){
+        return repository.getRoomService().userDao().insert(userEntity);
     }
 }

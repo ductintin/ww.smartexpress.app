@@ -63,4 +63,8 @@ public class SearchFragmentViewModel extends BaseFragmentViewModel {
         return repository.getRoomService().userDao().insert(userEntity);
     }
 
+    Completable updateUser(Long id, String avatar, String name, String phone, String email){
+        return repository.getRoomService().userDao().updateFull(id, avatar, name, phone, email);
+    }
+
 }

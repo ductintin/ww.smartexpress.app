@@ -151,6 +151,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 bookingRequest.setCustomerNote(shippingInfo.getCustomerNote());
                 bookingRequest.setIsCod(shippingInfo.getIsCod());
                 bookingRequest.setCodPrice(shippingInfo.getCodPrice().doubleValue());
+                bookingRequest.setPaymentKind(1);
 
                 SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.mapShip);

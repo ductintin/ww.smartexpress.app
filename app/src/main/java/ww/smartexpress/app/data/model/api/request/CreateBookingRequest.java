@@ -28,4 +28,5 @@ public class CreateBookingRequest {
     private Double promotionMoney;
     private Long promotionId;
     private Long serviceId;
+    private Integer paymentKind;
 }

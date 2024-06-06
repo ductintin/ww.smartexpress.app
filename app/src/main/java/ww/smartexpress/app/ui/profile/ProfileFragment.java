@@ -3,6 +3,7 @@ package ww.smartexpress.app.ui.profile;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,6 +123,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
                                 .phone(userEntity.getPhone())
                                 .build();
 
+                        Log.d("TAG", "onSuccess: " + userEntity.getEncryptedPassword());
                         viewModel.profile.set(profileResponse);
                     }
 

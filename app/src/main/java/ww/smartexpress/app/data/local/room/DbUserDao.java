@@ -38,6 +38,9 @@ public interface DbUserDao {
     @Delete
     Completable delete(UserEntity UserEntity);
 
+    @Query("DELETE FROM 'user' WHERE user_id=:userId")
+    Completable deleteById(Long userId);
+
     @Transaction
     @Query("SELECT * FROM `user` WHERE user_id=:userId")
     Single<List<UserWithAddresses>> loadAllAddressByUserId(Long userId);
@@ -45,4 +48,12 @@ public interface DbUserDao {
     @Query("UPDATE  `user` SET avatar=:avatar, name=:name WHERE user_id=:id")
     Completable update(Long id, String avatar, String name);
 
+    @Query("UPDATE  `user` SET avatar=:avatar, name=:name, phone=:phone, email=:email WHERE user_id=:id")
+    Completable updateFull(Long id, String avatar, String name, String phone, String email);
+
+    @Query("UPDATE  `user` SET encryptedPassword=:encryptedPassword WHERE user_id=:userId")
+    Completable updateEncryptedPassword(Long userId, String encryptedPassword);
+
+    @Query("SELECT encryptedPassword FROM `user` WHERE user_id=:userId")
+    Single<String> getEncryptedByUserId(Long userId);
 }

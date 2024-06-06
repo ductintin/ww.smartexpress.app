@@ -99,15 +99,21 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                 .subscribe(response ->{
                     if(response.isResult()){
 
-                        UserEntity userEntity = UserEntity.builder()
-                                .id(response.getData().getId())
-                                .avatar(response.getData().getAvatar())
-                                .name(response.getData().getName())
-                                .phone(response.getData().getPhone())
-                                .email(response.getData().getEmail())
-                                .build();
+//                        UserEntity userEntity = UserEntity.builder()
+//                                .id(response.getData().getId())
+//                                .avatar(response.getData().getAvatar())
+//                                .name(response.getData().getName())
+//                                .phone(response.getData().getPhone())
+//                                .email(response.getData().getEmail())
+//                                .build();
 
-                        viewModel.insertUser(userEntity)
+                        viewModel.updateUser(
+                                        response.getData().getId(),
+                                        response.getData().getAvatar(),
+                                        response.getData().getName(),
+                                        response.getData().getPhone(),
+                                        response.getData().getEmail()
+                                )
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new CompletableObserver() {
