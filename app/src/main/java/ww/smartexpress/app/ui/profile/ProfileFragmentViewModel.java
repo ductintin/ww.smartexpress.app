@@ -33,6 +33,7 @@ import ww.smartexpress.app.ui.index.IndexActivity;
 import ww.smartexpress.app.ui.password.reset.ResetPasswordActivity;
 import ww.smartexpress.app.ui.register.RegisterActivity;
 import ww.smartexpress.app.ui.signin.SignInActivity;
+import ww.smartexpress.app.ui.wallet.WalletActivity;
 
 public class ProfileFragmentViewModel extends BaseFragmentViewModel {
 
@@ -146,5 +147,10 @@ public class ProfileFragmentViewModel extends BaseFragmentViewModel {
     }
     public void clearToken(){
         repository.getSharedPreferences().removeKey(PreferencesService.KEY_BEARER_TOKEN);
+    }
+
+    public void gotoWallet(){
+        Intent intent = new Intent(application.getCurrentActivity(), WalletActivity.class);
+        application.getCurrentActivity().startActivity(intent);
     }
 }

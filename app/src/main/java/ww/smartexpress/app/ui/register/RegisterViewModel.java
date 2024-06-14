@@ -7,6 +7,7 @@ import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.data.Repository;
 import ww.smartexpress.app.data.model.api.ResponseWrapper;
 import ww.smartexpress.app.data.model.api.request.RegisterRequest;
+import ww.smartexpress.app.data.model.api.response.CustomerIdResponse;
 import ww.smartexpress.app.ui.base.activity.BaseViewModel;
 
 public class RegisterViewModel extends BaseViewModel {
@@ -21,7 +22,7 @@ public class RegisterViewModel extends BaseViewModel {
         super(repository, application);
     }
 
-    Observable<ResponseWrapper<String>> register(RegisterRequest registerRequest) {
+    Observable<ResponseWrapper<CustomerIdResponse>> register(RegisterRequest registerRequest) {
         return repository.getApiService().register(registerRequest)
                 .doOnNext(response -> {
 

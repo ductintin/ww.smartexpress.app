@@ -11,9 +11,15 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
@@ -21,6 +27,7 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.concurrent.Executor;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -43,6 +50,7 @@ import ww.smartexpress.app.databinding.BaseDialogBinding;
 import ww.smartexpress.app.databinding.DialogUploadAvtBinding;
 import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
+import ww.smartexpress.app.utils.AES;
 
 public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding, EditProfileViewModel> {
     @Override
@@ -398,14 +406,69 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
     String cameraPermission[];
     String storagePermission[];
 
+    private Executor executor;
+    private BiometricPrompt biometricPrompt;
+    private BiometricPrompt.PromptInfo promptInfo;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         //setTheme(R.style.WhiteAppTheme);
         super.onCreate(savedInstanceState);
+
+
         viewBinding.setA(this);
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
         getProfileLocal();
+        executor = ContextCompat.getMainExecutor(this);
+        biometricPrompt = new BiometricPrompt(this,
+                executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode,
+                                              @lombok.NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+
+
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(
+                    @lombok.NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                try {
+
+                    Log.d("TAG", "onAuthenticationSucceeded: " + viewModel.encryptedPassword.get());
+                    Log.d("TAG", "onAuthenticationSucceeded: " + viewModel.getApplication().getAes().decrypt(viewModel.encryptedPassword.get()));
+                    viewModel.password.set(viewModel.getApplication().getAes().decrypt(viewModel.encryptedPassword.get()));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+            }
+        });
+
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Xác thực vân tay cho đăng nhập ứng dụng")
+                .setNegativeButtonText("Sử dụng mật khẩu")
+                .build();
+
+        viewModel.isVisibility.addOnPropertyChangedCallback(new androidx.databinding.Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(androidx.databinding.Observable sender, int propertyId) {
+                if(!viewModel.isVisibility.get()){
+                    viewBinding.edtPw.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }else {
+                    viewBinding.edtPw.setTransformationMethod(null);;
+                }
+
+                viewBinding.edtPw.setSelection(viewBinding.edtPw.length());
+            }
+        });
+
     }
 
     public void getProfileLocal(){
@@ -422,6 +485,19 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
                         viewModel.avatar.set(userEntity.getAvatar());
                         viewModel.fullName.set(userEntity.getName());
                         viewModel.email.set(userEntity.getEmail());
+
+                        Log.d("TAG", "onSuccess: " + userEntity.getEncryptedPassword());
+                        if(userEntity.getEncryptedPassword() != null){
+                            viewModel.encryptedPassword.set(userEntity.getEncryptedPassword());
+                            viewBinding.edtPw.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                                @Override
+                                public void onFocusChange(View view, boolean b) {
+                                    Log.d("TAG", "onFocusChange: " + b);
+                                    if(b){
+                                        biometricPrompt.authenticate(promptInfo);
+                                    }                                }
+                            });
+                        }
                     }
 
                     @Override

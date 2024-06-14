@@ -24,6 +24,7 @@ import ww.smartexpress.app.ui.base.activity.BaseActivity;
 import ww.smartexpress.app.ui.input.phone.PhoneActivity;
 import ww.smartexpress.app.ui.login.LoginActivity;
 import ww.smartexpress.app.ui.main.MainActivity;
+import ww.smartexpress.app.ui.otp.LoginOTPActivity;
 import ww.smartexpress.app.ui.signin.SignInActivity;
 
 public class RegisterActivity extends BaseActivity<ActivityRegisterBinding, RegisterViewModel> {
@@ -115,7 +116,8 @@ public class RegisterActivity extends BaseActivity<ActivityRegisterBinding, Regi
                         viewModel.hideLoading();
                         if(response.isResult()){
                             viewModel.showSuccessMessage(getString(R.string.register_success));
-                            navigateToLogin();
+                            //navigateToLogin();
+                            navigateToOtp(response.getData().getUserId());
                         }else{
                             viewModel.showErrorMessage(response.getMessage());
                         }
@@ -132,4 +134,11 @@ public class RegisterActivity extends BaseActivity<ActivityRegisterBinding, Regi
         finish();
     }
 
+    public void navigateToOtp(String userId){
+        Intent intent = new Intent(this, LoginOTPActivity.class);
+        intent.putExtra("USER_ID", userId);
+        intent.putExtra("USER_PHONE", viewModel.phone.get());
+        startActivity(intent);
+        finish();
+    }
 }

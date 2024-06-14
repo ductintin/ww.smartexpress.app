@@ -150,6 +150,7 @@
         </Button>
 
         <TextView
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Hoặc đăng nhập với"
@@ -158,6 +159,7 @@
             />
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/imvLoginGG"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_width="@dimen/_50sdp"

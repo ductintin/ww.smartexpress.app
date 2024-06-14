@@ -10,9 +10,12 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +34,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executor;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.CompletableObserver;
@@ -56,10 +60,18 @@ import ww.smartexpress.app.ui.search.location.SearchLocationActivity;
 import ww.smartexpress.app.ui.search.location.adapter.LocationTypeAdapter;
 import ww.smartexpress.app.ui.search.location.adapter.SavedLocationAdapter;
 import ww.smartexpress.app.ui.search.location.adapter.SearchLocationAdapter;
+import ww.smartexpress.app.ui.signin.SignInActivity;
+import ww.smartexpress.app.utils.AES;
 
 public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFragmentViewModel> implements LocationListener {
     BookingAdapter bookingAdapter;
     List<BookingResponse> currentBookingList = new ArrayList<>();
+
+
+    private Executor executor;
+    private BiometricPrompt biometricPrompt;
+    private BiometricPrompt.PromptInfo promptInfo;
+
     @Override
     public int getBindingVariable() {
         return BR.vm;
@@ -83,6 +95,52 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Intent intent = getActivity().getIntent();
+        if(intent != null){
+            Log.d("TAG", "onViewCreated: ");
+            if(intent.getStringExtra("ENCRYPTED_PW") != null){
+                viewModel.user.get().setEncryptedPassword(intent.getStringExtra("ENCRYPTED_PW"));
+
+                executor = ContextCompat.getMainExecutor(getContext());
+                biometricPrompt = new BiometricPrompt(this,
+                        executor, new BiometricPrompt.AuthenticationCallback() {
+                    @Override
+                    public void onAuthenticationError(int errorCode,
+                                                      @lombok.NonNull CharSequence errString) {
+                        super.onAuthenticationError(errorCode, errString);
+                        Toast.makeText(getContext(),
+                                        "Authentication error: " + errString, Toast.LENGTH_SHORT)
+                                .show();
+
+                    }
+
+                    @Override
+                    public void onAuthenticationSucceeded(
+                            @lombok.NonNull BiometricPrompt.AuthenticationResult result) {
+                        super.onAuthenticationSucceeded(result);
+                        viewModel.user.get().setEncryptedPassword(intent.getStringExtra("ENCRYPTED_PW"));
+                        Log.d("TAG", "onAuthenticationSucceeded: ");
+                        Toast.makeText(getContext(),
+                                "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onAuthenticationFailed() {
+                        super.onAuthenticationFailed();
+                        Toast.makeText(getContext(), "Authentication failed",
+                                        Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
+
+                promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                        .setTitle("Xác thực vân tay cho đăng nhập ứng dụng")
+                        .setNegativeButtonText("Sử dụng mật khẩu")
+                        .build();
+
+                biometricPrompt.authenticate(promptInfo);
+            }
+        }
         loadProfile();
         loadCurrentBooking();
     }
@@ -106,15 +164,13 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
 //                                .phone(response.getData().getPhone())
 //                                .email(response.getData().getEmail())
 //                                .build();
+                        viewModel.user.get().setId(response.getData().getId());
+                        viewModel.user.get().setAvatar(response.getData().getAvatar());
+                        viewModel.user.get().setName(response.getData().getName());
+                        viewModel.user.get().setPhone(response.getData().getPhone());
+                        viewModel.user.get().setEmail(response.getData().getEmail());
 
-                        viewModel.updateUser(
-                                        response.getData().getId(),
-                                        response.getData().getAvatar(),
-                                        response.getData().getName(),
-                                        response.getData().getPhone(),
-                                        response.getData().getEmail()
-                                )
-                                .subscribeOn(Schedulers.io())
+                        viewModel.insertUser(viewModel.user.get()).subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new CompletableObserver() {
                                     @Override
@@ -132,6 +188,31 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
 
                                     }
                                 });
+//                        viewModel.updateUser(
+//                                        response.getData().getId(),
+//                                        response.getData().getAvatar(),
+//                                        response.getData().getName(),
+//                                        response.getData().getPhone(),
+//                                        response.getData().getEmail()
+//                                )
+//                                .subscribeOn(Schedulers.io())
+//                                .observeOn(AndroidSchedulers.mainThread())
+//                                .subscribe(new CompletableObserver() {
+//                                    @Override
+//                                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onComplete() {
+//                                        viewModel.profile.set(response.getData());
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+//
+//                                    }
+//                                });
                     }
                 }, err -> {
                     viewModel.showErrorMessage(getString(R.string.network_error));

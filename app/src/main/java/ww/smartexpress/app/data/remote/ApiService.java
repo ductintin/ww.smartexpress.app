@@ -10,14 +10,17 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import ww.smartexpress.app.data.model.api.ResponseListObj;
 import ww.smartexpress.app.data.model.api.ResponseWrapper;
+import ww.smartexpress.app.data.model.api.request.ActiveCustomerRequest;
 import ww.smartexpress.app.data.model.api.request.CancelBookingRequest;
 import ww.smartexpress.app.data.model.api.request.CreateBookingRequest;
 import ww.smartexpress.app.data.model.api.request.LoginRequest;
 import ww.smartexpress.app.data.model.api.request.RatingBookingRequest;
 import ww.smartexpress.app.data.model.api.request.RegisterRequest;
+import ww.smartexpress.app.data.model.api.request.RetryOtpRegisterRequest;
 import ww.smartexpress.app.data.model.api.request.UpdateProfileRequest;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
 import ww.smartexpress.app.data.model.api.response.CategoryResponse;
+import ww.smartexpress.app.data.model.api.response.CustomerIdResponse;
 import ww.smartexpress.app.data.model.api.response.LoginResponse;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -36,7 +39,7 @@ public interface ApiService {
     Observable<ResponseWrapper<LoginResponse>> login(@Body LoginRequest request);
     @POST("/v1/customer/register")
     @Headers({"IgnoreAuth:1"})
-    Observable<ResponseWrapper<String>> register(@Body RegisterRequest request);
+    Observable<ResponseWrapper<CustomerIdResponse>> register(@Body RegisterRequest request);
     @GET("/v1/customer/profile")
     Observable<ResponseWrapper<ProfileResponse>> getProfile();
     @GET("/v1/category/auto-complete")
@@ -87,4 +90,10 @@ public interface ApiService {
     Observable<ResponseWrapper<ResponseListObj<Promotion>>> getPromotions(@Query("page") Integer pageNumber, @Query("size") Integer pageSize);
     @GET("/v1/promotion/get/{id}")
     Observable<ResponseWrapper<Promotion>> getPromotionById(@Path("id") Integer id);
+    @POST("/v1/customer/active")
+    @Headers({"IgnoreAuth:1"})
+    Observable<ResponseWrapper<String>> activeCustomer(@Body ActiveCustomerRequest request);
+    @POST("/v1/customer/retry-otp-register")
+    @Headers({"IgnoreAuth:1"})
+    Observable<ResponseWrapper<CustomerIdResponse>> retryActiveCustomer(@Body RetryOtpRegisterRequest request);
 }

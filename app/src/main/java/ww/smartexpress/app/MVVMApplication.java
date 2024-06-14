@@ -46,6 +46,7 @@ import ww.smartexpress.app.ui.delivery.BookDeliveryActivity;
 import ww.smartexpress.app.ui.fragment.search.SearchFragment;
 import ww.smartexpress.app.ui.home.HomeActivity;
 import ww.smartexpress.app.ui.trip.TripActivity;
+import ww.smartexpress.app.utils.AES;
 import ww.smartexpress.app.utils.DialogUtils;
 
 public class MVVMApplication extends Application implements LifecycleObserver, SocketListener {
@@ -72,9 +73,19 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
     @Setter
     private ChatMessage chatDetail;
 
+    @Getter
+    private AES aes;
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        try {
+            aes = new AES();
+            aes.init();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         // Enable firebase log
         FirebaseCrashlytics firebaseCrashlytics = FirebaseCrashlytics.getInstance();

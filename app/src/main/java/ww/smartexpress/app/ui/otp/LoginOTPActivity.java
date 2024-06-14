@@ -1,7 +1,9 @@
 package ww.smartexpress.app.ui.otp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -9,11 +11,20 @@ import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.R;
+import ww.smartexpress.app.data.model.api.request.ActiveCustomerRequest;
+import ww.smartexpress.app.data.model.api.request.RetryOtpRegisterRequest;
 import ww.smartexpress.app.databinding.ActivityLoginOtpBinding;
 import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
+import ww.smartexpress.app.ui.profile.EditProfileActivity;
+import ww.smartexpress.app.ui.signin.SignInActivity;
 
 public class LoginOTPActivity extends BaseActivity<ActivityLoginOtpBinding, LoginOTPViewModel> {
     @Override
@@ -36,22 +47,28 @@ public class LoginOTPActivity extends BaseActivity<ActivityLoginOtpBinding, Logi
         setTheme(R.style.WhiteAppTheme);
         super.onCreate(savedInstanceState);
 
-        viewBinding.edtOTP1.addTextChangedListener(new GenericTextWatcher(viewBinding.edtOTP1, viewBinding.edtOTP2));
-        viewBinding.edtOTP2.addTextChangedListener(new GenericTextWatcher(viewBinding.edtOTP2, viewBinding.edtOTP3));
-        viewBinding.edtOTP3.addTextChangedListener(new GenericTextWatcher(viewBinding.edtOTP3, viewBinding.edtOTP4));
-        viewBinding.edtOTP4.addTextChangedListener(new GenericTextWatcher(viewBinding.edtOTP4, viewBinding.edtOTP5));
-        viewBinding.edtOTP5.addTextChangedListener(new GenericTextWatcher(viewBinding.edtOTP5, viewBinding.edtOTP6));
-        viewBinding.edtOTP6.addTextChangedListener(new GenericTextWatcher(viewBinding.edtOTP6, null));
+        Intent intent = getIntent();
+        if(intent!= null){
+            if(intent.getStringExtra("USER_ID") != null && intent.getStringExtra("USER_PHONE") != null){
+                viewModel.userId.set(intent.getStringExtra("USER_ID"));
+                viewModel.phone.set(intent.getStringExtra("USER_PHONE"));
+                viewModel.setCountdownOTP();
+            }
+        }
 
+        viewBinding.fpOTP1.addTextChangedListener(new GenericTextWatcher(viewBinding.fpOTP1, viewBinding.fpOTP2));
+        viewBinding.fpOTP2.addTextChangedListener(new GenericTextWatcher(viewBinding.fpOTP2, viewBinding.fpOTP3));
+        viewBinding.fpOTP3.addTextChangedListener(new GenericTextWatcher(viewBinding.fpOTP3, viewBinding.fpOTP4));
+        viewBinding.fpOTP4.addTextChangedListener(new GenericTextWatcher(viewBinding.fpOTP4, null));
 
-        viewBinding.edtOTP1.setOnKeyListener(new GenericKeyEvent(viewBinding.edtOTP1, null));
-        viewBinding.edtOTP2.setOnKeyListener(new GenericKeyEvent(viewBinding.edtOTP2, viewBinding.edtOTP1));
-        viewBinding.edtOTP3.setOnKeyListener(new GenericKeyEvent(viewBinding.edtOTP3, viewBinding.edtOTP2));
-        viewBinding.edtOTP4.setOnKeyListener(new GenericKeyEvent(viewBinding.edtOTP4, viewBinding.edtOTP3));
-        viewBinding.edtOTP5.setOnKeyListener(new GenericKeyEvent(viewBinding.edtOTP5, viewBinding.edtOTP4));
-        viewBinding.edtOTP6.setOnKeyListener(new GenericKeyEvent(viewBinding.edtOTP6, viewBinding.edtOTP5));
+        viewBinding.fpOTP1.setOnKeyListener(new GenericKeyEvent(viewBinding.fpOTP1, null));
+        viewBinding.fpOTP2.setOnKeyListener(new GenericKeyEvent(viewBinding.fpOTP2, viewBinding.fpOTP1));
+        viewBinding.fpOTP3.setOnKeyListener(new GenericKeyEvent(viewBinding.fpOTP3, viewBinding.fpOTP2));
+        viewBinding.fpOTP4.setOnKeyListener(new GenericKeyEvent(viewBinding.fpOTP4, viewBinding.fpOTP3));
 
     }
+
+
 
     public class GenericKeyEvent implements View.OnKeyListener {
         private EditText currentView;
@@ -65,7 +82,7 @@ public class LoginOTPActivity extends BaseActivity<ActivityLoginOtpBinding, Logi
         @Override
         public boolean onKey(View view, int keyCode, KeyEvent event) {
             if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL
-                    && currentView != viewBinding.edtOTP1 && currentView.getText().toString().isEmpty()) {
+                    && currentView != viewBinding.fpOTP1 && currentView.getText().toString().isEmpty()) {
                 previousView.setText(null);
                 previousView.requestFocus();
                 return true;
@@ -87,32 +104,27 @@ public class LoginOTPActivity extends BaseActivity<ActivityLoginOtpBinding, Logi
         @Override
         public void afterTextChanged(Editable editable) {
             String text = editable.toString();
-            if(text.length() < 1){
-                viewBinding.btnVerifyLoginOTP.setEnabled(false);
-            }
 
             switch (currentView.getId()) {
-                case R.id.edtOTP1:
-                case R.id.edtOTP2:
-                case R.id.edtOTP3:
-                case R.id.edtOTP4:
-                case R.id.edtOTP5:
+                case R.id.fpOTP1:
+                case R.id.fpOTP2:
+                case R.id.fpOTP3:
                     if (text.length() == 1) {
                         nextView.requestFocus();
                     }
                     break;
-                case R.id.edtOTP6:
-                    if(text.length()==1){
-                        viewBinding.btnVerifyLoginOTP.setEnabled(true);
-                    }
+                case R.id.fpOTP4:
                     break;
+
             }
 
-            if(!viewBinding.edtOTP1.getText().toString().isEmpty() && !viewBinding.edtOTP2.getText().toString().isEmpty() && !viewBinding.edtOTP3.getText().toString().isEmpty()
-                    && !viewBinding.edtOTP4.getText().toString().isEmpty() && !viewBinding.edtOTP5.getText().toString().isEmpty() && !viewBinding.edtOTP6.getText().toString().isEmpty()){
-                viewBinding.btnVerifyLoginOTP.setEnabled(true);
-            }else{
-                viewBinding.btnVerifyLoginOTP.setEnabled(false);
+            if(!TextUtils.isEmpty(viewBinding.fpOTP1.getText().toString()) && !TextUtils.isEmpty(viewBinding.fpOTP2.getText().toString())
+                    && !TextUtils.isEmpty(viewBinding.fpOTP2.getText().toString()) && !TextUtils.isEmpty(viewBinding.fpOTP4.getText().toString())){
+//                Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
+//                startActivity(intent);
+//                viewModel.countDownTimer.cancel();
+//                finish();
+                activeCustomer();
             }
 
         }
@@ -127,6 +139,67 @@ public class LoginOTPActivity extends BaseActivity<ActivityLoginOtpBinding, Logi
             // TODO: Implement as needed1
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+
+    public void activeCustomer(){
+        String otp = viewModel.fpOTP1.get() + viewModel.fpOTP2.get() + viewModel.fpOTP3.get() + viewModel.fpOTP4.get();
+
+        ActiveCustomerRequest request = ActiveCustomerRequest.builder()
+                .otp(otp)
+                .userId(viewModel.userId.get())
+                .build();
+        viewModel.showLoading();
+        viewModel.compositeDisposable.add(viewModel.activeCustomer(request)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    viewModel.hideLoading();
+                    if (response.isResult()){
+                        viewModel.showSuccessMessage("Kích hoạt tài khoản thành công. Vui lòng đăng nhập lại!");
+                        navigateToSignIn();
+
+                    }
+
+                },error->{
+                    viewModel.hideLoading();
+                    viewModel.showErrorMessage(getString(R.string.network_error));
+                    error.printStackTrace();
+                })
+        );
+    }
+
+    public void retryOtpActiveCustomer(){
+        RetryOtpRegisterRequest request = new RetryOtpRegisterRequest(viewModel.phone.get());
+
+        viewModel.showLoading();
+        viewModel.compositeDisposable.add(viewModel.retryActiveCustomer(request)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    viewModel.hideLoading();
+                    if (response.isResult()){
+                        viewModel.setCountdownOTP();
+                    }
+
+                },error->{
+                    viewModel.hideLoading();
+                    viewModel.showErrorMessage(getString(R.string.network_error));
+                    error.printStackTrace();
+                })
+        );
+    }
+
+    public void navigateToSignIn(){
+        Intent intent = new Intent(LoginOTPActivity.this, SignInActivity.class);
+        startActivity(intent);
+        viewModel.countDownTimer.cancel();
+        finish();
     }
 
 }

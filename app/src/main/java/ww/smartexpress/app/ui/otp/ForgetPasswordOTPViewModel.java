@@ -1,5 +1,6 @@
 package ww.smartexpress.app.ui.otp;
 
+import android.content.Intent;
 import android.os.CountDownTimer;
 
 import androidx.databinding.ObservableField;
@@ -9,47 +10,34 @@ import java.util.Locale;
 import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.data.Repository;
 import ww.smartexpress.app.ui.base.activity.BaseViewModel;
+import ww.smartexpress.app.ui.home.HomeActivity;
 import ww.smartexpress.app.ui.input.phone.PhoneActivity;
 import ww.smartexpress.app.ui.profile.EditProfileActivity;
 
 public class ForgetPasswordOTPViewModel extends BaseViewModel {
 
-    public ObservableField<String> phone = new ObservableField<>(" +8312345678");
-    public ObservableField<String> countdownOTP = new ObservableField<>();
-    public ObservableField<String> fpOTP1 = new ObservableField<>();
-    public ObservableField<String> fpOTP2 = new ObservableField<>();
-    public ObservableField<String> fpOTP3 = new ObservableField<>();
-    public ObservableField<String> fpOTP4 = new ObservableField<>();
-
-    public CountDownTimer countDownTimer;
+    public ObservableField<String> otp1 = new ObservableField<>();
+    public ObservableField<String> otp2 = new ObservableField<>();
+    public ObservableField<String> otp3 = new ObservableField<>();
+    public ObservableField<String> otp4 = new ObservableField<>();
+    public ObservableField<String> otp5 = new ObservableField<>();
+    public ObservableField<String> otp6 = new ObservableField<>();
+    public ObservableField<Boolean> isShown = new ObservableField<>(false);
 
     public ForgetPasswordOTPViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
-        setCountdownOTP();
 
     }
 
 
-    public void setCountdownOTP() {
+    public void verifyOTP(){
+        Intent intent = new Intent(application.getCurrentActivity(), HomeActivity.class);
+        application.getCurrentActivity().startActivity(intent);
+    }
 
-        long OTPDurationInMillis = 30000; //30s
-        long intervalInMillis = 1000; //1s tick
-
-        countDownTimer = new CountDownTimer(OTPDurationInMillis, intervalInMillis) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                long minutes = (millisUntilFinished / (60 * 1000)) % 60;
-                long seconds = (millisUntilFinished / 1000) % 60;
-                String countdownText = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
-                countdownOTP.set(" (" + countdownText + ")");
-            }
-            @Override
-            public void onFinish() {
-                back();
-            }
-        };
-
-        countDownTimer.start();
+    public void showPw(){
+        boolean a = isShown.get();
+        isShown.set(!a);
     }
 
     public void back(){

@@ -21,6 +21,7 @@ import ww.smartexpress.app.data.model.api.response.ServiceResponse;
 import ww.smartexpress.app.ui.base.activity.BaseViewModel;
 import ww.smartexpress.app.ui.chat.ChatActivity;
 import ww.smartexpress.app.ui.coupon.CouponActivity;
+import ww.smartexpress.app.ui.payment.PaymentActivity;
 import ww.smartexpress.app.ui.trip.TripActivity;
 
 public class BookDeliveryViewModel extends BaseViewModel {
@@ -85,7 +86,10 @@ public class BookDeliveryViewModel extends BaseViewModel {
         getApplication().getCurrentActivity().onBackPressed();
     }
     public void deleteDestination(){}
-    public void selectPayment(){}
+    public void selectPayment(){
+        Intent intent = new Intent(getApplication().getCurrentActivity(), PaymentActivity.class);
+        getApplication().getCurrentActivity().startActivity(intent);
+    }
     public void selectDiscountCard(){
         Intent intent = new Intent(getApplication().getCurrentActivity(), CouponActivity.class);
         intent.putExtra("SERVICE", ApiModelUtils.toJson(selectedService.get()));

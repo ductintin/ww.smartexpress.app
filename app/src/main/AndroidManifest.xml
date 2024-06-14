@@ -51,6 +51,11 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize|stateHidden">
 
+        <activity android:name="ww.smartexpress.app.ui.wallet.WalletActivity"
+            android:theme="@style/WhiteAppTheme"
+            android:exported="true">
+        </activity>
+
         <activity android:name="ww.smartexpress.app.ui.trip.detail.TripDetailActivity"
             android:theme="@style/WhiteAppTheme"
             android:exported="true">

@@ -11,7 +11,9 @@
         <variable
             name="vm"
             type="ww.smartexpress.app.ui.otp.ForgetPasswordOTPViewModel" />
-        <import type="android.text.TextUtils"></import>
+        <import type="android.view.View" />
+        <import type="android.text.InputType"/>
+        <import type="android.text.TextUtils" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,171 +24,187 @@
         >
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{()->vm.back()}"
             android:src="@drawable/ic_icon_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="@{()->vm.back()}">
 
         </ImageView>
 
         <TextView
-            android:layout_marginTop="@dimen/_30sdp"
-            android:id="@+id/textView8"
+            android:id="@+id/textView"
             style="@style/new_password_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/otp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:text="@string/new_password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3">
+            app:layout_constraintTop_toBottomOf="@+id/imageView">
 
         </TextView>
 
-        <LinearLayout
-            android:id="@+id/linearLayout2"
+        <TextView
+            android:id="@+id/textView2"
+            style="@style/new_password_subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:orientation="horizontal"
+            android:text="@string/new_password_subtext"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView8">
-
-            <TextView
-                style="@style/new_password_subtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/send_otp_title1">
-
-            </TextView>
-
-            <TextView
-                style="@style/new_password_subtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{vm.phone}"
-                android:textColor="@color/black">
-
-            </TextView>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textView9"
-            style="@style/new_password_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/send_otp_title2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+            app:layout_constraintTop_toBottomOf="@+id/textView">
 
         </TextView>
 
         <TableLayout
-            android:layout_marginTop="@dimen/_20sdp"
-            android:id="@+id/tableLayout2"
-            android:layout_width="@dimen/_180sdp"
+            android:id="@+id/tableLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="*"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9">
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:stretchColumns="*">
 
             <TableRow>
-
                 <EditText
-                    android:id="@+id/fpOTP1"
-                    style="@style/new_password_text"
+                    android:id="@+id/edtOTP1"
                     android:layout_width="@dimen/_20ssp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/_8sdp"
-                    android:background="@{!TextUtils.isEmpty(vm.fpOTP1) ? @drawable/bg_edt_otp_active : @drawable/bg_edt_otp}"
+                    android:text="@={vm.otp1}"
                     android:maxLength="1"
                     android:maxLines="1"
-                    android:text="@={vm.fpOTP1}"
+                    style="@style/new_password_text"
                     android:textAlignment="center"
+                    android:background="@{!TextUtils.isEmpty(vm.otp1) ? @drawable/bg_edt_otp_active : @drawable/bg_edt_otp}"
+                    android:layout_marginRight="@dimen/_8sdp"
+                    android:inputType="@{vm.isShown ? InputType.TYPE_CLASS_TEXT : (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)}"
                     >
 
                 </EditText>
 
                 <EditText
-                    android:id="@+id/fpOTP2"
-                    style="@style/new_password_text"
+                    android:id="@+id/edtOTP2"
                     android:layout_width="@dimen/_20ssp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/_8sdp"
-                    android:background="@{!TextUtils.isEmpty(vm.fpOTP2) ? @drawable/bg_edt_otp_active : @drawable/bg_edt_otp}"
+                    android:text="@={vm.otp2}"
                     android:maxLength="1"
                     android:maxLines="1"
-                    android:text="@={vm.fpOTP2}"
-                    android:textAlignment="center">
+                    style="@style/new_password_text"
+                    android:textAlignment="center"
+                    android:background="@{!TextUtils.isEmpty(vm.otp2) ? @drawable/bg_edt_otp_active : @drawable/bg_edt_otp}"
+                    android:layout_marginRight="@dimen/_8sdp"
+                    android:inputType="@{vm.isShown ? InputType.TYPE_CLASS_TEXT : (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)}"
+                    >
 
                 </EditText>
 
                 <EditText
-                    android:id="@+id/fpOTP3"
-                    style="@style/new_password_text"
+                    android:id="@+id/edtOTP3"
                     android:layout_width="@dimen/_20ssp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/_8sdp"
-                    android:background="@{!TextUtils.isEmpty(vm.fpOTP3) ? @drawable/bg_edt_otp_active : @drawable/bg_edt_otp}"
+                    android:text="@={vm.otp3}"
                     android:maxLength="1"
                     android:maxLines="1"
+                    style="@style/new_password_text"
                     android:textAlignment="center"
-                    android:text="@={vm.fpOTP3}">
+                    android:background="@{!TextUtils.isEmpty(vm.otp3) ? @drawable/bg_edt_otp_active : @drawable/bg_edt_otp}"
+                    android:layout_marginRight="@dimen/_8sdp"
+                    android:inputType="@{vm.isShown ? InputType.TYPE_CLASS_TEXT : (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)}"
+
+
+                    >
 
                 </EditText>
 
                 <EditText
-                    android:id="@+id/fpOTP4"
-                    style="@style/new_password_text"
+                    android:id="@+id/edtOTP4"
                     android:layout_width="@dimen/_20ssp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/_8sdp"
-                    android:background="@{!TextUtils.isEmpty(vm.fpOTP4) ? @drawable/bg_edt_otp_active : @drawable/bg_edt_otp}"
+                    android:text="@={vm.otp4}"
                     android:maxLength="1"
                     android:maxLines="1"
+                    style="@style/new_password_text"
                     android:textAlignment="center"
-                    android:text="@={vm.fpOTP4}">
+                    android:background="@{!TextUtils.isEmpty(vm.otp4) ? @drawable/bg_edt_otp_active : @drawable/bg_edt_otp}"
+                    android:layout_marginRight="@dimen/_8sdp"
+                    android:inputType="@{vm.isShown ? InputType.TYPE_CLASS_TEXT : (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)}"
+
+                    >
 
                 </EditText>
+
+                <EditText
+                    android:id="@+id/edtOTP5"
+                    android:layout_width="@dimen/_20ssp"
+                    android:layout_height="wrap_content"
+                    android:text="@={vm.otp5}"
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    style="@style/new_password_text"
+                    android:textAlignment="center"
+                    android:background="@{!TextUtils.isEmpty(vm.otp5) ? @drawable/bg_edt_otp_active : @drawable/bg_edt_otp}"
+                    android:layout_marginRight="@dimen/_8sdp"
+                    android:inputType="@{vm.isShown ? InputType.TYPE_CLASS_TEXT : (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)}"
+
+                    >
+
+                </EditText>
+
+                <EditText
+                    android:id="@+id/edtOTP6"
+                    android:layout_width="@dimen/_20ssp"
+                    android:layout_height="wrap_content"
+                    android:text="@={vm.otp6}"
+                    android:maxLength="1"
+                    android:maxLines="1"
+                    style="@style/new_password_text"
+                    android:textAlignment="center"
+                    android:background="@{!TextUtils.isEmpty(vm.otp6) ? @drawable/bg_edt_otp_active : @drawable/bg_edt_otp}"
+                    android:inputType="@{vm.isShown ? InputType.TYPE_CLASS_TEXT : (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)}"
+
+                    >
+
+                </EditText>
+
             </TableRow>
+
 
 
         </TableLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayout3"
+        <TextView
+            android:id="@+id/tvShowPw"
+            style="@style/show_new_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:text="@string/show_new_password"
+            android:onClick="@{()->vm.showPw()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tableLayout2"
-            android:orientation="horizontal">
+            app:layout_constraintTop_toBottomOf="@+id/tableLayout">
 
-            <TextView
-                style="@style/send_new_otp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/send_otp_title3"></TextView>
+        </TextView>
 
-            <TextView
-                style="@style/send_new_otp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="@{vm.countdownOTP}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tableLayout2">
+        <Button
+            android:id="@+id/btnVerifyLoginOTP"
+            style="@style/NextBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:onClick="@{()->vm.verifyOTP()}"
+            android:text="@string/next"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvShowPw"
+            android:layout_marginTop="@dimen/_25sdp">
 
-            </TextView>
-
-        </LinearLayout>
-
+        </Button>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

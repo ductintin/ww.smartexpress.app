@@ -47,9 +47,9 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
 
     private static final int REQ_ONE_TAP = 1000;
 
-    private Executor executor;
-    private BiometricPrompt biometricPrompt;
-    private BiometricPrompt.PromptInfo promptInfo;
+//    private Executor executor;
+//    private BiometricPrompt biometricPrompt;
+//    private BiometricPrompt.PromptInfo promptInfo;
     @Override
     public int getLayoutId() {
         return R.layout.activity_sign_in;
@@ -69,40 +69,40 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        executor = ContextCompat.getMainExecutor(this);
-        biometricPrompt = new BiometricPrompt(SignInActivity.this,
-                executor, new BiometricPrompt.AuthenticationCallback() {
-            @Override
-            public void onAuthenticationError(int errorCode,
-                                              @NonNull CharSequence errString) {
-                super.onAuthenticationError(errorCode, errString);
-                Toast.makeText(getApplicationContext(),
-                                "Authentication error: " + errString, Toast.LENGTH_SHORT)
-                        .show();
-
-            }
-
-            @Override
-            public void onAuthenticationSucceeded(
-                    @NonNull BiometricPrompt.AuthenticationResult result) {
-                super.onAuthenticationSucceeded(result);
-                Toast.makeText(getApplicationContext(),
-                        "Authentication succeeded!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAuthenticationFailed() {
-                super.onAuthenticationFailed();
-                Toast.makeText(getApplicationContext(), "Authentication failed",
-                                Toast.LENGTH_SHORT)
-                        .show();
-            }
-        });
-
-        promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Xác thực vân tay cho đăng nhập ứng dụng")
-                .setNegativeButtonText("Sử dụng mật khẩu")
-                .build();
+//        executor = ContextCompat.getMainExecutor(this);
+//        biometricPrompt = new BiometricPrompt(SignInActivity.this,
+//                executor, new BiometricPrompt.AuthenticationCallback() {
+//            @Override
+//            public void onAuthenticationError(int errorCode,
+//                                              @NonNull CharSequence errString) {
+//                super.onAuthenticationError(errorCode, errString);
+//                Toast.makeText(getApplicationContext(),
+//                                "Authentication error: " + errString, Toast.LENGTH_SHORT)
+//                        .show();
+//
+//            }
+//
+//            @Override
+//            public void onAuthenticationSucceeded(
+//                    @NonNull BiometricPrompt.AuthenticationResult result) {
+//                super.onAuthenticationSucceeded(result);
+//                Toast.makeText(getApplicationContext(),
+//                        "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onAuthenticationFailed() {
+//                super.onAuthenticationFailed();
+//                Toast.makeText(getApplicationContext(), "Authentication failed",
+//                                Toast.LENGTH_SHORT)
+//                        .show();
+//            }
+//        });
+//
+//        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+//                .setTitle("Xác thực vân tay cho đăng nhập ứng dụng")
+//                .setNegativeButtonText("Sử dụng mật khẩu")
+//                .build();
 
 
 
@@ -208,41 +208,43 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     if(response.isResult()){
-
-                        AES aes = new AES();
-                        aes.init();
-
-                        viewModel.hideLoading();
-                        viewModel.showSuccessMessage(getString(R.string.login_success));
-
-                        biometricPrompt.authenticate(promptInfo);
-
-                        UserEntity userEntity = UserEntity.builder()
-                                .id(response.getData().getUserId())
-                                .encryptedPassword(aes.encrypt(viewModel.password.get()))
-                                .build();
-
-                        viewModel.insertUser(userEntity)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new CompletableObserver() {
-                                    @Override
-                                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-
-                                    }
-
-                                    @Override
-                                    public void onComplete() {
-                                        Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
-                                        startActivity(intent);
-                                    }
-
-                                    @Override
-                                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-
-                                    }
-                                });
+//
+//                        viewModel.hideLoading();
+//                        viewModel.showSuccessMessage(getString(R.string.login_success));
+//
+//                        biometricPrompt.authenticate(promptInfo);
+//
+//                        UserEntity userEntity = UserEntity.builder()
+//                                .id(response.getData().getUserId())
+//                                .encryptedPassword(aes.encrypt(viewModel.password.get()))
+//                                .build();
+//
+//                        viewModel.insertUser(userEntity)
+//                                .subscribeOn(Schedulers.io())
+//                                .observeOn(AndroidSchedulers.mainThread())
+//                                .subscribe(new CompletableObserver() {
+//                                    @Override
+//                                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onComplete() {
+//                                        Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
+//                                        startActivity(intent);
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+//
+//                                    }
+//                                });
                         //navigateToHome();
+                        Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
+                        String en = viewModel.getApplication().getAes().encrypt(viewModel.password.get());
+                        intent.putExtra("ENCRYPTED_PW", en);
+                        Log.d("TAG", "doLogin: " + en);
+                        startActivity(intent);
                     }else{
                         viewModel.hideLoading();
                         viewModel.showErrorMessage(response.getMessage());

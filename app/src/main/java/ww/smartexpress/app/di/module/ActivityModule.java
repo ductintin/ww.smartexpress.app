@@ -46,6 +46,7 @@ import ww.smartexpress.app.ui.trip.cancel.TripCancelReasonViewModel;
 import ww.smartexpress.app.ui.trip.complete.TripCompleteViewModel;
 import ww.smartexpress.app.ui.trip.TripViewModel;
 import ww.smartexpress.app.ui.trip.detail.TripDetailViewModel;
+import ww.smartexpress.app.ui.wallet.WalletViewModel;
 import ww.smartexpress.app.ui.welcome.WelcomeViewModel;
 import ww.smartexpress.app.ui.splashform.SplashFormViewModel;
 import ww.smartexpress.app.utils.GetInfo;
@@ -368,5 +369,13 @@ public class ActivityModule {
         Supplier<TripDetailViewModel> supplier = () -> new TripDetailViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<TripDetailViewModel> factory = new ViewModelProviderFactory<>(TripDetailViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(TripDetailViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    WalletViewModel provideWalletViewModel(Repository repository, Context application) {
+        Supplier<WalletViewModel> supplier = () -> new WalletViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<WalletViewModel> factory = new ViewModelProviderFactory<>(WalletViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(WalletViewModel.class);
     }
 }

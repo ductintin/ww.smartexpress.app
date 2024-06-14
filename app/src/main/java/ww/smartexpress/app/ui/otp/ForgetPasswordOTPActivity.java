@@ -39,15 +39,20 @@ public class ForgetPasswordOTPActivity extends BaseActivity<ActivityForgetpwotpB
         setTheme(R.style.WhiteAppTheme);
         super.onCreate(savedInstanceState);
 
-        viewBinding.fpOTP1.addTextChangedListener(new GenericTextWatcher(viewBinding.fpOTP1, viewBinding.fpOTP2));
-        viewBinding.fpOTP2.addTextChangedListener(new GenericTextWatcher(viewBinding.fpOTP2, viewBinding.fpOTP3));
-        viewBinding.fpOTP3.addTextChangedListener(new GenericTextWatcher(viewBinding.fpOTP3, viewBinding.fpOTP4));
-        viewBinding.fpOTP4.addTextChangedListener(new GenericTextWatcher(viewBinding.fpOTP4, null));
+        viewBinding.edtOTP1.addTextChangedListener(new GenericTextWatcher(viewBinding.edtOTP1, viewBinding.edtOTP2));
+        viewBinding.edtOTP2.addTextChangedListener(new GenericTextWatcher(viewBinding.edtOTP2, viewBinding.edtOTP3));
+        viewBinding.edtOTP3.addTextChangedListener(new GenericTextWatcher(viewBinding.edtOTP3, viewBinding.edtOTP4));
+        viewBinding.edtOTP4.addTextChangedListener(new GenericTextWatcher(viewBinding.edtOTP4, viewBinding.edtOTP5));
+        viewBinding.edtOTP5.addTextChangedListener(new GenericTextWatcher(viewBinding.edtOTP5, viewBinding.edtOTP6));
+        viewBinding.edtOTP6.addTextChangedListener(new GenericTextWatcher(viewBinding.edtOTP6, null));
 
-        viewBinding.fpOTP1.setOnKeyListener(new GenericKeyEvent(viewBinding.fpOTP1, null));
-        viewBinding.fpOTP2.setOnKeyListener(new GenericKeyEvent(viewBinding.fpOTP2, viewBinding.fpOTP1));
-        viewBinding.fpOTP3.setOnKeyListener(new GenericKeyEvent(viewBinding.fpOTP3, viewBinding.fpOTP2));
-        viewBinding.fpOTP4.setOnKeyListener(new GenericKeyEvent(viewBinding.fpOTP4, viewBinding.fpOTP3));
+
+        viewBinding.edtOTP1.setOnKeyListener(new GenericKeyEvent(viewBinding.edtOTP1, null));
+        viewBinding.edtOTP2.setOnKeyListener(new GenericKeyEvent(viewBinding.edtOTP2, viewBinding.edtOTP1));
+        viewBinding.edtOTP3.setOnKeyListener(new GenericKeyEvent(viewBinding.edtOTP3, viewBinding.edtOTP2));
+        viewBinding.edtOTP4.setOnKeyListener(new GenericKeyEvent(viewBinding.edtOTP4, viewBinding.edtOTP3));
+        viewBinding.edtOTP5.setOnKeyListener(new GenericKeyEvent(viewBinding.edtOTP5, viewBinding.edtOTP4));
+        viewBinding.edtOTP6.setOnKeyListener(new GenericKeyEvent(viewBinding.edtOTP6, viewBinding.edtOTP5));
 
     }
 
@@ -63,7 +68,7 @@ public class ForgetPasswordOTPActivity extends BaseActivity<ActivityForgetpwotpB
         @Override
         public boolean onKey(View view, int keyCode, KeyEvent event) {
             if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL
-                    && currentView != viewBinding.fpOTP1 && currentView.getText().toString().isEmpty()) {
+                    && currentView != viewBinding.edtOTP1 && currentView.getText().toString().isEmpty()) {
                 previousView.setText(null);
                 previousView.requestFocus();
                 return true;
@@ -85,26 +90,32 @@ public class ForgetPasswordOTPActivity extends BaseActivity<ActivityForgetpwotpB
         @Override
         public void afterTextChanged(Editable editable) {
             String text = editable.toString();
+            if(text.length() < 1){
+                viewBinding.btnVerifyLoginOTP.setEnabled(false);
+            }
 
             switch (currentView.getId()) {
-                case R.id.fpOTP1:
-                case R.id.fpOTP2:
-                case R.id.fpOTP3:
+                case R.id.edtOTP1:
+                case R.id.edtOTP2:
+                case R.id.edtOTP3:
+                case R.id.edtOTP4:
+                case R.id.edtOTP5:
                     if (text.length() == 1) {
                         nextView.requestFocus();
                     }
                     break;
-                case R.id.fpOTP4:
+                case R.id.edtOTP6:
+                    if(text.length()==1){
+                        viewBinding.btnVerifyLoginOTP.setEnabled(true);
+                    }
                     break;
-
             }
 
-            if(!TextUtils.isEmpty(viewBinding.fpOTP1.getText().toString()) && !TextUtils.isEmpty(viewBinding.fpOTP2.getText().toString())
-            && !TextUtils.isEmpty(viewBinding.fpOTP2.getText().toString()) && !TextUtils.isEmpty(viewBinding.fpOTP4.getText().toString())){
-                Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
-                startActivity(intent);
-                viewModel.countDownTimer.cancel();
-                finish();
+            if(!viewBinding.edtOTP1.getText().toString().isEmpty() && !viewBinding.edtOTP2.getText().toString().isEmpty() && !viewBinding.edtOTP3.getText().toString().isEmpty()
+                    && !viewBinding.edtOTP4.getText().toString().isEmpty() && !viewBinding.edtOTP5.getText().toString().isEmpty() && !viewBinding.edtOTP6.getText().toString().isEmpty()){
+                viewBinding.btnVerifyLoginOTP.setEnabled(true);
+            }else{
+                viewBinding.btnVerifyLoginOTP.setEnabled(false);
             }
 
         }
@@ -119,10 +130,5 @@ public class ForgetPasswordOTPActivity extends BaseActivity<ActivityForgetpwotpB
             // TODO: Implement as needed1
         }
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 }

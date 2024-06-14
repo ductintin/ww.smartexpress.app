@@ -31,6 +31,7 @@ public class EditProfileViewModel extends BaseViewModel {
     public ObservableField<String> email = new ObservableField<>("");
     public ObservableField<String> password = new ObservableField<>("");
     public ObservableField<String> confirmPassword = new ObservableField<>("");
+    public ObservableField<String> encryptedPassword = new ObservableField<>("");
 
     public ObservableField<ProfileResponse> profile = new ObservableField<>(new ProfileResponse());
     public ObservableField<UpdateProfileRequest> request = new ObservableField<>(new UpdateProfileRequest());

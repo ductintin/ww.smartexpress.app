@@ -122,35 +122,42 @@ public class SplashFormActivity extends BaseActivity<ActivitySplashFormBinding, 
             if (LocationUtils.isLocationEnabled(getApplicationContext())) {
                 fusedLocationClient.getLastLocation()
                         .addOnSuccessListener(SplashFormActivity.this, location -> {
-                            viewModel.latlng.set(String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude()));
-                            viewModel.compositeDisposable.add(viewModel.getLocationInfo()
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(response -> {
-                                        String status = response.get("status").getAsString();
-                                        Log.d("TAG", status);
+                            if(location != null){
+                                viewModel.latlng.set(String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude()));
+                                viewModel.compositeDisposable.add(viewModel.getLocationInfo()
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(response -> {
+                                            String status = response.get("status").getAsString();
+                                            Log.d("TAG", status);
 
-                                        JsonArray results = response.getAsJsonArray("results");
-                                        int index = results.size() - 1;
+                                            JsonArray results = response.getAsJsonArray("results");
+                                            int index = results.size() - 1;
 
-                                        String component = results.get(0).getAsJsonObject().get("formatted_address").getAsString();
-                                        String id = results.get(0).getAsJsonObject().get("place_id").getAsString();
-                                        Log.d("TAG", "onLocationChanged: " + component);
+                                            String component = results.get(0).getAsJsonObject().get("formatted_address").getAsString();
+                                            String id = results.get(0).getAsJsonObject().get("place_id").getAsString();
+                                            Log.d("TAG", "onLocationChanged: " + component);
 
-                                        Intent intent = new Intent(SplashFormActivity.this, HomeActivity.class);
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("PLACE_NAME", component);
-                                        bundle.putString("PLACE_ID", id);
-                                        intent.putExtras(bundle);
-                                        startActivity(intent);
-                                        finish();
+                                            Intent intent = new Intent(SplashFormActivity.this, HomeActivity.class);
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("PLACE_NAME", component);
+                                            bundle.putString("PLACE_ID", id);
+                                            intent.putExtras(bundle);
+                                            startActivity(intent);
+                                            finish();
 
-                                    }, error -> {
-                                        viewModel.hideLoading();
-                                        viewModel.showErrorMessage(getString(R.string.network_error));
-                                        error.printStackTrace();
-                                    })
-                            );
+                                        }, error -> {
+                                            viewModel.hideLoading();
+                                            viewModel.showErrorMessage(getString(R.string.network_error));
+                                            error.printStackTrace();
+                                        })
+                                );
+                            }else{
+
+                                Intent intent = new Intent(SplashFormActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
                         });
             }else{
                 Intent intent = new Intent(SplashFormActivity.this, HomeActivity.class);

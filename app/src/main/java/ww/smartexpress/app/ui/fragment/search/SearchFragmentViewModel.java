@@ -43,6 +43,7 @@ import ww.smartexpress.app.ui.shipping.address.info.ShippingInfoActivity;
 public class SearchFragmentViewModel extends BaseFragmentViewModel {
     public ObservableField<Integer> totalBookingElements = new ObservableField<>(0);
     public ObservableField<ProfileResponse> profile = new ObservableField<>(new ProfileResponse());
+    public ObservableField<UserEntity> user = new ObservableField<>(new UserEntity());
     public SearchFragmentViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
     }
