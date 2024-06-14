@@ -61,6 +61,7 @@ import ww.smartexpress.app.data.model.api.response.BookCar;
 import ww.smartexpress.app.data.model.api.response.BookingDoneResponse;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
 import ww.smartexpress.app.data.model.api.response.DriverBookingResponse;
+import ww.smartexpress.app.data.model.api.response.PaymentMethod;
 import ww.smartexpress.app.data.model.api.response.Promotion;
 import ww.smartexpress.app.data.model.api.response.ServicePrice;
 import ww.smartexpress.app.data.model.api.response.ServicePromotion;
@@ -89,7 +90,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     List<ServiceResponse> serviceResponses = new ArrayList<>();
     //PolylineOptions polylineOptions;
     Polyline polyline;
-    CreateBookingRequest bookingRequest = new CreateBookingRequest();
+
     BookingResponse bookingResponse;
     DriverBookingResponse driverBookingResponse;
 
@@ -142,16 +143,16 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 viewModel.selectCOD.set(shippingInfo.getIsCod());
                 viewModel.codPrice.set(shippingInfo.getCodPrice());
 
-                bookingRequest.setPickupAddress(shippingInfo.getOrigin());
-                bookingRequest.setDestinationAddress(shippingInfo.getDestination());
-                bookingRequest.setSenderName(shippingInfo.getSenderName());
-                bookingRequest.setSenderPhone(shippingInfo.getSenderPhone());
-                bookingRequest.setConsigneeName(shippingInfo.getConsigneeName());
-                bookingRequest.setConsigneePhone(shippingInfo.getConsigneePhone());
-                bookingRequest.setCustomerNote(shippingInfo.getCustomerNote());
-                bookingRequest.setIsCod(shippingInfo.getIsCod());
-                bookingRequest.setCodPrice(shippingInfo.getCodPrice().doubleValue());
-                bookingRequest.setPaymentKind(1);
+                viewModel.bookingRequest.get().setPickupAddress(shippingInfo.getOrigin());
+                viewModel.bookingRequest.get().setDestinationAddress(shippingInfo.getDestination());
+                viewModel.bookingRequest.get().setSenderName(shippingInfo.getSenderName());
+                viewModel.bookingRequest.get().setSenderPhone(shippingInfo.getSenderPhone());
+                viewModel.bookingRequest.get().setConsigneeName(shippingInfo.getConsigneeName());
+                viewModel.bookingRequest.get().setConsigneePhone(shippingInfo.getConsigneePhone());
+                viewModel.bookingRequest.get().setCustomerNote(shippingInfo.getCustomerNote());
+                viewModel.bookingRequest.get().setIsCod(shippingInfo.getIsCod());
+                viewModel.bookingRequest.get().setCodPrice(shippingInfo.getCodPrice().doubleValue());
+                viewModel.bookingRequest.get().setPaymentKind(1);
 
                 SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.mapShip);
@@ -245,9 +246,9 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
         viewModel.selectedService.set(servicePromotion);
         viewModel.selectedServiceIndex.set(0);
 
-        bookingRequest.setPromotionMoney(0.0);
-        bookingRequest.setServiceId(serviceResponses.get(0).getId());
-        bookingRequest.setMoney(bookCars.get(0).getPrice());
+        viewModel.bookingRequest.get().setPromotionMoney(0.0);
+        viewModel.bookingRequest.get().setServiceId(serviceResponses.get(0).getId());
+        viewModel.bookingRequest.get().setMoney(bookCars.get(0).getPrice());
 
         RecyclerView.LayoutManager layoutBookCar = new LinearLayoutManager(this
                 ,LinearLayoutManager.VERTICAL, false);
@@ -262,9 +263,9 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
         bookCarAdapter.setOnItemClickListener(bookCar -> {
             if(sheetBehavior.getState()==BottomSheetBehavior.STATE_EXPANDED){
                 sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                bookingRequest.setServiceId(bookCar.getServiceId());
-                bookingRequest.setMoney(bookCar.getPrice());
-                bookingRequest.setPromotionMoney(bookCar.getDiscount());
+                viewModel.bookingRequest.get().setServiceId(bookCar.getServiceId());
+                viewModel.bookingRequest.get().setMoney(bookCar.getPrice());
+                viewModel.bookingRequest.get().setPromotionMoney(bookCar.getDiscount());
                 bookCarAdapter.setSelected(bookCars.indexOf(bookCar));
                 viewModel.deliveryMethod.set(bookCar.getName());
 
@@ -275,8 +276,8 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                     bookCars.get(viewModel.selectedServiceIndex.get()).setDiscount(0.0);
                     viewModel.selectedServiceIndex.set(bookCars.indexOf(bookCar));
                     viewModel.discount.set(0.0);
-                    bookingRequest.setPromotionId(null);
-                    bookingRequest.setPromotionMoney(0.0);
+                    viewModel.bookingRequest.get().setPromotionId(null);
+                    viewModel.bookingRequest.get().setPromotionMoney(0.0);
                 }
 
 
@@ -318,7 +319,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     }
 
     public void findingDriver(){
-        viewModel.compositeDisposable.add(viewModel.createBooking(bookingRequest)
+        viewModel.compositeDisposable.add(viewModel.createBooking(viewModel.bookingRequest.get())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
@@ -440,8 +441,8 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                                 JsonObject location = geometry.getAsJsonObject("location");
                                 viewModel.originLat.set(location.get("lat").getAsDouble());
                                 viewModel.originLng.set(location.get("lng").getAsDouble());
-                                bookingRequest.setPickupLat(location.get("lat").getAsDouble());
-                                bookingRequest.setPickupLong(location.get("lng").getAsDouble());
+                                viewModel.bookingRequest.get().setPickupLat(location.get("lat").getAsDouble());
+                                viewModel.bookingRequest.get().setPickupLong(location.get("lng").getAsDouble());
                                 viewModel.originLatLng.set(String.valueOf(location.get("lat").getAsDouble())+","+String.valueOf(location.get("lng").getAsDouble()));
                             }
                             getDestination();
@@ -470,8 +471,8 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                             JsonObject location = geometry.getAsJsonObject("location");
                             viewModel.destinationLat.set(location.get("lat").getAsDouble());
                             viewModel.destinationLng.set(location.get("lng").getAsDouble());
-                            bookingRequest.setDestinationLat(location.get("lat").getAsDouble());
-                            bookingRequest.setDestinationLong(location.get("lng").getAsDouble());
+                            viewModel.bookingRequest.get().setDestinationLat(location.get("lat").getAsDouble());
+                            viewModel.bookingRequest.get().setDestinationLong(location.get("lng").getAsDouble());
                             viewModel.destinationLatLng.set(String.valueOf(location.get("lat").getAsDouble())+","+String.valueOf(location.get("lng").getAsDouble()));
                         }
                         loadMapDirection();
@@ -511,7 +512,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                                 viewModel.distanceKm.set(distance.get("text").getAsString());
                                 viewModel.time.set(duration.get("text").getAsString());
                                 viewModel.timeValue.set(duration.get("value").getAsLong());
-                                bookingRequest.setDistance(distance.get("value").getAsDouble());
+                                viewModel.bookingRequest.get().setDistance(distance.get("value").getAsDouble());
 
                                 for(int k = 0; k < steps.size(); k++){
                                     String polyline = steps.get(k).getAsJsonObject().get("polyline").getAsJsonObject().get("points").getAsString();
@@ -897,10 +898,11 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
             bookCarAdapter.notifyDataSetChanged();
             viewModel.discount.set(promotionMoney);
             viewModel.selectedService.get().setSelectedId(promotion.getId());
-            bookingRequest.setPromotionMoney(promotionMoney);
-            bookingRequest.setPromotionId(promotion.getId());
+            viewModel.bookingRequest.get().setPromotionMoney(promotionMoney);
+            viewModel.bookingRequest.get().setPromotionId(promotion.getId());
         }
     }
+
 
     @Override
     protected void onResume() {
@@ -913,13 +915,22 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
         super.onPause();
         EventBus.getDefault().unregister(this);
         EventBus.getDefault().removeStickyEvent(Promotion.class);
+        EventBus.getDefault().removeStickyEvent(PaymentMethod.class);
     }
 
     public void deletePromotion(){
         viewModel.discount.set(0.0);
-        bookingRequest.setPromotionMoney(0.0);
-        bookingRequest.setPromotionId(null);
+        viewModel.bookingRequest.get().setPromotionMoney(0.0);
+        viewModel.bookingRequest.get().setPromotionId(null);
         bookCars.get(viewModel.selectedServiceIndex.get()).setDiscount(0.0);
         bookCarAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventPayment(PaymentMethod paymentMethod){
+        if(paymentMethod != null){
+            viewModel.paymentKind.set(paymentMethod.getPaymentKind());
+            viewModel.bookingRequest.get().setPaymentKind(paymentMethod.getPaymentKind());
+        }
     }
 }

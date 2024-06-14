@@ -32,6 +32,7 @@ import ww.smartexpress.app.data.model.api.response.Room;
 import ww.smartexpress.app.data.model.api.response.SearchLocationResponse;
 import ww.smartexpress.app.data.model.api.response.ServiceResponse;
 import ww.smartexpress.app.data.model.api.response.UploadFileResponse;
+import ww.smartexpress.app.data.model.api.response.WalletResponse;
 
 public interface ApiService {
     @POST("/v1/customer/login")
@@ -96,4 +97,6 @@ public interface ApiService {
     @POST("/v1/customer/retry-otp-register")
     @Headers({"IgnoreAuth:1"})
     Observable<ResponseWrapper<CustomerIdResponse>> retryActiveCustomer(@Body RetryOtpRegisterRequest request);
+    @GET("/v1/wallet/my-wallet")
+    Observable<ResponseWrapper<WalletResponse>> getMyWallet();
 }

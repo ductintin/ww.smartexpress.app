@@ -244,7 +244,7 @@
                                 android:layout_height="match_parent"
                                 android:onClick="@{(v)->vm.selectPayment()}"
                                 android:paddingLeft="@dimen/_10sdp"
-                                android:text="@string/money" />
+                                android:text='@{vm.paymentKind == 1 ? @string/money : "Trả thẻ"}' />
                         </LinearLayout>
 
                         <FrameLayout

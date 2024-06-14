@@ -77,6 +77,8 @@ public class BookDeliveryViewModel extends BaseViewModel {
 
     public ObservableField<ServicePromotion> selectedService = new ObservableField<>(null);
     public ObservableField<Integer> selectedServiceIndex = new ObservableField<>(0);
+    public ObservableField<Integer> paymentKind = new ObservableField<>(1);
+    public ObservableField<CreateBookingRequest> bookingRequest = new ObservableField<>(new CreateBookingRequest());
 
     public BookDeliveryViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
@@ -88,6 +90,7 @@ public class BookDeliveryViewModel extends BaseViewModel {
     public void deleteDestination(){}
     public void selectPayment(){
         Intent intent = new Intent(getApplication().getCurrentActivity(), PaymentActivity.class);
+        intent.putExtra("BOOKING_PRICE", bookingRequest.get().getMoney());
         getApplication().getCurrentActivity().startActivity(intent);
     }
     public void selectDiscountCard(){

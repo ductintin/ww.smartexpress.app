@@ -45,8 +45,10 @@ public class LoginOTPViewModel extends BaseViewModel {
 
     public void setCountdownOTP() {
 
-        long OTPDurationInMillis = 30000; //30s
+        long OTPDurationInMillis = 60000; //60s
         long intervalInMillis = 1000; //1s tick
+
+        milFinished.set(-1L);
 
         countDownTimer = new CountDownTimer(OTPDurationInMillis, intervalInMillis) {
             @Override
@@ -55,12 +57,12 @@ public class LoginOTPViewModel extends BaseViewModel {
                 long seconds = (millisUntilFinished / 1000) % 60;
                 String countdownText = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
                 countdownOTP.set(countdownText);
-                milFinished.set(millisUntilFinished);
-                Log.d("TAG", "onTick: " + countdownOTP.get());
+                //Log.d("TAG", "onTick: " + countdownOTP.get());
+                Log.d("TAG", "onTick: " + millisUntilFinished);
             }
             @Override
             public void onFinish() {
-
+                milFinished.set(0L);
             }
         };
 
