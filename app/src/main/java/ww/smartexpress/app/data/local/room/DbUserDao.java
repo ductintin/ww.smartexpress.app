@@ -48,12 +48,15 @@ public interface DbUserDao {
     @Query("UPDATE  `user` SET avatar=:avatar, name=:name WHERE user_id=:id")
     Completable update(Long id, String avatar, String name);
 
-    @Query("UPDATE  `user` SET avatar=:avatar, name=:name, phone=:phone, email=:email WHERE user_id=:id")
-    Completable updateFull(Long id, String avatar, String name, String phone, String email);
+    @Query("UPDATE  `user` SET avatar=:avatar, name=:name, phone=:phone, email=:email, bankCard=:bankCard WHERE user_id=:id")
+    Completable updateFull(Long id, String avatar, String name, String phone, String email, String bankCard);
 
     @Query("UPDATE  `user` SET encryptedPassword=:encryptedPassword WHERE user_id=:userId")
     Completable updateEncryptedPassword(Long userId, String encryptedPassword);
 
     @Query("SELECT encryptedPassword FROM `user` WHERE user_id=:userId")
     Single<String> getEncryptedByUserId(Long userId);
+
+    @Query("UPDATE  `user` SET bankCard=:bankCard WHERE user_id=:userId")
+    Completable updateBankCard(Long userId, String bankCard);
 }

@@ -38,4 +38,6 @@
     <color name="color4">#7AA2E3</color>
     <color name="pending_color">#FF8E26</color>
     <color name="pending_color_light">#FFCDA0</color>
+    <color name="app_text">#424242</color>
+    <color name="green_light_app">#6C94FC</color>
 </resources>

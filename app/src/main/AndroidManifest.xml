@@ -51,10 +51,41 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize|stateHidden">
 
-        <activity android:name="ww.smartexpress.app.ui.wallet.WalletActivity"
-            android:theme="@style/WhiteAppTheme"
+        <activity
+            android:name="ww.smartexpress.app.ui.qrcode.QrcodeActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:theme="@style/Welcome"
+            android:exported="true">
+
+        </activity>
+
+        <activity
+            android:name="ww.smartexpress.app.ui.wallet.WalletActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:theme="@style/Welcome"
             android:exported="true">
         </activity>
+        <activity
+            android:name="ww.smartexpress.app.ui.deposit.DepositActivity"
+            android:theme="@style/Welcome"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name="ww.smartexpress.app.ui.payout.PayoutActivity"
+            android:theme="@style/Welcome"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name="ww.smartexpress.app.ui.bank.BankActivity"
+            android:theme="@style/Welcome"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name="ww.smartexpress.app.ui.wallet.transaction.TransactionActivity"
+            android:theme="@style/Welcome"
+            android:exported="true">
+        </activity>
+
 
         <activity android:name="ww.smartexpress.app.ui.trip.detail.TripDetailActivity"
             android:theme="@style/WhiteAppTheme"

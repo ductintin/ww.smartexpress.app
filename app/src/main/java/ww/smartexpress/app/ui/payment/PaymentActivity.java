@@ -64,4 +64,9 @@ public class PaymentActivity extends BaseActivity<ActivityPaymentBinding, Paymen
         );
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getMyWallet();
+    }
 }

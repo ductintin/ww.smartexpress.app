@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
 import ww.smartexpress.app.data.model.api.request.BaseRequest;
+import ww.smartexpress.app.data.model.api.response.BankCard;
 import ww.smartexpress.app.data.model.api.response.BaseResponse;
 
 import java.lang.reflect.Type;
@@ -45,6 +46,10 @@ public class ApiModelUtils {
     }
 
     public static String toJson(BaseResponse objects) {
+        return GSON.toJson(objects);
+    }
+
+    public static String toJson(BankCard objects) {
         return GSON.toJson(objects);
     }
 

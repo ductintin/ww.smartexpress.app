@@ -2,16 +2,20 @@ package ww.smartexpress.app.di.component;
 
 import ww.smartexpress.app.di.module.ActivityModule;
 import ww.smartexpress.app.di.scope.ActivityScope;
+import ww.smartexpress.app.ui.bank.BankActivity;
 import ww.smartexpress.app.ui.cart.CartActivity;
 import ww.smartexpress.app.ui.chat.ChatActivity;
 import ww.smartexpress.app.ui.delivery.BookDeliveryActivity;
 import ww.smartexpress.app.ui.delivery.order.DeliveryActivity;
+import ww.smartexpress.app.ui.deposit.DepositActivity;
 import ww.smartexpress.app.ui.index.IndexActivity;
 import ww.smartexpress.app.ui.map.MapActivity;
 import ww.smartexpress.app.ui.order.details.OrderDetailsActivity;
 import ww.smartexpress.app.ui.order.information.OrderInformationActivity;
 import ww.smartexpress.app.ui.password.reset.ResetPasswordActivity;
+import ww.smartexpress.app.ui.payout.PayoutActivity;
 import ww.smartexpress.app.ui.purchase.PurchaseActivity;
+import ww.smartexpress.app.ui.qrcode.QrcodeActivity;
 import ww.smartexpress.app.ui.register.RegisterActivity;
 import ww.smartexpress.app.ui.search.food.SearchFoodActivity;
 import ww.smartexpress.app.ui.shipping.address.ShippingAddressActivity;
@@ -40,6 +44,7 @@ import ww.smartexpress.app.ui.trip.cancel.TripCancelReasonActivity;
 import ww.smartexpress.app.ui.trip.complete.TripCompleteActivity;
 import ww.smartexpress.app.ui.trip.detail.TripDetailActivity;
 import ww.smartexpress.app.ui.wallet.WalletActivity;
+import ww.smartexpress.app.ui.wallet.transaction.TransactionActivity;
 import ww.smartexpress.app.ui.welcome.WelcomeActivity;
 import ww.smartexpress.app.ui.input.phone.PhoneActivity;
 import ww.smartexpress.app.ui.splashform.SplashFormActivity;
@@ -105,6 +110,15 @@ public interface ActivityComponent {
 
     void inject(MapActivity mapActivity);
     void inject(TripDetailActivity tripDetailActivity);
+    void inject(QrcodeActivity qrcodeActivity);
+
     void inject(WalletActivity walletActivity);
+
+    void inject(DepositActivity depositActivity);
+
+    void inject(PayoutActivity payoutActivity);
+
+    void inject(BankActivity bankActivity);
+    void inject(TransactionActivity transactionActivity);
 }
 

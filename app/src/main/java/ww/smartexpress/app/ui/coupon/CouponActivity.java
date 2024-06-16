@@ -111,6 +111,11 @@ public class CouponActivity extends BaseActivity<ActivityCouponBinding, CouponVi
             return pr;
         }
 
+        if(pr.getState() != 1){
+            pr.setIsExpired(true);
+            return pr;
+        }
+
         if(DateUtils.convertStringToDate(pr.getEndDate()).before(date)){
             pr.setIsExpired(true);
             Log.d("TAG", "checkPromotion: het han");

@@ -9,7 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateProfileRequest {
     private String avatar;
+
     private String name;
+
     private String newPassword;
+
     private String oldPassword;
+
+    private String bankCard;
 }

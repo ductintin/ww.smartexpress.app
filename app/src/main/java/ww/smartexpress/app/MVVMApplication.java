@@ -29,9 +29,11 @@ import lombok.Getter;
 import lombok.Setter;
 import timber.log.Timber;
 import ww.smartexpress.app.constant.Constants;
+import ww.smartexpress.app.data.model.api.ApiModelUtils;
 import ww.smartexpress.app.data.model.api.response.ChatMessage;
 import ww.smartexpress.app.data.model.api.response.DriverBookingResponse;
 import ww.smartexpress.app.data.model.api.response.DriverPosition;
+import ww.smartexpress.app.data.model.api.response.TransactionMessage;
 import ww.smartexpress.app.data.websocket.Command;
 import ww.smartexpress.app.data.websocket.Message;
 import ww.smartexpress.app.data.websocket.SocketEventModel;
@@ -190,6 +192,9 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
                         break;
                     case Command.CMD_DRIVER_UPDATE_POSITION:
                         navigateFromDriverUpdatePositionToBookDeliveryActivity(socketEventModel);
+                        break;
+                    case Command.CMD_CLIENT_RECEIVED_PUSH_NOTIFICATION:
+                        transactionNotification(socketEventModel.getMessage());
                         break;
                     default:
                         break;
@@ -373,7 +378,7 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
             }
         }
 
-        PendingIntent contentIntent = PendingIntent.getActivity(getCurrentActivity(), 0, notificationIntent, 0);
+        PendingIntent contentIntent = PendingIntent.getActivity(getCurrentActivity(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, id)
                 .setSmallIcon(R.drawable.ic_icon_activity)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.car_vehicle))
@@ -392,6 +397,11 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         NotificationManagerCompat m = NotificationManagerCompat.from(getApplicationContext());
         m.notify(new Random().nextInt(), builder.build());
 
+
+    }
+
+    public void transactionNotification(Message message){
+        TransactionMessage.MessageTrans mes = message.getDataObject(TransactionMessage.class).getMessage();
 
     }
 }

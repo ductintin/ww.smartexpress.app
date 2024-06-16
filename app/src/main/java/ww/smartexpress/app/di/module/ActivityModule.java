@@ -9,17 +9,21 @@ import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.ViewModelProviderFactory;
 import ww.smartexpress.app.data.Repository;
 import ww.smartexpress.app.di.scope.ActivityScope;
+import ww.smartexpress.app.ui.bank.BankViewModel;
 import ww.smartexpress.app.ui.cart.CartViewModel;
 import ww.smartexpress.app.ui.chat.ChatViewModel;
 import ww.smartexpress.app.ui.delivery.BookDeliveryViewModel;
 import ww.smartexpress.app.ui.delivery.order.DeliveryViewModel;
+import ww.smartexpress.app.ui.deposit.DepositViewModel;
 import ww.smartexpress.app.ui.index.IndexViewModel;
 import ww.smartexpress.app.ui.map.MapViewModel;
 import ww.smartexpress.app.ui.order.OrderViewModel;
 import ww.smartexpress.app.ui.order.details.OrderDetailsViewModel;
 import ww.smartexpress.app.ui.order.information.OrderInformationViewModel;
 import ww.smartexpress.app.ui.password.reset.ResetPasswordViewModel;
+import ww.smartexpress.app.ui.payout.PayoutViewModel;
 import ww.smartexpress.app.ui.purchase.PurchaseViewModel;
+import ww.smartexpress.app.ui.qrcode.QrcodeViewModel;
 import ww.smartexpress.app.ui.register.RegisterViewModel;
 import ww.smartexpress.app.ui.search.food.SearchFoodViewModel;
 import ww.smartexpress.app.ui.shipping.address.ShippingAddressViewModel;
@@ -47,6 +51,7 @@ import ww.smartexpress.app.ui.trip.complete.TripCompleteViewModel;
 import ww.smartexpress.app.ui.trip.TripViewModel;
 import ww.smartexpress.app.ui.trip.detail.TripDetailViewModel;
 import ww.smartexpress.app.ui.wallet.WalletViewModel;
+import ww.smartexpress.app.ui.wallet.transaction.TransactionViewModel;
 import ww.smartexpress.app.ui.welcome.WelcomeViewModel;
 import ww.smartexpress.app.ui.splashform.SplashFormViewModel;
 import ww.smartexpress.app.utils.GetInfo;
@@ -373,9 +378,49 @@ public class ActivityModule {
 
     @Provides
     @ActivityScope
+    QrcodeViewModel provideQrcodeViewModel(Repository repository, Context application) {
+        Supplier<QrcodeViewModel> supplier = () -> new QrcodeViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<QrcodeViewModel> factory = new ViewModelProviderFactory<>(QrcodeViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(QrcodeViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
     WalletViewModel provideWalletViewModel(Repository repository, Context application) {
         Supplier<WalletViewModel> supplier = () -> new WalletViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<WalletViewModel> factory = new ViewModelProviderFactory<>(WalletViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(WalletViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    DepositViewModel provideDepositViewModel(Repository repository, Context application) {
+        Supplier<DepositViewModel> supplier = () -> new DepositViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<DepositViewModel> factory = new ViewModelProviderFactory<>(DepositViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(DepositViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    PayoutViewModel providePayoutViewModel(Repository repository, Context application) {
+        Supplier<PayoutViewModel> supplier = () -> new PayoutViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<PayoutViewModel> factory = new ViewModelProviderFactory<>(PayoutViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(PayoutViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    BankViewModel provideBankViewModel(Repository repository, Context application) {
+        Supplier<BankViewModel> supplier = () -> new BankViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<BankViewModel> factory = new ViewModelProviderFactory<>(BankViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(BankViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    TransactionViewModel provideTransactionViewModel(Repository repository, Context application) {
+        Supplier<TransactionViewModel> supplier = () -> new TransactionViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<TransactionViewModel> factory = new ViewModelProviderFactory<>(TransactionViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(TransactionViewModel.class);
     }
 }

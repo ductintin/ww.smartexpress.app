@@ -28,13 +28,9 @@ public class SignInViewModel extends BaseViewModel {
         return repository.getApiService().login(request)
                 .doOnNext(response -> {
                     if(response.isResult()){
-                        AES aes = new AES();
-                        aes.init();
 
                         repository.getSharedPreferences().setToken(response.getData().getAccessToken());
                         repository.getSharedPreferences().setLong(Constants.KEY_USER_ID, response.getData().getUserId());
-
-
 
                     }
                 });

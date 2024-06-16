@@ -208,38 +208,6 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     if(response.isResult()){
-//
-//                        viewModel.hideLoading();
-//                        viewModel.showSuccessMessage(getString(R.string.login_success));
-//
-//                        biometricPrompt.authenticate(promptInfo);
-//
-//                        UserEntity userEntity = UserEntity.builder()
-//                                .id(response.getData().getUserId())
-//                                .encryptedPassword(aes.encrypt(viewModel.password.get()))
-//                                .build();
-//
-//                        viewModel.insertUser(userEntity)
-//                                .subscribeOn(Schedulers.io())
-//                                .observeOn(AndroidSchedulers.mainThread())
-//                                .subscribe(new CompletableObserver() {
-//                                    @Override
-//                                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onComplete() {
-//                                        Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
-//                                        startActivity(intent);
-//                                    }
-//
-//                                    @Override
-//                                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-//
-//                                    }
-//                                });
-                        //navigateToHome();
                         Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
                         String en = viewModel.getApplication().getAes().encrypt(viewModel.password.get());
                         intent.putExtra("ENCRYPTED_PW", en);
@@ -254,36 +222,8 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
                     viewModel.showErrorMessage(application.getString(R.string.network_error));
                 }));
 
-//        try {
-//            navigateToHome();
-//        }catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
-    public void navigateToHome() throws Exception {
-        Intent intent = new Intent(this, HomeActivity.class);
-        //byte[] bytes = viewModel.password.get().getBytes();
-        AES aes = new AES();
-        aes.init();
-
-        String abc = aes.encrypt(viewModel.password.get());
-        String bcb = aes.decrypt(abc);
-//        File file = new File(getFilesDir(), "secret.text");
-//        if(!file.exists()){
-//            file.createNewFile();
-//        }
-//
-//        FileOutputStream fos = new FileOutputStream(file);
-//        String abc = CryptoUtils.encrypt(bytes, fos).toString();
-//
-//        FileInputStream fis = new FileInputStream(file);
-//        String bcb = new String(CryptoUtils.decrypt(fis), StandardCharsets.UTF_8);
-        Log.d("TAG", "navigateToHome: encrypt" + abc);
-        Log.d("TAG", "navigateToHome: decrypt" +  bcb);
-        startActivity(intent);
-        finish();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

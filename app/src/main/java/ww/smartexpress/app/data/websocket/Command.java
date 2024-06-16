@@ -12,4 +12,5 @@ public class Command {
     public static final String CMD_DRIVER_CANCEL_BOOKING = "DRIVER_CANCEL_BOOKING";
     public static final String CMD_NOT_FOUND_DRIVER= "NOT_FOUND_DRIVER";
     public static final String CMD_DRIVER_UPDATE_POSITION= "DRIVER_UPDATE_POSITION";
+    public static final String CMD_CLIENT_RECEIVED_PUSH_NOTIFICATION= "CLIENT_RECEIVED_PUSH_NOTIFICATION";
 }

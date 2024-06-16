@@ -86,7 +86,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
                                 android:layout_marginRight="@dimen/_10sdp"
-                                android:text='@{NumberUtils.formatDoubleNumber(ivm.money) + " đ"}'
+                                android:text='@{ivm.promotionMoney == 0.0 ? NumberUtils.formatDoubleNumber(ivm.money) + " đ" : NumberUtils.formatDoubleNumber(ivm.money - ivm.promotionMoney) + " đ"}'
                                 android:ellipsize="end"
                                 android:maxLines="1"
                                 android:textColor="@color/title_home_page">

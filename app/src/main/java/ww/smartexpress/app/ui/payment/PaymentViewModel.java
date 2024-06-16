@@ -1,5 +1,7 @@
 package ww.smartexpress.app.ui.payment;
 
+import android.content.Intent;
+
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 
@@ -13,9 +15,11 @@ import ww.smartexpress.app.data.model.api.ResponseWrapper;
 import ww.smartexpress.app.data.model.api.response.PaymentMethod;
 import ww.smartexpress.app.data.model.api.response.ServiceResponse;
 import ww.smartexpress.app.data.model.api.response.WalletResponse;
+import ww.smartexpress.app.ui.bank.BankActivity;
 import ww.smartexpress.app.ui.base.activity.BaseViewModel;
 import ww.smartexpress.app.ui.bookcar.BookCarActivity;
 import ww.smartexpress.app.ui.search.location.SearchLocationActivity;
+import ww.smartexpress.app.ui.wallet.WalletActivity;
 
 public class PaymentViewModel extends BaseViewModel {
     public MutableLiveData<Integer> paymentMethod = new MutableLiveData<>(0);
@@ -29,7 +33,8 @@ public class PaymentViewModel extends BaseViewModel {
         getApplication().getCurrentActivity().onBackPressed();
     }
     public void doAddMethod(){
-
+        Intent intent = new Intent(application.getCurrentActivity(), WalletActivity.class);
+        application.getCurrentActivity().startActivity(intent);
     }
     public void payCredit(){
         paymentMethod.setValue(1);

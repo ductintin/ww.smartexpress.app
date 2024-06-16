@@ -50,4 +50,34 @@ public class NumberUtils {
         DecimalFormat decimalFormat = new DecimalFormat("#.#");
         return Float.parseFloat(decimalFormat.format(rating));
     }
+
+    public static String formatCurrency(double d)
+    {
+
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
+        decimalFormatSymbols.setDecimalSeparator('.');
+        decimalFormatSymbols.setGroupingSeparator('.');
+
+        DecimalFormat decimalFormat = new DecimalFormat();
+        decimalFormat.setDecimalFormatSymbols(decimalFormatSymbols);
+        decimalFormat.setMaximumFractionDigits(0);
+        decimalFormat.setMinimumFractionDigits(0);
+
+        return decimalFormat.format(d) +" đ";
+    }
+
+    public static String formatEdtTextCurrency(double d)
+    {
+
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
+        decimalFormatSymbols.setDecimalSeparator('.');
+        decimalFormatSymbols.setGroupingSeparator('.');
+
+        DecimalFormat decimalFormat = new DecimalFormat();
+        decimalFormat.setDecimalFormatSymbols(decimalFormatSymbols);
+        decimalFormat.setMaximumFractionDigits(0);
+        decimalFormat.setMinimumFractionDigits(0);
+
+        return decimalFormat.format(d);
+    }
 }

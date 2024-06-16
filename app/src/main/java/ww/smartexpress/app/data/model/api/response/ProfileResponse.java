@@ -18,4 +18,5 @@ public class ProfileResponse implements Serializable {
     private String email;
     private String avatar;
     private Integer status;
+    private String bankCard;
 }

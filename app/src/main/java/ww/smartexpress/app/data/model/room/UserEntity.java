@@ -27,6 +27,6 @@ public class UserEntity {
     private String email;
     private String avatar;
     private Integer status;
-
     private String encryptedPassword;
+    private String bankCard;
 }

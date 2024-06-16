@@ -108,10 +108,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                     public void onAuthenticationError(int errorCode,
                                                       @lombok.NonNull CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);
-                        Toast.makeText(getContext(),
-                                        "Authentication error: " + errString, Toast.LENGTH_SHORT)
-                                .show();
-
+                        Log.d("TAG", "onAuthenticationError: " + errString);
                     }
 
                     @Override
@@ -120,16 +117,12 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                         super.onAuthenticationSucceeded(result);
                         viewModel.user.get().setEncryptedPassword(intent.getStringExtra("ENCRYPTED_PW"));
                         Log.d("TAG", "onAuthenticationSucceeded: ");
-                        Toast.makeText(getContext(),
-                                "Authentication succeeded!", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onAuthenticationFailed() {
                         super.onAuthenticationFailed();
-                        Toast.makeText(getContext(), "Authentication failed",
-                                        Toast.LENGTH_SHORT)
-                                .show();
+                        Log.d("TAG", "onAuthenticationFailed: ");
                     }
                 });
 
@@ -157,62 +150,60 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                 .subscribe(response ->{
                     if(response.isResult()){
 
-//                        UserEntity userEntity = UserEntity.builder()
-//                                .id(response.getData().getId())
-//                                .avatar(response.getData().getAvatar())
-//                                .name(response.getData().getName())
-//                                .phone(response.getData().getPhone())
-//                                .email(response.getData().getEmail())
-//                                .build();
                         viewModel.user.get().setId(response.getData().getId());
                         viewModel.user.get().setAvatar(response.getData().getAvatar());
                         viewModel.user.get().setName(response.getData().getName());
                         viewModel.user.get().setPhone(response.getData().getPhone());
                         viewModel.user.get().setEmail(response.getData().getEmail());
+                        viewModel.user.get().setBankCard(response.getData().getBankCard());
 
-                        viewModel.insertUser(viewModel.user.get()).subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new CompletableObserver() {
-                                    @Override
-                                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                        //Từ đăng nhập vào
+                        if(viewModel.user.get().getEncryptedPassword() != null){
+                            //insert mới
+                            viewModel.insertUser(viewModel.user.get()).subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new CompletableObserver() {
+                                        @Override
+                                        public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
 
-                                    }
+                                        }
 
-                                    @Override
-                                    public void onComplete() {
-                                        viewModel.profile.set(response.getData());
-                                    }
+                                        @Override
+                                        public void onComplete() {
+                                            viewModel.profile.set(response.getData());
+                                        }
 
-                                    @Override
-                                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                                        @Override
+                                        public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
 
-                                    }
-                                });
-//                        viewModel.updateUser(
-//                                        response.getData().getId(),
-//                                        response.getData().getAvatar(),
-//                                        response.getData().getName(),
-//                                        response.getData().getPhone(),
-//                                        response.getData().getEmail()
-//                                )
-//                                .subscribeOn(Schedulers.io())
-//                                .observeOn(AndroidSchedulers.mainThread())
-//                                .subscribe(new CompletableObserver() {
-//                                    @Override
-//                                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onComplete() {
-//                                        viewModel.profile.set(response.getData());
-//                                    }
-//
-//                                    @Override
-//                                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-//
-//                                    }
-//                                });
+                                        }
+                                    });
+                        }else{
+                            viewModel.updateUser(response.getData().getId(),
+                                        response.getData().getAvatar(),
+                                        response.getData().getName(),
+                                        response.getData().getPhone(),
+                                        response.getData().getEmail(),
+                                            response.getData().getBankCard())
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new CompletableObserver() {
+                                        @Override
+                                        public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                                        }
+
+                                        @Override
+                                        public void onComplete() {
+                                            viewModel.profile.set(response.getData());
+                                        }
+
+                                        @Override
+                                        public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+                                        }
+                                    });
+                        }
                     }
                 }, err -> {
                     viewModel.showErrorMessage(getString(R.string.network_error));

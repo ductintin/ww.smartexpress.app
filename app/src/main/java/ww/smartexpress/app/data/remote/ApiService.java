@@ -8,16 +8,22 @@ import retrofit2.http.Headers;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import ww.smartexpress.app.data.model.api.ResponseGeneric;
 import ww.smartexpress.app.data.model.api.ResponseListObj;
 import ww.smartexpress.app.data.model.api.ResponseWrapper;
 import ww.smartexpress.app.data.model.api.request.ActiveCustomerRequest;
 import ww.smartexpress.app.data.model.api.request.CancelBookingRequest;
+import ww.smartexpress.app.data.model.api.request.ConfirmAccountNumberRequest;
 import ww.smartexpress.app.data.model.api.request.CreateBookingRequest;
+import ww.smartexpress.app.data.model.api.request.DepositRequest;
 import ww.smartexpress.app.data.model.api.request.LoginRequest;
+import ww.smartexpress.app.data.model.api.request.PayoutRequest;
 import ww.smartexpress.app.data.model.api.request.RatingBookingRequest;
 import ww.smartexpress.app.data.model.api.request.RegisterRequest;
 import ww.smartexpress.app.data.model.api.request.RetryOtpRegisterRequest;
 import ww.smartexpress.app.data.model.api.request.UpdateProfileRequest;
+import ww.smartexpress.app.data.model.api.response.BankAccountResponse;
+import ww.smartexpress.app.data.model.api.response.BankListResponse;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
 import ww.smartexpress.app.data.model.api.response.CategoryResponse;
 import ww.smartexpress.app.data.model.api.response.CustomerIdResponse;
@@ -26,6 +32,7 @@ import ww.smartexpress.app.data.model.api.response.LoginResponse;
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import ww.smartexpress.app.data.model.api.response.Payment;
 import ww.smartexpress.app.data.model.api.response.ProfileResponse;
 import ww.smartexpress.app.data.model.api.response.Promotion;
 import ww.smartexpress.app.data.model.api.response.Room;
@@ -33,6 +40,7 @@ import ww.smartexpress.app.data.model.api.response.SearchLocationResponse;
 import ww.smartexpress.app.data.model.api.response.ServiceResponse;
 import ww.smartexpress.app.data.model.api.response.UploadFileResponse;
 import ww.smartexpress.app.data.model.api.response.WalletResponse;
+import ww.smartexpress.app.data.model.api.response.WalletTransaction;
 
 public interface ApiService {
     @POST("/v1/customer/login")
@@ -97,6 +105,25 @@ public interface ApiService {
     @POST("/v1/customer/retry-otp-register")
     @Headers({"IgnoreAuth:1"})
     Observable<ResponseWrapper<CustomerIdResponse>> retryActiveCustomer(@Body RetryOtpRegisterRequest request);
+    @POST("/v1/wallet/deposit")
+    Observable<ResponseWrapper<Payment>> depositMomo(@Body DepositRequest request);
+    @POST("/v1/wallet/deposit")
+    Observable<ResponseWrapper<Payment>> depositPayos(@Body DepositRequest request);
+    @POST("/v1/request-pay-out/create")
+    Observable<ResponseGeneric> payout(@Body PayoutRequest request);
+
     @GET("/v1/wallet/my-wallet")
     Observable<ResponseWrapper<WalletResponse>> getMyWallet();
+
+    @GET("/v2/banks")
+    @Headers({"isBank:1"})
+    Observable<BankListResponse> getBankList();
+
+    @POST("/v2/lookup")
+    @Headers({"isBank:1","X-Api-Key:5b310ff0-2683-4cb5-a3aa-227b8179aec3","X-Client-Id:72a88234-f90e-45af-b4f1-bafdc9d7a01a"})
+    Observable<BankAccountResponse> accountLookup(@Body ConfirmAccountNumberRequest request);
+
+    @GET("/v1/wallet-transaction/my-wallet-transaction")
+    Observable<ResponseWrapper<ResponseListObj<WalletTransaction>>> getWalletTransaction(@Query("page") Integer pageNumber,
+                                                                                         @Query("size") Integer pageSize);
 }
