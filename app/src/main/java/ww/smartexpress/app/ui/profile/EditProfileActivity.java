@@ -485,6 +485,7 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
                         viewModel.avatar.set(userEntity.getAvatar());
                         viewModel.fullName.set(userEntity.getName());
                         viewModel.email.set(userEntity.getEmail());
+                        viewModel.bankCard.set(userEntity.getBankCard());
 
                         Log.d("TAG", "onSuccess: " + userEntity.getEncryptedPassword());
                         if(userEntity.getEncryptedPassword() != null){
@@ -583,6 +584,7 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
         request.setName(viewModel.fullName.get());
         request.setOldPassword(viewModel.password.get());
         request.setNewPassword(viewModel.password.get());
+        request.setBankCard(viewModel.bankCard.get());
         return request;
     }
 

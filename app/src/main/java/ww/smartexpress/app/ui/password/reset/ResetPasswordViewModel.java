@@ -41,7 +41,7 @@ public class ResetPasswordViewModel extends BaseViewModel {
             if(userEntity != null){
                 request.get().setAvatar(userEntity.blockingGet().getAvatar());
                 request.get().setName(userEntity.blockingGet().getName());
-
+                request.get().setBankCard(userEntity.blockingGet().getBankCard());
             }
         }
     }

@@ -837,9 +837,10 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 Log.d("TAG", "onNewIntent: case 3 " + codeCase);
                 Log.d("TAG", "onNewIntent: ID vm " + viewModel.bookingId.get());
                 Log.d("TAG", "onNewIntent: id " + intent.getLongExtra("BOOKING_ID", -1L));
-                if(viewModel.bookingId.get().equals(intent.getLongExtra("BOOKING_ID", 1L)))
+                if(viewModel.bookingId.get().equals(intent.getLongExtra("BOOKING_ID", 1L))){
                     preCameraPosition = null;
                     getCurrentBooking2();
+                }
                 break;
             case 4: // Chuyen di hoan thanh
                 Log.d("TAG", "onNewIntent: case 4  " + codeCase);

@@ -10,6 +10,7 @@
             name="vm"
             type="ww.smartexpress.app.ui.payment.PaymentViewModel" />
         <import type="android.view.View" />
+        <import type="ww.smartexpress.app.utils.NumberUtils"/>
 
     </data>
     <FrameLayout
@@ -147,20 +148,16 @@
             android:orientation="horizontal"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginHorizontal="@dimen/_10sdp"
+            android:background="@drawable/bg_edt"
             android:gravity="center">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_icon_add" />
 
             <TextView
                 style="@style/roboto_bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:text='@{"Số dư: " + vm.wallet.balance + " đ"}'
+                android:text='@{"Số dư khả dụng: " + NumberUtils.formatCurrency(vm.wallet.balance)}'
                 android:textColor="@color/app_color"
                 android:textSize="@dimen/_14ssp"/>
         </LinearLayout>
@@ -178,7 +175,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_icon_add" />
+                android:src="@drawable/baseline_login_24" />
 
             <TextView
                 android:onClick="@{(v)->vm.doAddMethod()}"

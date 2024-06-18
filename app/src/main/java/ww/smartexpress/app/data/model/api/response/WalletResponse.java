@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WalletResponse {
     private Long id;
-    private Integer balance;
+    private Double balance;
     private Integer holdingMoney;
 }

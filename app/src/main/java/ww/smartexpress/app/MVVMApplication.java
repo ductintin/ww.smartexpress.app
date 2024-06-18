@@ -8,7 +8,11 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -33,23 +37,29 @@ import ww.smartexpress.app.data.model.api.ApiModelUtils;
 import ww.smartexpress.app.data.model.api.response.ChatMessage;
 import ww.smartexpress.app.data.model.api.response.DriverBookingResponse;
 import ww.smartexpress.app.data.model.api.response.DriverPosition;
+import ww.smartexpress.app.data.model.api.response.MessageOfTransaction;
 import ww.smartexpress.app.data.model.api.response.TransactionMessage;
 import ww.smartexpress.app.data.websocket.Command;
 import ww.smartexpress.app.data.websocket.Message;
 import ww.smartexpress.app.data.websocket.SocketEventModel;
 import ww.smartexpress.app.data.websocket.SocketListener;
 import ww.smartexpress.app.data.websocket.WebSocketLiveData;
+import ww.smartexpress.app.databinding.ItemNotificationBinding;
 import ww.smartexpress.app.di.component.AppComponent;
 import ww.smartexpress.app.di.component.DaggerAppComponent;
 import ww.smartexpress.app.others.MyTimberDebugTree;
 import ww.smartexpress.app.others.MyTimberReleaseTree;
 import ww.smartexpress.app.ui.chat.ChatActivity;
 import ww.smartexpress.app.ui.delivery.BookDeliveryActivity;
+import ww.smartexpress.app.ui.deposit.DepositActivity;
 import ww.smartexpress.app.ui.fragment.search.SearchFragment;
 import ww.smartexpress.app.ui.home.HomeActivity;
+import ww.smartexpress.app.ui.qrcode.QrcodeActivity;
 import ww.smartexpress.app.ui.trip.TripActivity;
+import ww.smartexpress.app.ui.trip.detail.TripDetailActivity;
 import ww.smartexpress.app.utils.AES;
 import ww.smartexpress.app.utils.DialogUtils;
+import ww.smartexpress.app.utils.NumberUtils;
 
 public class MVVMApplication extends Application implements LifecycleObserver, SocketListener {
     @Setter
@@ -263,18 +273,18 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         }
     }
 
-    public void navigateFromDriverPickUpToBookDeliveryActivity(SocketEventModel socketEventModel){
-        Message message = socketEventModel.getMessage();
-        createNotification(message, 2);
+        public void navigateFromDriverPickUpToBookDeliveryActivity(SocketEventModel socketEventModel){
+            Message message = socketEventModel.getMessage();
+            createNotification(message, 2);
 
-        if(currentActivity instanceof BookDeliveryActivity){
-            Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            intent.putExtra("BOOKING_ID", message.getDataObject(DriverBookingResponse.class).getBookingId());
-            intent.putExtra("STATE_BOOKING", 3);
-            currentActivity.startActivity(intent);
+            if(currentActivity instanceof BookDeliveryActivity){
+                Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                intent.putExtra("BOOKING_ID", message.getDataObject(DriverBookingResponse.class).getBookingId());
+                intent.putExtra("STATE_BOOKING", 3);
+                currentActivity.startActivity(intent);
+            }
         }
-    }
 
     public void navigateFromBookingDoneToBookDeliveryActivity(SocketEventModel socketEventModel){
         Message message = socketEventModel.getMessage();
@@ -340,7 +350,7 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
     }
 
     public void createNotification(Message message, int option){
-        String id = "hello";
+        String id = "SmartExpress";
         String title = "";
         String content = "";
         DriverBookingResponse bookingResponse = message.getDataObject(DriverBookingResponse.class);
@@ -360,6 +370,13 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
                 content = "Đơn hàng: " + bookingResponse.getBookingId() + " .Tài xế đang trên đường giao đến điểm nhận.";
                 notificationIntent.putExtra("BOOKING_ID", bookingResponse.getBookingId());
                 notificationIntent.putExtra("STATE_BOOKING", 3);
+                break;
+            case 3: // done
+                title = "Đơn hàng giao thành công!";
+                content = "Cảm ơn bạn đã chọn SmartExpress. Hẹn gặp lại lần sau!";
+                notificationIntent = new Intent(getCurrentActivity(), TripDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putLong(Constants.CUSTOMER_BOOKING_DETAIL_ID, bookingResponse.getBookingId());
                 break;
         }
 
@@ -401,7 +418,43 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
     }
 
     public void transactionNotification(Message message){
-        TransactionMessage.MessageTrans mes = message.getDataObject(TransactionMessage.class).getMessage();
+        TransactionMessage tm = message.getDataObject(TransactionMessage.class);
+        Log.d("TAG", "transactionNotification: " + tm.toString());
+        MessageOfTransaction mt = ApiModelUtils.fromJson(tm.getMessage(), MessageOfTransaction.class);
+        ItemNotificationBinding itemNotificationBinding = ItemNotificationBinding.inflate(getCurrentActivity().getLayoutInflater());
+        View layout = itemNotificationBinding.getRoot();
+        itemNotificationBinding.setKind(tm.getKind());
+
+        switch (tm.getKind()){
+            case 1:
+                itemNotificationBinding.setTitle("Nạp tiền thành công");
+                itemNotificationBinding.setSubtitle("Bạn đã nạp thành công " + NumberUtils.formatCurrency(mt.getMoney()) + " vào ví SmartExpress.");
+                break;
+            case 2:
+                itemNotificationBinding.setTitle("Rút tiền thành công");
+                itemNotificationBinding.setSubtitle("Bạn đã rút thành công " + NumberUtils.formatCurrency(mt.getMoney()) + " về tài khoản ngân hàng.");
+                break;
+            case 3:
+                itemNotificationBinding.setTitle("Yêu cầu rút tiền thất bại");
+                itemNotificationBinding.setSubtitle("Yêu cầu rút tiền thất bại. Vui lòng thử lại sau");
+                break;
+            default:
+                break;
+        }
+
+        Toast toast = new Toast(getCurrentActivity().getApplicationContext());
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 150);
+        toast.setView(layout);
+        toast.show();
+
+        Intent intentDeposit = new Intent(getCurrentActivity(), DepositActivity.class);
+        intentDeposit.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        getCurrentActivity().startActivity(intentDeposit);
+
+        if(currentActivity instanceof QrcodeActivity){
+            currentActivity.finish();
+        }
 
     }
 }
