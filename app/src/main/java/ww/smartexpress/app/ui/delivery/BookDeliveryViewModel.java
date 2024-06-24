@@ -16,6 +16,7 @@ import ww.smartexpress.app.data.model.api.ResponseListObj;
 import ww.smartexpress.app.data.model.api.ResponseWrapper;
 import ww.smartexpress.app.data.model.api.request.CreateBookingRequest;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
+import ww.smartexpress.app.data.model.api.response.DriverPosition;
 import ww.smartexpress.app.data.model.api.response.ServicePromotion;
 import ww.smartexpress.app.data.model.api.response.ServiceResponse;
 import ww.smartexpress.app.ui.base.activity.BaseViewModel;
@@ -176,4 +177,10 @@ public class BookDeliveryViewModel extends BaseViewModel {
                 });
     }
 
+    Observable<ResponseWrapper<ResponseListObj<DriverPosition>>> getDriverPosition(Long driverId) {
+        return repository.getApiService().getDriverPosition(driverId)
+                .doOnNext(response -> {
+
+                });
+    }
 }

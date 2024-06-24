@@ -48,19 +48,11 @@ public class EditProfileViewModel extends BaseViewModel {
         application.getCurrentActivity().onBackPressed();
     }
 
-    public void setProfile(ProfileResponse response){
-        profile.set(response);
-        fullName.set(profile.get().getName());
-        email.set(profile.get().getEmail());
-        avatar.set(profile.get().getAvatar());
-        storeProfile(userId.get(), avatar.get(), fullName.get());
-    }
 
     Observable<ResponseWrapper<ProfileResponse>> getProfileObserve() {
         return repository.getApiService().getProfile()
                 .doOnNext(response -> {
                     if(response.isResult()){
-                        setProfile(response.getData());
                     }
                 });
     }
@@ -69,7 +61,6 @@ public class EditProfileViewModel extends BaseViewModel {
     Observable<ResponseWrapper<String>> updateProfile(UpdateProfileRequest request) {
         return repository.getApiService().updateProfile(request)
                 .doOnNext(response -> {
-                    password.set("");
                 });
     }
 
@@ -87,8 +78,8 @@ public class EditProfileViewModel extends BaseViewModel {
         return repository.getRoomService().userDao().findById(userId.get());
     }
 
-    public void storeProfile(Long id, String avatar, String name){
-        repository.getRoomService().userDao().update(id, avatar, name)
+    public void storeProfile(){
+        repository.getRoomService().userDao().update(userId.get(), avatar.get(), fullName.get())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
@@ -108,4 +99,5 @@ public class EditProfileViewModel extends BaseViewModel {
                     }
                 });
     }
+
 }

@@ -8,6 +8,9 @@ import androidx.annotation.Nullable;
 import androidx.databinding.Observable;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.R;
@@ -103,7 +106,7 @@ public class ResetPasswordActivity extends BaseActivity<ActivityResetPasswordBin
                         viewModel.hideLoading();
                         if(response.isResult()){
                             viewModel.showSuccessMessage(getString(R.string.update_password_success));
-                            onBackPressed();
+                            updateEncryptedPassword();
                         }else{
                             viewModel.showErrorMessage(response.getMessage());
                         }
@@ -114,4 +117,25 @@ public class ResetPasswordActivity extends BaseActivity<ActivityResetPasswordBin
         }
         }
 
+    public void updateEncryptedPassword() throws Exception {
+        viewModel.updateEncryptedPassword()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
+    }
 }

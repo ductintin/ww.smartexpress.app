@@ -49,7 +49,7 @@ public class ApiModelUtils {
         return GSON.toJson(objects);
     }
 
-    public static String toJson(BankCard objects) {
+    public static String toJson(Object objects) {
         return GSON.toJson(objects);
     }
 

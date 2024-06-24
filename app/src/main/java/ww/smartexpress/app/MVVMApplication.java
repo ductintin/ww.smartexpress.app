@@ -24,6 +24,8 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -87,6 +89,14 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
 
     @Getter
     private AES aes;
+
+    @Getter
+    @Setter
+    private Map<Long,Integer> notificationIdMap = new HashMap<>();
+
+    @Getter
+    @Setter
+    private Integer notificationIdIndex = 0;
 
     @Override
     public void onCreate() {
@@ -267,6 +277,7 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
             driverBookingResponse = bookingResponse;
             Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
             intent.putExtra("BOOKING_CODE", bookingResponse.getCodeBooking());
+            intent.putExtra("BOOKING", ApiModelUtils.toJson(bookingResponse));
             intent.putExtra("STATE_BOOKING", 1);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             currentActivity.startActivity(intent);
@@ -398,7 +409,7 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         PendingIntent contentIntent = PendingIntent.getActivity(getCurrentActivity(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, id)
                 .setSmallIcon(R.drawable.ic_icon_activity)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.car_vehicle))
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.smartexpress_splash_logo))
                 .setStyle(new NotificationCompat.BigPictureStyle()
                         .bigLargeIcon(null)
                 )
@@ -412,9 +423,20 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         builder.setContentIntent(contentIntent);
 
         NotificationManagerCompat m = NotificationManagerCompat.from(getApplicationContext());
-        m.notify(new Random().nextInt(), builder.build());
 
+        if(!notificationIdMap.containsKey(bookingResponse.getBookingId())){
+            //reset notification khi quá 10 booking
+            if(notificationIdIndex == 10){
+                notificationIdIndex = 0;
+            }
+            notificationIdMap.put(bookingResponse.getBookingId(), notificationIdIndex++);
+        }
+        m.notify(notificationIdMap.get(bookingResponse.getBookingId()), builder.build());
 
+        //nếu booking hoàn thành, xóa id khỏi notification
+        if(option == 3){
+            notificationIdMap.remove(bookingResponse.getBookingId());
+        }
     }
 
     public void transactionNotification(Message message){
@@ -457,4 +479,5 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         }
 
     }
+
 }

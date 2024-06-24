@@ -2,6 +2,7 @@ package ww.smartexpress.app.ui.password.reset;
 
 import androidx.databinding.ObservableField;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import ww.smartexpress.app.MVVMApplication;
@@ -56,5 +57,8 @@ public class ResetPasswordViewModel extends BaseViewModel {
         isCNewPwVisibility.set(!isCNewPwVisibility.get());
     }
 
+    Completable updateEncryptedPassword() throws Exception {
+        return repository.getRoomService().userDao().updateEncryptedPassword(userId.get(), application.getAes().decrypt(newPw.get()));
+    }
 
 }

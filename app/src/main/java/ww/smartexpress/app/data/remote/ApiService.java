@@ -27,6 +27,8 @@ import ww.smartexpress.app.data.model.api.response.BankListResponse;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
 import ww.smartexpress.app.data.model.api.response.CategoryResponse;
 import ww.smartexpress.app.data.model.api.response.CustomerIdResponse;
+import ww.smartexpress.app.data.model.api.response.DriverBookingResponse;
+import ww.smartexpress.app.data.model.api.response.DriverPosition;
 import ww.smartexpress.app.data.model.api.response.LoginResponse;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -126,4 +128,7 @@ public interface ApiService {
     @GET("/v1/wallet-transaction/my-wallet-transaction")
     Observable<ResponseWrapper<ResponseListObj<WalletTransaction>>> getWalletTransaction(@Query("page") Integer pageNumber,
                                                                                          @Query("size") Integer pageSize);
+
+    @GET("/v1/position/my-position")
+    Observable<ResponseWrapper<ResponseListObj<DriverPosition>>> getDriverPosition(@Query("driverId") Long driverId);
 }

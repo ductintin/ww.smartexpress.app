@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -546,7 +547,8 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         LatLngBounds bounds = new LatLngBounds.Builder().include(origin).include(des).build();
                         Point point = new Point();
                         getWindowManager().getDefaultDisplay().getSize(point);
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, point.x, 150, 10));
+                        mMap.setPadding(10, 10, 10, point.y / 3);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
 
                         loadService();
 
@@ -769,6 +771,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                                 viewModel.isBooking.set(false);
                                 viewModel.isFound.set(true);
                                 foundDriver();
+                                loadMapDriverDirection();
                                 break;
                             case 200:
                                 viewModel.isFound.set(false);
@@ -817,6 +820,10 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 Log.d("TAG", "onNewIntent: codebooking vm" + viewModel.bookingCode.get());
                 Log.d("TAG", "onNewIntent: codebooking" + intent.getStringExtra("BOOKING_CODE"));
                 if(viewModel.bookingCode.get().equals(intent.getStringExtra("BOOKING_CODE"))){
+                    DriverBookingResponse dbp = ApiModelUtils.fromJson(intent.getStringExtra("BOOKING"), DriverBookingResponse.class);
+                    if(dbp != null){
+                        viewModel.driverLatLng.set(dbp.getDriverLatitude()+","+dbp.getDriverLongitude());
+                    }
                     getCurrentBooking2();
                 }
                 break;
