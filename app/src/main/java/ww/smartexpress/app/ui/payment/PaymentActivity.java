@@ -40,8 +40,9 @@ public class PaymentActivity extends BaseActivity<ActivityPaymentBinding, Paymen
         Intent intent = getIntent();
         if(intent.getDoubleExtra("BOOKING_PRICE", 0L) != 0){
             viewModel.money.set(intent.getDoubleExtra("BOOKING_PRICE", 0L));
+            viewModel.paymentMethod.setValue(intent.getIntExtra("PAYMENT_KIND", 0));
+            viewModel.payment.get().setPaymentKind(viewModel.paymentMethod.getValue());
         }
-        getMyWallet();
     }
 
     public void getMyWallet(){

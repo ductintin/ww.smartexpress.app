@@ -92,6 +92,13 @@ public class BookDeliveryViewModel extends BaseViewModel {
     public void selectPayment(){
         Intent intent = new Intent(getApplication().getCurrentActivity(), PaymentActivity.class);
         intent.putExtra("BOOKING_PRICE", bookingRequest.get().getMoney());
+        if(bookingRequest.get().getPaymentKind() == 1 ){
+            //money
+            intent.putExtra("PAYMENT_KIND", 0);
+        }else{
+            //credit
+            intent.putExtra("PAYMENT_KIND", 1);
+        }
         getApplication().getCurrentActivity().startActivity(intent);
     }
     public void selectDiscountCard(){
@@ -177,7 +184,7 @@ public class BookDeliveryViewModel extends BaseViewModel {
                 });
     }
 
-    Observable<ResponseWrapper<ResponseListObj<DriverPosition>>> getDriverPosition(Long driverId) {
+    Observable<ResponseWrapper<ResponseListObj<DriverPosition   >>> getDriverPosition(Long driverId) {
         return repository.getApiService().getDriverPosition(driverId)
                 .doOnNext(response -> {
 
