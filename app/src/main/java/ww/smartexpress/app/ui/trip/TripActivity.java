@@ -107,7 +107,7 @@ public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewMode
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
                     if(response.isResult()){
-                        if(response.getData().getContent().isEmpty())
+                        if(response.getData().getTotalElements() > 0)
                             viewModel.isLoading.set(false);
                             viewModel.bookingResponse.set(response.getData().getContent().get(0));
                     }else{
