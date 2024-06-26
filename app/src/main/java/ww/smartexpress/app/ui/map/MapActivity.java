@@ -37,6 +37,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.JsonArray;
@@ -124,7 +125,7 @@ public class MapActivity extends BaseActivity<ActivityMapBinding, MapViewModel> 
                             Log.d("TAG", "onComplete: enabel");
                             // GPS đã được bật, có thể tiếp tục với logic của bạn ở đây
                         } catch (ApiException exception) {
-                            if (exception.getStatusCode() == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+                            if (exception instanceof ResolvableApiException) {
                                 // GPS chưa được bật, hiển thị cửa sổ yêu cầu bật GPS
                                 ResolvableApiException resolvable = (ResolvableApiException) exception;
                                 Log.d("TAG", "onComplete: open");
@@ -132,12 +133,14 @@ public class MapActivity extends BaseActivity<ActivityMapBinding, MapViewModel> 
                                     resolvable.startResolutionForResult(MapActivity.this, REQUEST_CHECK_SETTINGS);
                                 } catch (IntentSender.SendIntentException e) {
                                     // Xử lý nếu không thể bật GPS
+                                    e.printStackTrace();
                                 }
                             }
                         }
                     }
+
                 });
-                Log.d("TAG", "onCreate: ");
+
             }
         }
 
@@ -191,13 +194,15 @@ public class MapActivity extends BaseActivity<ActivityMapBinding, MapViewModel> 
             @Override
             public void onCameraMove() {
                 Log.d("TAG", "onMapLongClick: " + mMap.getCameraPosition().target.toString());
-                viewModel.description.set("");
-                viewModel.placeId.set("");
-                viewModel.mainText.set("");
-                viewBinding.shimmerViewContainer.setVisibility(View.VISIBLE);
-                viewBinding.shimmerViewContainer.startShimmer();
-                currentLatLng = mMap.getCameraPosition().target;
-                marker.setPosition(currentLatLng);
+                if(currentLatLng != null){
+                    viewModel.description.set("");
+                    viewModel.placeId.set("");
+                    viewModel.mainText.set("");
+                    viewBinding.shimmerViewContainer.setVisibility(View.VISIBLE);
+                    viewBinding.shimmerViewContainer.startShimmer();
+                    currentLatLng = mMap.getCameraPosition().target;
+                    marker.setPosition(currentLatLng);
+                }
             }
         });
 
@@ -205,51 +210,53 @@ public class MapActivity extends BaseActivity<ActivityMapBinding, MapViewModel> 
             @Override
             public void onCameraIdle() {
                 Log.d("TAG", "setOnCameraIdleListener: " + mMap.getCameraPosition().target.toString());
-                viewModel.latlng.set(mMap.getCameraPosition().target.latitude+","+mMap.getCameraPosition().target.longitude);
+                if(mMap.getCameraPosition().target.latitude != 0.0 && mMap.getCameraPosition().target.longitude != 0.0){
+                    viewModel.latlng.set(mMap.getCameraPosition().target.latitude+","+mMap.getCameraPosition().target.longitude);
 
-                viewModel.compositeDisposable.add(viewModel.getLocationInfo()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(response -> {
-                            String status = response.get("status").getAsString();
-                            Log.d("TAG", status);
-                            if(status.equals("OK")){
-                                viewBinding.shimmerViewContainer.stopShimmer();
-                                viewBinding.shimmerViewContainer.setVisibility(View.INVISIBLE);
-                                JsonArray results = response.getAsJsonArray("results");
-                                int lastIndex = results.size() - 1;
-                                String component = results.get(0).getAsJsonObject().get("formatted_address").getAsString();
-                                String id = results.get(0).getAsJsonObject().get("place_id").getAsString();
-                                String locationType = results.get(0).getAsJsonObject().get("geometry").getAsJsonObject().get("location_type").getAsString();
-                                JsonArray jsonArray = results.get(0).getAsJsonObject().get("types").getAsJsonArray();
-                                List<String> types = new ArrayList<>();
-                                for (JsonElement element : jsonArray) {
-                                    types.add(element.getAsString());
+                    viewModel.compositeDisposable.add(viewModel.getLocationInfo()
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(response -> {
+                                String status = response.get("status").getAsString();
+                                Log.d("TAG", status);
+                                if(status.equals("OK")){
+                                    viewBinding.shimmerViewContainer.stopShimmer();
+                                    viewBinding.shimmerViewContainer.setVisibility(View.INVISIBLE);
+                                    JsonArray results = response.getAsJsonArray("results");
+                                    int lastIndex = results.size() - 1;
+                                    String component = results.get(0).getAsJsonObject().get("formatted_address").getAsString();
+                                    String id = results.get(0).getAsJsonObject().get("place_id").getAsString();
+                                    String locationType = results.get(0).getAsJsonObject().get("geometry").getAsJsonObject().get("location_type").getAsString();
+                                    JsonArray jsonArray = results.get(0).getAsJsonObject().get("types").getAsJsonArray();
+                                    List<String> types = new ArrayList<>();
+                                    for (JsonElement element : jsonArray) {
+                                        types.add(element.getAsString());
+                                    }
+
+                                    String country = results.get(lastIndex).getAsJsonObject().get("formatted_address").getAsString();
+                                    Log.d("TAG", "setOnCameraIdleListener: com " + component);
+                                    Log.d("TAG", "setOnCameraIdleListener: id "  + id);
+                                    Log.d("TAG", "setOnCameraIdleListener: location_type "  + locationType);
+                                    Log.d("TAG", "setOnCameraIdleListener: country "  + country);
+
+                                    marker.setTitle(component);
+                                    viewModel.description.set(component);
+                                    viewModel.mainText.set(component);
+                                    viewModel.placeId.set(id);
+                                    if(country.equals("Vietnam")){
+                                        viewModel.isValidLocation.set(true);
+                                    }else{
+                                        viewModel.isValidLocation.set(false);
+                                    }
                                 }
 
-                                String country = results.get(lastIndex).getAsJsonObject().get("formatted_address").getAsString();
-                                Log.d("TAG", "setOnCameraIdleListener: com " + component);
-                                Log.d("TAG", "setOnCameraIdleListener: id "  + id);
-                                Log.d("TAG", "setOnCameraIdleListener: location_type "  + locationType);
-                                Log.d("TAG", "setOnCameraIdleListener: country "  + country);
-
-                                marker.setTitle(component);
-                                viewModel.description.set(component);
-                                viewModel.mainText.set(component);
-                                viewModel.placeId.set(id);
-                                if(country.equals("Vietnam")){
-                                    viewModel.isValidLocation.set(true);
-                                }else{
-                                    viewModel.isValidLocation.set(false);
-                                }
-                            }
-
-                        },error->{
-                            viewModel.hideLoading();
-                            viewModel.showErrorMessage(getString(R.string.network_error));
-                            error.printStackTrace();
-                        })
-                );
+                            },error->{
+                                viewModel.hideLoading();
+                                viewModel.showErrorMessage(getString(R.string.network_error));
+                                error.printStackTrace();
+                            })
+                    );
+                }
             }
         });
 

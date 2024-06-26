@@ -14,10 +14,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.google.android.material.navigation.NavigationBarView;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.R;
 import ww.smartexpress.app.constant.Constants;
@@ -94,9 +97,53 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding, HomeViewMode
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback);
 
         //getCurrentBooking();
-        viewBinding.navigationView.setOnItemSelectedListener(this);
-        //getCurrentBooking();
-        viewBinding.navigationView.setSelectedItemId(R.id.home);
+//        viewBinding.navigationView.setOnItemSelectedListener(this);
+//        //getCurrentBooking();
+//        viewBinding.navigationView.setSelectedItemId(R.id.home);
+
+        viewBinding.navigationView.add(new MeowBottomNavigation.Model(1,R.drawable.ic_icon_home));
+        viewBinding.navigationView.add(new MeowBottomNavigation.Model(2,R.drawable.ic_icon_activity));
+        viewBinding.navigationView.add(new MeowBottomNavigation.Model(3,R.drawable.ic_icon_account));
+
+        viewBinding.navigationView.show(1, true);
+
+        viewBinding.navigationView.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
+            @Override
+            public Unit invoke(MeowBottomNavigation.Model model) {
+                switch(model.getId())
+                {
+                    case 1:
+                        switchToSearchFragment();
+                        break;
+                    case 2:
+                        switchToActivityFragment();
+                        break;
+                    case 3:
+                        switchToProfileFragment();
+                        break;
+                }
+                return null;
+            }
+        });
+
+        viewBinding.navigationView.setOnShowListener(new Function1<MeowBottomNavigation.Model, Unit>() {
+            @Override
+            public Unit invoke(MeowBottomNavigation.Model model) {
+                switch(model.getId())
+                {
+                    case 1:
+                        switchToSearchFragment();
+                        break;
+                    case 2:
+                        switchToActivityFragment();
+                        break;
+                    case 3:
+                        switchToProfileFragment();
+                        break;
+                }
+                return null;
+            }
+        });
     }
 
     @Override

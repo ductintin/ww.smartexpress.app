@@ -40,6 +40,7 @@ public class ProfileFragmentViewModel extends BaseFragmentViewModel {
     public ObservableField<ProfileResponse> profile = new ObservableField<>(new ProfileResponse());
     public ObservableField<String> lang = new ObservableField<>("Tiếng Việt");
     public ObservableField<String> token = new ObservableField<>("");
+    public ObservableField<Long> userId = new ObservableField<>();
     public ProfileFragmentViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
         token.set(repository.getToken());
@@ -86,8 +87,8 @@ public class ProfileFragmentViewModel extends BaseFragmentViewModel {
     }
 
     Single<UserEntity> loadProfile(){
-        Long userId = repository.getSharedPreferences().getLongVal(Constants.KEY_USER_ID);
-        return repository.getRoomService().userDao().findById(userId);
+        userId.set(repository.getSharedPreferences().getLongVal(Constants.KEY_USER_ID));
+        return repository.getRoomService().userDao().findById(userId.get());
     }
 
     public void doLogout(){
@@ -147,6 +148,8 @@ public class ProfileFragmentViewModel extends BaseFragmentViewModel {
     }
     public void clearToken(){
         repository.getSharedPreferences().removeKey(PreferencesService.KEY_BEARER_TOKEN);
+        repository.getRoomService().userDao().deleteById(userId.get()).blockingAwait();
+        repository.getRoomService().addressDao().deleteAddressByUserId(userId.get()).blockingAwait();
     }
 
     public void gotoWallet(){

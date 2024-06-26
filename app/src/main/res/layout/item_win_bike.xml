@@ -87,7 +87,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/_10sdp"
                         android:layout_weight="2"
-                        android:text='@{ivm.discount!=0 ? NumberUtils.formatDoubleNumber(ivm.discount) + " đ" : NumberUtils.formatDoubleNumber(ivm.price) + " đ"}'
+                        android:text='@{ivm.discount!=0 ? NumberUtils.formatDoubleNumber(ivm.price - ivm.discount) + " đ" : NumberUtils.formatDoubleNumber(ivm.price) + " đ"}'
                         android:textAlignment="textEnd" />
                 </LinearLayout>
             </LinearLayout>

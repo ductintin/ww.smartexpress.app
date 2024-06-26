@@ -42,7 +42,7 @@
                     </ImageView>
 
                     <TextView
-                        style="@style/roboto_medium"
+                        style="@style/font_medium"
                         android:id="@+id/txtProduct"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                         android:layout_marginTop="@dimen/_3sdp">
                         <TextView
                             android:id="@+id/txtPrice"
-                            style="@style/roboto_medium"
+                            style="@style/font_medium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"

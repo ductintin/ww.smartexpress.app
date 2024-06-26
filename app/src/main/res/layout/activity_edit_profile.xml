@@ -16,87 +16,99 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/bg_color">
 
-        <ScrollView
-            android:id="@+id/scrollView2"
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:scrollbars="none">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="@dimen/_50sdp"
+                android:background="@color/white"
+                android:padding="@dimen/_5sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
-                    android:id="@+id/linearLayout"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_gravity="left|center"
+                    android:onClick="@{()->vm.back()}"
+                    android:paddingLeft="@dimen/_5ssp"
+                    android:paddingRight="@dimen/_20ssp"
+                    android:src="@drawable/ic_icon_back">
+
+                </ImageView>
+
+                <TextView
+                    style="@style/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/edit_profile"></TextView>
+
+            </FrameLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/_20sdp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/civAvatar"
+                    android:layout_width="@dimen/_90sdp"
+                    android:layout_height="@dimen/_90sdp"
+                    android:layout_gravity="center"
+                    android:onClick="@{() -> a.dialogUpLoadAvatar()}"
+                    android:src="@{vm.avatar, default=@drawable/user_avatar}"
+                    android:elevation="@dimen/_1sdp"
+                    app:civ_border_width="@dimen/_2sdp"
+                    app:civ_border_color="@color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/cvContent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="@+id/cvContent">
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_50sdp"
-                        android:background="@color/white"
-                        android:padding="@dimen/_5sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                </de.hdodenhof.circleimageview.CircleImageView>
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left|center"
-                            android:onClick="@{()->vm.back()}"
-                            android:paddingLeft="@dimen/_5ssp"
-                            android:paddingRight="@dimen/_20ssp"
-                            android:src="@drawable/ic_icon_back">
 
-                        </ImageView>
-
-                        <TextView
-                            style="@style/title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="@string/edit_profile"></TextView>
-
-                    </FrameLayout>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_12sdp"
+                    app:cardCornerRadius="@dimen/_24sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_12sdp">
-
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/civAvatar"
-                            android:layout_width="@dimen/_90sdp"
-                            android:layout_height="@dimen/_90sdp"
-                            android:layout_gravity="center"
-                            android:onClick="@{() -> a.dialogUpLoadAvatar()}"
-                            android:src="@{vm.avatar, default=@drawable/user_avatar}"
-                            app:civ_border_color="@color/app_color"
-                            app:civ_border_width="@dimen/_1sdp">
-
-                        </de.hdodenhof.circleimageview.CircleImageView>
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_25sdp">
+                            android:layout_marginHorizontal="@dimen/_12sdp"
+                            android:visibility="gone">
 
                             <TextView
-                                style="@style/roboto_medium_gray_12ssp"
+                                style="@style/font_medium_gray_12ssp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/fullName">
@@ -114,68 +126,39 @@
 
                         </LinearLayout>
 
-                        <EditText
-                            android:id="@+id/edtEPFullName"
-                            style="@style/information_edit_text"
+                        <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_15sdp"
-                            android:background="@drawable/bg_edt"
-                            android:hint="@string/fullName_hint"
-                            android:maxLines="1"
-                            android:text="@={vm.fullName}"
-                            android:textColorHint="@color/grey_text">
+                            android:layout_marginHorizontal="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_80sdp"
+                            android:backgroundTint="#F8F8F8"
+                            android:padding="@dimen/_10sdp"
+                            app:cardCornerRadius="@dimen/_12sdp"
+                            app:cardElevation="0dp">
 
-                        </EditText>
+                            <EditText
+                                android:id="@+id/edtEPFullName"
+                                style="@style/information_edit_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/_5sdp"
+                                android:backgroundTint="#F8F8F8"
+                                android:maxLines="1"
+                                android:text="@={vm.fullName}"
+                                android:textColorHint="@color/grey_text">
 
-
-                        <!--                    <LinearLayout-->
-                        <!--                        android:layout_width="match_parent"-->
-                        <!--                        android:layout_height="wrap_content"-->
-                        <!--                        android:layout_marginTop="@dimen/_15sdp">-->
-
-                        <!--                        <TextView-->
-                        <!--                            android:layout_width="wrap_content"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:text="@string/confirm_password"-->
-                        <!--                            android:fontFamily="@font/roboto_bold"-->
-                        <!--                            android:textSize="@dimen/_12ssp"-->
-                        <!--                            android:textColor="@color/grey_text">-->
-
-                        <!--                        </TextView>-->
-
-                        <!--                        <TextView-->
-                        <!--                            android:layout_width="wrap_content"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:text="@string/required_star"-->
-                        <!--                            android:textColor="@color/red_color">-->
-
-                        <!--                        </TextView>-->
-                        <!--                    </LinearLayout>-->
-
-                        <!--                    <EditText-->
-                        <!--                        android:id="@+id/edtEPCPw"-->
-                        <!--                        android:layout_width="match_parent"-->
-                        <!--                        android:layout_height="wrap_content"-->
-                        <!--                        android:layout_marginTop="@dimen/_15sdp"-->
-                        <!--                        android:background="@drawable/bg_edt"-->
-                        <!--                        android:hint="@string/confirm_password"-->
-                        <!--                        android:text="@={vm.confirmPassword}"-->
-                        <!--                        android:inputType="textPassword"-->
-                        <!--                        android:maxLines="1"-->
-                        <!--                        android:textColorHint="@color/grey_text"-->
-                        <!--                        android:fontFamily="@font/roboto_regular"-->
-                        <!--                        android:textSize="@dimen/_12ssp">-->
-
-                        <!--                    </EditText>-->
+                            </EditText>
+                        </androidx.cardview.widget.CardView>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_15sdp">
+                            android:layout_marginHorizontal="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:visibility="gone">
 
                             <TextView
-                                style="@style/roboto_medium_gray_12ssp"
+                                style="@style/font_medium_gray_12ssp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/email">
@@ -192,28 +175,40 @@
                             </TextView>
                         </LinearLayout>
 
-                        <EditText
-                            android:id="@+id/edtEPEmail"
-                            style="@style/information_edit_text_disable"
+                        <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_12sdp"
                             android:layout_marginTop="@dimen/_15sdp"
-                            android:background="@drawable/bg_edt"
-                            android:enabled="false"
-                            android:hint="@string/email_hint"
-                            android:maxLines="1"
-                            android:text="@={vm.email}"
-                            android:textColorHint="@color/grey_text">
+                            android:backgroundTint="#F8F8F8"
+                            android:padding="@dimen/_10sdp"
+                            app:cardCornerRadius="@dimen/_12sdp"
+                            app:cardElevation="0dp">
 
-                        </EditText>
+                            <EditText
+                                android:id="@+id/edtEPEmail"
+                                style="@style/information_edit_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/_5sdp"
+                                android:backgroundTint="#F8F8F8"
+                                android:enabled="false"
+                                android:maxLines="1"
+                                android:text="@={vm.email}">
+
+                            </EditText>
+                        </androidx.cardview.widget.CardView>
+
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_15sdp">
+                            android:layout_marginHorizontal="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:visibility="gone">
 
                             <TextView
-                                style="@style/roboto_medium_gray_12ssp"
+                                style="@style/font_medium_gray_12ssp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/password">
@@ -230,58 +225,68 @@
                             </TextView>
                         </LinearLayout>
 
-                        <FrameLayout
+                        <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_15sdp">
+                            android:layout_marginHorizontal="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:backgroundTint="#F8F8F8"
+                            android:padding="@dimen/_10sdp"
+                            app:cardCornerRadius="@dimen/_12sdp"
+                            app:cardElevation="0dp">
 
-                            <EditText
-                                android:id="@+id/edtPw"
-                                style="@style/information_edit_text"
+                            <FrameLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/bg_edt"
-                                android:hint="@string/password"
-                                android:inputType="textPassword"
-                                android:maxLength="16"
-                                android:maxLines="1"
-                                android:paddingRight="@dimen/_35sdp"
-                                android:text="@={vm.password}"
-                                android:textColorHint="@color/grey_text">
+                                android:layout_margin="@dimen/_5sdp">
 
-                            </EditText>
+                                <EditText
+                                    android:id="@+id/edtPw"
+                                    style="@style/information_edit_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:backgroundTint="#F8F8F8"
+                                    android:inputType="textPassword"
+                                    android:maxLength="16"
+                                    android:maxLines="1"
+                                    android:paddingRight="@dimen/_35sdp"
+                                    android:text="@={vm.password}">
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right|center_vertical"
-                                android:layout_marginRight="@dimen/_15sdp"
-                                android:onClick="@{(v)->vm.setIsVisibilityPassword()}"
-                                android:src="@{vm.isVisibility ? @drawable/ic_icon_visibility_off : @drawable/ic_icon_visibility}">
+                                </EditText>
 
-                            </ImageView>
-                        </FrameLayout>
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right|center_vertical"
+                                    android:layout_marginRight="@dimen/_15sdp"
+                                    android:onClick="@{(v)->vm.setIsVisibilityPassword()}"
+                                    android:src="@{vm.isVisibility ? @drawable/ic_icon_visibility_off : @drawable/ic_icon_visibility}">
+
+                                </ImageView>
+                            </FrameLayout>
+                        </androidx.cardview.widget.CardView>
                     </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                </LinearLayout>
+        </LinearLayout>
 
-                <Button
-                    android:id="@+id/btnEPUpdate"
-                    style="@style/NextBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginVertical="@dimen/_28sdp"
-                    android:enabled="@{!TextUtils.isEmpty(vm.fullName) &amp;&amp; !TextUtils.isEmpty(vm.email) &amp;&amp; !TextUtils.isEmpty(vm.password) &amp;&amp; vm.password.length() >=6 }"
-                    android:onClick="@{(v) -> a.updateAvatar()}"
-                    android:text="@string/update"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        <Button
+            android:id="@+id/btnEPUpdate"
+            style="@style/NextBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_marginVertical="@dimen/_28sdp"
+            android:enabled="@{!TextUtils.isEmpty(vm.fullName) &amp;&amp; !TextUtils.isEmpty(vm.email) &amp;&amp; !TextUtils.isEmpty(vm.password) &amp;&amp; vm.password.length() >=6 }"
+            android:onClick="@{(v) -> a.updateAvatar()}"
+            android:text="@string/update"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-                </Button>
-            </LinearLayout>
-        </ScrollView>
+        </Button>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

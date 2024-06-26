@@ -29,7 +29,7 @@
                 >
 
                 <TextView
-                    style="@style/roboto_medium"
+                    style="@style/font_medium"
                     android:id="@+id/txtNameAccount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                     android:textColor="#75787D"
                     android:text='@{@string/hello + " " + vm.profile.name}'/>
                 <TextView
-                    style="@style/roboto_bold"
+                    style="@style/font_bold"
                     android:id="@+id/txtHello"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                        android:paddingLeft="@dimen/_10sdp"
                        android:text="@string/search_hint"
                        android:textColor="#C92A2A2A"
-                       style="@style/roboto_medium"
+                       style="@style/font_medium"
                        android:maxLines="1"/>
                </LinearLayout>
                 <androidx.cardview.widget.CardView
@@ -126,7 +126,7 @@
 
                 <TextView
                     android:id="@+id/txtSg"
-                    style="@style/roboto_medium"
+                    style="@style/font_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rcBanner"
@@ -142,7 +142,7 @@
 
                 <TextView
                     android:onClick="@{(v)->vm.showAllPropose()}"
-                    style="@style/roboto_medium"
+                    style="@style/font_medium"
                     android:id="@+id/txtShowAllSg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
 
 
                 <TextView
-                    style="@style/roboto_medium"
+                    style="@style/font_medium"
                     android:id="@+id/txtPb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -189,7 +189,7 @@
 
                 <TextView
                     android:onClick="@{(v)->vm.showAllPopularFood()}"
-                    style="@style/roboto_medium"
+                    style="@style/font_medium"
                     android:id="@+id/txtShowAllPb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -26,7 +26,7 @@
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:orientation="vertical">
             <TextView
-                style="@style/roboto_bold"
+                style="@style/font_bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_35sdp"
@@ -35,7 +35,7 @@
                 android:textSize="@dimen/_30ssp"/>
 
             <TextView
-                style="@style/roboto_medium"
+                style="@style/font_medium"
                 android:textSize="@dimen/_11ssp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                 </FrameLayout>
 
                 <EditText
-                    style="@style/roboto_medium"
+                    style="@style/font_medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"

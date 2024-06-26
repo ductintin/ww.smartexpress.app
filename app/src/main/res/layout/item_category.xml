@@ -32,7 +32,7 @@
         </FrameLayout>
 
         <TextView
-            style="@style/roboto_medium"
+            style="@style/font_medium"
             android:id="@+id/txtCateName"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="wrap_content"

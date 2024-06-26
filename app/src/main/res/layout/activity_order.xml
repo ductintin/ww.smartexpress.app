@@ -222,7 +222,7 @@
                            android:layout_height="wrap_content"
                            android:orientation="vertical">
                            <TextView
-                               style="@style/roboto_medium"
+                               style="@style/font_medium"
                                android:textSize="@dimen/_10sdp"
                                android:id="@id/expandable_text"
                                android:layout_width="match_parent"

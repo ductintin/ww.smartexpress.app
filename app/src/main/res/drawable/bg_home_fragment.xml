@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <shape android:shape="rectangle">
-            <solid android:color="@color/color3"></solid>
-            <corners android:bottomLeftRadius="@dimen/_20sdp" android:bottomRightRadius="@dimen/_20sdp"/>
-            <padding android:top="@dimen/_15sdp" android:right="@dimen/_10sdp" android:bottom="@dimen/_15sdp" android:left="@dimen/_10sdp"></padding>
-        </shape>
-    </item>
-
-</selector>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient android:startColor="@color/color3"
+        android:centerColor="#73A3F1"
+        android:endColor="#ABC8F6"
+        android:angle="-90"></gradient>
+</shape>

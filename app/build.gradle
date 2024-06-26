@@ -208,6 +208,11 @@ dependencies {
 
     implementation 'com.jakewharton:butterknife:10.2.3'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
+
+    implementation 'com.etebarian:meow-bottom-navigation:1.2.0'
+
+    implementation 'com.github.Dimezis:BlurView:version-2.0.3'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

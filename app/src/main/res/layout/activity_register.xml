@@ -32,24 +32,22 @@
                     android:id="@+id/layoutHeader"
                     layout="@layout/layout_header"
                     bind:visible="@{vm.visibleBack}"
-                    bind:title="@{@string/signup}"
-                    >
+                    bind:title="@{@string/signup}">
 
                 </include>
 
 
-
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    >
+                    android:layout_marginTop="@dimen/_20sdp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/fullName"
-                        style="@style/roboto_medium_gray_12ssp">
+                        style="@style/font_medium_gray_12ssp">
 
                     </TextView>
 
@@ -63,23 +61,35 @@
                     </TextView>
                 </LinearLayout>
 
-                <EditText
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@drawable/bg_edt"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxBackgroundMode="outline"
+                    app:shapeAppearanceOverlay="@style/Rounded"
                     android:hint="@string/fullName_hint"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:text="@={vm.name}"
-                    android:inputType="text"
-                    android:textColorHint="@color/grey_text"
-                    style="@style/information_edit_text"
-                    android:maxLength="50">
-
-                </EditText>
+                    app:hintEnabled="true"
+                    app:boxStrokeColor="@color/app_color"
+                    app:hintTextColor="@color/app_color"
+                    app:helperTextTextColor="#898A8D"
+                    app:boxStrokeWidthFocused="@dimen/_1sdp"
+                    app:hintAnimationEnabled="false">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:text="@={vm.name}"
+                        android:inputType="text"
+                        android:textColorHint="@color/grey_text"
+                        style="@style/information_edit_text"
+                        android:maxLength="50">
+                    </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp">
@@ -88,7 +98,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/email"
-                        style="@style/roboto_medium_gray_12ssp">
+                        style="@style/font_medium_gray_12ssp">
 
                     </TextView>
                     <TextView
@@ -102,22 +112,34 @@
 
                 </LinearLayout>
 
-                <EditText
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@drawable/bg_edt"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxBackgroundMode="outline"
+                    app:shapeAppearanceOverlay="@style/Rounded"
                     android:hint="@string/email_hint"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:text="@={vm.email}"
-                    android:textColorHint="@color/grey_text"
-                    style="@style/information_edit_text">
-
-                </EditText>
+                    app:hintEnabled="true"
+                    app:boxStrokeColor="@color/app_color"
+                    app:hintTextColor="@color/app_color"
+                    app:helperTextTextColor="#898A8D"
+                    app:boxStrokeWidthFocused="@dimen/_1sdp"
+                    app:hintAnimationEnabled="false">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:text="@={vm.email}"
+                        android:textColorHint="@color/grey_text"
+                        style="@style/information_edit_text">
+                    </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp">
@@ -126,7 +148,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/phone"
-                        style="@style/roboto_medium_gray_12ssp">
+                        style="@style/font_medium_gray_12ssp">
 
                     </TextView>
                     <TextView
@@ -140,22 +162,35 @@
 
                 </LinearLayout>
 
-                <EditText
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@drawable/bg_edt"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxBackgroundMode="outline"
+                    app:shapeAppearanceOverlay="@style/Rounded"
                     android:hint="@string/phone_hint"
-                    android:inputType="phone"
-                    android:maxLength="10"
-                    android:maxLines="1"
-                    android:text="@={vm.phone}"
-                    android:textColorHint="@color/grey_text"
-                    style="@style/information_edit_text">
+                    app:hintEnabled="true"
+                    app:boxStrokeColor="@color/app_color"
+                    app:hintTextColor="@color/app_color"
+                    app:helperTextTextColor="#898A8D"
+                    app:boxStrokeWidthFocused="@dimen/_1sdp"
+                    app:hintAnimationEnabled="false">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:text="@={vm.phone}"
+                        android:textColorHint="@color/grey_text"
+                        style="@style/information_edit_text">
+                    </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                </EditText>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp">
@@ -164,7 +199,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/pw"
-                        style="@style/roboto_medium_gray_12ssp">
+                        style="@style/font_medium_gray_12ssp">
 
                     </TextView>
                     <TextView
@@ -178,63 +213,37 @@
 
                 </LinearLayout>
 
-                <!--            <EditText-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:layout_marginTop="@dimen/_15sdp"-->
-                <!--                android:background="@drawable/bg_edt"-->
-                <!--                android:hint="@string/password"-->
-                <!--                android:inputType="textPassword"-->
-                <!--                android:maxLines="1"-->
-                <!--                android:text="@={vm.request.password}"-->
-                <!--                android:textColorHint="@color/grey_text"-->
-                <!--                style="@style/information_edit_text">-->
-
-                <!--            </EditText>-->
-
-
-                <!--            <com.google.android.material.textfield.TextInputLayout-->
-                <!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                app:hintEnabled="false"-->
-                <!--                app:hintAnimationEnabled="false"-->
-                <!--                android:layout_marginTop="@dimen/_15sdp"-->
-                <!--                app:passwordToggleEnabled="true">-->
-
-                <!--                <AutoCompleteTextView-->
-                <!--                    android:id="@+id/pw"-->
-                <!--                    android:background="@drawable/bg_edt"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:text="@={vm.password}"-->
-                <!--                    android:hint="@string/password"-->
-                <!--                    android:maxLines="1"-->
-                <!--                    android:lines="1"-->
-                <!--                    android:inputType="textPassword"-->
-                <!--                    android:textColorHint="@color/grey_text"-->
-                <!--                    style="@style/information_edit_text"/>-->
-
-                <!--            </com.google.android.material.textfield.TextInputLayout>-->
-
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp">
-                    <EditText
-                        android:paddingRight="@dimen/_35sdp"
-                        android:id="@+id/edtPw"
+
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_edt"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxBackgroundMode="outline"
+                        app:shapeAppearanceOverlay="@style/Rounded"
                         android:hint="@string/password"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:textColorHint="@color/grey_text"
-                        style="@style/information_edit_text"
-                        android:text="@={vm.password}">
-
-                    </EditText>
+                        app:hintEnabled="true"
+                        app:boxStrokeColor="@color/app_color"
+                        app:hintTextColor="@color/app_color"
+                        app:helperTextTextColor="#898A8D"
+                        app:boxStrokeWidthFocused="@dimen/_1sdp"
+                        app:hintAnimationEnabled="false">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:paddingRight="@dimen/_35sdp"
+                            android:id="@+id/edtPw"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:textColorHint="@color/grey_text"
+                            style="@style/information_edit_text"
+                            android:text="@={vm.password}"
+                            android:maxLength="16">
+                        </com.google.android.material.textfield.TextInputEditText>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageView
                         android:onClick="@{(v)->vm.setIsVisibilityPassword()}"
@@ -246,6 +255,7 @@
 
                     </ImageView>
                 </FrameLayout>
+
             </LinearLayout>
 
             <Button

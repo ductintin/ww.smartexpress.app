@@ -184,7 +184,7 @@ public class BookDeliveryViewModel extends BaseViewModel {
                 });
     }
 
-    Observable<ResponseWrapper<ResponseListObj<DriverPosition   >>> getDriverPosition(Long driverId) {
+    Observable<ResponseWrapper<ResponseListObj<DriverPosition>>> getDriverPosition(Long driverId) {
         return repository.getApiService().getDriverPosition(driverId)
                 .doOnNext(response -> {
 

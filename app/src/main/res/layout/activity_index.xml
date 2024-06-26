@@ -58,12 +58,13 @@
                 android:id="@+id/button2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_12sdp"
-                android:text="@string/login_all_win"
+                android:layout_marginBottom="@dimen/_50sdp"
+                android:text="Bắt đầu"
                 style="@style/AppButtonStyle"
                 android:layout_marginHorizontal="@dimen/_2sdp"
                 />
             <Button
+                android:visibility="gone"
                 android:onClick="@{(v)->vm.navigateToRegister()}"
                 android:id="@+id/button3"
                 android:layout_width="match_parent"

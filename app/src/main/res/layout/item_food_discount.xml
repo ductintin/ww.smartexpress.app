@@ -33,7 +33,7 @@
                 android:src="@drawable/food_discount">
             </ImageView>
             <TextView
-                style="@style/roboto_bold"
+                style="@style/font_bold"
                 android:id="@+id/txtFood"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_20ssp"/>
             <TextView
-                style="@style/roboto_medium"
+                style="@style/font_medium"
                 android:id="@+id/textView26"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

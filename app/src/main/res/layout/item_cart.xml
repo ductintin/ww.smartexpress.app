@@ -57,7 +57,7 @@
                         android:orientation="vertical"
                         android:padding="@dimen/_4sdp">
                         <TextView
-                            style="@style/roboto_medium"
+                            style="@style/font_medium"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="@dimen/_5sdp"
@@ -90,7 +90,7 @@
                                 android:orientation="vertical">
 
                                 <TextView
-                                    style="@style/roboto_medium"
+                                    style="@style/font_medium"
                                     android:id="@+id/txtProduct"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
 
                                         <TextView
                                             android:id="@+id/textView4"
-                                            style="@style/roboto_medium"
+                                            style="@style/font_medium"
                                             android:layout_width="wrap_content"
                                             android:layout_height="match_parent"
                                             android:layout_marginRight="@dimen/_3sdp"
@@ -145,7 +145,7 @@
                                             app:tint="#C9424242" />
 
                                         <TextView
-                                            style="@style/roboto_medium"
+                                            style="@style/font_medium"
                                             android:id="@+id/textView3"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
@@ -160,7 +160,7 @@
 
                                 <TextView
                                     android:id="@+id/txtPrice"
-                                    style="@style/roboto_medium"
+                                    style="@style/font_medium"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="left"

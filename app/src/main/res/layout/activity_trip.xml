@@ -61,7 +61,7 @@
                             android:src="@drawable/ic_icon_back" />
 
                         <TextView
-                            style="@style/roboto_medium"
+                            style="@style/font_medium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -222,7 +222,37 @@
 
                     </FrameLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:orientation="horizontal">
 
+                        <TextView
+                            style="@style/trip_information_text_bold"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/service"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            style="@style/trip_information_text_bold"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.bookingResponse.service.name}"
+                            android:textAlignment="textEnd"
+                            android:layout_weight="1"/>
+
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="#EEF2F5">
+
+                    </FrameLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -260,7 +290,6 @@
                         </FrameLayout>
 
                         <FrameLayout
-                            android:visibility="@{vm.bookingResponse.promotionMoney != 0.0 ? View.VISIBLE : View.GONE}"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/_10sdp">
@@ -276,7 +305,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
                                 android:gravity="right"
-                                android:text='@{"- " + NumberUtils.formatDoubleNumber(vm.bookingResponse.promotionMoney.doubleValue()) + " đ"}' />
+                                android:text='@{vm.bookingResponse.promotionMoney == 0.0 ? NumberUtils.formatCurrency(vm.bookingResponse.promotionMoney) : "- " + NumberUtils.formatCurrency(vm.bookingResponse.promotionMoney)}'/>
                         </FrameLayout>
 
                         <FrameLayout
@@ -319,7 +348,7 @@
                                 android:id="@+id/textView21"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/payment_cash" />
+                                android:text='@{vm.bookingResponse.paymentKind == 1 ? @string/payment_cash : "Thanh toán ví điện tử"}' />
 
                             <ImageView
                                 android:id="@+id/imageView16"
@@ -327,7 +356,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="left"
                                 android:layout_marginLeft="@dimen/_10sdp"
-                                app:srcCompat="@drawable/ic_icon_money"/>
+                                android:src='@{vm.bookingResponse.paymentKind == 1 ? @drawable/ic_icon_money : @drawable/ic_icon_credit_card}'/>
 
                             <TextView
                                 style="@style/trip_information_text_bold"
@@ -336,7 +365,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="right"
-                                android:text='@{NumberUtils.formatDoubleNumber(vm.bookingResponse.money.doubleValue()) + " đ"}'
+                                android:text='@{vm.bookingResponse.promotionMoney != 0.0 ? NumberUtils.formatDoubleNumber(vm.bookingResponse.money.doubleValue() - vm.bookingResponse.promotionMoney.doubleValue()) + " đ" : NumberUtils.formatDoubleNumber(vm.bookingResponse.money.doubleValue()) + " đ"}'
                                 android:maxLines="1"
                                 android:ellipsize="end"/>
                         </LinearLayout>

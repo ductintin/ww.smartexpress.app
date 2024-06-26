@@ -68,7 +68,7 @@
                     android:orientation="horizontal">
                     <TextView
                         android:id="@+id/txtBookWin"
-                        style="@style/roboto_medium"
+                        style="@style/font_medium"
                         android:background="@{vm.orderStatus==0 ?@drawable/background_order_status: @drawable/grey_background_drinks}"
                         android:layout_width="@dimen/_65sdp"
                         android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
                         android:textColor="@{vm.orderStatus==0 ?@color/white: @color/title_home_page}"/>
                     <TextView
                         android:id="@+id/txtDelivery"
-                        style="@style/roboto_medium"
+                        style="@style/font_medium"
                         android:background="@{vm.orderStatus==1 ?@drawable/background_order_status: @drawable/grey_background_drinks}"
                         android:layout_marginLeft="@dimen/_15sdp"
                         android:layout_width="@dimen/_65sdp"
@@ -90,7 +90,7 @@
                         android:textColor="@{vm.orderStatus==1 ?@color/white: @color/title_home_page}"/>/>
                     <TextView
                         android:id="@+id/txtShopping"
-                        style="@style/roboto_medium"
+                        style="@style/font_medium"
                         android:background="@{vm.orderStatus==2 ?@drawable/background_order_status: @drawable/grey_background_drinks}"
                         android:layout_marginLeft="@dimen/_15sdp"
                         android:layout_width="@dimen/_65sdp"

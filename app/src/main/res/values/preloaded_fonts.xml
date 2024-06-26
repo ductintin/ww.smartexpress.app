@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/montserrat</item>
+        <item>@font/montserrat_bold</item>
+        <item>@font/montserrat_extralight</item>
+        <item>@font/montserrat_extralight_italic</item>
+        <item>@font/montserrat_italic</item>
+        <item>@font/montserrat_light</item>
+        <item>@font/montserrat_light_italic</item>
+        <item>@font/montserrat_medium</item>
+        <item>@font/montserrat_medium_italic</item>
+        <item>@font/montserrat_semibold</item>
+        <item>@font/montserrat_thin</item>
+        <item>@font/montserrat_thin_italic</item>
+    </array>
+</resources>

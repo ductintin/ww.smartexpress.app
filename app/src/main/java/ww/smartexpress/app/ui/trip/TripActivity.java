@@ -107,7 +107,7 @@ public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewMode
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
                     if(response.isResult()){
-                        if(response.getData().getContent() != null)
+                        if(response.getData().getContent().isEmpty())
                             viewModel.isLoading.set(false);
                             viewModel.bookingResponse.set(response.getData().getContent().get(0));
                     }else{
@@ -128,7 +128,7 @@ public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewMode
         super.onNewIntent(intent);
         if(intent != null){
             Long id = intent.getLongExtra("BOOKING_ID", 0L);
-            if(id == viewModel.bookingResponse.get().getId()){
+            if(viewModel.bookingResponse.get().getId().equals(id)){
                 Intent intentToRating = new Intent(TripActivity.this, RateDriverActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putLong(Constants.CUSTOMER_BOOKING_ID, viewModel.bookingResponse.get().getId());

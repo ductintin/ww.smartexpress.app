@@ -6,40 +6,40 @@
     <font
         android:fontStyle="normal"
         android:fontWeight="400"
-        android:font="@font/roboto_regular"
+        android:font="@font/montserrat"
 
         app:fontStyle="normal"
         app:fontWeight="400"
-        app:font="@font/roboto_regular"/>
+        app:font="@font/montserrat"/>
 
     <!-- android API 26+ -> android:fontStyle     16+ -> app:fontStyle -->
     <font
         android:fontStyle="normal"
         android:fontWeight="700"
-        android:font="@font/roboto_bold"
+        android:font="@font/montserrat_bold"
 
         app:fontStyle="normal"
         app:fontWeight="700"
-        app:font="@font/roboto_bold"/>
+        app:font="@font/montserrat_bold"/>
 
 
     <!-- android API 26+ -> android:fontStyle     16+ -> app:fontStyle -->
     <font
         android:fontStyle="italic"
         android:fontWeight="400"
-        android:font="@font/roboto_italic"
+        android:font="@font/montserrat_italic"
 
         app:fontStyle="italic"
         app:fontWeight="400"
-        app:font="@font/roboto_italic"/>
+        app:font="@font/montserrat_italic"/>
 
     <!-- android API 26+ -> android:fontStyle     16+ -> app:fontStyle -->
     <font
         android:fontStyle="italic"
         android:fontWeight="700"
-        android:font="@font/roboto_bolditalic"
+        android:font="@font/montserrat_medium_italic"
 
         app:fontStyle="italic"
         app:fontWeight="700"
-        app:font="@font/roboto_bolditalic"/>
+        app:font="@font/montserrat_medium_italic"/>
 </font-family>

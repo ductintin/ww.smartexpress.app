@@ -54,7 +54,7 @@
                                 android:orientation="vertical">
 
                                 <TextView
-                                    style="@style/roboto_medium"
+                                    style="@style/font_medium"
                                     android:id="@+id/txtProduct"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                                         app:srcCompat="@drawable/ic_icon_star" />
 
                                     <TextView
-                                        style="@style/roboto_medium"
+                                        style="@style/font_medium"
                                         android:id="@+id/textView32"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
                                         android:textColor="#A8000000"/>
 
                                     <TextView
-                                        style="@style/roboto_medium"
+                                        style="@style/font_medium"
                                         android:id="@+id/textView33"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                                         android:src="@drawable/ic_icon_location" />
 
                                     <TextView
-                                        style="@style/roboto_medium"
+                                        style="@style/font_medium"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginRight="@dimen/_3sdp"

@@ -35,19 +35,38 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_home_fragment"
                     android:layout_marginBottom="@dimen/_10sdp"
+                    android:padding="@dimen/_10sdp"
                     android:orientation="vertical">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="@dimen/_50sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:src="@{vm.profile.avatar, default=@drawable/user_avatar}"/>
+<!--                    <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                        android:layout_width="@dimen/_50sdp"-->
+<!--                        android:layout_height="@dimen/_50sdp"-->
+<!--                        android:src="@{vm.profile.avatar, default=@drawable/user_avatar}"/>-->
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Giao hàng nhanh. An toàn"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textSize="@dimen/_14sdp">
+
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tiết kiệm chi phí"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textSize="@dimen/_14sdp">
+
+                    </TextView>
                     <androidx.cardview.widget.CardView
                         android:onClick="@{()->a.goToSearchLocationActivity()}"
                         android:id="@+id/cardView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
                         android:layout_marginVertical="@dimen/_20sdp"
                         app:cardCornerRadius="@dimen/_10sdp"
                         app:cardElevation="@dimen/_3sdp">
@@ -118,6 +137,29 @@
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:visibility="@{vm.totalBookingElements == 0 ? View.VISIBLE : View.GONE}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/_50sdp">
+                    <ImageView
+                        android:layout_width="@dimen/_150sdp"
+                        android:layout_height="@dimen/_150sdp"
+                        android:src="@drawable/empty_activity">
+
+                    </ImageView>
+                    <TextView
+                        android:layout_marginTop="@dimen/_10sdp"
+                        style="@style/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bạn chưa có đơn hàng nào">
+
+                    </TextView>
                 </LinearLayout>
 
                 <ScrollView

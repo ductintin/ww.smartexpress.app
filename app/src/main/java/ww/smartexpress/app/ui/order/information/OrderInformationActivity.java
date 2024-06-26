@@ -396,8 +396,8 @@ public class OrderInformationActivity extends BaseActivity<ActivityOrderInformat
                 return false;
             }
 
-            if(request.getCodPrice() < 1000){
-                viewModel.showErrorMessage("Số tiền thu hộ quá bé, hãy nhập lớn hơn 1000 VNĐ");
+            if(request.getCodPrice() < 10000){
+                viewModel.showErrorMessage("Số tiền thu hộ quá bé, hãy nhập lớn hơn 10000 VNĐ");
                 viewBinding.edtCodPrice.requestFocus(viewModel.codPriceText.get().length());
                 return false;
             }

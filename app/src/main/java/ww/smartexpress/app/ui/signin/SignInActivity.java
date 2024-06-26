@@ -22,6 +22,9 @@ import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.tabs.TabLayout;
+
+import org.apache.commons.validator.routines.EmailValidator;
 
 import java.util.concurrent.Executor;
 import java.util.regex.Pattern;
@@ -34,11 +37,13 @@ import lombok.NonNull;
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.R;
 import ww.smartexpress.app.data.model.api.request.LoginRequest;
+import ww.smartexpress.app.data.model.api.request.RegisterRequest;
 import ww.smartexpress.app.data.model.room.UserEntity;
 import ww.smartexpress.app.databinding.ActivitySignInBinding;
 import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
 import ww.smartexpress.app.ui.home.HomeActivity;
+import ww.smartexpress.app.ui.otp.LoginOTPActivity;
 import ww.smartexpress.app.utils.AES;
 
 public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInViewModel> {
@@ -68,43 +73,6 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        executor = ContextCompat.getMainExecutor(this);
-//        biometricPrompt = new BiometricPrompt(SignInActivity.this,
-//                executor, new BiometricPrompt.AuthenticationCallback() {
-//            @Override
-//            public void onAuthenticationError(int errorCode,
-//                                              @NonNull CharSequence errString) {
-//                super.onAuthenticationError(errorCode, errString);
-//                Toast.makeText(getApplicationContext(),
-//                                "Authentication error: " + errString, Toast.LENGTH_SHORT)
-//                        .show();
-//
-//            }
-//
-//            @Override
-//            public void onAuthenticationSucceeded(
-//                    @NonNull BiometricPrompt.AuthenticationResult result) {
-//                super.onAuthenticationSucceeded(result);
-//                Toast.makeText(getApplicationContext(),
-//                        "Authentication succeeded!", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onAuthenticationFailed() {
-//                super.onAuthenticationFailed();
-//                Toast.makeText(getApplicationContext(), "Authentication failed",
-//                                Toast.LENGTH_SHORT)
-//                        .show();
-//            }
-//        });
-//
-//        promptInfo = new BiometricPrompt.PromptInfo.Builder()
-//                .setTitle("Xác thực vân tay cho đăng nhập ứng dụng")
-//                .setNegativeButtonText("Sử dụng mật khẩu")
-//                .build();
-
-
 
         oneTapClient = Identity.getSignInClient(this);
         signInRequest = BeginSignInRequest.builder()
@@ -159,10 +127,10 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
             }
         });
 
-        viewModel.isVisibility.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+        viewModel.isVisibilityS.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
-                if(!viewModel.isVisibility.get()){
+                if(!viewModel.isVisibilityS.get()){
                     viewBinding.edtPw.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }else {
                     viewBinding.edtPw.setTransformationMethod(null);;
@@ -171,12 +139,51 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
                 viewBinding.edtPw.setSelection(viewBinding.edtPw.length());
             }
         });
+
+        viewModel.isVisibilityR.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                if(!viewModel.isVisibilityR.get()){
+                    viewBinding.edtPWR.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }else {
+                    viewBinding.edtPWR.setTransformationMethod(null);;
+                }
+
+                viewBinding.edtPWR.setSelection(viewBinding.edtPWR.length());
+            }
+        });
+
+        viewBinding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        viewModel.tabIndex.set(0);
+                        break;
+                    case 1:
+                        viewModel.tabIndex.set(1);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     public LoginRequest prepareLoginRequest(){
-        viewModel.request.get().setPhone(viewModel.phone.get().trim());
-        viewModel.request.get().setPassword(viewModel.password.get().trim());
-        return viewModel.request.get();
+        viewModel.loginRequest.get().setPhone(viewModel.phoneS.get().trim());
+        viewModel.loginRequest.get().setPassword(viewModel.passwordS.get().trim());
+        return viewModel.loginRequest.get();
     }
 
     public boolean isValidLoginRequest(LoginRequest request){
@@ -209,7 +216,7 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
                 .subscribe(response -> {
                     if(response.isResult()){
                         Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
-                        String en = viewModel.getApplication().getAes().encrypt(viewModel.password.get());
+                        String en = viewModel.getApplication().getAes().encrypt(viewModel.passwordS.get());
                         intent.putExtra("ENCRYPTED_PW", en);
                         Log.d("TAG", "doLogin: " + en);
                         startActivity(intent);
@@ -224,6 +231,74 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
 
     }
 
+    public RegisterRequest prepareRegisterRequest(){
+        viewModel.registerRequest.get().setName(viewModel.name.get().trim());
+        viewModel.registerRequest.get().setEmail(viewModel.email.get().trim());
+        viewModel.registerRequest.get().setPhone(viewModel.phoneR.get().trim());
+        viewModel.registerRequest.get().setPassword(viewModel.passwordR.get().trim());
+        return viewModel.registerRequest.get();
+    }
+
+    public Boolean isValidRegisterRequest(RegisterRequest request){
+        String phoneRegex = "^(0[3|5|7|8|9])+([0-9]{8})$";
+        Pattern phonePatter = Pattern.compile(phoneRegex);
+
+        if(TextUtils.isEmpty(request.getName())){
+            viewModel.showErrorMessage(application.getString(R.string.please_fill_name));
+            return false;
+        }
+        if(TextUtils.isEmpty(request.getEmail())){
+            viewModel.showErrorMessage(application.getString(R.string.please_fill_email));
+            return false;
+        }else if(!EmailValidator.getInstance().isValid(request.getEmail())){
+            viewModel.showErrorMessage(application.getString(R.string.invalid_email));
+            return false;
+        }
+        if(TextUtils.isEmpty(request.getPhone()) || request.getPhone().length() != 10 || !phonePatter.matcher(request.getPhone()).matches()){
+            viewModel.showErrorMessage(application.getString(R.string.phone_wrong_formatted));
+            return false;
+        }
+        if(TextUtils.isEmpty(request.getPassword()) || request.getPassword().length() < 6){
+            viewModel.showErrorMessage(application.getString(R.string.pw_wrong_formatted));
+            return false;
+        }else if(request.getPassword().contains(" ")){
+            viewModel.showErrorMessage(application.getString(R.string.invalid_pw));
+            return false;
+        }
+        return true;
+    }
+    public void doRegister(){
+        viewModel.showLoading();
+        RegisterRequest request = prepareRegisterRequest();
+        if(!isValidRegisterRequest(request)){
+            viewModel.hideLoading();
+        }else{
+            viewModel.compositeDisposable.add(viewModel.register(prepareRegisterRequest())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(response -> {
+                        viewModel.hideLoading();
+                        if(response.isResult()){
+                            viewModel.showSuccessMessage(getString(R.string.register_success));
+                            //navigateToLogin();
+                            navigateToOtp(response.getData().getUserId());
+                        }else{
+                            viewModel.showErrorMessage(response.getMessage());
+                        }
+                    }, err ->{
+                        viewModel.hideLoading();
+                        viewModel.showErrorMessage(err.getMessage());
+                    }));
+        }
+    }
+
+    public void navigateToOtp(String userId){
+        Intent intent = new Intent(this, LoginOTPActivity.class);
+        intent.putExtra("USER_ID", userId);
+        intent.putExtra("USER_PHONE", viewModel.phoneR.get());
+        startActivity(intent);
+        finish();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -259,5 +334,13 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
 
     public void navigateToCreatePassword(){
 
+    }
+
+    public void doNext(){
+        if(viewModel.tabIndex.get().equals(0)){
+            doLogin();
+        }else{
+            doRegister();
+        }
     }
 }

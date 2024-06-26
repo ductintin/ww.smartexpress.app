@@ -205,7 +205,7 @@
     <string name="phone_wrong_formatted">Số điện thoại không hợp lệ</string>
     <string name="pw_wrong_formatted">Mật khẩu phải chứa ít nhất 6 ký tự</string>
     <string name="all_win_hello">Xin chào</string>
-    <string name="login_all_win">Đăng nhập</string>
+    <string name="app_login">Đăng nhập</string>
     <string name="register_all_win">Đăng ký</string>
     <string name="index_description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
     <string name="hello">Hello </string>
@@ -240,4 +240,5 @@
     <string name="invalid_pw">Mật khẩu không được chứa khoảng trắng</string>
     <string name="same_booking_location">Điểm đón và điểm đến trùng nhau. Vui lòng chọn lại địa điểm khác!</string>
     <string name="same_reset_pw">Mật khẩu mới trùng với mật khẩu cũ. Vui lòng chọn một mật khẩu khác!</string>
+    <string name="service">Dịch vụ:</string>
 </resources>

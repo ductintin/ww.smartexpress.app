@@ -1,6 +1,7 @@
 package ww.smartexpress.app.ui.profile;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import eightbitlab.com.blurview.RenderScriptBlur;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -95,6 +97,24 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getProfile();
+
+//        float radius = 20f;
+//
+//        View decorView = getActivity().getWindow().getDecorView();
+//        // ViewGroup you want to start blur from. Choose root as close to BlurView in hierarchy as possible.
+//        ViewGroup rootView = (ViewGroup) decorView.findViewById(R.id.layoutProfile);
+//
+//        // Optional:
+//        // Set drawable to draw in the beginning of each blurred frame.
+//        // Can be used in case your layout has a lot of transparent space and your content
+//        // gets a too low alpha value after blur is applied.
+//        Drawable windowBackground = decorView.getBackground();
+//
+//        binding.blurView.setupWith(rootView, new RenderScriptBlur(getActivity())) // or RenderEffectBlur
+//                .setFrameClearDrawable(windowBackground) // Optional
+//                .setBlurRadius(radius);
+
+
     }
 
     @Override

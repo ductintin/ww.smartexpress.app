@@ -235,7 +235,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/_5sdp"
-                                app:srcCompat="@drawable/ic_icon_money" />
+                                android:src='@{vm.paymentKind == 1 ? @drawable/ic_icon_money : @drawable/ic_icon_credit_card}' />
 
                             <TextView
                                 android:id="@+id/textView7"
@@ -244,7 +244,7 @@
                                 android:layout_height="match_parent"
                                 android:onClick="@{(v)->vm.selectPayment()}"
                                 android:paddingLeft="@dimen/_10sdp"
-                                android:text='@{vm.paymentKind == 1 ? @string/money : "Trả thẻ"}' />
+                                android:text='@{vm.paymentKind == 1 ? @string/money : "Ví điện tử"}' />
                         </LinearLayout>
 
                         <FrameLayout

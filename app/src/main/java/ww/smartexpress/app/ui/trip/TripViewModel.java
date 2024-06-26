@@ -67,6 +67,8 @@ public class TripViewModel extends BaseViewModel {
         Intent intent = new Intent(application.getCurrentActivity(), ChatActivity.class);
         Bundle bundle = new Bundle();
         bundle.putLong(Constants.ROOM_ID, bookingResponse.get().getRoom().getId());
+        bundle.putLong("BOOKING_ID", bookingResponse.get().getId());
+        bundle.putString("BOOKING_CODE", bookingResponse.get().getCode());
         intent.putExtras(bundle);
         application.getCurrentActivity().startActivity(intent);
     }

@@ -43,7 +43,7 @@
                     </ImageView>
 
                     <TextView
-                        style="@style/roboto_medium"
+                        style="@style/font_medium"
                         android:id="@+id/txtProduct"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                                 android:src="@drawable/ic_icon_location"/>
 
                             <TextView
-                                style="@style/roboto_medium"
+                                style="@style/font_medium"
                                 android:id="@+id/textView4"
                                 android:layout_width="@dimen/_40sdp"
                                 android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
                                 android:src="@drawable/ic_icon_star"/>
 
                             <TextView
-                                style="@style/roboto_medium"
+                                style="@style/font_medium"
                                 android:id="@+id/textView3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
 
                     <TextView
                         android:id="@+id/txtPrice"
-                        style="@style/roboto_bold"
+                        style="@style/font_bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"

@@ -153,7 +153,7 @@
 
 
             <TextView
-                style="@style/roboto_bold"
+                style="@style/font_bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
@@ -179,7 +179,7 @@
 
             <TextView
                 android:onClick="@{(v)->vm.doAddMethod()}"
-                style="@style/roboto_bold"
+                style="@style/font_bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
@@ -205,7 +205,7 @@
 
         <TextView
             android:onClick="@{(v)->vm.doAddMethod()}"
-            style="@style/roboto_bold"
+            style="@style/font_bold"
             android:id="@+id/textView12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

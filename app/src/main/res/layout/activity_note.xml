@@ -79,7 +79,7 @@
             android:background="#B5E9E9E9">
 
             <TextView
-                style ="@style/roboto_medium"
+                style ="@style/font_medium"
                 android:id="@+id/textView13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

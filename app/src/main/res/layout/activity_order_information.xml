@@ -472,35 +472,54 @@
                         <LinearLayout
                             android:visibility="@{vm.selectCOD ? View.VISIBLE : View.GONE }"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_35sdp"
-                            android:orientation="horizontal"
+                            android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/_15sdp"
-                            android:background="@drawable/bg_information">
-                            <EditText
-                                android:id="@+id/edtCodPrice"
-                                android:text='@={vm.codPriceText}'
+                            android:orientation="vertical">
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                style="@style/order_information_text_medium"
-                                android:hint="Số tiền thu hộ"
-                                android:background="@null"
-                                android:inputType="phone"
-                                android:maxLength="9"
-                                android:paddingLeft="@dimen/_15sdp"
-                                android:paddingVertical="@dimen/_5sdp"
-                                android:maxLines="1"
-                                android:layout_weight="1"/>
-                            <TextView
-                                android:gravity="center"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:text="VNĐ"
-                                style="@style/location_text"
-                                android:layout_marginRight="@dimen/_10sdp"
-                                >
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:orientation="horizontal"
+                                    android:background="@drawable/bg_information">
+                                    <EditText
+                                        android:id="@+id/edtCodPrice"
+                                        android:text='@={vm.codPriceText}'
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        style="@style/order_information_text_medium"
+                                        android:hint="Số tiền thu hộ"
+                                        android:background="@null"
+                                        android:inputType="phone"
+                                        android:maxLength="10"
+                                        android:paddingLeft="@dimen/_15sdp"
+                                        android:paddingVertical="@dimen/_5sdp"
+                                        android:maxLines="1"
+                                        android:layout_weight="1"/>
+                                    <TextView
+                                        android:gravity="center"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:text="VNĐ"
+                                        style="@style/location_text"
+                                        android:layout_marginRight="@dimen/_10sdp">
 
-                            </TextView>
+                                    </TextView>
+
+                                </LinearLayout>
+
+                                <TextView
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    style="@style/app_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:maxLines="1"
+                                    android:text="Vui lòng nhập tối thiểu 10.000 đ, tối đa 50tr" />
+                            </LinearLayout>
                         </LinearLayout>
+
 
 
                         <RelativeLayout

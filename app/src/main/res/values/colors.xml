@@ -40,4 +40,5 @@
     <color name="pending_color_light">#FFCDA0</color>
     <color name="app_text">#424242</color>
     <color name="green_light_app">#6C94FC</color>
+    <color name="bg_color">#F3F3F3</color>
 </resources>
