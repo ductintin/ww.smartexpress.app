@@ -6,13 +6,17 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -24,14 +28,21 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
 import es.dmoral.toasty.Toasty;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.annotations.Nullable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import lombok.Getter;
 import lombok.Setter;
@@ -98,7 +109,15 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
 
     @Getter
     @Setter
+    private Map<Long,Integer> notificationIdChatMap = new HashMap<>();
+
+    @Getter
+    @Setter
     private Integer notificationIdIndex = 0;
+
+    @Getter
+    @Setter
+    private Integer notificationIdChatIndex = 0;
 
     @Override
     public void onCreate() {
@@ -260,7 +279,28 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
     public void navigateToChat(SocketEventModel socketEventModel){
         Message message = socketEventModel.getMessage();
         chatDetail = message.getDataObject(ChatMessage.class);
-        createMessageNotification(chatDetail);
+
+        Log.d("TAG", "navigateToChat: " + chatDetail.getBookingId());
+
+        final Bitmap[] bitmap = {null};
+
+        Glide.with(getApplicationContext())
+                .asBitmap()
+                .load(BuildConfig.MEDIA_URL+ "/v1/file/download" + "/6783713748123648/AVATAR/AVATAR_XkdibfQk0l.jpg")
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+
+                        bitmap[0] = resource;
+                        createMessageNotification(chatDetail, bitmap[0]);
+                        // TODO Do some work: pass this bitmap
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
+                });
+
         //nếu không ở chat thì hiện badge
         if(currentActivity instanceof BookDeliveryActivity){
 
@@ -382,13 +422,13 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         switch (option){
             case 1: //accept
                 title = "Đã tìm thấy tài xế giao hàng";
-                content = " Tài xế đang trên đường đến lấy. Đơn hàng từ" + bookingResponse.getPickupAddress() + "đến " + bookingResponse.getDestinationAddress();
+                content = " Tài xế đang trên đường đến lấy. Đơn hàng từ " + bookingResponse.getPickupAddress() + " đến " + bookingResponse.getDestinationAddress();
                 notificationIntent.putExtra("BOOKING_CODE", bookingResponse.getCodeBooking());
                 notificationIntent.putExtra("STATE_BOOKING", 1);
                 break;
             case 2: // pickup
                 title = "Tài xế đã nhận đơn hàng";
-                content = "Tài xế đang trên đường giao đến điểm nhận. Đơn hàng: " + bookingResponse.getPickupAddress() + "đến " + bookingResponse.getDestinationAddress();
+                content = "Tài xế đang trên đường giao đến điểm nhận. Đơn hàng từ " + bookingResponse.getPickupAddress() + " đến " + bookingResponse.getDestinationAddress();
                 notificationIntent.putExtra("BOOKING_ID", bookingResponse.getBookingId());
                 notificationIntent.putExtra("STATE_BOOKING", 3);
                 break;
@@ -444,6 +484,7 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         //nếu booking hoàn thành, xóa id khỏi notification
         if(option == 3){
             notificationIdMap.remove(bookingResponse.getBookingId());
+            notificationIdChatMap.remove(bookingResponse.getBookingId());
         }
     }
 
@@ -488,47 +529,57 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
 
     }
 
-    public void createMessageNotification(ChatMessage message){
-        String id = "SmartExpress";
+    public void createMessageNotification(ChatMessage message, Bitmap bitmap) {
+        String id = "SmartExpress Chat";
         String title = "";
         String subtitle = "";
 
-        if(!TextUtils.isEmpty(message.getAvatar())){
+        if (!TextUtils.isEmpty(message.getAvatar())) {
 
         }
 
-        Intent notificationIntent = new Intent(getCurrentActivity(), BookDeliveryActivity.class);
+        Intent notificationIntent = new Intent(getCurrentActivity(), ChatActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
+        notificationIntent.putExtra("BOOKING_CODE", message.getCodeBooking());
+        notificationIntent.putExtra("BOOKING_ID", message.getCodeBooking());
+        notificationIntent.putExtra("ROOM_ID", message.getRoomId());
+
+
         RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.item_shipping_notification);
+
 
         title = "Tài xế: " + " gửi đến bạn";
         subtitle = message.getMessage();
 
-        //notificationLayout.setImageViewBitmap(R.id.imgIcon, );
+        if (bitmap != null) {
+            notificationLayout.setImageViewBitmap(R.id.imgIcon, bitmap);
+        }
+
         notificationLayout.setTextViewText(R.id.tvNotificationTitle, title);
         notificationLayout.setTextViewText(R.id.tvNotificationSubtitle, subtitle);
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = manager.getNotificationChannel(id);
-            if(channel == null){
+            if (channel == null) {
                 channel = new NotificationChannel(id, "Channel Title", NotificationManager.IMPORTANCE_HIGH);
 
                 channel.setDescription("[Channel Description]");
                 channel.enableVibration(true);
-                channel.setVibrationPattern(new long[]{100,1000,200,340});
+                channel.setVibrationPattern(new long[]{100, 1000, 200, 340});
                 channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
                 manager.createNotificationChannel(channel);
             }
         }
 
         PendingIntent contentIntent = PendingIntent.getActivity(getCurrentActivity(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, id)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), id)
                 .setSmallIcon(R.drawable.smartexpress_splash_logo)
                 .setCustomContentView(notificationLayout)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setVibrate(new long[]{100,1000,200,340})
+                .setVibrate(new long[]{100, 1000, 200, 340})
                 .setAutoCancel(false)
                 .setTicker("Notification");
 
@@ -536,7 +587,16 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
 
         NotificationManagerCompat m = NotificationManagerCompat.from(getApplicationContext());
 
-        m.notify(notificationIdMap.get(message.getBookingId()), builder.build());
+        if (!notificationIdChatMap.containsKey(message.getBookingId())) {
+            //reset notification khi quá 10 booking
+            if (notificationIdChatIndex == 10) {
+                notificationIdChatIndex = 0;
+            }
+            notificationIdChatMap.put(Long.valueOf(message.getBookingId()), notificationIdChatIndex++);
+        }
 
+        m.notify(notificationIdChatMap.get(Long.valueOf(message.getBookingId())), builder.build());
     }
+
+
 }

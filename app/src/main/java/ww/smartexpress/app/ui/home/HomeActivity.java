@@ -96,54 +96,52 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding, HomeViewMode
                 .build();
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback);
 
-        //getCurrentBooking();
-//        viewBinding.navigationView.setOnItemSelectedListener(this);
-//        //getCurrentBooking();
-//        viewBinding.navigationView.setSelectedItemId(R.id.home);
+        viewBinding.navigationView.setOnItemSelectedListener(this);
+        viewBinding.navigationView.setSelectedItemId(R.id.home);
 
-        viewBinding.navigationView.add(new MeowBottomNavigation.Model(1,R.drawable.ic_icon_home));
-        viewBinding.navigationView.add(new MeowBottomNavigation.Model(2,R.drawable.ic_icon_activity));
-        viewBinding.navigationView.add(new MeowBottomNavigation.Model(3,R.drawable.ic_icon_account));
-
-        viewBinding.navigationView.show(1, true);
-
-        viewBinding.navigationView.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
-            @Override
-            public Unit invoke(MeowBottomNavigation.Model model) {
-                switch(model.getId())
-                {
-                    case 1:
-                        switchToSearchFragment();
-                        break;
-                    case 2:
-                        switchToActivityFragment();
-                        break;
-                    case 3:
-                        switchToProfileFragment();
-                        break;
-                }
-                return null;
-            }
-        });
-
-        viewBinding.navigationView.setOnShowListener(new Function1<MeowBottomNavigation.Model, Unit>() {
-            @Override
-            public Unit invoke(MeowBottomNavigation.Model model) {
-                switch(model.getId())
-                {
-                    case 1:
-                        switchToSearchFragment();
-                        break;
-                    case 2:
-                        switchToActivityFragment();
-                        break;
-                    case 3:
-                        switchToProfileFragment();
-                        break;
-                }
-                return null;
-            }
-        });
+//        viewBinding.navigationView.add(new MeowBottomNavigation.Model(1,R.drawable.ic_icon_home));
+//        viewBinding.navigationView.add(new MeowBottomNavigation.Model(2,R.drawable.ic_icon_activity));
+//        viewBinding.navigationView.add(new MeowBottomNavigation.Model(3,R.drawable.ic_icon_account));
+//
+//        viewBinding.navigationView.show(1, true);
+//
+//        viewBinding.navigationView.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
+//            @Override
+//            public Unit invoke(MeowBottomNavigation.Model model) {
+//                switch(model.getId())
+//                {
+//                    case 1:
+//                        switchToSearchFragment();
+//                        break;
+//                    case 2:
+//                        switchToActivityFragment();
+//                        break;
+//                    case 3:
+//                        switchToProfileFragment();
+//                        break;
+//                }
+//                return null;
+//            }
+//        });
+//
+//        viewBinding.navigationView.setOnShowListener(new Function1<MeowBottomNavigation.Model, Unit>() {
+//            @Override
+//            public Unit invoke(MeowBottomNavigation.Model model) {
+//                switch(model.getId())
+//                {
+//                    case 1:
+//                        switchToSearchFragment();
+//                        break;
+//                    case 2:
+//                        switchToActivityFragment();
+//                        break;
+//                    case 3:
+//                        switchToProfileFragment();
+//                        break;
+//                }
+//                return null;
+//            }
+//        });
     }
 
     @Override

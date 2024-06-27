@@ -73,18 +73,19 @@
 
                     </FrameLayout>
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:background="#EEF2F5">
-
-                    </FrameLayout>
-
                     <LinearLayout
+                        android:visibility="@{(vm.bookingResponse.state == -100 || vm.bookingResponse.state == 400) ? View.GONE : View.VISIBLE}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:background="#EEF2F5">
+
+                        </FrameLayout>
                         <TextView
                             style="@style/trip_information_text_bold"
                             android:layout_width="match_parent"
@@ -99,7 +100,6 @@
                             android:layout_marginHorizontal="@dimen/_12sdp">
                         </FrameLayout>
                         <LinearLayout
-                            android:visibility="@{(vm.bookingResponse.state == -100 || vm.bookingResponse.state == 400) ? View.GONE : View.VISIBLE}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_10sdp"
@@ -294,6 +294,30 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/trip_information_text_medium"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Thông tin dịch vụ"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            style="@style/trip_information_text_medium"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text='@{NumberUtils.getSize(vm.bookingResponse.service.size) +"  "+vm.bookingResponse.service.weight+"Kg"}'
+                            android:textAlignment="textEnd"
+                            android:layout_weight="1"/>
+
+                    </LinearLayout>
+
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_5sdp"
@@ -407,7 +431,7 @@
                                 android:id="@+id/imageView16"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="left"
+                                android:layout_gravity="left|center"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:src='@{vm.bookingResponse.paymentKind == 1 ? @drawable/ic_icon_money : @drawable/ic_icon_credit_card}'/>
 
@@ -420,7 +444,9 @@
                                 android:gravity="right"
                                 android:text='@{vm.bookingResponse.promotionMoney != 0.0 ? NumberUtils.formatDoubleNumber(vm.bookingResponse.money.doubleValue() - vm.bookingResponse.promotionMoney.doubleValue()) + " đ" : NumberUtils.formatDoubleNumber(vm.bookingResponse.money.doubleValue()) + " đ"}'
                                 android:maxLines="1"
-                                android:ellipsize="end"/>
+                                android:ellipsize="end"
+                                android:textSize="@dimen/_20ssp"
+                                android:textColor="@color/black"/>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -697,7 +723,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/background_book_small"
+                android:background="@color/white"
                 android:layout_gravity="bottom">
                 <Button
                     android:background="@{ vm.bookingResponse.state == -100 ? @drawable/bg_btn_red : vm.bookingResponse.state == 300 ? @drawable/bg_btn_complete : @drawable/bg_pending_button}"

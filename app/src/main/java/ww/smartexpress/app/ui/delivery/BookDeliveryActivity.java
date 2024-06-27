@@ -252,7 +252,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
         viewModel.bookingRequest.get().setMoney(bookCars.get(0).getPrice());
 
         RecyclerView.LayoutManager layoutBookCar = new LinearLayoutManager(this
-                ,LinearLayoutManager.VERTICAL, false);
+                ,LinearLayoutManager.HORIZONTAL, false);
         viewBinding.rcWinDelivery.setLayoutManager(layoutBookCar);
         viewBinding.rcWinDelivery.setItemAnimator(new DefaultItemAnimator());
         bookCarAdapter = new BookCarAdapter(bookCars);

@@ -7,6 +7,8 @@ import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 
 import ww.smartexpress.app.constant.Constants;
+import ww.smartexpress.app.data.model.api.ApiModelUtils;
+import ww.smartexpress.app.data.model.api.response.Size;
 
 public class NumberUtils {
     static DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -79,5 +81,13 @@ public class NumberUtils {
         decimalFormat.setMinimumFractionDigits(0);
 
         return decimalFormat.format(d);
+    }
+
+    public static String getSize(String sizeJson){
+        if(sizeJson == null || sizeJson.isEmpty()){
+            return "";
+        }
+        Size size = ApiModelUtils.fromJson( sizeJson, Size.class);
+        return size.formatSize();
     }
 }

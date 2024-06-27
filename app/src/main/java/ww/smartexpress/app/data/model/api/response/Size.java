@@ -15,5 +15,7 @@ public class Size {
     private Integer height;
     private Integer length;
     private Integer width;
-
+    public String formatSize(){
+        return this.length+"x"+width+"x"+height+"cm";
+    }
 }

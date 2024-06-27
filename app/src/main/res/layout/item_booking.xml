@@ -75,96 +75,136 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:gravity="center|top"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:padding="@dimen/_4sdp">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_5sdp">
+                        <TextView
+                            style="@style/font_bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="left"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@{ivm.service.name}"
+                            android:textSize="@dimen/_12ssp"
+                            android:textColor="@color/app_color">
+                        </TextView>
+                        <TextView
+                            style="@style/font_bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:text='@{ivm.promotionMoney == 0.0 ? NumberUtils.formatDoubleNumber(ivm.money) + " đ" : NumberUtils.formatDoubleNumber(ivm.money - ivm.promotionMoney) + " đ"}'
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="@dimen/_15ssp"
+                            android:textColor="@color/black">
+                        </TextView>
+                    </FrameLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:orientation="vertical">
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_50sdp"
+                            android:layout_gravity="center"
+                            android:src="@{ivm.service.image, default = @drawable/car}">
 
-                            <TextView
-                                style="@style/font_bold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="left"
-                                android:ellipsize="end"
-                                android:maxLines="1"
-                                android:text="@{ivm.service.name}"
-                                android:textSize="@dimen/_12ssp"
-                                android:textColor="@color/app_color">
-                            </TextView>
-                            <TextView
-                                style="@style/font_bold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right"
-                                android:layout_marginRight="@dimen/_5sdp"
-                                android:text='@{ivm.promotionMoney == 0.0 ? NumberUtils.formatDoubleNumber(ivm.money) + " đ" : NumberUtils.formatDoubleNumber(ivm.money - ivm.promotionMoney) + " đ"}'
-                                android:ellipsize="end"
-                                android:maxLines="1"
-                                android:textSize="@dimen/_15ssp"
-                                android:textColor="@color/black">
-                            </TextView>
-                        </FrameLayout>
-
+                        </ImageView>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:orientation="horizontal">
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="@dimen/_20sdp"
-                                android:layout_height="wrap_content"
-                                android:text='Từ: '
-                                android:fontFamily="@font/montserrat"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_8ssp"
-                                android:ellipsize="end"/>
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text='@{ivm.pickupAddress}'
-                                android:fontFamily="@font/montserrat"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_8ssp"
-                                android:maxLines="2"
-                                android:ellipsize="end"/>
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:orientation="horizontal"
+                                android:gravity="center">
 
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="@dimen/_15sdp"
+                                    android:layout_height="@dimen/_15sdp"
+                                    android:layout_marginRight="@dimen/_5sdp"
+                                    android:src="@drawable/ic_icon_my_location">
 
-                            <TextView
-                                android:layout_width="@dimen/_20sdp"
-                                android:layout_height="wrap_content"
-                                android:text='Đến: '
-                                android:fontFamily="@font/montserrat"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_8ssp"
-                                android:ellipsize="end"/>
+                                </ImageView>
 
-                            <TextView
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text='@{ivm.pickupAddress}'
+                                    android:fontFamily="@font/montserrat"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_8ssp"
+                                    android:maxLines="2"
+                                    android:ellipsize="end"/>
+
+                            </LinearLayout>
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text='@{ivm.destinationAddress}'
-                                android:fontFamily="@font/montserrat"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_8ssp"
-                                android:maxLines="2"
-                                android:ellipsize="end"/>
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:orientation="horizontal"
+                                android:gravity="center">
 
+                                <ImageView
+                                    android:layout_width="@dimen/_15sdp"
+                                    android:layout_height="@dimen/_15sdp"
+                                    android:layout_marginRight="@dimen/_5sdp"
+                                    android:src="@drawable/ic_icon_search_location">
+
+                                </ImageView>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text='@{ivm.destinationAddress}'
+                                    android:fontFamily="@font/montserrat"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_8ssp"
+                                    android:maxLines="2"
+                                    android:ellipsize="end"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:orientation="horizontal"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:layout_width="@dimen/_15sdp"
+                                    android:layout_height="@dimen/_15sdp"
+                                    android:layout_marginRight="@dimen/_5sdp"
+                                    android:src="@drawable/ic_icon_package">
+
+                                </ImageView>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text='@{NumberUtils.getSize(ivm.service.size) +"  "+ivm.service.weight+"Kg"}'
+                                    android:fontFamily="@font/montserrat"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_8ssp"
+                                    android:maxLines="2"
+                                    android:ellipsize="end"/>
+                            </LinearLayout>
                         </LinearLayout>
+
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

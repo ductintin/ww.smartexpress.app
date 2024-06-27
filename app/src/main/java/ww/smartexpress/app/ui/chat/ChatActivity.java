@@ -146,6 +146,12 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
                 viewModel.messageChat.setValue(messageChat1);
                 viewModel.getApplication().setChatDetail(null);
             }
+        }else{
+            //truong hop khac booking
+            viewModel.roomId.set(intent.getLongExtra(Constants.ROOM_ID, 0L));
+            viewModel.bookingId.set(intent.getLongExtra("BOOKING_ID", 0L));
+            viewModel.codeBooking.set(intent.getStringExtra("BOOKING_CODE"));
+            getMessage();
         }
     }
 }

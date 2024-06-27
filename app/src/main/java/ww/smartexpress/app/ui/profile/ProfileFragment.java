@@ -113,36 +113,6 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         super.onViewCreated(view, savedInstanceState);
         binding.setA(this);
         getProfile();
-
-        binding.ln.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    senNoti();
-                } catch (ExecutionException e) {
-                    throw new RuntimeException(e);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-//        float radius = 20f;
-//
-//        View decorView = getActivity().getWindow().getDecorView();
-//        // ViewGroup you want to start blur from. Choose root as close to BlurView in hierarchy as possible.
-//        ViewGroup rootView = (ViewGroup) decorView.findViewById(R.id.layoutProfile);
-//
-//        // Optional:
-//        // Set drawable to draw in the beginning of each blurred frame.
-//        // Can be used in case your layout has a lot of transparent space and your content
-//        // gets a too low alpha value after blur is applied.
-//        Drawable windowBackground = decorView.getBackground();
-//
-//        binding.blurView.setupWith(rootView, new RenderScriptBlur(getActivity())) // or RenderEffectBlur
-//                .setFrameClearDrawable(windowBackground) // Optional
-//                .setBlurRadius(radius);
-
-
     }
 
     @Override
@@ -200,43 +170,5 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
                 })
         );
 
-    }
-
-    public void senNoti() throws ExecutionException, InterruptedException {
-        RemoteViews notificationLayout = new RemoteViews(getActivity().getPackageName(), R.layout.item_shipping_notification);
-
-
-        FutureTarget<Bitmap> futureTarget = Glide.with(this)
-                .asBitmap()
-                .load(BuildConfig.MEDIA_URL+ "/v1/file/download" + "/6783713748123648/AVATAR/AVATAR_XkdibfQk0l.jpg")
-                .submit();
-
-        //notificationLayout.setImageViewBitmap(R.id.imgIcon, futureTarget);
-
-        NotificationManager manager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = manager.getNotificationChannel("Smart");
-            if(channel == null){
-                channel = new NotificationChannel("Smart", "Channel Title", NotificationManager.IMPORTANCE_HIGH);
-
-                channel.setDescription("[Channel Description]");
-                channel.enableVibration(true);
-                channel.setVibrationPattern(new long[]{100,1000,200,340});
-                channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-                manager.createNotificationChannel(channel);
-            }
-        }
-
-        Notification notification = new NotificationCompat.Builder(getActivity(), "Smart")
-                .setSmallIcon(R.drawable.smartexpress_splash_logo)
-                .setCustomContentView(notificationLayout)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .build();
-
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getActivity());
-
-        Glide.with(this).clear(futureTarget);
-
-        notificationManagerCompat.notify(0, notification);
     }
 }
