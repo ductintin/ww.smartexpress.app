@@ -99,6 +99,7 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
                         viewModel.driverName.set(response.getData().getDriver().getFullName());
                         viewModel.driverAvatar.set(response.getData().getDriver().getAvatar());
                         viewModel.driverId.set(response.getData().getDriver().getId());
+                        viewModel.customerAvatar.set(response.getData().getCustomer().getAvatar());
                         loadMessages();
                     }else{
                         viewModel.hideLoading();

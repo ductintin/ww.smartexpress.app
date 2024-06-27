@@ -60,6 +60,7 @@ public class CouponActivity extends BaseActivity<ActivityCouponBinding, CouponVi
             Log.d("TAG", "onCreate: " + servicePromotion.getMoney());
             Log.d("TAG", "onCreate: date " + date);
             Log.d("TAG", "onCreate: id " + servicePromotion.getSelectedId());
+            viewModel.serviceId.set(servicePromotion.getService().getId());
             getPromotion();
         }
     }
@@ -94,7 +95,7 @@ public class CouponActivity extends BaseActivity<ActivityCouponBinding, CouponVi
         couponAdapter = new CouponAdapter(couponList);
         viewBinding.rcCoupon.setAdapter(couponAdapter);
         couponAdapter.setOnItemClickListener(coupon -> {
-            if(!coupon.getIsExpired() && !coupon.getIsInValid()){
+            if(!coupon.getIsInValid()){
                 Log.d("Click", "performDataBinding: ");
                 EventBus.getDefault().postSticky(coupon);
                 onBackPressed();
@@ -111,29 +112,6 @@ public class CouponActivity extends BaseActivity<ActivityCouponBinding, CouponVi
             }
         }
 
-        if(!pr.getServices().contains(servicePromotion.getService())){
-            pr.setIsInValid(true);
-            Log.d("TAG", "checkPromotion: ko co");
-            return pr;
-        }
-
-        if(pr.getState() != 1){
-            pr.setIsExpired(true);
-            return pr;
-        }
-
-        if(DateUtils.convertStringToDate(pr.getEndDate()).before(date)){
-            pr.setIsExpired(true);
-            Log.d("TAG", "checkPromotion: het han");
-            return pr;
-        }
-
-        if(DateUtils.convertStringToDate(pr.getStartDate()).after(date)){
-            pr.setIsInValid(true);
-            Log.d("TAG", "checkPromotion: chua toi");
-            return pr;
-        }
-
 
         if(servicePromotion.getMoney() < pr.getLimitValueMin()){
             pr.setIsInValid(true);
@@ -141,8 +119,11 @@ public class CouponActivity extends BaseActivity<ActivityCouponBinding, CouponVi
             return pr;
         }
 
-        pr.setIsExpired(false);
         pr.setIsInValid(false);
         return pr;
+    }
+
+    public void showDialogRemovePromotion(Promotion promotion){
+
     }
 }

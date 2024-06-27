@@ -106,10 +106,9 @@ public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewMode
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
-                    if(response.isResult()){
-                        if(response.getData().getTotalElements() > 0)
-                            viewModel.isLoading.set(false);
-                            viewModel.bookingResponse.set(response.getData().getContent().get(0));
+                    if(response.isResult() && response.getData().getTotalElements() > 0){
+                        viewModel.isLoading.set(false);
+                        viewModel.bookingResponse.set(response.getData().getContent().get(0));
                     }else{
                         viewModel.showErrorMessage("Không tìm thấy đơn hàng");
                         Intent intent = new Intent(TripActivity.this, HomeActivity.class);

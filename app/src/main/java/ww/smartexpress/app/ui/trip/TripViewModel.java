@@ -73,10 +73,14 @@ public class TripViewModel extends BaseViewModel {
         application.getCurrentActivity().startActivity(intent);
     }
 
-    public void zoomImage(String url){
+    public void zoomImage(int option){
         Dialog dialog = new Dialog(getApplication().getCurrentActivity());
         ItemZoomImageBinding binding = DataBindingUtil.inflate(LayoutInflater.from(getApplication().getCurrentActivity()), R.layout.item_zoom_image,null, false);
-        binding.setUrl(url);
+        if(option == 0){
+            binding.setUrl(bookingResponse.get().getPickupImage());
+        }else{
+            binding.setUrl(bookingResponse.get().getDeliveryImage());
+        }
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(binding.getRoot());

@@ -31,7 +31,6 @@ public class Promotion {
     private Double limitValueMin;
     private Integer quantity;
     private List<ServiceResponse> services;
-    private Boolean isExpired;
     private Boolean isInValid;
     private Boolean isSelected;
 }

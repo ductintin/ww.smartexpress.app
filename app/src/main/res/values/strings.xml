@@ -188,7 +188,7 @@
     <string name="cancel_reason_option2">Bạn đánh giá dịch vụ như thế nào</string>
     <string name="cancel_confirm">Xác nhận hủy</string>
     <string name="allwin_hello">Allwin xin chào</string>
-    <string name="trip_details">Chi tiết đơn hàng</string>
+    <string name="trip_details">Thông tin đơn hàng</string>
     <string name="search_title">Tìm kiếm</string>
     <string name="hot_food">Đang hot</string>
     <string name="suggest">Gợi ý phù hợp</string>
@@ -240,5 +240,5 @@
     <string name="invalid_pw">Mật khẩu không được chứa khoảng trắng</string>
     <string name="same_booking_location">Điểm đón và điểm đến trùng nhau. Vui lòng chọn lại địa điểm khác!</string>
     <string name="same_reset_pw">Mật khẩu mới trùng với mật khẩu cũ. Vui lòng chọn một mật khẩu khác!</string>
-    <string name="service">Dịch vụ:</string>
+    <string name="service">Loại dịch vụ:</string>
 </resources>

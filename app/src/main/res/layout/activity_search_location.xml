@@ -216,7 +216,7 @@
                         android:paddingVertical="@dimen/_5sdp">
 
                         <ImageView
-                            android:layout_width="@dimen/_21sdp"
+                            android:layout_width="17dp"
                             android:layout_height="@dimen/_21sdp"
                             android:layout_marginRight="@dimen/_5sdp"
                             android:src="@drawable/ic_icon_search_location"></ImageView>

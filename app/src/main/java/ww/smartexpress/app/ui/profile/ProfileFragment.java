@@ -1,5 +1,11 @@
 package ww.smartexpress.app.ui.profile;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
+
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -9,9 +15,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
+
+import java.util.concurrent.ExecutionException;
 
 import eightbitlab.com.blurview.RenderScriptBlur;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -19,6 +33,7 @@ import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ww.smartexpress.app.BR;
+import ww.smartexpress.app.BuildConfig;
 import ww.smartexpress.app.R;
 
 import ww.smartexpress.app.data.model.api.response.ProfileResponse;
@@ -96,8 +111,21 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        binding.setA(this);
         getProfile();
 
+        binding.ln.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    senNoti();
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 //        float radius = 20f;
 //
 //        View decorView = getActivity().getWindow().getDecorView();
@@ -174,4 +202,41 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
 
     }
 
+    public void senNoti() throws ExecutionException, InterruptedException {
+        RemoteViews notificationLayout = new RemoteViews(getActivity().getPackageName(), R.layout.item_shipping_notification);
+
+
+        FutureTarget<Bitmap> futureTarget = Glide.with(this)
+                .asBitmap()
+                .load(BuildConfig.MEDIA_URL+ "/v1/file/download" + "/6783713748123648/AVATAR/AVATAR_XkdibfQk0l.jpg")
+                .submit();
+
+        //notificationLayout.setImageViewBitmap(R.id.imgIcon, futureTarget);
+
+        NotificationManager manager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = manager.getNotificationChannel("Smart");
+            if(channel == null){
+                channel = new NotificationChannel("Smart", "Channel Title", NotificationManager.IMPORTANCE_HIGH);
+
+                channel.setDescription("[Channel Description]");
+                channel.enableVibration(true);
+                channel.setVibrationPattern(new long[]{100,1000,200,340});
+                channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+                manager.createNotificationChannel(channel);
+            }
+        }
+
+        Notification notification = new NotificationCompat.Builder(getActivity(), "Smart")
+                .setSmallIcon(R.drawable.smartexpress_splash_logo)
+                .setCustomContentView(notificationLayout)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .build();
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getActivity());
+
+        Glide.with(this).clear(futureTarget);
+
+        notificationManagerCompat.notify(0, notification);
+    }
 }

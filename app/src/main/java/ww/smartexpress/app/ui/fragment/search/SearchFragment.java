@@ -226,6 +226,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                                 codeBooking.put(br.getId(),br.getCode());
                             }
 
+                            viewModel.totalBookingElements.set(response.getData().getTotalElements());
                             viewModel.getApplication().getWebSocketLiveData().setCodeBooking(codeBooking);
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext()
                                     ,LinearLayoutManager.VERTICAL, false);

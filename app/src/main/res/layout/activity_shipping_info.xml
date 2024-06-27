@@ -25,6 +25,7 @@
             android:background="@color/white">
 
             <ImageView
+                android:onClick="@{()->a.onBackPressed()}"
                 android:id="@+id/btnBackBookCar"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"

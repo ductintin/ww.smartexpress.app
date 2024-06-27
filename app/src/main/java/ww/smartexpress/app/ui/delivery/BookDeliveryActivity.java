@@ -692,6 +692,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         viewModel.originLatLng.set(viewModel.originLat.get() + "," + viewModel.originLng.get());
                         viewModel.destinationLatLng.set(viewModel.destinationLat.get() + "," + viewModel.destinationLng.get());
                         //viewModel.originLatLng.set(viewModel.originLat.get() + "," + viewModel.originLng.get());
+                        viewModel.bookingCode.set(bookingResponse.getCode());
 
                         Log.d("TAG", "getCurrentBooking: " + bookingResponse.getState());
                         switch (bookingResponse.getState()){
@@ -760,7 +761,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         viewModel.originLatLng.set(viewModel.originLat.get() + "," + viewModel.originLng.get());
                         viewModel.destinationLatLng.set(viewModel.destinationLat.get() + "," + viewModel.destinationLng.get());
                         //viewModel.originLatLng.set(viewModel.originLat.get() + "," + viewModel.originLng.get());
-
+                        viewModel.bookingCode.set(bookingResponse.getCode());
                         Log.d("TAG", "getCurrentBooking: " + bookingResponse.getState());
                         switch (bookingResponse.getState()){
                             case 0:
@@ -875,33 +876,30 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventPromotion(Promotion promotion) {
-
         if(promotion != null){
             double discount = 0;
             double promotionMoney = 0;
             int index = viewModel.selectedServiceIndex.get();
+            double price = this.bookCars.get(index).getPrice();
+
+            //tien
             if(promotion.getKind() == 0){
-                discount = this.bookCars.get(index).getPrice() - promotion.getDiscountValue();
+                discount = price - promotion.getDiscountValue();
                 if(discount > 0){
                     promotionMoney = promotion.getDiscountValue();
-                    this.bookCars.get(index).setDiscount(discount);
                 }else{
-                    promotionMoney = this.bookCars.get(index).getPrice();
-                    this.bookCars.get(index).setDiscount(promotion.getDiscountValue());
+                    promotionMoney = price;
                 }
             }else{
                 //neu tien giam nhieu hon max
-                if(this.bookCars.get(index).getPrice() * promotion.getDiscountValue() / 100 > promotion.getLimitValueMax()){
-                    discount = promotion.getLimitValueMax();
-                    promotionMoney = discount;
+                if(price * promotion.getDiscountValue() / 100 > promotion.getLimitValueMax()){
+                    promotionMoney = promotion.getLimitValueMax();
                 }else{
-                    discount = this.bookCars.get(index).getPrice() - this.bookCars.get(index).getPrice() * promotion.getDiscountValue() / 100;
                     promotionMoney = this.bookCars.get(index).getPrice() * promotion.getDiscountValue() / 100;
                 }
-
-                this.bookCars.get(index).setDiscount(discount);
-
             }
+
+            this.bookCars.get(index).setDiscount(promotionMoney);
 
             bookCarAdapter.notifyDataSetChanged();
             viewModel.discount.set(promotionMoney);

@@ -98,7 +98,7 @@ public interface ApiService {
     @Headers({"isSearchLocation:1"})
     Observable<JsonObject> getLocationInfoByLatLng(@Query("latlng") String latlng, @Query("key") String api);
     @GET("/v1/promotion/client-list")
-    Observable<ResponseWrapper<ResponseListObj<Promotion>>> getPromotions(@Query("page") Integer pageNumber, @Query("size") Integer pageSize);
+    Observable<ResponseWrapper<ResponseListObj<Promotion>>> getPromotions(@Query("serviceId") Long serviceId, @Query("page") Integer pageNumber, @Query("size") Integer pageSize);
     @GET("/v1/promotion/get/{id}")
     Observable<ResponseWrapper<Promotion>> getPromotionById(@Path("id") Integer id);
     @POST("/v1/customer/active")

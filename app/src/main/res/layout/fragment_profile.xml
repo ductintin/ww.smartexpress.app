@@ -619,9 +619,9 @@
                     </TextView>
 
                     <LinearLayout
+                        android:id="@+id/ln"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:onClick="@{(v)->vm.gotoWallet()}"
                         android:orientation="horizontal"
                         android:paddingHorizontal="@dimen/_12sdp"
                         android:paddingVertical="@dimen/_15sdp">

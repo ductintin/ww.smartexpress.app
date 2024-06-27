@@ -15,7 +15,7 @@
 
     <LinearLayout
         android:background="@drawable/bg_green_light_elevation"
-        android:alpha="@{ivm.isExpired || ivm.isInValid ? 0.5f : 1f}"
+        android:alpha="@{ivm.isInValid ? 0.5f : 1f}"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_110sdp"
         android:orientation="vertical"
@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_btn_coupon"
                 android:includeFontPadding="false"
-                android:text='@{ivm.isExpired ? "Hết hạn" : ivm.isInValid ? "Không khả dụng" : ivm.isSelected ? "Đang sử dụng" : @string/coupon_use_text}'
+                android:text='@{ivm.isInValid ? "Không khả dụng" : ivm.isSelected ? "Đang sử dụng" : @string/coupon_use_text}'
                 android:textColor="#7EA567"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

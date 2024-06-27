@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -256,9 +258,14 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
     }
 
     public void navigateToChat(SocketEventModel socketEventModel){
+        Message message = socketEventModel.getMessage();
+        chatDetail = message.getDataObject(ChatMessage.class);
+        createMessageNotification(chatDetail);
+        //nếu không ở chat thì hiện badge
+        if(currentActivity instanceof BookDeliveryActivity){
+
+        }
         if(currentActivity instanceof ChatActivity){
-            Message message = socketEventModel.getMessage();
-            chatDetail = message.getDataObject(ChatMessage.class);
             Intent intent = new Intent(currentActivity, ChatActivity.class);
             if(chatDetail != null){
                 intent.putExtra("BOOKING_CODE", chatDetail.getCodeBooking());
@@ -369,16 +376,19 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         Intent notificationIntent = new Intent(getCurrentActivity(), BookDeliveryActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
+        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.item_shipping_notification);
+
+
         switch (option){
             case 1: //accept
                 title = "Đã tìm thấy tài xế giao hàng";
-                content = "Đơn hàng: " + bookingResponse.getCodeBooking() + " .Tài xế đang trên đường đến lấy.";
+                content = " Tài xế đang trên đường đến lấy. Đơn hàng từ" + bookingResponse.getPickupAddress() + "đến " + bookingResponse.getDestinationAddress();
                 notificationIntent.putExtra("BOOKING_CODE", bookingResponse.getCodeBooking());
                 notificationIntent.putExtra("STATE_BOOKING", 1);
                 break;
             case 2: // pickup
                 title = "Tài xế đã nhận đơn hàng";
-                content = "Đơn hàng: " + bookingResponse.getBookingId() + " .Tài xế đang trên đường giao đến điểm nhận.";
+                content = "Tài xế đang trên đường giao đến điểm nhận. Đơn hàng: " + bookingResponse.getPickupAddress() + "đến " + bookingResponse.getDestinationAddress();
                 notificationIntent.putExtra("BOOKING_ID", bookingResponse.getBookingId());
                 notificationIntent.putExtra("STATE_BOOKING", 3);
                 break;
@@ -391,6 +401,8 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
                 break;
         }
 
+        notificationLayout.setTextViewText(R.id.tvNotificationTitle, title);
+        notificationLayout.setTextViewText(R.id.tvNotificationSubtitle, content);
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
@@ -408,13 +420,8 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
 
         PendingIntent contentIntent = PendingIntent.getActivity(getCurrentActivity(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, id)
-                .setSmallIcon(R.drawable.ic_icon_activity)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.smartexpress_splash_logo))
-                .setStyle(new NotificationCompat.BigPictureStyle()
-                        .bigLargeIcon(null)
-                )
-                .setContentTitle(title)
-                .setContentText(content)
+                .setSmallIcon(R.drawable.smartexpress_splash_logo)
+                .setCustomContentView(notificationLayout)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVibrate(new long[]{100,1000,200,340})
                 .setAutoCancel(false)
@@ -431,6 +438,7 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
             }
             notificationIdMap.put(bookingResponse.getBookingId(), notificationIdIndex++);
         }
+
         m.notify(notificationIdMap.get(bookingResponse.getBookingId()), builder.build());
 
         //nếu booking hoàn thành, xóa id khỏi notification
@@ -480,4 +488,55 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
 
     }
 
+    public void createMessageNotification(ChatMessage message){
+        String id = "SmartExpress";
+        String title = "";
+        String subtitle = "";
+
+        if(!TextUtils.isEmpty(message.getAvatar())){
+
+        }
+
+        Intent notificationIntent = new Intent(getCurrentActivity(), BookDeliveryActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+
+        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.item_shipping_notification);
+
+        title = "Tài xế: " + " gửi đến bạn";
+        subtitle = message.getMessage();
+
+        //notificationLayout.setImageViewBitmap(R.id.imgIcon, );
+        notificationLayout.setTextViewText(R.id.tvNotificationTitle, title);
+        notificationLayout.setTextViewText(R.id.tvNotificationSubtitle, subtitle);
+
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = manager.getNotificationChannel(id);
+            if(channel == null){
+                channel = new NotificationChannel(id, "Channel Title", NotificationManager.IMPORTANCE_HIGH);
+
+                channel.setDescription("[Channel Description]");
+                channel.enableVibration(true);
+                channel.setVibrationPattern(new long[]{100,1000,200,340});
+                channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+                manager.createNotificationChannel(channel);
+            }
+        }
+
+        PendingIntent contentIntent = PendingIntent.getActivity(getCurrentActivity(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, id)
+                .setSmallIcon(R.drawable.smartexpress_splash_logo)
+                .setCustomContentView(notificationLayout)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setVibrate(new long[]{100,1000,200,340})
+                .setAutoCancel(false)
+                .setTicker("Notification");
+
+        builder.setContentIntent(contentIntent);
+
+        NotificationManagerCompat m = NotificationManagerCompat.from(getApplicationContext());
+
+        m.notify(notificationIdMap.get(message.getBookingId()), builder.build());
+
+    }
 }
