@@ -120,12 +120,6 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
         });
         Log.d("TAG", "onCreate: " + signInRequest.toString());
 
-        viewBinding.layoutHeader.imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
 
         viewModel.isVisibilityS.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override

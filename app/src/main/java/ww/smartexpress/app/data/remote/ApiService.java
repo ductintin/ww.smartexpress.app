@@ -16,10 +16,12 @@ import ww.smartexpress.app.data.model.api.request.CancelBookingRequest;
 import ww.smartexpress.app.data.model.api.request.ConfirmAccountNumberRequest;
 import ww.smartexpress.app.data.model.api.request.CreateBookingRequest;
 import ww.smartexpress.app.data.model.api.request.DepositRequest;
+import ww.smartexpress.app.data.model.api.request.ForgetPasswordRequest;
 import ww.smartexpress.app.data.model.api.request.LoginRequest;
 import ww.smartexpress.app.data.model.api.request.PayoutRequest;
 import ww.smartexpress.app.data.model.api.request.RatingBookingRequest;
 import ww.smartexpress.app.data.model.api.request.RegisterRequest;
+import ww.smartexpress.app.data.model.api.request.ResetPasswordRequest;
 import ww.smartexpress.app.data.model.api.request.RetryOtpRegisterRequest;
 import ww.smartexpress.app.data.model.api.request.UpdateProfileRequest;
 import ww.smartexpress.app.data.model.api.response.BankAccountResponse;
@@ -131,4 +133,12 @@ public interface ApiService {
 
     @GET("/v1/position/my-position")
     Observable<ResponseWrapper<ResponseListObj<DriverPosition>>> getDriverPosition(@Query("driverId") Long driverId);
+
+    @POST("/v1/customer/request-forget-password")
+    @Headers({"IgnoreAuth:1"})
+    Observable<ResponseWrapper<CustomerIdResponse>> forgetPassword(@Body ForgetPasswordRequest request);
+
+    @POST("/v1/customer/reset-password")
+    @Headers({"IgnoreAuth:1"})
+    Observable<ResponseWrapper<String>> resetPassword(@Body ResetPasswordRequest request);
 }

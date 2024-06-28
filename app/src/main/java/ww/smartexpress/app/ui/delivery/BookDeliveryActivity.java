@@ -234,9 +234,9 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
 
         for(ServiceResponse sr: serviceResponses){
             ServicePrice servicePrice = ApiModelUtils.fromJson(sr.getPrice(), ServicePrice.class);
-            Size size = ApiModelUtils.fromJson(sr.getSize(), Size.class);
-            String textSize = size.getHeight() + "x" + size.getWidth() + "x" + size.getLength();
-            bookCars.add(new BookCar(sr.getId(), sr.getName(), sr.getImage(), calculatePrice(viewModel.distance.get(), servicePrice), 0.0, textSize, sr.getWeight()));
+            //Size size = ApiModelUtils.fromJson(sr.getSize(), Size.class);
+            //String textSize = size.getHeight() + "x" + size.getWidth() + "x" + size.getLength();
+            bookCars.add(new BookCar(sr.getId(), sr.getName(), sr.getImage(), calculatePrice(viewModel.distance.get(), servicePrice), 0.0, sr.getSize(), sr.getWeight()));
         }
 
         ServicePromotion servicePromotion = ServicePromotion.builder()

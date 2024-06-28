@@ -13,6 +13,7 @@ import java.util.List;
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.R;
 import ww.smartexpress.app.data.model.api.response.BookCar;
+import ww.smartexpress.app.databinding.ItemServiceShippingBinding;
 import ww.smartexpress.app.databinding.ItemWinBikeBinding;
 
 public class BookCarAdapter extends RecyclerView.Adapter<BookCarAdapter.BookCarViewHolder> {
@@ -32,7 +33,7 @@ public class BookCarAdapter extends RecyclerView.Adapter<BookCarAdapter.BookCarV
     @NonNull
     @Override
     public BookCarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemWinBikeBinding itemWinBikeBinding = ItemWinBikeBinding.inflate(LayoutInflater.from(parent.getContext()),
+        ItemServiceShippingBinding itemWinBikeBinding = ItemServiceShippingBinding.inflate(LayoutInflater.from(parent.getContext()),
                 parent, false);
         return new BookCarViewHolder(itemWinBikeBinding, onItemClickListener);
     }
@@ -46,9 +47,6 @@ public class BookCarAdapter extends RecyclerView.Adapter<BookCarAdapter.BookCarV
             holder.mBinding.itemLayout.setBackgroundResource(R.drawable.bg_green_light_elevation);
         }
 
-        if(bookCars.get(position).getDiscount()!=0){
-            holder.mBinding.txtWinBikeDiscount.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        }
     }
 
     @Override
@@ -67,12 +65,12 @@ public class BookCarAdapter extends RecyclerView.Adapter<BookCarAdapter.BookCarV
 
 
     public class BookCarViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private ItemWinBikeBinding mBinding;
+        private ItemServiceShippingBinding mBinding;
         private OnItemClickListener onItemClickListener;
         private BookCar bookCar;
 
         private int position;
-        public BookCarViewHolder(ItemWinBikeBinding binding, OnItemClickListener onItemClickListener) {
+        public BookCarViewHolder(ItemServiceShippingBinding binding, OnItemClickListener onItemClickListener) {
             super(binding.getRoot());
             this.mBinding = binding;
             this.onItemClickListener = onItemClickListener;

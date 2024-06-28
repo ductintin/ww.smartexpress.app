@@ -5,11 +5,14 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,10 +27,11 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.util.concurrent.ExecutionException;
 
-import eightbitlab.com.blurview.RenderScriptBlur;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -41,6 +45,7 @@ import ww.smartexpress.app.data.model.room.UserEntity;
 import ww.smartexpress.app.databinding.FragmentProfileBinding;
 import ww.smartexpress.app.di.component.FragmentComponent;
 import ww.smartexpress.app.ui.base.fragment.BaseFragment;
+import ww.smartexpress.app.ui.chat.ChatActivity;
 import ww.smartexpress.app.ui.index.IndexActivity;
 import ww.smartexpress.app.ui.password.reset.ResetPasswordActivity;
 
@@ -170,5 +175,69 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
                 })
         );
 
+    }
+
+    public void createnoti() {
+        final Bitmap[] bitmap = {null};
+
+        Glide.with(getContext())
+                .asBitmap()
+                .load(BuildConfig.MEDIA_URL + "/v1/file/download" + "/6783713748123648/AVATAR/AVATAR_XkdibfQk0l.jpg")
+                .into(new CustomTarget<Bitmap>() {
+                          @Override
+                          public void onResourceReady(@io.reactivex.rxjava3.annotations.NonNull Bitmap resource, @io.reactivex.rxjava3.annotations.Nullable Transition<? super Bitmap> transition) {
+
+                              bitmap[0] = resource;
+                              String id = "SmartExpress Chat";
+                              String title = "Nguyễn An";
+                              String subtitle = "Hello dạo nhay co adad Hello dạo nhay co adad Hello dạo nhay co adad Hello dạo nhay co adad Hello dạo nhay co adad Hello dạo nhay co adad";
+
+
+                              RemoteViews notificationLayout = new RemoteViews(getActivity().getPackageName(), R.layout.item_shipping_notification);
+
+
+                              if (bitmap != null) {
+                                  notificationLayout.setImageViewBitmap(R.id.imgIcon, bitmap[0]);
+                              }
+
+                              notificationLayout.setTextViewText(R.id.tvNotificationTitle, title);
+                              notificationLayout.setTextViewText(R.id.tvNotificationSubtitle, subtitle);
+
+                              NotificationManager manager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
+                              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                  NotificationChannel channel = manager.getNotificationChannel(id);
+                                  if (channel == null) {
+                                      channel = new NotificationChannel(id, "Channel Title", NotificationManager.IMPORTANCE_HIGH);
+
+                                      channel.setDescription("[Channel Description]");
+                                      channel.enableVibration(true);
+                                      channel.setVibrationPattern(new long[]{100, 1000, 200, 340});
+                                      channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+                                      manager.createNotificationChannel(channel);
+                                  }
+                              }
+
+                              NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), id)
+                                      .setSmallIcon(R.drawable.ic_icon_ship)
+                                      .setCustomContentView(notificationLayout)
+                                      .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                                      .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                      .setVibrate(new long[]{100, 1000, 200, 340})
+                                      .setAutoCancel(false)
+                                      .setTicker("Notification");
+
+
+                              NotificationManagerCompat m = NotificationManagerCompat.from(getContext());
+
+                              m.notify(0, builder.build());
+
+                              // TODO Do some work: pass this bitmap
+                          }
+
+                          @Override
+                          public void onLoadCleared(@io.reactivex.rxjava3.annotations.Nullable Drawable placeholder) {
+                          }
+                      }
+                );
     }
 }

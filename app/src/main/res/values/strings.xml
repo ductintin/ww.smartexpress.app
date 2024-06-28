@@ -78,7 +78,8 @@
     <string name="coupon_currency_tag">k</string>
     <string name="coupon_use_text">Dùng ngay</string>
     <string name="search_destination_title">Chọn điểm đến</string>
-    <string name="search_destination_subtitle">Vị trí nhận hàng</string>
+    <string name="search_destination_subtitle">Địa chỉ giao hàng</string>
+    <string name="search_origin_subtitle">Địa chỉ nhận hàng</string>
     <string name="search_destination_hint">Nhập điểm giao đến ...</string>
     <string name="search_destination_save">Địa điểm đã lưu</string>
     <string name="search_destination_add">Thêm địa chỉ</string>
@@ -207,7 +208,7 @@
     <string name="all_win_hello">Xin chào</string>
     <string name="app_login">Đăng nhập</string>
     <string name="register_all_win">Đăng ký</string>
-    <string name="index_description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
+    <string name="index_description">Chào mừng bạn đến với ứng dụng giao hàng nhanh chóng và tiện lợi! Chúng tôi cam kết mang đến cho bạn dịch vụ giao hàng đáng tin cậy, an toàn và hiệu quả. Hãy để chúng tôi giúp bạn tiết kiệm thời gian và công sức với chỉ vài thao tác đơn giản. Cảm ơn bạn đã chọn chúng tôi, hãy bắt đầu trải nghiệm dịch vụ tuyệt vời ngay bây giờ!</string>
     <string name="hello">Hello </string>
     <string name="pw">Mật khẩu </string>
     <string name="login_success">Đăng nhập thành công</string>
@@ -231,7 +232,7 @@
     <string name="code">Mã</string>
     <string name="do_note">Nhập ghi chú</string>
     <string name="cancel_trip_dialog_title">Bạn có muốn hủy chuyến?</string>
-    <string name="driver_pickup_title">Tài xế đang trên đường đến đón bạn</string>
+    <string name="driver_pickup_title">Tài xế đang trên đường đến</string>
     <string name="logout_description">Bạn muốn đăng xuất khỏi ứng dụng</string>
     <string name="rating_driver">Đánh giá tài xế</string>
     <string name="empty_activity">Bạn chưa có chuyến đi nào ở đây</string>

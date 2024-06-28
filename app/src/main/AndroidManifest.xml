@@ -52,6 +52,30 @@
         android:windowSoftInputMode="adjustResize|stateHidden">
 
         <activity
+            android:name="ww.smartexpress.app.ui.password.forget.ResetForgetPasswordActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/Welcome"
+            android:exported="true">
+
+        </activity>
+
+        <activity
+            android:name="ww.smartexpress.app.ui.password.otp.VerifyForgetPasswordOTPActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/Welcome"
+            android:exported="true">
+
+        </activity>
+
+        <activity
+            android:name="ww.smartexpress.app.ui.password.forget.ForgetPasswordActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/Welcome"
+            android:exported="true">
+
+        </activity>
+
+        <activity
             android:name="ww.smartexpress.app.ui.qrcode.QrcodeActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"
             android:theme="@style/Welcome"

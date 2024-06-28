@@ -49,6 +49,11 @@ public class Constants {
     public static final String DRIVER_POSITION= "DRIVER_POSITION";
     public static final String SHIPPING_INFO= "SHIPPING_INFO";
 
+    public static final Integer REQUEST_OTP_KIND_PHONE = 1;
+    public static final Integer REQUEST_OTP_KIND_EMAIL = 2;
+
+    public static final String VERIFY_OPTION = "VERIFY_OPTION";
+    public static final String OTP = "OTP";
     private Constants() {
 
     }

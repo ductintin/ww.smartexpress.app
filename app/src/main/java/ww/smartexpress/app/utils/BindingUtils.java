@@ -13,13 +13,15 @@ import ww.smartexpress.app.R;
 public final class BindingUtils {
     @BindingAdapter("android:src")
     public static void setImageUrl(ImageView view, String url) {
-        if(url != null && !TextUtils.isEmpty(url)){
-            Glide.with(view.getContext())
-                    .load(BuildConfig.MEDIA_URL+ "/v1/file/download" + url)
-                    .error(R.drawable.car)
-                    //.placeholder(R.drawable.car)
-                    .into(view);
+        if (url == null){
+            view.setImageResource(R.drawable.smartexpress_splash_logo);
+            return;
         }
+        Glide.with(view.getContext())
+                .load(BuildConfig.MEDIA_URL+ "/v1/file/download" + url)
+                .error(R.drawable.smartexpress_splash_logo)
+                .placeholder(R.drawable.smartexpress_splash_logo)
+                .into(view);
     }
 
     @BindingAdapter("android:src")

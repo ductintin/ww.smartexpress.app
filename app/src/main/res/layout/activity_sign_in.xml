@@ -15,288 +15,325 @@
         <import type="android.view.View"></import>
     </data>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical">
-
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:layout_height="match_parent"
+            android:background="@color/white"
             android:orientation="vertical">
-            <include
-                android:id="@+id/layoutHeader"
-                layout="@layout/layout_header"
-                bind:visible="@{vm.visibleBack}"
-                bind:title="@{vm.tabIndex == 0 ? @string/login_title : @string/register_all_win}">
 
-            </include>
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabLayout"
+            <ImageView
                 android:layout_width="match_parent"
-                style="@style/CustomTabLayoutStyle"
-                app:tabSelectedTextColor="@color/green_light_app"
-                android:background="@color/white"
-                android:layout_height="wrap_content"
-                app:tabTextColor="@color/black"
-                app:tabIndicatorColor="@color/green_light_app"
-                app:tabMode="fixed"
-                app:tabGravity="fill">
+                android:layout_height="@dimen/_180sdp"
+                android:src="@drawable/image_bg_login"
+                android:scaleType="fitXY">
 
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tabSignIn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/login_title" />
+            </ImageView>
 
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tabRegister"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/register_all_win" />
-
-            </com.google.android.material.tabs.TabLayout>
-
-            <LinearLayout
-                android:id="@+id/layoutSignIn"
-                android:visibility="@{vm.tabIndex == 0 ? View.VISIBLE : View.GONE}"
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_marginTop="@dimen/_20sdp"
+                android:scrollbars="none">
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxBackgroundMode="outline"
-                    app:shapeAppearanceOverlay="@style/Rounded"
-                    android:hint="@string/phone_hint"
-                    app:hintEnabled="true"
-                    app:boxStrokeColor="@color/app_color"
-                    app:hintTextColor="@color/app_color"
-                    app:helperTextTextColor="#898A8D"
-                    app:boxStrokeWidthFocused="@dimen/_1sdp"
-                    app:hintAnimationEnabled="false">
-                    <com.google.android.material.textfield.TextInputEditText
+                    android:orientation="vertical">
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="phone"
-                        android:maxLength="10"
-                        android:maxLines="1"
-                        android:text="@={vm.phoneS}"
-                        android:textColorHint="@color/grey_text"
-                        style="@style/information_edit_text"
-                        android:textColor="#545454">
-                    </com.google.android.material.textfield.TextInputEditText>
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_marginHorizontal="@dimen/_12sdp"
+                        android:orientation="vertical">
+                        <!--            <include-->
+                        <!--                android:id="@+id/layoutHeader"-->
+                        <!--                layout="@layout/layout_header"-->
+                        <!--                bind:visible="@{vm.visibleBack}"-->
+                        <!--                bind:title="@{vm.tabIndex == 0 ? @string/login_title : @string/register_all_win}">-->
+
+                        <!--            </include>-->
 
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        app:boxBackgroundMode="outline"
-                        app:shapeAppearanceOverlay="@style/Rounded"
-                        android:hint="@string/password"
-                        app:hintEnabled="true"
-                        app:boxStrokeColor="@color/app_color"
-                        app:hintTextColor="@color/app_color"
-                        app:helperTextTextColor="#898A8D"
-                        app:boxStrokeWidthFocused="@dimen/_1sdp"
-                        app:hintAnimationEnabled="false">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:paddingRight="@dimen/_35sdp"
-                            android:id="@+id/edtPw"
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tabLayout"
+                            android:layout_width="wrap_content"
+                            style="@style/CustomTabLayoutStyle"
+                            app:tabSelectedTextColor="@color/green_light_app"
+                            android:background="@color/white"
+                            android:layout_height="wrap_content"
+                            app:tabTextColor="@color/black"
+                            app:tabIndicatorColor="@color/green_light_app"
+                            app:tabMode="auto"
+                            app:tabGravity="fill">
+
+                            <com.google.android.material.tabs.TabItem
+                                android:id="@+id/tabSignIn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/login_title" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:id="@+id/tabRegister"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/register_all_win" />
+
+                        </com.google.android.material.tabs.TabLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layoutSignIn"
+                            android:visibility="@{vm.tabIndex == 0 ? View.VISIBLE : View.GONE}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textPassword"
-                            android:maxLines="1"
-                            android:textColorHint="@color/grey_text"
-                            style="@style/information_edit_text"
-                            android:text="@={vm.passwordS}"
-                            android:maxLength="16">
-                        </com.google.android.material.textfield.TextInputEditText>
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:orientation="vertical">
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_marginTop="@dimen/_20sdp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                app:boxBackgroundMode="outline"
+                                app:shapeAppearanceOverlay="@style/Rounded"
+                                android:hint="@string/phone_hint"
+                                app:hintEnabled="true"
+                                app:boxStrokeColor="@color/app_color"
+                                app:hintTextColor="@color/app_color"
+                                app:helperTextTextColor="#898A8D"
+                                app:boxStrokeWidthFocused="@dimen/_1sdp"
+                                app:hintAnimationEnabled="false">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="phone"
+                                    android:maxLength="10"
+                                    android:maxLines="1"
+                                    android:text="@={vm.phoneS}"
+                                    android:textColorHint="@color/grey_text"
+                                    style="@style/information_edit_text"
+                                    android:textColor="#545454">
+                                </com.google.android.material.textfield.TextInputEditText>
+                            </com.google.android.material.textfield.TextInputLayout>
 
-                    <ImageView
-                        android:onClick="@{(v)->vm.setIsVisibilityPasswordS()}"
-                        android:layout_gravity="right|center_vertical"
-                        android:layout_marginRight="@dimen/_15sdp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@{vm.isVisibilityS ? @drawable/ic_icon_visibility_off : @drawable/ic_icon_visibility}">
 
-                    </ImageView>
-                </FrameLayout>
-            </LinearLayout>
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_20sdp">
 
-            <LinearLayout
-                android:id="@+id/layoutRegister"
-                android:visibility="@{vm.tabIndex == 1 ? View.VISIBLE : View.GONE}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxBackgroundMode="outline"
-                    app:shapeAppearanceOverlay="@style/Rounded"
-                    android:hint="@string/fullName_hint"
-                    app:hintEnabled="true"
-                    app:boxStrokeColor="@color/app_color"
-                    app:hintTextColor="@color/app_color"
-                    app:helperTextTextColor="#898A8D"
-                    app:boxStrokeWidthFocused="@dimen/_1sdp"
-                    app:hintAnimationEnabled="false">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:text="@={vm.name}"
-                        android:inputType="text"
-                        android:textColorHint="@color/grey_text"
-                        style="@style/information_edit_text"
-                        android:maxLength="50">
-                    </com.google.android.material.textfield.TextInputEditText>
-                </com.google.android.material.textfield.TextInputLayout>
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                    app:boxBackgroundMode="outline"
+                                    app:shapeAppearanceOverlay="@style/Rounded"
+                                    android:hint="@string/password"
+                                    app:hintEnabled="true"
+                                    app:boxStrokeColor="@color/app_color"
+                                    app:hintTextColor="@color/app_color"
+                                    app:helperTextTextColor="#898A8D"
+                                    app:boxStrokeWidthFocused="@dimen/_1sdp"
+                                    app:hintAnimationEnabled="false">
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:paddingRight="@dimen/_35sdp"
+                                        android:id="@+id/edtPw"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:inputType="textPassword"
+                                        android:maxLines="1"
+                                        android:textColorHint="@color/grey_text"
+                                        style="@style/information_edit_text"
+                                        android:text="@={vm.passwordS}"
+                                        android:maxLength="16">
+                                    </com.google.android.material.textfield.TextInputEditText>
+                                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxBackgroundMode="outline"
-                    app:shapeAppearanceOverlay="@style/Rounded"
-                    android:hint="@string/email_hint"
-                    app:hintEnabled="true"
-                    app:boxStrokeColor="@color/app_color"
-                    app:hintTextColor="@color/app_color"
-                    app:helperTextTextColor="#898A8D"
-                    app:boxStrokeWidthFocused="@dimen/_1sdp"
-                    app:hintAnimationEnabled="false">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:text="@={vm.email}"
-                        android:textColorHint="@color/grey_text"
-                        style="@style/information_edit_text">
-                    </com.google.android.material.textfield.TextInputEditText>
-                </com.google.android.material.textfield.TextInputLayout>
+                                <ImageView
+                                    android:onClick="@{(v)->vm.setIsVisibilityPasswordS()}"
+                                    android:layout_gravity="right|center_vertical"
+                                    android:layout_marginRight="@dimen/_15sdp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@{vm.isVisibilityS ? @drawable/ic_icon_visibility_off : @drawable/ic_icon_visibility}">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    app:boxBackgroundMode="outline"
-                    app:shapeAppearanceOverlay="@style/Rounded"
-                    android:hint="@string/phone_hint"
-                    app:hintEnabled="true"
-                    app:boxStrokeColor="@color/app_color"
-                    app:hintTextColor="@color/app_color"
-                    app:helperTextTextColor="#898A8D"
-                    app:boxStrokeWidthFocused="@dimen/_1sdp"
-                    app:hintAnimationEnabled="false">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="phone"
-                        android:maxLength="10"
-                        android:maxLines="1"
-                        android:text="@={vm.phoneR}"
-                        android:textColorHint="@color/grey_text"
-                        style="@style/information_edit_text">
-                    </com.google.android.material.textfield.TextInputEditText>
-                </com.google.android.material.textfield.TextInputLayout>
+                                </ImageView>
+                            </FrameLayout>
+                        </LinearLayout>
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        app:boxBackgroundMode="outline"
-                        app:shapeAppearanceOverlay="@style/Rounded"
-                        android:hint="@string/password"
-                        app:hintEnabled="true"
-                        app:boxStrokeColor="@color/app_color"
-                        app:hintTextColor="@color/app_color"
-                        app:helperTextTextColor="#898A8D"
-                        app:boxStrokeWidthFocused="@dimen/_1sdp"
-                        app:hintAnimationEnabled="false">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/edtPWR"
-                            android:paddingRight="@dimen/_35sdp"
+                        <LinearLayout
+                            android:id="@+id/layoutRegister"
+                            android:visibility="@{vm.tabIndex == 1 ? View.VISIBLE : View.GONE}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textPassword"
-                            android:maxLines="1"
-                            android:textColorHint="@color/grey_text"
-                            style="@style/information_edit_text"
-                            android:text="@={vm.passwordR}"
-                            android:maxLength="16">
-                        </com.google.android.material.textfield.TextInputEditText>
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:orientation="vertical">
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                app:boxBackgroundMode="outline"
+                                app:shapeAppearanceOverlay="@style/Rounded"
+                                android:hint="@string/fullName_hint"
+                                app:hintEnabled="true"
+                                app:boxStrokeColor="@color/app_color"
+                                app:hintTextColor="@color/app_color"
+                                app:helperTextTextColor="#898A8D"
+                                app:boxStrokeWidthFocused="@dimen/_1sdp"
+                                app:hintAnimationEnabled="false">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:maxLines="1"
+                                    android:ellipsize="end"
+                                    android:text="@={vm.name}"
+                                    android:inputType="text"
+                                    android:textColorHint="@color/grey_text"
+                                    style="@style/information_edit_text"
+                                    android:maxLength="50">
+                                </com.google.android.material.textfield.TextInputEditText>
+                            </com.google.android.material.textfield.TextInputLayout>
 
-                    <ImageView
-                        android:onClick="@{(v)->vm.setIsVisibilityPasswordR()}"
-                        android:layout_gravity="right|center_vertical"
-                        android:layout_marginRight="@dimen/_15sdp"
-                        android:layout_width="wrap_content"
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                app:boxBackgroundMode="outline"
+                                app:shapeAppearanceOverlay="@style/Rounded"
+                                android:hint="@string/email_hint"
+                                app:hintEnabled="true"
+                                app:boxStrokeColor="@color/app_color"
+                                app:hintTextColor="@color/app_color"
+                                app:helperTextTextColor="#898A8D"
+                                app:boxStrokeWidthFocused="@dimen/_1sdp"
+                                app:hintAnimationEnabled="false">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="textEmailAddress"
+                                    android:maxLines="1"
+                                    android:ellipsize="end"
+                                    android:text="@={vm.email}"
+                                    android:textColorHint="@color/grey_text"
+                                    style="@style/information_edit_text">
+                                </com.google.android.material.textfield.TextInputEditText>
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                app:boxBackgroundMode="outline"
+                                app:shapeAppearanceOverlay="@style/Rounded"
+                                android:hint="@string/phone_hint"
+                                app:hintEnabled="true"
+                                app:boxStrokeColor="@color/app_color"
+                                app:hintTextColor="@color/app_color"
+                                app:helperTextTextColor="#898A8D"
+                                app:boxStrokeWidthFocused="@dimen/_1sdp"
+                                app:hintAnimationEnabled="false">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="phone"
+                                    android:maxLength="10"
+                                    android:maxLines="1"
+                                    android:text="@={vm.phoneR}"
+                                    android:textColorHint="@color/grey_text"
+                                    style="@style/information_edit_text">
+                                </com.google.android.material.textfield.TextInputEditText>
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_15sdp">
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                    app:boxBackgroundMode="outline"
+                                    app:shapeAppearanceOverlay="@style/Rounded"
+                                    android:hint="@string/password"
+                                    app:hintEnabled="true"
+                                    app:boxStrokeColor="@color/app_color"
+                                    app:hintTextColor="@color/app_color"
+                                    app:helperTextTextColor="#898A8D"
+                                    app:boxStrokeWidthFocused="@dimen/_1sdp"
+                                    app:hintAnimationEnabled="false">
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/edtPWR"
+                                        android:paddingRight="@dimen/_35sdp"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:inputType="textPassword"
+                                        android:maxLines="1"
+                                        android:textColorHint="@color/grey_text"
+                                        style="@style/information_edit_text"
+                                        android:text="@={vm.passwordR}"
+                                        android:maxLength="16">
+                                    </com.google.android.material.textfield.TextInputEditText>
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <ImageView
+                                    android:onClick="@{(v)->vm.setIsVisibilityPasswordR()}"
+                                    android:layout_gravity="right|center_vertical"
+                                    android:layout_marginRight="@dimen/_15sdp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@{vm.isVisibilityR ? @drawable/ic_icon_visibility_off : @drawable/ic_icon_visibility}">
+
+                                </ImageView>
+                            </FrameLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnEPUpdate"
+                        style="@style/AppButtonStyle"
+                        android:layout_marginTop="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_12sdp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@{vm.isVisibilityR ? @drawable/ic_icon_visibility_off : @drawable/ic_icon_visibility}">
+                        android:text="@{vm.tabIndex == 0 ? @string/login_title : @string/register_all_win}"
+                        android:onClick="@{(v) -> a.doNext()}">
 
-                    </ImageView>
-                </FrameLayout>
-            </LinearLayout>
+                    </Button>
+
+                    <TextView
+                        android:visibility="@{vm.tabIndex == 0 ? View.VISIBLE : View.GONE}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Bạn quên mật khẩu ư?"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:layout_marginHorizontal="@dimen/_50sdp"
+                        style="@style/app_text_b"
+                        android:gravity="center"
+                        android:onClick="@{() -> vm.gotoForgetPassword()}"/>
+                </LinearLayout>
+            </ScrollView>
+
+            <TextView
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hoặc đăng nhập với"
+                style="@style/app_text_b"
+                android:gravity="center" />
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/imvLoginGG"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:src="@drawable/ic_icon_google"
+                android:layout_gravity="center">
+            </ImageView>
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btnEPUpdate"
-            style="@style/AppButtonStyle"
-            android:layout_marginVertical="@dimen/_40sdp"
-            android:layout_marginHorizontal="@dimen/_12sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{vm.tabIndex == 0 ? @string/login_title : @string/register_all_win}"
-            android:onClick="@{(v) -> a.doNext()}">
-
-        </Button>
-
-        <TextView
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Hoặc đăng nhập với"
-            style="@style/app_text_b"
-            android:gravity="center"
-            />
-
-        <ImageView
-            android:visibility="gone"
-            android:id="@+id/imvLoginGG"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:src="@drawable/ic_icon_google"
-            android:layout_gravity="center">
-        </ImageView>
-    </LinearLayout>
+    </ScrollView>
 </layout>

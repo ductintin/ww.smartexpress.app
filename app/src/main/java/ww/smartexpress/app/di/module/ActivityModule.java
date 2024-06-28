@@ -20,6 +20,10 @@ import ww.smartexpress.app.ui.map.MapViewModel;
 import ww.smartexpress.app.ui.order.OrderViewModel;
 import ww.smartexpress.app.ui.order.details.OrderDetailsViewModel;
 import ww.smartexpress.app.ui.order.information.OrderInformationViewModel;
+import ww.smartexpress.app.ui.password.forget.ForgetPasswordActivity;
+import ww.smartexpress.app.ui.password.forget.ForgetPasswordViewModel;
+import ww.smartexpress.app.ui.password.forget.ResetForgetPasswordViewModel;
+import ww.smartexpress.app.ui.password.otp.VerifyForgetPasswordOTPViewModel;
 import ww.smartexpress.app.ui.password.reset.ResetPasswordViewModel;
 import ww.smartexpress.app.ui.payout.PayoutViewModel;
 import ww.smartexpress.app.ui.purchase.PurchaseViewModel;
@@ -422,5 +426,29 @@ public class ActivityModule {
         Supplier<TransactionViewModel> supplier = () -> new TransactionViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<TransactionViewModel> factory = new ViewModelProviderFactory<>(TransactionViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(TransactionViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    ForgetPasswordViewModel provideForgetPasswordViewModel(Repository repository, Context application) {
+        Supplier<ForgetPasswordViewModel> supplier = () -> new ForgetPasswordViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<ForgetPasswordViewModel> factory = new ViewModelProviderFactory<>(ForgetPasswordViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(ForgetPasswordViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    VerifyForgetPasswordOTPViewModel provideVerifyForgetPasswordOTPViewModel(Repository repository, Context application) {
+        Supplier<VerifyForgetPasswordOTPViewModel> supplier = () -> new VerifyForgetPasswordOTPViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<VerifyForgetPasswordOTPViewModel> factory = new ViewModelProviderFactory<>(VerifyForgetPasswordOTPViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(VerifyForgetPasswordOTPViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    ResetForgetPasswordViewModel provideResetForgetPasswordViewModel(Repository repository, Context application) {
+        Supplier<ResetForgetPasswordViewModel> supplier = () -> new ResetForgetPasswordViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<ResetForgetPasswordViewModel> factory = new ViewModelProviderFactory<>(ResetForgetPasswordViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(ResetForgetPasswordViewModel.class);
     }
 }

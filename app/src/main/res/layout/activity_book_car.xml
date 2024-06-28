@@ -347,8 +347,7 @@
                     android:enabled="true"
                     android:text="@string/cancel"
                     android:textColor="@color/white"
-                    android:layout_marginLeft="@dimen/_15sdp"
-                    />
+                    android:layout_marginLeft="@dimen/_15sdp" />
 
 
             </LinearLayout>
@@ -418,12 +417,12 @@
                 android:id="@+id/rcWinBike"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginRight="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_110sdp"
+                android:clipToPadding="false"
                 tools:itemCount="3"
-                tools:listitem="@layout/item_win_bike" />
+                tools:listitem="@layout/item_service_shipping" />
 
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

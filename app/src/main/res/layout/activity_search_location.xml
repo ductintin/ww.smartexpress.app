@@ -131,9 +131,9 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingRight="@dimen/_10sdp"
+                            android:layout_width="@dimen/_21sdp"
+                            android:layout_height="@dimen/_21sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
                             android:src="@drawable/ic_icon_my_location">
 
                         </ImageView>
@@ -147,7 +147,7 @@
                                 style="@style/new_password_subtitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@string/search_destination_subtitle"
+                                android:text="@string/search_origin_subtitle"
                                 android:textSize="@dimen/_8sdp">
 
                             </TextView>
@@ -216,7 +216,7 @@
                         android:paddingVertical="@dimen/_5sdp">
 
                         <ImageView
-                            android:layout_width="17dp"
+                            android:layout_width="@dimen/_21sdp"
                             android:layout_height="@dimen/_21sdp"
                             android:layout_marginRight="@dimen/_5sdp"
                             android:src="@drawable/ic_icon_search_location"></ImageView>
@@ -225,9 +225,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
+
+                            <TextView
+                                style="@style/new_password_subtitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/search_destination_subtitle"
+                                android:textSize="@dimen/_8sdp">
+
+                            </TextView>
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:orientation="horizontal">
 
                                 <EditText
@@ -238,12 +247,10 @@
                                     android:layout_weight="1"
                                     android:background="@color/white"
                                     android:ellipsize="end"
-                                    android:hint="@string/search_destination_hint"
                                     android:inputType="text"
                                     android:maxLines="1"
                                     android:text="@={vm.searchLocation}"
-                                    android:textColorHint="#898A8D"
-                                    android:textSize="@dimen/_11sdp">
+                                    android:textColorHint="#898A8D">
 
                                 </EditText>
 

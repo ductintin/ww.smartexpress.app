@@ -12,6 +12,9 @@ import ww.smartexpress.app.ui.index.IndexActivity;
 import ww.smartexpress.app.ui.map.MapActivity;
 import ww.smartexpress.app.ui.order.details.OrderDetailsActivity;
 import ww.smartexpress.app.ui.order.information.OrderInformationActivity;
+import ww.smartexpress.app.ui.password.forget.ForgetPasswordActivity;
+import ww.smartexpress.app.ui.password.forget.ResetForgetPasswordActivity;
+import ww.smartexpress.app.ui.password.otp.VerifyForgetPasswordOTPActivity;
 import ww.smartexpress.app.ui.password.reset.ResetPasswordActivity;
 import ww.smartexpress.app.ui.payout.PayoutActivity;
 import ww.smartexpress.app.ui.purchase.PurchaseActivity;
@@ -120,5 +123,8 @@ public interface ActivityComponent {
 
     void inject(BankActivity bankActivity);
     void inject(TransactionActivity transactionActivity);
+    void inject(ForgetPasswordActivity forgetPasswordActivity);
+    void inject(ResetForgetPasswordActivity resetForgetPasswordActivity);
+    void inject(VerifyForgetPasswordOTPActivity verifyForgetPasswordOTPActivity);
 }
 
