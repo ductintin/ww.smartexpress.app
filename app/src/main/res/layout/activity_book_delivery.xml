@@ -47,7 +47,8 @@
                 <FrameLayout
                     android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_30sdp">
 
                     <ImageView
                         android:id="@+id/btnBackBookCar"
@@ -209,7 +210,8 @@
                 android:layout_gravity="bottom"
                 android:elevation="@dimen/_35sdp"
                 android:background="@drawable/bg_order_detail"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_margin="@dimen/_12sdp">
                 <LinearLayout
                     android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
                     android:id="@+id/llDeliveryInfo"
@@ -400,185 +402,244 @@
                         android:layout_marginBottom="@dimen/_15sdp"/>
                 </LinearLayout>
 
-
-                <androidx.cardview.widget.CardView
-                    android:visibility="@{(vm.isFound || vm.isShipping) ? View.VISIBLE : View.GONE}"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_12sdp"
-                    app:cardCornerRadius="@dimen/_5sdp"
-                    app:cardElevation="0dp">
+                    android:orientation="vertical">
                     <LinearLayout
+                        android:visibility="@{(vm.isFound || vm.isShipping) ? View.VISIBLE : View.GONE}"
+                        android:id="@+id/llFoundDriver"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <LinearLayout
-                            android:visibility="@{(vm.isFound || vm.isShipping) ? View.VISIBLE : View.GONE}"
-                            android:id="@+id/llFoundDriver"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginHorizontal="@dimen/_15sdp"
-                            android:layout_marginVertical="@dimen/_10sdp"
-                            android:orientation="vertical"
-                            android:onClick="@{(v)->vm.showDeliveryDetail()}"
-                            >
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:orientation="vertical"
+                        android:onClick="@{(v)->vm.showDeliveryDetail()}">
 
+                        <TextView
+                            android:layout_width="@dimen/_40sdp"
+                            android:layout_height="@dimen/_5sdp"
+                            android:background="@drawable/bg_node"
+                            android:layout_gravity="center">
+
+                        </TextView>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center">
                             <TextView
-                                android:layout_width="@dimen/_40sdp"
-                                android:layout_height="@dimen/_5sdp"
-                                android:background="@drawable/bg_node"
-                                android:layout_gravity="center">
+                                android:layout_marginTop="@dimen/_10sdp"
+                                style="@style/item_win_bike"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text='@{vm.isFound ? @string/found_delivery_driver_title : "Tài xế đang giao hàng đến điểm nhận"}'>
 
                             </TextView>
 
-                            <LinearLayout
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <androidx.cardview.widget.CardView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_gravity="center">
-                                <TextView
-                                    android:layout_marginTop="@dimen/_10sdp"
-                                    style="@style/item_win_bike"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text='@{vm.isFound ? @string/found_delivery_driver_title : "Tài xế đang giao hàng đến điểm nhận"}'>
-
-                                </TextView>
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:paddingHorizontal="@dimen/_10sdp"
-                                android:gravity="center">
-                                <TextView
-                                    style="@style/location_text"
-                                    android:textAlignment="center"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@{vm.vehicle}"
-                                    android:layout_marginRight="@dimen/_5sdp"
-                                    >
-
-                                </TextView>
-                                <TextView
-                                    style="@style/location_text"
-                                    android:textAlignment="center"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@{vm.licensePlates}"
-                                    android:background="@drawable/bg_tv_vehicle_number"
-                                    android:layout_marginLeft="@dimen/_5sdp"
-                                    >
-
-                                </TextView>
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:gravity="center"
-                                android:layout_marginVertical="@dimen/_10sdp">
-                                <de.hdodenhof.circleimageview.CircleImageView
+                                app:cardCornerRadius="@dimen/_5sdp"
+                                app:cardElevation="0dp">
+                                <ImageView
                                     android:layout_width="@dimen/_50sdp"
                                     android:layout_height="@dimen/_50sdp"
-                                    android:src="@{vm.driverAvatar, default = @drawable/user_avatar}"
-                                    app:civ_border_width="@dimen/_1sdp"
-                                    app:civ_border_color="@color/app_color"
-                                    android:layout_marginRight="@dimen/_20sdp">
+                                    android:src="@{vm.driverAvatar, default = @drawable/user_avatar}">
 
-                                </de.hdodenhof.circleimageview.CircleImageView>
+                                </ImageView>
+                            </androidx.cardview.widget.CardView>
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:layout_weight="1">
+                                <TextView
+                                    style="@style/item_win_bike"
+                                    android:maxLines="2"
+                                    android:ellipsize="end"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{vm.driverName}">
+
+                                </TextView>
                                 <LinearLayout
                                     android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical"
-                                    >
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="@dimen/_5sdp">
                                     <TextView
-                                        style="@style/item_win_bike"
+                                        style="@style/location_text"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="@{vm.driverName}">
+                                        android:text="@{String.valueOf(vm.rate)}">
 
                                     </TextView>
-                                    <LinearLayout
+                                    <RatingBar
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:id="@+id/rating"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:orientation="horizontal"
-                                        android:layout_marginTop="@dimen/_5sdp">
-                                        <TextView
-                                            style="@style/location_text"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="@{String.valueOf(vm.rate)}">
-
-                                        </TextView>
-                                        <RatingBar
-                                            android:layout_marginLeft="@dimen/_5sdp"
-                                            android:id="@+id/rating"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            style="?android:attr/ratingBarStyleSmall"
-                                            android:numStars="5"
-                                            android:stepSize="0.1"
-                                            android:isIndicator="true"
-                                            android:progressBackgroundTint="@color/grey_light"
-                                            android:progressTint="@color/yellow"
-                                            android:secondaryProgressTint="@android:color/transparent"
-                                            android:rating="@{vm.rate}"/>
-                                    </LinearLayout>
+                                        style="?android:attr/ratingBarStyleSmall"
+                                        android:numStars="5"
+                                        android:stepSize="0.1"
+                                        android:isIndicator="true"
+                                        android:progressBackgroundTint="@color/grey_light"
+                                        android:progressTint="@color/yellow"
+                                        android:secondaryProgressTint="@android:color/transparent"
+                                        android:rating="@{vm.rate}"/>
                                 </LinearLayout>
                             </LinearLayout>
 
                         </LinearLayout>
 
                         <LinearLayout
-                            android:visibility="@{vm.isFound ? View.VISIBLE : View.GONE}"
-                            android:id="@+id/llFoundDriverAction"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:background="@drawable/bg_bottom_btn_send"
-                            android:paddingTop="@dimen/_20sdp"
-                            android:paddingHorizontal="@dimen/_15sdp"
-                            android:layout_marginBottom="@dimen/_15sdp">
+                            android:layout_gravity="center"
+                            android:layout_marginVertical="@dimen/_10sdp">
 
                             <LinearLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/bg_btn_chat">
+                                android:layout_weight="1">
 
                                 <ImageView
-                                    android:layout_width="@dimen/_20sdp"
-                                    android:layout_height="@dimen/_20sdp"
-                                    android:src="@drawable/ic_icon_messenger"
-                                    android:onClick="@{(v)->vm.chatDriver()}">
+                                    android:layout_width="@dimen/_50sdp"
+                                    android:layout_height="@dimen/_50sdp"
+                                    android:src="@{vm.bookingResponse.service.image, default=@drawable/car}"/>
 
-                                </ImageView>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:orientation="vertical"
+                                    android:layout_marginLeft="@dimen/_10sdp">
 
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            style="@style/trip_information_text_medium"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:text='@{vm.bookingResponse.service.name}'
+                                            android:textColor="@color/app_color"
+                                            android:textSize="@dimen/_8sdp"/>
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+                                        <TextView
+                                            style="@style/trip_information_text_medium"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:textSize="@dimen/_8sdp"
+                                            android:layout_weight="1"
+                                            android:text='@{NumberUtils.getSize(vm.bookingResponse.service.size) +"  "+vm.bookingResponse.service.weight+"Kg"}' />
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
                             </LinearLayout>
-
-                            <Button
-                                android:id="@+id/btnCancelBookPickUp"
-                                android:layout_gravity="center"
-                                style="@style/BookCarButton"
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/_35sdp"
-                                android:background="@drawable/app_button_background"
-                                android:enabled="true"
-                                android:text="@string/cancel"
-                                android:textColor="@color/white"
-                                android:layout_marginLeft="@dimen/_15sdp"
-                                />
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingHorizontal="@dimen/_10sdp"
+                                android:gravity="center"
+                                android:layout_weight="1">
+                                <TextView
+                                    style="@style/location_text"
+                                    android:textSize="@dimen/_10sdp"
+                                    android:textAlignment="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{vm.vehicle}"
+                                    android:maxLines="1"
+                                    android:ellipsize="end">
+
+                                </TextView>
+                                <TextView
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    style="@style/location_text"
+                                    android:textSize="@dimen/_10sdp"
+                                    android:textAlignment="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{vm.licensePlates}"
+                                    android:background="@drawable/bg_tv_vehicle_number"
+                                    android:maxLines="1"
+                                    android:ellipsize="end">
+
+                                </TextView>
+                            </LinearLayout>
 
                         </LinearLayout>
 
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:visibility="@{vm.isFound ? View.VISIBLE : View.GONE}"
+                        android:id="@+id/llFoundDriverAction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/bg_bottom_btn_send"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:paddingHorizontal="@dimen/_15sdp"
+                        android:layout_marginBottom="@dimen/_15sdp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_btn_chat"
+                            android:layout_gravity="center"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:src="@drawable/ic_icon_messenger"
+                                android:onClick="@{(v)->vm.chatDriver()}">
+
+                            </ImageView>
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btnCancelBookPickUp"
+                            style="@style/BookCarButton"
+                            android:background="@drawable/bg_btn_cancel_find_driver"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:enabled="true"
+                            android:text="Hủy chuyến"
+                            android:textColor="@color/app_color"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -592,8 +653,7 @@
                     android:id="@+id/mapShip"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    />
+                    android:layout_height="match_parent" />
             </FrameLayout>
 
             <LinearLayout
