@@ -6,18 +6,14 @@
     <item>
 
         <shape  android:shape="rectangle">
-            <solid android:color="#CCEFF8EA" />
-            <corners android:topLeftRadius="@dimen/_15sdp"
-                android:topRightRadius="@dimen/_15sdp"/>
+            <solid android:color="#D1EFF8" />
         </shape>
 
     </item>
     <!-- Bottom 2dp Shadow -->
     <item  android:top="3dp">
         <shape  android:shape="rectangle">
-            <solid android:color="@color/white" />
-            <corners android:topLeftRadius="@dimen/_15sdp"
-                android:topRightRadius="@dimen/_15sdp"/>
+            <solid android:color="@color/white"/>
         </shape>
     </item>
 

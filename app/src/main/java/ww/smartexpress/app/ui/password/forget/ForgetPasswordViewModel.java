@@ -72,7 +72,7 @@ public class ForgetPasswordViewModel extends BaseViewModel {
                     }
                 }, err -> {
                     hideLoading();
-                    showErrorMessage(application.getString(R.string.network_error));
+                    showErrorMessage("Không tìm thấy tài khoản. Vui lòng thử lại");
                 }));
 
 

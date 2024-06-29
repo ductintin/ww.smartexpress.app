@@ -400,170 +400,185 @@
                         android:layout_marginBottom="@dimen/_15sdp"/>
                 </LinearLayout>
 
-                <LinearLayout
+
+                <androidx.cardview.widget.CardView
                     android:visibility="@{(vm.isFound || vm.isShipping) ? View.VISIBLE : View.GONE}"
-                    android:id="@+id/llFoundDriver"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:layout_marginVertical="@dimen/_10sdp"
-                    android:orientation="vertical"
-                    android:onClick="@{(v)->vm.showDeliveryDetail()}"
-                    >
-
-                    <TextView
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_5sdp"
-                        android:background="@drawable/bg_node"
-                        android:layout_gravity="center">
-
-                    </TextView>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center">
-                        <TextView
-                            android:layout_marginTop="@dimen/_10sdp"
-                            style="@style/item_win_bike"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text='@{vm.isFound ? @string/found_delivery_driver_title : "Tài xế đang giao hàng đến điểm nhận"}'>
-
-                        </TextView>
-                    </LinearLayout>
-
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_12sdp"
+                    app:cardCornerRadius="@dimen/_5sdp"
+                    app:cardElevation="0dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:paddingHorizontal="@dimen/_10sdp"
-                        android:gravity="center">
-                        <TextView
-                            style="@style/location_text"
-                            android:textAlignment="center"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{vm.vehicle}"
-                            android:layout_marginRight="@dimen/_5sdp"
-                            >
-
-                        </TextView>
-                        <TextView
-                            style="@style/location_text"
-                            android:textAlignment="center"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{vm.licensePlates}"
-                            android:background="@drawable/bg_tv_vehicle_number"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            >
-
-                        </TextView>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        android:layout_marginVertical="@dimen/_10sdp">
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_50sdp"
-                            android:src="@{vm.driverAvatar, default = @drawable/user_avatar}"
-                            app:civ_border_width="@dimen/_1sdp"
-                            app:civ_border_color="@color/app_color"
-                            android:layout_marginRight="@dimen/_20sdp">
-
-                        </de.hdodenhof.circleimageview.CircleImageView>
-
+                        android:orientation="vertical">
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:visibility="@{(vm.isFound || vm.isShipping) ? View.VISIBLE : View.GONE}"
+                            android:id="@+id/llFoundDriver"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_marginHorizontal="@dimen/_15sdp"
+                            android:layout_marginVertical="@dimen/_10sdp"
                             android:orientation="vertical"
+                            android:onClick="@{(v)->vm.showDeliveryDetail()}"
                             >
+
                             <TextView
-                                style="@style/item_win_bike"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@{vm.driverName}">
+                                android:layout_width="@dimen/_40sdp"
+                                android:layout_height="@dimen/_5sdp"
+                                android:background="@drawable/bg_node"
+                                android:layout_gravity="center">
 
                             </TextView>
+
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:layout_marginTop="@dimen/_5sdp">
+                                android:layout_gravity="center">
                                 <TextView
-                                    style="@style/location_text"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    style="@style/item_win_bike"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@{String.valueOf(vm.rate)}">
+                                    android:text='@{vm.isFound ? @string/found_delivery_driver_title : "Tài xế đang giao hàng đến điểm nhận"}'>
 
                                 </TextView>
-                                <RatingBar
-                                    android:layout_marginLeft="@dimen/_5sdp"
-                                    android:id="@+id/rating"
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:paddingHorizontal="@dimen/_10sdp"
+                                android:gravity="center">
+                                <TextView
+                                    style="@style/location_text"
+                                    android:textAlignment="center"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    style="?android:attr/ratingBarStyleSmall"
-                                    android:numStars="5"
-                                    android:stepSize="0.1"
-                                    android:isIndicator="true"
-                                    android:progressBackgroundTint="@color/grey_light"
-                                    android:progressTint="@color/yellow"
-                                    android:secondaryProgressTint="@android:color/transparent"
-                                    android:rating="@{vm.rate}"/>
+                                    android:text="@{vm.vehicle}"
+                                    android:layout_marginRight="@dimen/_5sdp"
+                                    >
+
+                                </TextView>
+                                <TextView
+                                    style="@style/location_text"
+                                    android:textAlignment="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{vm.licensePlates}"
+                                    android:background="@drawable/bg_tv_vehicle_number"
+                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    >
+
+                                </TextView>
                             </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center"
+                                android:layout_marginVertical="@dimen/_10sdp">
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:layout_width="@dimen/_50sdp"
+                                    android:layout_height="@dimen/_50sdp"
+                                    android:src="@{vm.driverAvatar, default = @drawable/user_avatar}"
+                                    app:civ_border_width="@dimen/_1sdp"
+                                    app:civ_border_color="@color/app_color"
+                                    android:layout_marginRight="@dimen/_20sdp">
+
+                                </de.hdodenhof.circleimageview.CircleImageView>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    >
+                                    <TextView
+                                        style="@style/item_win_bike"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@{vm.driverName}">
+
+                                    </TextView>
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:layout_marginTop="@dimen/_5sdp">
+                                        <TextView
+                                            style="@style/location_text"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="@{String.valueOf(vm.rate)}">
+
+                                        </TextView>
+                                        <RatingBar
+                                            android:layout_marginLeft="@dimen/_5sdp"
+                                            android:id="@+id/rating"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            style="?android:attr/ratingBarStyleSmall"
+                                            android:numStars="5"
+                                            android:stepSize="0.1"
+                                            android:isIndicator="true"
+                                            android:progressBackgroundTint="@color/grey_light"
+                                            android:progressTint="@color/yellow"
+                                            android:secondaryProgressTint="@android:color/transparent"
+                                            android:rating="@{vm.rate}"/>
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+
                         </LinearLayout>
+
+                        <LinearLayout
+                            android:visibility="@{vm.isFound ? View.VISIBLE : View.GONE}"
+                            android:id="@+id/llFoundDriverAction"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="@drawable/bg_bottom_btn_send"
+                            android:paddingTop="@dimen/_20sdp"
+                            android:paddingHorizontal="@dimen/_15sdp"
+                            android:layout_marginBottom="@dimen/_15sdp">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_btn_chat">
+
+                                <ImageView
+                                    android:layout_width="@dimen/_20sdp"
+                                    android:layout_height="@dimen/_20sdp"
+                                    android:src="@drawable/ic_icon_messenger"
+                                    android:onClick="@{(v)->vm.chatDriver()}">
+
+                                </ImageView>
+
+                            </LinearLayout>
+
+                            <Button
+                                android:id="@+id/btnCancelBookPickUp"
+                                android:layout_gravity="center"
+                                style="@style/BookCarButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_35sdp"
+                                android:background="@drawable/app_button_background"
+                                android:enabled="true"
+                                android:text="@string/cancel"
+                                android:textColor="@color/white"
+                                android:layout_marginLeft="@dimen/_15sdp"
+                                />
+
+                        </LinearLayout>
+
                     </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:visibility="@{vm.isFound ? View.VISIBLE : View.GONE}"
-                    android:id="@+id/llFoundDriverAction"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/bg_bottom_btn_send"
-                    android:paddingTop="@dimen/_20sdp"
-                    android:paddingHorizontal="@dimen/_15sdp"
-                    android:layout_marginBottom="@dimen/_15sdp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_btn_chat">
-
-                        <ImageView
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:src="@drawable/ic_icon_messenger"
-                            android:onClick="@{(v)->vm.chatDriver()}">
-
-                        </ImageView>
-
-                    </LinearLayout>
-
-                    <Button
-                        android:id="@+id/btnCancelBookPickUp"
-                        android:layout_gravity="center"
-                        style="@style/BookCarButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_35sdp"
-                        android:background="@drawable/app_button_background"
-                        android:enabled="true"
-                        android:text="@string/cancel"
-                        android:textColor="@color/white"
-                        android:layout_marginLeft="@dimen/_15sdp"
-                        />
-
-                </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
             </LinearLayout>
 
@@ -608,12 +623,12 @@
                     android:id="@+id/rcWinDelivery"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_12sdp"
+                    android:clipToPadding="false"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
                     android:layout_marginBottom="@dimen/_130sdp"
                     tools:itemCount="3"
-                    tools:listitem="@layout/item_win_bike" />
+                    tools:listitem="@layout/item_service_shipping" />
 
             </LinearLayout>
 

@@ -75,9 +75,9 @@ public class RateDriverActivity extends BaseActivity<ActivityRatingDriverBinding
 
     public void loadRateOption(){
         List<RateOption> rateOptionList = new ArrayList<>();
-        rateOptionList.add(new RateOption("1", "An toàn", false));
-        rateOptionList.add(new RateOption("1", "Nhanh", false));
-        rateOptionList.add(new RateOption("1", "Phương tiện sạch sẽ", false));
+        rateOptionList.add(new RateOption("1", "Nhanh chóng", false));
+        rateOptionList.add(new RateOption("1", "Cẩn thận", false));
+        rateOptionList.add(new RateOption("1", "Thuận tiện", false));
 
         viewBinding.setLifecycleOwner(this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext()

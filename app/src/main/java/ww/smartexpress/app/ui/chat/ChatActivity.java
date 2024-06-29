@@ -2,6 +2,7 @@ package ww.smartexpress.app.ui.chat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -50,12 +51,18 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
         messageAdapter.currentUserId = viewModel.getUserId();
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
+            Log.d("TAG", "onCreate: 1");
             viewModel.roomId.set(bundle.getLong(Constants.ROOM_ID));
             viewModel.bookingId.set(bundle.getLong("BOOKING_ID"));
             viewModel.codeBooking.set(bundle.getString("BOOKING_CODE"));
             getMessage();
+
         }else{
-            viewModel.getRoomId();
+            Log.d("TAG", "onCreate: 2");
+            Intent intent = getIntent();
+            viewModel.roomId.set(intent.getLongExtra(Constants.ROOM_ID, 0L));
+            viewModel.bookingId.set(intent.getLongExtra("BOOKING_ID",0L));
+            viewModel.codeBooking.set(bundle.getString("BOOKING_CODE"));
             getMessage();
         }
 
@@ -136,9 +143,11 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
             return;
         }
 
+        Log.d("TAG", "onNewIntent: ");
         if(intent.getStringExtra("BOOKING_CODE").equals(viewModel.codeBooking.get())){
             ChatMessage chatDetail = viewModel.getApplication().getChatDetail();
             if(chatDetail != null){
+                Log.d("TAG", "onNewIntent: 1" );
                 ChatDetail messageChat1 = new ChatDetail();
                 messageChat1.setMsg(chatDetail.getMessage());
                 messageChat1.setSender(viewModel.driverId.get());
@@ -147,6 +156,7 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
                 viewModel.getApplication().setChatDetail(null);
             }
         }else{
+            Log.d("TAG", "onNewIntent: 2" );
             //truong hop khac booking
             viewModel.roomId.set(intent.getLongExtra(Constants.ROOM_ID, 0L));
             viewModel.bookingId.set(intent.getLongExtra("BOOKING_ID", 0L));

@@ -156,7 +156,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:background="@drawable/bg_bottom_btn_send"
             android:elevation="@dimen/_5sdp">
 
             <Button

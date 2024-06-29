@@ -280,37 +280,39 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         Message message = socketEventModel.getMessage();
         chatDetail = message.getDataObject(ChatMessage.class);
 
-        Log.d("TAG", "navigateToChat: " + chatDetail.getBookingId());
+        if(chatDetail != null){
+            Log.d("TAG", "navigateToChat: " + chatDetail.getBookingId());
 
-        final Bitmap[] bitmap = {null};
+            final Bitmap[] bitmap = {null};
 
-        Glide.with(getApplicationContext())
-                .asBitmap()
-                .load(BuildConfig.MEDIA_URL+ "/v1/file/download" + "/6783713748123648/AVATAR/AVATAR_XkdibfQk0l.jpg")
-                .into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+            Glide.with(getApplicationContext())
+                    .asBitmap()
+                    .load(BuildConfig.MEDIA_URL+ "/v1/file/download" + "/6783713748123648/AVATAR/AVATAR_XkdibfQk0l.jpg")
+                    .into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
 
-                        bitmap[0] = resource;
-                        createMessageNotification(chatDetail, bitmap[0]);
-                        // TODO Do some work: pass this bitmap
-                    }
+                            bitmap[0] = resource;
+                            createMessageNotification(chatDetail, bitmap[0]);
+                            // TODO Do some work: pass this bitmap
+                        }
 
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                    }
-                });
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                        }
+                    });
 
-        //nếu không ở chat thì hiện badge
-        if(currentActivity instanceof BookDeliveryActivity){
+            //nếu không ở chat thì hiện badge
+            if(currentActivity instanceof BookDeliveryActivity){
 
-        }
-        if(currentActivity instanceof ChatActivity){
-            Intent intent = new Intent(currentActivity, ChatActivity.class);
-            if(chatDetail != null){
-                intent.putExtra("BOOKING_CODE", chatDetail.getCodeBooking());
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                currentActivity.startActivity(intent);
+            }
+            if(currentActivity instanceof ChatActivity){
+                Intent intent = new Intent(currentActivity, ChatActivity.class);
+                if(chatDetail != null){
+                    intent.putExtra("BOOKING_CODE", chatDetail.getCodeBooking());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    currentActivity.startActivity(intent);
+                }
             }
         }
     }
@@ -462,6 +464,7 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, id)
                 .setSmallIcon(R.drawable.smartexpress_splash_logo)
                 .setCustomContentView(notificationLayout)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVibrate(new long[]{100,1000,200,340})
                 .setAutoCancel(false)
@@ -534,16 +537,13 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         String title = "";
         String subtitle = "";
 
-        if (!TextUtils.isEmpty(message.getAvatar())) {
-
-        }
 
         Intent notificationIntent = new Intent(getCurrentActivity(), ChatActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
         notificationIntent.putExtra("BOOKING_CODE", message.getCodeBooking());
-        notificationIntent.putExtra("BOOKING_ID", message.getCodeBooking());
-        notificationIntent.putExtra("ROOM_ID", message.getRoomId());
+        notificationIntent.putExtra("BOOKING_ID", Long.valueOf(message.getBookingId()));
+        notificationIntent.putExtra("ROOM_ID", Long.valueOf(message.getRoomId()));
 
 
         RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.item_shipping_notification);

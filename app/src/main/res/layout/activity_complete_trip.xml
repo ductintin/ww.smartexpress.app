@@ -30,7 +30,7 @@
                 android:layout_height="@dimen/_150sdp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/_60sdp"
-                android:src="@{vm.isComplete ? @drawable/verification : @drawable/cancel}">
+                android:src="@{vm.isComplete ? @drawable/ic_icon_complete : @drawable/ic_icon_cancel}">
 
             </ImageView>
 
@@ -48,7 +48,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@drawable/background_book_small"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent">

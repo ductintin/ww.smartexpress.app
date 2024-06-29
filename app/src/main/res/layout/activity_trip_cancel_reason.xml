@@ -83,7 +83,7 @@
                 android:text="@={vm.customerNote}"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_marginVertical="@dimen/_10sdp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
@@ -133,7 +133,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@drawable/bg_bottom_btn_send"
             android:elevation="@dimen/_5sdp"
             android:paddingHorizontal="@dimen/_12sdp"
             app:layout_constraintBottom_toBottomOf="parent">

@@ -11,10 +11,10 @@ import ww.smartexpress.app.ui.base.activity.BaseViewModel;
 import ww.smartexpress.app.ui.password.forget.ResetForgetPasswordActivity;
 
 public class VerifyForgetPasswordOTPViewModel extends BaseViewModel {
-    public ObservableField<String> otp1 = new ObservableField<>();
-    public ObservableField<String> otp2 = new ObservableField<>();
-    public ObservableField<String> otp3 = new ObservableField<>();
-    public ObservableField<String> otp4 = new ObservableField<>();
+    public ObservableField<String> otp1 = new ObservableField<>("");
+    public ObservableField<String> otp2 = new ObservableField<>("");
+    public ObservableField<String> otp3 = new ObservableField<>("");
+    public ObservableField<String> otp4 = new ObservableField<>("");
 
     public ObservableField<Integer> kind = new ObservableField<>(1);
     public ObservableField<String> email = new ObservableField<>("");
@@ -29,10 +29,7 @@ public class VerifyForgetPasswordOTPViewModel extends BaseViewModel {
         Intent intent = new Intent(getApplication().getCurrentActivity(), ResetForgetPasswordActivity.class);
         intent.putExtra(Constants.OTP, otp);
         intent.putExtra(Constants.KEY_USER_ID, userId.get());
-        otp1.set("");
-        otp2.set("");
-        otp3.set("");
-        otp4.set("");
         getApplication().getCurrentActivity().startActivity(intent);
+        getApplication().getCurrentActivity().finish();
     }
 }

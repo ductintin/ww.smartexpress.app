@@ -262,61 +262,60 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
         viewModel.discount.set(bookCars.get(0).getDiscount());
 
         bookCarAdapter.setOnItemClickListener(bookCar -> {
-            if(sheetBehavior.getState()==BottomSheetBehavior.STATE_EXPANDED){
-                sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                viewModel.bookingRequest.get().setServiceId(bookCar.getServiceId());
-                viewModel.bookingRequest.get().setMoney(bookCar.getPrice());
-                viewModel.bookingRequest.get().setPromotionMoney(bookCar.getDiscount());
-                bookCarAdapter.setSelected(bookCars.indexOf(bookCar));
-                viewModel.deliveryMethod.set(bookCar.getName());
 
-                servicePromotion.setMoney(bookCar.getPrice());
-                servicePromotion.setService(serviceResponses.get(bookCars.indexOf(bookCar)));
-                viewModel.selectedService.set(servicePromotion);
-                if(bookCars.indexOf(bookCar) != viewModel.selectedServiceIndex.get()){
-                    bookCars.get(viewModel.selectedServiceIndex.get()).setDiscount(0.0);
-                    viewModel.selectedServiceIndex.set(bookCars.indexOf(bookCar));
-                    viewModel.discount.set(0.0);
-                    viewModel.bookingRequest.get().setPromotionId(null);
-                    viewModel.bookingRequest.get().setPromotionMoney(0.0);
-                }
+            viewModel.bookingRequest.get().setServiceId(bookCar.getServiceId());
+            viewModel.bookingRequest.get().setMoney(bookCar.getPrice());
+            viewModel.bookingRequest.get().setPromotionMoney(bookCar.getDiscount());
+            bookCarAdapter.setSelected(bookCars.indexOf(bookCar));
+            viewModel.deliveryMethod.set(bookCar.getName());
 
+            servicePromotion.setMoney(bookCar.getPrice());
+            servicePromotion.setService(serviceResponses.get(bookCars.indexOf(bookCar)));
+            viewModel.selectedService.set(servicePromotion);
 
-                bookCarAdapter.notifyDataSetChanged();
-
-                viewBinding.rcWinDelivery.smoothScrollToPosition(bookCars.indexOf(bookCar));
+            if(bookCars.indexOf(bookCar) != viewModel.selectedServiceIndex.get()){
+                bookCars.get(viewModel.selectedServiceIndex.get()).setDiscount(0.0);
+                viewModel.selectedServiceIndex.set(bookCars.indexOf(bookCar));
+                viewModel.discount.set(0.0);
+                viewModel.bookingRequest.get().setPromotionId(null);
+                viewModel.bookingRequest.get().setPromotionMoney(0.0);
             }
+
+
+            bookCarAdapter.notifyDataSetChanged();
+
+            viewBinding.rcWinDelivery.smoothScrollToPosition(bookCars.indexOf(bookCar));
 
         });
     }
 
     private void bottomSheetLayout(){
-        sheetBehavior = BottomSheetBehavior.from(viewBinding.bottomLayout);
-        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-        BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                switch (newState) {
-                    case BottomSheetBehavior.STATE_HIDDEN:
-                        break;
-                    case BottomSheetBehavior.STATE_EXPANDED:
-
-                    case BottomSheetBehavior.STATE_DRAGGING:
-                        //Bắt đầu kéo View
-                        break;
-                    case BottomSheetBehavior.STATE_COLLAPSED:
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-            }
-        };
-        sheetBehavior.addBottomSheetCallback(bottomSheetCallback);
+//        sheetBehavior = BottomSheetBehavior.from(viewBinding.bottomLayout);
+//        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//
+//        BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
+//            @Override
+//            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+//                switch (newState) {
+//                    case BottomSheetBehavior.STATE_HIDDEN:
+//                        break;
+//                    case BottomSheetBehavior.STATE_EXPANDED:
+//
+//                    case BottomSheetBehavior.STATE_DRAGGING:
+//                        //Bắt đầu kéo View
+//                        break;
+//                    case BottomSheetBehavior.STATE_COLLAPSED:
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+//            }
+//        };
+//        sheetBehavior.addBottomSheetCallback(bottomSheetCallback);
     }
 
     public void findingDriver(){
@@ -928,6 +927,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
         viewModel.discount.set(0.0);
         viewModel.bookingRequest.get().setPromotionMoney(0.0);
         viewModel.bookingRequest.get().setPromotionId(null);
+        viewModel.selectedService.get().setSelectedId(0L);
         bookCars.get(viewModel.selectedServiceIndex.get()).setDiscount(0.0);
         bookCarAdapter.notifyDataSetChanged();
     }

@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.model.LatLng;
@@ -136,6 +137,14 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
         }
         loadProfile();
         loadCurrentBooking();
+
+        binding.swRefreshHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadCurrentBooking();
+                binding.swRefreshHome.setRefreshing(false);
+            }
+        });
     }
 
     @Override

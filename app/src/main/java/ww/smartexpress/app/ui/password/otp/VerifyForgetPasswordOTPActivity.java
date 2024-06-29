@@ -35,8 +35,8 @@ public class VerifyForgetPasswordOTPActivity extends BaseActivity<ActivityVerify
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         viewModel.userId.set(intent.getStringExtra(Constants.KEY_USER_ID));
         viewModel.kind.set(intent.getIntExtra(Constants.VERIFY_OPTION, 1));
@@ -72,7 +72,7 @@ public class VerifyForgetPasswordOTPActivity extends BaseActivity<ActivityVerify
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                Log.d("TAG", "afterTextChanged: " + editable.toString());
             }
         });
         viewBinding.inputOTP2.addTextChangedListener(new TextWatcher() {
@@ -120,9 +120,10 @@ public class VerifyForgetPasswordOTPActivity extends BaseActivity<ActivityVerify
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(!charSequence.toString().trim().isEmpty()){
-                    if(!viewModel.otp1.get().isEmpty() && !viewModel.otp1.get().isEmpty() && !viewModel.otp1.get().isEmpty() && !viewModel.otp1.get().isEmpty()){
+                    if(!viewModel.otp1.get().isEmpty() && !viewModel.otp2.get().isEmpty() && !viewModel.otp3.get().isEmpty() && !viewModel.otp4.get().isEmpty()){
+                        Log.d("TAG", "onTextChanged: ok");
                         viewBinding.inputOTP4.clearFocus();
-                        hideKeyboard();
+                        VerifyForgetPasswordOTPActivity.this.hideKeyboard();
                     }
                 }
             }
