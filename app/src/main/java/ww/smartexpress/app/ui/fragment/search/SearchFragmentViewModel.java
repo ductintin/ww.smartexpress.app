@@ -44,6 +44,9 @@ public class SearchFragmentViewModel extends BaseFragmentViewModel {
     public ObservableField<Long> totalBookingElements = new ObservableField<>(-1L);
     public ObservableField<ProfileResponse> profile = new ObservableField<>(new ProfileResponse());
     public ObservableField<UserEntity> user = new ObservableField<>(new UserEntity());
+    public ObservableField<Boolean> fromSignIn = new ObservableField<>(false);
+    public ObservableField<Long> userId = new ObservableField<>(0L);
+    public ObservableField<String> encryptedPassword = new ObservableField<>("");
     public SearchFragmentViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
     }
@@ -68,4 +71,12 @@ public class SearchFragmentViewModel extends BaseFragmentViewModel {
         return repository.getRoomService().userDao().updateFull(id, avatar, name, phone, email, bankCard);
     }
 
+    Single<UserEntity> getProfileLocal(){
+        userId.set(repository.getSharedPreferences().getLongVal(Constants.KEY_USER_ID));
+        return repository.getRoomService().userDao().findById(userId.get());
+    }
+
+    Completable updateExceptBiometric(Long id, String avatar, String name, String phone, String email, String bankCard, String encryptedPassword){
+        return repository.getRoomService().userDao().updateExceptBiometric(id, avatar, name, phone, email, bankCard, encryptedPassword);
+    }
 }

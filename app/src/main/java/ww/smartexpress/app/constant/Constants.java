@@ -54,6 +54,7 @@ public class Constants {
 
     public static final String VERIFY_OPTION = "VERIFY_OPTION";
     public static final String OTP = "OTP";
+    public static final String PHONE_NUMBER_REGEX = "^(?!0987654321)(0[3|5|7|8|9])([0-9]{8})$";;
     private Constants() {
 
     }

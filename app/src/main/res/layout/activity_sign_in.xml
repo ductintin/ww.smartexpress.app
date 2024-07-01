@@ -88,7 +88,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
+
+                            <TextView
+                                android:visibility="@{vm.tabIndex == 0 &amp;&amp; vm.user.id != null ? View.VISIBLE : View.GONE}"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text='@{"Xin chào, " + vm.user.phone}'
+                                android:layout_marginTop="@dimen/_20sdp"
+                                android:layout_marginHorizontal="@dimen/_50sdp"
+                                style="@style/app_text_b"
+                                android:gravity="center"/>
+
+
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tipPhone"
+                                android:visibility="@{vm.user.id != null ? View.GONE : View.VISIBLE}"
                                 android:layout_marginTop="@dimen/_20sdp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -103,6 +117,7 @@
                                 app:boxStrokeWidthFocused="@dimen/_1sdp"
                                 app:hintAnimationEnabled="false">
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edtPhone"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="phone"
@@ -122,6 +137,7 @@
                                 android:layout_marginTop="@dimen/_20sdp">
 
                                 <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/tipPwS"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -133,9 +149,9 @@
                                     app:hintTextColor="@color/app_color"
                                     app:helperTextTextColor="#898A8D"
                                     app:boxStrokeWidthFocused="@dimen/_1sdp"
-                                    app:hintAnimationEnabled="false">
+                                    app:hintAnimationEnabled="false"
+                                    app:passwordToggleEnabled="true">
                                     <com.google.android.material.textfield.TextInputEditText
-                                        android:paddingRight="@dimen/_35sdp"
                                         android:id="@+id/edtPw"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
@@ -148,15 +164,15 @@
                                     </com.google.android.material.textfield.TextInputEditText>
                                 </com.google.android.material.textfield.TextInputLayout>
 
-                                <ImageView
-                                    android:onClick="@{(v)->vm.setIsVisibilityPasswordS()}"
-                                    android:layout_gravity="right|center_vertical"
-                                    android:layout_marginRight="@dimen/_15sdp"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@{vm.isVisibilityS ? @drawable/ic_icon_visibility_off : @drawable/ic_icon_visibility}">
+<!--                                <ImageView-->
+<!--                                    android:onClick="@{(v)->vm.setIsVisibilityPasswordS()}"-->
+<!--                                    android:layout_gravity="right|center_vertical"-->
+<!--                                    android:layout_marginRight="@dimen/_15sdp"-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:src="@{vm.isVisibilityS ? @drawable/ic_icon_visibility_off : @drawable/ic_icon_visibility}">-->
 
-                                </ImageView>
+<!--                                </ImageView>-->
                             </FrameLayout>
                         </LinearLayout>
 
@@ -167,6 +183,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tipName"
                                 android:layout_marginTop="@dimen/_15sdp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -181,6 +198,7 @@
                                 app:boxStrokeWidthFocused="@dimen/_1sdp"
                                 app:hintAnimationEnabled="false">
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edtName"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:maxLines="1"
@@ -194,6 +212,7 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tipEmailR"
                                 android:layout_marginTop="@dimen/_15sdp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -208,6 +227,7 @@
                                 app:boxStrokeWidthFocused="@dimen/_1sdp"
                                 app:hintAnimationEnabled="false">
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edtMail"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="textEmailAddress"
@@ -220,6 +240,7 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tipPhoneR"
                                 android:layout_marginTop="@dimen/_15sdp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -234,6 +255,7 @@
                                 app:boxStrokeWidthFocused="@dimen/_1sdp"
                                 app:hintAnimationEnabled="false">
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edtPhoneR"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="phone"
@@ -251,6 +273,7 @@
                                 android:layout_marginTop="@dimen/_15sdp">
 
                                 <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/tipPwR"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -262,7 +285,8 @@
                                     app:hintTextColor="@color/app_color"
                                     app:helperTextTextColor="#898A8D"
                                     app:boxStrokeWidthFocused="@dimen/_1sdp"
-                                    app:hintAnimationEnabled="false">
+                                    app:hintAnimationEnabled="false"
+                                    app:passwordToggleEnabled="true">
                                     <com.google.android.material.textfield.TextInputEditText
                                         android:id="@+id/edtPWR"
                                         android:paddingRight="@dimen/_35sdp"
@@ -277,31 +301,59 @@
                                     </com.google.android.material.textfield.TextInputEditText>
                                 </com.google.android.material.textfield.TextInputLayout>
 
-                                <ImageView
-                                    android:onClick="@{(v)->vm.setIsVisibilityPasswordR()}"
-                                    android:layout_gravity="right|center_vertical"
-                                    android:layout_marginRight="@dimen/_15sdp"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@{vm.isVisibilityR ? @drawable/ic_icon_visibility_off : @drawable/ic_icon_visibility}">
-
-                                </ImageView>
                             </FrameLayout>
                         </LinearLayout>
                     </LinearLayout>
 
-                    <Button
-                        android:id="@+id/btnEPUpdate"
-                        style="@style/AppButtonStyle"
-                        android:layout_marginTop="@dimen/_40sdp"
-                        android:layout_marginHorizontal="@dimen/_12sdp"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{vm.tabIndex == 0 ? @string/login_title : @string/register_all_win}"
-                        android:onClick="@{(v) -> a.doNext()}">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/_20sdp">
+                        <Button
+                            android:id="@+id/btnSignInOrRegister"
+                            style="@style/AppButtonStyle"
+                            android:layout_marginHorizontal="@dimen/_12sdp"
+                            android:layout_marginVertical="@dimen/_10sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.tabIndex == 0 ? @string/login_title : @string/register_all_win}"
+                            android:onClick="@{(v) -> a.doNext()}"
+                            android:layout_weight="1">
 
-                    </Button>
+                        </Button>
 
+                        <LinearLayout
+                            android:id="@+id/imvBiometricLogin"
+                            android:visibility="@{vm.hasBiometric  &amp;&amp; vm.user.isBiometric &amp;&amp; vm.tabIndex == 0 &amp;&amp; vm.user.id != null ? View.VISIBLE : View.GONE}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_btn_chat"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="@dimen/_12sdp"
+                            android:layout_marginVertical="@dimen/_10sdp"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:src="@drawable/ic_icon_fingerprint">
+
+                            </ImageView>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:visibility="@{vm.tabIndex == 0 &amp;&amp; vm.user.id != null ? View.VISIBLE : View.GONE}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='Đăng nhập bằng tài khoản khác'
+                        android:onClick="@{() -> a.doAnotherLogin()}"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_marginHorizontal="@dimen/_50sdp"
+                        style="@style/app_text_b"
+                        android:gravity="center"/>
                     <TextView
                         android:visibility="@{vm.tabIndex == 0 ? View.VISIBLE : View.GONE}"
                         android:layout_width="match_parent"

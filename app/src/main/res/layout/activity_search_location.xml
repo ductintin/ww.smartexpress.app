@@ -127,18 +127,21 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
+                        android:gravity="bottom"
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="@dimen/_21sdp"
-                            android:layout_height="@dimen/_21sdp"
-                            android:layout_marginRight="@dimen/_5sdp"
+                            android:background="@drawable/bg_search_icon"
+                            android:onClick="@{()-> a.openMap(1)}"
+                            style="@style/destination_save"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:src="@drawable/ic_icon_my_location">
-
                         </ImageView>
 
                         <LinearLayout
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
@@ -148,7 +151,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/search_origin_subtitle"
-                                android:textSize="@dimen/_8sdp">
+                                android:textSize="@dimen/_8sdp"
+                                android:layout_marginBottom="@dimen/_5sdp">
 
                             </TextView>
 
@@ -184,20 +188,11 @@
 
                                 </ImageView>
 
+
                             </LinearLayout>
 
-                            <TextView
-                                android:background="@drawable/bg_tv_vehicle_number"
-                                android:onClick="@{()-> a.openMap(1)}"
-                                style="@style/destination_save"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginVertical="@dimen/_10sdp"
-                                android:textAlignment="center"
-                                android:layout_weight="1"
-                                android:text="Chọn từ bản đồ">
-                            </TextView>
                         </LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -205,23 +200,28 @@
                         android:layout_height="@dimen/_1sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_5sdp"
-                        android:background="#7EA567">
+                        android:background="@color/app_color">
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingVertical="@dimen/_5sdp">
+                        android:gravity="bottom"
+                        android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="@dimen/_21sdp"
-                            android:layout_height="@dimen/_21sdp"
-                            android:layout_marginRight="@dimen/_5sdp"
-                            android:src="@drawable/ic_icon_search_location"></ImageView>
+                            android:background="@drawable/bg_search_icon"
+                            android:onClick="@{()-> a.openMap(2)}"
+                            style="@style/destination_save"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_icon_search_location">
+                        </ImageView>
 
                         <LinearLayout
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
@@ -231,9 +231,11 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/search_destination_subtitle"
-                                android:textSize="@dimen/_8sdp">
+                                android:textSize="@dimen/_8sdp"
+                                android:layout_marginBottom="@dimen/_5sdp">
 
                             </TextView>
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -241,7 +243,7 @@
 
                                 <EditText
                                     android:id="@+id/edtSearchLocation"
-                                    style="@style/destination_save"
+                                    style="@style/location_text"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
@@ -250,7 +252,9 @@
                                     android:inputType="text"
                                     android:maxLines="1"
                                     android:text="@={vm.searchLocation}"
-                                    android:textColorHint="#898A8D">
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
 
                                 </EditText>
 
@@ -260,23 +264,14 @@
                                     android:layout_gravity="end"
                                     android:onClick="@{()->vm.deleteSearchLocation()}"
                                     android:src="@drawable/ic_icon_delete"
-                                    android:visibility="@{TextUtils.isEmpty(vm.searchLocation) ? View.GONE : View.VISIBLE}">
+                                    android:visibility="@{TextUtils.isEmpty(vm.searchLocation) ? View.INVISIBLE : View.VISIBLE}">
 
                                 </ImageView>
-                            </LinearLayout>
-                            <TextView
-                                android:background="@drawable/bg_tv_vehicle_number"
-                                android:onClick="@{()-> a.openMap(2)}"
-                                style="@style/destination_save"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:textAlignment="center"
-                                android:layout_weight="1"
-                                android:text="Chọn từ bản đồ">
-                            </TextView>
-                        </LinearLayout>
 
+
+                            </LinearLayout>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -403,6 +398,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:orientation="vertical"
+            android:background="@drawable/bg_bottom_btn_send"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">

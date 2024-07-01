@@ -53,7 +53,7 @@ public class ChatViewModel extends BaseViewModel {
         chatMessage.setRoomId(roomId.get().toString());
         chatMessage.setMessage(message.get().trim());
         chatMessage.setMessageId(String.valueOf((new Date()).getTime()));
-        chatMessage.setAvatar(customerAvatar.get());
+        //chatMessage.setAvatar(customerAvatar.get());
 
         Message message = new Message();
         message.setCmd(Command.CM_SEND_MESSAGE);

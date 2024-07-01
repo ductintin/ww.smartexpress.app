@@ -12,8 +12,11 @@ import android.view.Window;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableField;
 
+import java.util.List;
+
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.R;
 import ww.smartexpress.app.constant.Constants;
@@ -34,6 +37,7 @@ public class SignInViewModel extends BaseViewModel {
     public ObservableField<LoginRequest> loginRequest = new ObservableField<>(new LoginRequest());
     public ObservableField<String> phoneS = new ObservableField<>("");
     public ObservableField<String> passwordS = new ObservableField<>("");
+    public ObservableField<String> authPassword = new ObservableField<>("");
     public ObservableField<Boolean> visibleBack = new ObservableField<>(true);
     public ObservableField<Boolean> isVisibilityS = new ObservableField<>(false);
     public ObservableField<Integer> tabIndex = new ObservableField<>(0);
@@ -44,6 +48,8 @@ public class SignInViewModel extends BaseViewModel {
     public ObservableField<String> phoneR = new ObservableField<>("");
     public ObservableField<String> passwordR = new ObservableField<>("");
     public ObservableField<Boolean> isVisibilityR = new ObservableField<>(false);
+    public ObservableField<UserEntity> user = new ObservableField<>(new UserEntity());
+    public ObservableField<Boolean> hasBiometric = new ObservableField<>(false);
 
     public SignInViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
@@ -117,4 +123,10 @@ public class SignInViewModel extends BaseViewModel {
 
         dialog.show();
     }
+
+    Single<List<UserEntity>> getCurrentUser(){
+        return repository.getRoomService().userDao().loadAll();
+    }
+
+
 }

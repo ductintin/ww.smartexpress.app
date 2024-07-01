@@ -38,7 +38,7 @@ public interface DbUserDao {
     @Delete
     Completable delete(UserEntity UserEntity);
 
-    @Query("DELETE FROM 'user' WHERE user_id=:userId")
+    @Query("DELETE FROM user WHERE user_id=:userId")
     Completable deleteById(Long userId);
 
     @Transaction
@@ -59,4 +59,13 @@ public interface DbUserDao {
 
     @Query("UPDATE  `user` SET bankCard=:bankCard WHERE user_id=:userId")
     Completable updateBankCard(Long userId, String bankCard);
+
+    @Query("DELETE FROM user WHERE user_id !=:userId")
+    Completable deleteAllExceptId(Long userId);
+
+    @Query("UPDATE  `user` SET isBiometric=:isBiometric WHERE user_id=:userId")
+    Completable updateBiometric(Long userId, Boolean isBiometric);
+
+    @Query("UPDATE  `user` SET avatar=:avatar, name=:name, phone=:phone, email=:email, bankCard=:bankCard, encryptedPassword=:encryptedPassword WHERE user_id=:id")
+    Completable updateExceptBiometric(Long id, String avatar, String name, String phone, String email, String bankCard, String encryptedPassword);
 }

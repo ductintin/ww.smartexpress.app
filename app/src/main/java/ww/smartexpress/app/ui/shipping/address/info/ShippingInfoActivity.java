@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,6 +26,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.regex.Pattern;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ww.smartexpress.app.BR;
@@ -38,6 +43,7 @@ import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
 import ww.smartexpress.app.ui.delivery.BookDeliveryActivity;
 import ww.smartexpress.app.ui.delivery.order.DeliveryActivity;
+import ww.smartexpress.app.utils.NumberUtils;
 
 public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBinding, ShippingInfoViewModel> {
 
@@ -74,6 +80,39 @@ public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBindi
         }
 
         bottomSheetLayout();
+
+        viewBinding.edtCodPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!TextUtils.isEmpty(charSequence)){
+                    try {
+                        Double text = NumberUtils.parseDoubleNumber(charSequence.toString());
+                        String money = NumberUtils.formatDoubleNumber(text);
+                        Log.d("TAG", "onTextChanged: " + text);
+                        Log.d("TAG", "onTextChanged: ff " + money);
+                        if(!money.equals(viewModel.codPriceText)){
+                            viewModel.codPrice.set(text.intValue());
+                            viewModel.codPriceText.set(money);
+                            viewBinding.edtCodPrice.setSelection(viewModel.codPriceText.get().length());
+                        }
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
     }
 
@@ -193,15 +232,64 @@ public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBindi
                 .consigneeName(viewModel.consigneeName.get())
                 .consigneePhone(viewModel.consigneePhone.get())
                 .customerNote(viewModel.customerNote.get())
-                .isCod(viewModel.isCod.get())
+                .isCod(viewModel.selectCOD.get())
                 .codPrice(viewModel.codPrice.get())
                 .build();
 
-        Intent intent = new Intent(this, BookDeliveryActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.SHIPPING_INFO, ApiModelUtils.toJson(shippingInfo));
-        intent.putExtras(bundle);
-        startActivity(intent);
+        if(isValidRegisterRequest(shippingInfo)){
+            Intent intent = new Intent(this, BookDeliveryActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.SHIPPING_INFO, ApiModelUtils.toJson(shippingInfo));
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+
     }
+
+    public Boolean isValidRegisterRequest(ShippingInfo request){
+        String phoneRegex = "^(0[3|5|7|8|9])+([0-9]{8})$";
+        Pattern phonePatter = Pattern.compile(phoneRegex);
+
+        if(TextUtils.isEmpty(request.getSenderName())){
+            viewModel.showErrorMessage("Vui lòng nhập tên người nhận");
+            viewBinding.edtConsigneeName.requestFocus(request.getSenderName().length());
+            return false;
+        }
+        if(TextUtils.isEmpty(request.getSenderPhone()) || request.getSenderPhone().length() != 10 || !phonePatter.matcher(request.getSenderPhone()).matches()){
+            viewModel.showErrorMessage("Số điện thoại người gửi không hợp lệ");
+            viewBinding.edtSenderPhone.requestFocus(request.getSenderPhone().length());
+            return false;
+        }
+
+
+        if(TextUtils.isEmpty(request.getConsigneeName())){
+            viewModel.showErrorMessage("Vui lòng nhập tên người nhận");
+            viewBinding.edtConsigneeName.requestFocus(request.getConsigneeName().length());
+            return false;
+        }
+
+        if(TextUtils.isEmpty(request.getConsigneePhone()) || request.getConsigneePhone().length() != 10 || !phonePatter.matcher(request.getConsigneePhone()).matches()){
+            viewModel.showErrorMessage("Số điện thoại người nhận không hợp lệ");
+            viewBinding.edtConsigneePhone.requestFocus(request.getConsigneePhone().length());
+            return false;
+        }
+
+        if(request.getIsCod()){
+            if(request.getCodPrice() == 0){
+                viewModel.showErrorMessage("Vui lòng nhập số tiền thu hộ");
+                viewBinding.edtCodPrice.requestFocus(viewModel.codPriceText.get().length());
+                return false;
+            }
+
+            if(request.getCodPrice() < 10000){
+                viewModel.showErrorMessage("Số tiền thu hộ quá bé, hãy nhập lớn hơn 10000 VNĐ");
+                viewBinding.edtCodPrice.requestFocus(viewModel.codPriceText.get().length());
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
 }

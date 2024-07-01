@@ -19,18 +19,13 @@ import eu.davidea.flexibleadapter.databinding.BR;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ww.smartexpress.app.R;
-import ww.smartexpress.app.constant.Constants;
-import ww.smartexpress.app.data.model.api.ApiModelUtils;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
 import ww.smartexpress.app.databinding.ActivitySplashFormBinding;
 import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
-import ww.smartexpress.app.ui.bookcar.BookCarActivity;
 import ww.smartexpress.app.ui.delivery.BookDeliveryActivity;
 import ww.smartexpress.app.ui.home.HomeActivity;
-import ww.smartexpress.app.ui.index.IndexActivity;
-import ww.smartexpress.app.ui.input.phone.PhoneActivity;
-import ww.smartexpress.app.ui.trip.TripActivity;
+import ww.smartexpress.app.ui.signin.SignInActivity;
 import ww.smartexpress.app.ui.welcome.WelcomeActivity;
 import ww.smartexpress.app.utils.LocationUtils;
 
@@ -66,7 +61,7 @@ public class SplashFormActivity extends BaseActivity<ActivitySplashFormBinding, 
                         //getCurrentBooking();
                         navigateToHomeActivity();
                     }else{
-                        navigateToIndexActivity();
+                        navigateToSignInActivity();
                     }
                 } else {
                    navigateToWelcomeActivity();
@@ -75,44 +70,6 @@ public class SplashFormActivity extends BaseActivity<ActivitySplashFormBinding, 
         }, delayMillis);
     }
 
-    public void getCurrentBooking(){
-        viewModel.compositeDisposable.add(viewModel.getCurrentBooking()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response ->{
-                    viewModel.hideLoading();
-                    if(response.isResult() && response.getData().getTotalElements() > 0 && response.getData().getTotalElements() <= 10){
-                        bookingResponse = response.getData().getContent();
-//                        switch (bookingResponse.getState()){
-//                            case 0 : case 100:
-//                                navigateToBookActivity();
-//                                break;
-//                            case 200:
-//                                navigateToTripActivity();
-//                                break;
-//                            default:
-//                                break;
-//                        }
-                        navigateToBookActivity();
-                    }else{
-                        navigateToHomeActivity();
-                    }
-                }, err -> {
-                    viewModel.hideLoading();
-                    navigateToHomeActivity();
-                    viewModel.showErrorMessage(getString(R.string.network_error));
-                    err.printStackTrace();
-                }));
-    }
-
-    public void navigateToBookActivity(){
-        Intent intent = new Intent(SplashFormActivity.this, BookDeliveryActivity.class);
-//        Bundle bundle = new Bundle();
-//        bundle.putString(Constants.CUSTOMER_BOOKING_OBJECT, ApiModelUtils.toJson(bookingResponse));
-//        intent.putExtras(bundle);
-        startActivity(intent);
-        finish();
-    }
 
     public void navigateToHomeActivity(){
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(SplashFormActivity.this);
@@ -167,24 +124,14 @@ public class SplashFormActivity extends BaseActivity<ActivitySplashFormBinding, 
         }
     }
 
-    public void navigateToIndexActivity(){
-        Intent intent = new Intent(SplashFormActivity.this, IndexActivity.class);
+    public void navigateToSignInActivity(){
+        Intent intent = new Intent(SplashFormActivity.this, SignInActivity.class);
         startActivity(intent);
         finish();
     }
 
     public void navigateToWelcomeActivity(){
         Intent intent = new Intent(SplashFormActivity.this, WelcomeActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    public void navigateToTripActivity(){
-        Intent intent = new Intent(SplashFormActivity.this, TripActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putInt(Constants.BOOKING_STATE, 200);
-        Log.d("TAG", "handleSocket: nende" );
-        intent.putExtras(bundle);
         startActivity(intent);
         finish();
     }

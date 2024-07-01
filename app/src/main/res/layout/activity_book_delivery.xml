@@ -37,187 +37,169 @@
             android:background="@color/white">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_50sdp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="@dimen/_5sdp"
-                android:elevation="@dimen/_50sdp">
-
-                <FrameLayout
-                    android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_30sdp">
-
-                    <ImageView
-                        android:id="@+id/btnBackBookCar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:onClick="@{()->vm.back()}"
-                        android:paddingLeft="@dimen/_5ssp"
-                        android:paddingRight="@dimen/_5sdp"
-                        android:src="@drawable/ic_icon_back">
-
-                    </ImageView>
-
-                    <TextView
-                        android:id="@+id/tvDeliveryTitle"
-                        style="@style/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:paddingLeft="@dimen/_20ssp"
-                        android:paddingRight="@dimen/_20ssp"
-                        android:text="@string/delivery">
-
-                    </TextView>
-
-                </FrameLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
-                android:id="@+id/llDeliveryAddress"
+                android:elevation="@dimen/_35sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_50sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:background="@drawable/bg_green_light_elevation">
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <ImageView
+                    android:id="@+id/btnBackBookCar"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:background="@drawable/oval_background"
+                    android:onClick="@{()->a.onBackPressed()}"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:elevation="@dimen/_1sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_icon_back"/>
 
                 <LinearLayout
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
+                    android:id="@+id/llDeliveryAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    >
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingRight="@dimen/_10sdp"
-                        android:src="@drawable/ic_icon_my_location">
-
-                    </ImageView>
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:background="@drawable/bg_green_light_elevation">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            style="@style/new_password_subtitle"
-                            android:layout_width="match_parent"
+                        <ImageView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/search_destination_subtitle"
-                            android:textSize="@dimen/_8sdp">
+                            android:paddingRight="@dimen/_10sdp"
+                            android:src="@drawable/ic_icon_my_location">
 
-                        </TextView>
+                        </ImageView>
 
                         <LinearLayout
-                            android:layout_marginTop="@dimen/_5sdp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
 
-                            <EditText
-                                style="@style/location_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:background="@color/white"
-                                android:maxLines="1"
-                                android:text="@={vm.origin}"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                android:layout_weight="1"
-                                android:inputType="text"
-                                android:ellipsize="end"
-                                android:editable="false"
-                                android:focusable="false">
+                            <TextView
+                                style="@style/new_password_subtitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/search_destination_subtitle"
+                                android:textSize="@dimen/_8sdp">
 
-                            </EditText>
+                            </TextView>
+
+                            <LinearLayout
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    style="@style/location_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/white"
+                                    android:textSize="@dimen/_10ssp"
+                                    android:maxLines="2"
+                                    android:text="@={vm.origin}"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:layout_weight="1"
+                                    android:inputType="text"
+                                    android:ellipsize="end"
+                                    android:editable="false"
+                                    android:focusable="false">
+
+                                </EditText>
+
+                            </LinearLayout>
 
                         </LinearLayout>
 
                     </LinearLayout>
 
-                </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:background="#7EA567">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:background="#7EA567">
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginVertical="@dimen/_5sdp">
-
-                    <ImageView
-                        android:layout_width="@dimen/_21sdp"
-                        android:layout_height="@dimen/_21sdp"
-                        android:layout_marginRight="@dimen/_5sdp"
-                        android:src="@drawable/ic_icon_search_location"></ImageView>
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-                        <EditText
-                            android:id="@+id/edtSearchLocation"
-                            style="@style/location_text"
-                            android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginVertical="@dimen/_5sdp">
+
+                        <ImageView
+                            android:layout_width="@dimen/_21sdp"
+                            android:layout_height="@dimen/_21sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:src="@drawable/ic_icon_search_location"></ImageView>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/white"
-                            android:hint="@string/search_destination_hint"
-                            android:text="@={vm.destination}"
-                            android:maxLines="1"
-                            android:ellipsize="end"
-                            android:layout_weight="1"
-                            android:inputType="text"
-                            android:editable="false"
-                            android:focusable="false">
+                            android:orientation="horizontal">
+                            <EditText
+                                android:id="@+id/edtSearchLocation"
+                                style="@style/location_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@color/white"
+                                android:hint="@string/search_destination_hint"
+                                android:text="@={vm.destination}"
+                                android:textSize="@dimen/_10ssp"
+                                android:maxLines="2"
+                                android:ellipsize="end"
+                                android:layout_weight="1"
+                                android:inputType="text"
+                                android:editable="false"
+                                android:focusable="false">
 
-                        </EditText>
+                            </EditText>
 
-                        <!--                    <ImageView-->
-                        <!--                        android:layout_gravity="end"-->
-                        <!--                        android:layout_width="wrap_content"-->
-                        <!--                        android:layout_height="wrap_content"-->
-                        <!--                        android:src="@drawable/ic_icon_delete"-->
-                        <!--                        android:onClick="@{()->vm.deleteDestination()}">-->
+                            <!--                    <ImageView-->
+                            <!--                        android:layout_gravity="end"-->
+                            <!--                        android:layout_width="wrap_content"-->
+                            <!--                        android:layout_height="wrap_content"-->
+                            <!--                        android:src="@drawable/ic_icon_delete"-->
+                            <!--                        android:onClick="@{()->vm.deleteDestination()}">-->
 
-                        <!--                    </ImageView>-->
+                            <!--                    </ImageView>-->
+                        </LinearLayout>
                     </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/bottomLayoutSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:elevation="@dimen/_35sdp"
-                android:background="@drawable/bg_order_detail"
-                android:orientation="vertical"
-                android:layout_margin="@dimen/_12sdp">
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:visibility="@{(!vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
                     android:id="@+id/llDeliveryInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_order_detail"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
 
                     <LinearLayout
                         android:id="@+id/llPayment"
@@ -335,18 +317,18 @@
                         android:id="@+id/bntBook"
                         style="@style/NextBtn"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_35sdp"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_15sdp"
                         android:background="@drawable/app_button_background"
                         android:onClick="@{(v)->vm.doBookWinDelivery()}"
                         android:text="@{vm.deliveryMethod}"
                         android:textColor="@color/white"
-                        android:layout_marginLeft="@dimen/_20sdp"
-                        android:layout_marginBottom="@dimen/_15sdp"/>
+                        android:layout_marginBottom="@dimen/_5sdp"/>
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:background="@drawable/bg_order_detail"
                     android:visibility="@{(vm.isBooking &amp;&amp; !vm.isFound  &amp;&amp; !vm.isShipping) ? View.VISIBLE : View.GONE}"
                     android:id="@+id/llFindDriver"
                     android:layout_width="match_parent"
@@ -354,7 +336,9 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:orientation="vertical"
                     android:weightSum="3"
-                    >
+                    android:layout_margin="@dimen/_12sdp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
                     <ProgressBar
                         android:id="@+id/progressBarFindDriver"
                         android:layout_width="@dimen/_50sdp"
@@ -403,6 +387,10 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_margin="@dimen/_12sdp"
+                    android:background="@drawable/bg_order_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -602,15 +590,15 @@
                         android:id="@+id/llFoundDriverAction"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/_10sdp"
                         android:orientation="horizontal"
                         android:background="@drawable/bg_bottom_btn_send"
                         android:paddingTop="@dimen/_10sdp"
-                        android:paddingHorizontal="@dimen/_15sdp"
-                        android:layout_marginBottom="@dimen/_15sdp">
+                        android:paddingHorizontal="@dimen/_15sdp">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:background="@drawable/bg_btn_chat"
                             android:layout_gravity="center"
                             android:gravity="center">
@@ -628,23 +616,22 @@
                         <Button
                             android:id="@+id/btnCancelBookPickUp"
                             style="@style/BookCarButton"
+                            android:stateListAnimator="@null"
                             android:background="@drawable/bg_btn_cancel_find_driver"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="true"
                             android:text="Hủy chuyến"
                             android:textColor="@color/app_color"
-                            android:layout_marginLeft="@dimen/_15sdp"
-                            android:layout_marginBottom="@dimen/_5sdp"/>
+                            android:layout_marginLeft="@dimen/_15sdp"/>
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <FrameLayout
-                android:visibility="@{(vm.isBooking || vm.isFound || vm.isShipping) ? View.VISIBLE : View.GONE}"
                 android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -665,7 +652,7 @@
                 android:elevation="@dimen/_20sdp"
                 android:orientation="vertical"
                 app:behavior_hideable="false"
-                app:behavior_peekHeight="@dimen/_260sdp"
+                app:behavior_peekHeight="@dimen/_230sdp"
                 app:layout_behavior="@string/bottom_sheet">
 
                 <TextView

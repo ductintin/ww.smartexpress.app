@@ -22,6 +22,7 @@ public class TripCancelReasonViewModel extends BaseViewModel {
     public ObservableField<String> textNote = new ObservableField<>("");
     public ObservableField<String> customerNote = new ObservableField<>("");
     public ObservableField<String> textRate = new ObservableField<>("");
+    public ObservableField<Boolean> onClick = new ObservableField<>(false);
     public TripCancelReasonViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
     }

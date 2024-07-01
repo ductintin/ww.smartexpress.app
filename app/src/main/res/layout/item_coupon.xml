@@ -61,7 +61,7 @@
                         style="@style/title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{ivm.kind == 0?  ivm.discountValue.toString() + " K" : ivm.discountValue + " %"}'>
+                        android:text='@{ivm.kind == 0?  NumberUtils.formatCurrency(ivm.discountValue) : ivm.discountValue + " %"}'>
 
                     </TextView>
 
@@ -76,7 +76,7 @@
                         style="@style/coupon_subtitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{ivm.limitValueMin != null ? @string/coupon_subtext + " " + ivm.limitValueMin.toString() + " VNĐ" : "Không giới hạn giá trị đơn"}'>
+                        android:text='@{ivm.limitValueMin != null ? @string/coupon_subtext + " " + NumberUtils.formatCurrency(ivm.limitValueMin) : "Không giới hạn giá trị đơn"}'>
 
                     </TextView>
 
@@ -93,14 +93,18 @@
 
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp">
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center">
 
             <LinearLayout
                 android:id="@+id/linearLayout7"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -141,19 +145,30 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                style="@style/coupon_subtitle"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_btn_coupon"
-                android:includeFontPadding="false"
-                android:text='@{ivm.isInValid ? "Không khả dụng" : ivm.isSelected ? "Đang sử dụng" : @string/coupon_use_text}'
-                android:textColor="#7EA567"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvUseCoupon"
+                    style="@style/coupon_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:textSize="@dimen/_8ssp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_btn_coupon"
+                    android:includeFontPadding="false"
+                    android:text='@{ivm.isInValid ? "Không khả dụng" : ivm.isSelected ? "Đang sử dụng" : @string/coupon_use_text}'
+                    android:textColor="@color/app_color"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            </TextView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                </TextView>
+
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </layout>

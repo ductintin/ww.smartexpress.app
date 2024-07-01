@@ -141,4 +141,5 @@ public interface ApiService {
     @POST("/v1/customer/reset-password")
     @Headers({"IgnoreAuth:1"})
     Observable<ResponseWrapper<String>> resetPassword(@Body ResetPasswordRequest request);
+
 }

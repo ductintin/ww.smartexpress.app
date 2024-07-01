@@ -11,13 +11,13 @@
     </data>
 
    <androidx.constraintlayout.widget.ConstraintLayout
-       android:layout_width="@dimen/_190sdp"
+       android:layout_width="@dimen/_165sdp"
        android:layout_height="wrap_content">
 
        <FrameLayout
            android:id="@+id/itemLayout"
-           android:layout_width="@dimen/_180sdp"
-           android:layout_height="@dimen/_130sdp"
+           android:layout_width="@dimen/_150sdp"
+           android:layout_height="@dimen/_100sdp"
            android:background="@color/white"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent">
@@ -33,7 +33,7 @@
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:text="@{ivm.name}"
-                   android:textSize="@dimen/_16ssp"
+                   android:textSize="@dimen/_12ssp"
                    android:maxLines="1"
                    android:ellipsize="end"/>
 
@@ -43,7 +43,8 @@
                    android:layout_height="wrap_content"
                    android:text='@{"(" + NumberUtils.getSize(ivm.size) +"  "+ ivm.weight+"Kg" + ")"}'
                    android:maxLines="1"
-                   android:ellipsize="end"/>
+                   android:ellipsize="end"
+                   android:textSize="@dimen/_8ssp"/>
 
                <TextView
                    style="@style/item_win_bike"
@@ -61,15 +62,15 @@
                    android:foreground="@drawable/bg_strike_through"
                    android:text="@{NumberUtils.formatDoubleNumber(ivm.price)}"
                    android:visibility="@{ivm.discount!=0 ? View.VISIBLE : View.GONE}"
-                   android:textSize="@dimen/_12ssp"
+                   android:textSize="@dimen/_10ssp"
                    android:maxLines="1"
                    android:ellipsize="end"/>
            </LinearLayout>
        </FrameLayout>
 
        <ImageView
-           android:layout_width="@dimen/_50sdp"
-           android:layout_height="@dimen/_50sdp"
+           android:layout_width="@dimen/_40sdp"
+           android:layout_height="@dimen/_40sdp"
            android:src="@{ivm.image, default=@drawable/car}"
            android:layout_margin="@dimen/_8sdp"
            app:layout_constraintBottom_toBottomOf="@id/itemLayout"

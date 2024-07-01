@@ -70,6 +70,13 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponView
             this.coupon = coupons.get(position);
             mBinding.setVariable(BR.ivm, coupon);
             mBinding.executePendingBindings();
+
+            mBinding.tvUseCoupon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onItemClickListener.useClick(coupon);
+                }
+            });
         }
 
         @Override
@@ -80,6 +87,8 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponView
 
     public interface OnItemClickListener{
         void itemClick(Promotion coupon);
+
+        void useClick(Promotion promotion);
     }
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
         this.onItemClickListener = onItemClickListener;

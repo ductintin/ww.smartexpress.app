@@ -12,8 +12,11 @@ import android.view.Window;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableField;
 
+import java.util.ArrayList;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
@@ -37,10 +40,12 @@ import ww.smartexpress.app.ui.wallet.WalletActivity;
 
 public class ProfileFragmentViewModel extends BaseFragmentViewModel {
 
-    public ObservableField<ProfileResponse> profile = new ObservableField<>(new ProfileResponse());
+    public ObservableField<UserEntity> profile = new ObservableField<>(new UserEntity());
     public ObservableField<String> lang = new ObservableField<>("Tiếng Việt");
     public ObservableField<String> token = new ObservableField<>("");
     public ObservableField<Long> userId = new ObservableField<>();
+    public ObservableField<Boolean> hasBiometric = new ObservableField<>(false);
+
     public ProfileFragmentViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
         token.set(repository.getToken());
@@ -81,7 +86,15 @@ public class ProfileFragmentViewModel extends BaseFragmentViewModel {
         return repository.getApiService().getProfile()
                 .doOnNext(response -> {
                     if(response.isResult()) {
-                        profile.set(response.getData());
+                        ProfileResponse profileResponse = response.getData();
+                        UserEntity.builder()
+                                .id(profileResponse.getId())
+                                .email(profileResponse.getEmail())
+                                .avatar(profileResponse.getAvatar())
+                                .name(profileResponse.getName())
+                                .phone(profileResponse.getPhone())
+                                .isBiometric(false)
+                                .build();
                     }
                 });
     }
@@ -111,8 +124,8 @@ public class ProfileFragmentViewModel extends BaseFragmentViewModel {
 
         dialogLogoutBinding.btnLogout.setOnClickListener(view -> {
             Long userId = repository.getSharedPreferences().getLongVal(Constants.KEY_USER_ID);
-            repository.getRoomService().addressDao().deleteAddressByUserId(userId).subscribeOn(Schedulers.io()) // Chọn Scheduler để thực thi trên luồng I/O
-                    .observeOn(AndroidSchedulers.mainThread()) // Chọn Scheduler để xử lý kết quả trên luồng chính (UI thread)
+            repository.getRoomService().addressDao().deleteAddressByUserId(userId).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new CompletableObserver() {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
@@ -121,6 +134,12 @@ public class ProfileFragmentViewModel extends BaseFragmentViewModel {
 
                         @Override
                         public void onComplete() {
+                            clearToken();
+                            Intent intent = new Intent(application.getCurrentActivity(), SignInActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            application.getCurrentActivity().startActivity(intent);
+                            application.getCurrentActivity().finish();
+                            dialog.dismiss();
                             Log.d("TAG", "onComplete: ooo" );
                         }
 
@@ -129,12 +148,7 @@ public class ProfileFragmentViewModel extends BaseFragmentViewModel {
                             e.printStackTrace();
                         }
                     });
-            clearToken();
-            Intent intent = new Intent(application.getCurrentActivity(), IndexActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            application.getCurrentActivity().startActivity(intent);
-            application.getCurrentActivity().finish();
-            dialog.dismiss();
+
         });
         dialogLogoutBinding.btnCancel.setOnClickListener(view -> {
             dialog.dismiss();
@@ -148,12 +162,16 @@ public class ProfileFragmentViewModel extends BaseFragmentViewModel {
     }
     public void clearToken(){
         repository.getSharedPreferences().removeKey(PreferencesService.KEY_BEARER_TOKEN);
-        repository.getRoomService().userDao().deleteById(userId.get()).blockingAwait();
+        repository.getRoomService().userDao().deleteAllExceptId(userId.get()).blockingAwait();
         repository.getRoomService().addressDao().deleteAddressByUserId(userId.get()).blockingAwait();
     }
 
     public void gotoWallet(){
         Intent intent = new Intent(application.getCurrentActivity(), WalletActivity.class);
         application.getCurrentActivity().startActivity(intent);
+    }
+
+    public Completable updateBiometric(Boolean isBiometric){
+        return repository.getRoomService().userDao().updateBiometric(userId.get(), isBiometric);
     }
 }

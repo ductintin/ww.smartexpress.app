@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -82,6 +83,32 @@
                 android:textColorHint="@color/grey_light"
                 android:text="@={vm.customerNote}"/>
 
+            <TextView
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lý do khác"
+                style="@style/new_password_subtitle"
+                android:layout_marginLeft="@dimen/_5sdp">
+
+            </TextView>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcRateOption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_rate_option"
+                    android:clipToPadding="false"
+                    android:paddingRight="@dimen/_10sdp"
+                    tools:itemCount="1">
+
+                </androidx.recyclerview.widget.RecyclerView>
+            </androidx.core.widget.NestedScrollView>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:visibility="gone"
                 android:layout_marginVertical="@dimen/_10sdp"
@@ -145,7 +172,7 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_15sdp"
                 android:text="@string/cancel_confirm"
-                android:enabled="@{!TextUtils.isEmpty(vm.customerNote) || vm.isSelected1}">
+                android:enabled="@{!TextUtils.isEmpty(vm.customerNote) || vm.onClick}">
 
             </Button>
 

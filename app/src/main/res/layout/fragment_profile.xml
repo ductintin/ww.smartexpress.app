@@ -617,7 +617,7 @@
                     </TextView>
 
                     <LinearLayout
-                        android:onClick="@{()->a.createnoti()}"
+                        android:onClick="@{() -> vm.gotoWallet()}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -645,6 +645,59 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_icon_expand" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:visibility="@{vm.hasBiometric ? View.VISIBLE : View.GONE}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    android:layout_marginTop="@dimen/_10sdp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="BẢO MẬT"
+                        style="@style/app_text_b"
+                        android:textColor="@color/gray"
+                        android:layout_margin="@dimen/_12sdp">
+
+                    </TextView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_12sdp"
+                        android:paddingVertical="@dimen/_15sdp">
+
+                        <TextView
+                            style="@style/app_text_b"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="@dimen/_15sdp"
+                            android:layout_weight="1"
+                            android:maxLines="1"
+                            android:text="Xác thực vân tay cho mật khẩu" />
+
+                        <com.kyleduo.switchbutton.SwitchButton
+                            android:id="@+id/switchState"
+                            android:layout_gravity="right|center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:kswThumbRangeRatio="2.2"
+                            android:checked="@{vm.profile.isBiometric ? Boolean.TRUE : Boolean.FALSE}"
+                            app:kswThumbDrawable="@drawable/thumb_off"
+                            app:kswBackColor="@color/switch_track"
+                            app:kswThumbColor="@color/switch_thumb"
+                            app:kswThumbHeight="@dimen/_15sdp"
+                            app:kswThumbWidth="@dimen/_15sdp">
+
+                        </com.kyleduo.switchbutton.SwitchButton>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -705,6 +758,7 @@
                         android:layout_marginRight="@dimen/_12sdp">
 
                     </FrameLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

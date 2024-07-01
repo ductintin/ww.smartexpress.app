@@ -2,14 +2,19 @@ package ww.smartexpress.app.ui.trip.cancel;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -19,10 +24,12 @@ import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.model.api.request.CancelBookingRequest;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
 import ww.smartexpress.app.data.model.api.response.CancelReason;
+import ww.smartexpress.app.data.model.api.response.RateOption;
 import ww.smartexpress.app.databinding.ActivityTripCancelReasonBinding;
 import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
 import ww.smartexpress.app.ui.home.HomeActivity;
+import ww.smartexpress.app.ui.rate.adapter.RateOptionAdapter;
 import ww.smartexpress.app.ui.trip.adapter.CancelReasonAdapter;
 import ww.smartexpress.app.ui.trip.complete.TripCompleteActivity;
 
@@ -30,6 +37,8 @@ public class TripCancelReasonActivity extends BaseActivity<ActivityTripCancelRea
     private CancelReasonAdapter cancelReasonAdapter1;
     private CancelReasonAdapter cancelReasonAdapter2;
 
+    List<String> cancelReason = new ArrayList<>();
+    RateOptionAdapter cancelOptionAdapter;
     Long id;
     @Override
     public int getLayoutId() {
@@ -61,6 +70,33 @@ public class TripCancelReasonActivity extends BaseActivity<ActivityTripCancelRea
 
         //getCurrentBooking();
         //load();
+        loadCancelOption();
+    }
+
+    public void loadCancelOption(){
+        List<RateOption> rateOptionList = new ArrayList<>();
+        rateOptionList.add(new RateOption("1", "Có việc", false));
+        rateOptionList.add(new RateOption("2", "Tìm được dịch vụ khác", false));
+        rateOptionList.add(new RateOption("3", "Chi phí đắt", false));
+        rateOptionList.add(new RateOption("4", "Lý do khách quan", false));
+
+        viewBinding.setLifecycleOwner(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext()
+                ,LinearLayoutManager.HORIZONTAL, false);
+        viewBinding.rcRateOption.setLayoutManager(layoutManager);
+        viewBinding.rcRateOption.setItemAnimator(new DefaultItemAnimator());
+        cancelOptionAdapter = new RateOptionAdapter(rateOptionList);
+        viewBinding.rcRateOption.setAdapter(cancelOptionAdapter);
+
+        cancelOptionAdapter.setOnItemClickListener(pos -> {
+            viewModel.onClick.set(cancelOptionAdapter.handleClick(pos));
+            if(cancelReason.contains(rateOptionList.get(pos).getName())){
+                cancelReason.remove(rateOptionList.get(pos).getName());
+            }else{
+                cancelReason.add(rateOptionList.get(pos).getName());
+            }
+        });
+
     }
 
     public void load(){
@@ -109,7 +145,13 @@ public class TripCancelReasonActivity extends BaseActivity<ActivityTripCancelRea
     public void cancelTrip(){
         CancelBookingRequest request = new CancelBookingRequest();
         request.setId(id);
-        request.setNote(viewModel.customerNote.get().trim() + " - " + viewModel.textNote.get());
+        String note = cancelReason.stream().collect(Collectors.joining(", "));
+        if(!TextUtils.isEmpty(viewModel.customerNote.get())){
+            request.setNote(note + ", " + viewModel.customerNote.get().trim());
+        }else{
+            request.setNote(note);
+        }
+        //request.setNote(viewModel.customerNote.get().trim() + " - " + viewModel.textNote.get());
         viewModel.compositeDisposable.add(viewModel.cancelBooking(request)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

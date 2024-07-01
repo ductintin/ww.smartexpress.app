@@ -29,4 +29,6 @@ public class UserEntity {
     private Integer status;
     private String encryptedPassword;
     private String bankCard;
+
+    private Boolean isBiometric;
 }

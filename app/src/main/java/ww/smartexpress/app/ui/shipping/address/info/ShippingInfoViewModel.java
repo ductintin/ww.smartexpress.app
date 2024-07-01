@@ -1,9 +1,14 @@
 package ww.smartexpress.app.ui.shipping.address.info;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.databinding.ObservableField;
+import androidx.lifecycle.MutableLiveData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
 import ww.smartexpress.app.MVVMApplication;
@@ -35,13 +40,21 @@ public class ShippingInfoViewModel extends BaseViewModel {
     public ObservableField<Long> distance = new ObservableField<>(0L);
     public ObservableField<String> distanceKm = new ObservableField<>("");
 
-    public ObservableField<String> consigneeName = new ObservableField<>("Phát Nguyễn");
-    public ObservableField<String> consigneePhone = new ObservableField<>("0342963110");
+    public ObservableField<String> consigneeName = new ObservableField<>("");
+    public ObservableField<String> consigneePhone = new ObservableField<>("");
     public ObservableField<String> senderName = new ObservableField<>("");
     public ObservableField<String> senderPhone = new ObservableField<>("");
     public ObservableField<String> customerNote = new ObservableField<>("");
     public ObservableField<Boolean> isCod = new ObservableField<>(false);
     public ObservableField<Integer> codPrice = new ObservableField<>(0);
+
+    public MutableLiveData<Integer> bonusService = new MutableLiveData<>(0);
+
+    public MutableLiveData<Integer> itemSize = new MutableLiveData<>(0);
+    public ObservableField<Integer> size = new ObservableField<>(0);
+    public ObservableField<List<Bitmap>> bitmaps= new ObservableField<>(new ArrayList<>());
+    public ObservableField<Boolean> selectCOD = new ObservableField<>(false);
+    public ObservableField<String> codPriceText = new ObservableField<>("");
 
     public ShippingInfoViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
@@ -81,5 +94,15 @@ public class ShippingInfoViewModel extends BaseViewModel {
                 .doOnNext(response -> {
 
                 });
+    }
+
+    public void selectCOD(){
+        bonusService.setValue(0);
+        selectCOD.set(!selectCOD.get());
+    }
+
+
+    public void selectHandDelivery(){
+        bonusService.setValue(1);
     }
 }

@@ -18,12 +18,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
@@ -31,8 +35,10 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -50,8 +56,11 @@ import ww.smartexpress.app.ui.index.IndexActivity;
 import ww.smartexpress.app.ui.password.reset.ResetPasswordActivity;
 
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding, ProfileFragmentViewModel> {
+    private Executor executor;
+    private BiometricPrompt biometricPrompt;
+    private BiometricPrompt.PromptInfo promptInfo;
 
-
+    private static final int REQ_CODE = 101011;
     @Override
     public int getBindingVariable() {
         return BR.vm;
@@ -114,10 +123,126 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        executor = ContextCompat.getMainExecutor(getActivity().getApplicationContext());
+        biometricPrompt = new BiometricPrompt(this,
+                executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode,
+                                              @lombok.NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Log.d("TAG", "onAuthenticationError: " + errString);
+                viewModel.profile.get().setIsBiometric(false);
+                binding.switchState.setChecked(false);
+                binding.switchState.setThumbDrawable(ContextCompat.getDrawable(getContext(), R.drawable.thumb_off));
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(
+                    @lombok.NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                viewModel.updateBiometric(true)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new CompletableObserver() {
+                            @Override
+                            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Log.d("TAG", "onComplete: " + !viewModel.profile.get().getIsBiometric());
+                                viewModel.profile.get().setIsBiometric(true);
+                                binding.switchState.setThumbDrawable(ContextCompat.getDrawable(getContext(), R.drawable.thumb_on));
+                            }
+
+                            @Override
+                            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                                viewModel.profile.get().setIsBiometric(false);
+                                binding.switchState.setThumbDrawable(ContextCompat.getDrawable(getContext(), R.drawable.thumb_off));
+
+                            }
+                        });
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                viewModel.profile.get().setIsBiometric(false);
+                binding.switchState.setChecked(false);
+                binding.switchState.setThumbDrawable(ContextCompat.getDrawable(getContext(), R.drawable.thumb_off));
+                Log.d("TAG", "onAuthenticationFailed: ");
+            }
+        });
+
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Xác thực vân tay cho đăng nhập ứng dụng")
+                .setNegativeButtonText("Sử dụng mật khẩu")
+                .build();
+
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.setA(this);
-        getProfile();
+
+        BiometricManager biometricManager = BiometricManager.from(getContext());
+
+        switch (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG| BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
+            case BiometricManager.BIOMETRIC_SUCCESS:
+                viewModel.hasBiometric.set(true);
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+//                final Intent enrollIntent = new Intent(Settings.ACTION_BIOMETRIC_ENROLL);
+//                enrollIntent.putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED, BiometricManager.Authenticators.BIOMETRIC_STRONG| BiometricManager.Authenticators.DEVICE_CREDENTIAL);
+//                startActivityForResult(enrollIntent, REQ_CODE);
+//                break;
+
+        }
+
+        binding.switchState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                Log.d("TAG", "onCheckedChanged: chi so check " + b);
+                if(viewModel.profile.get().getIsBiometric() && !b){
+                    viewModel.updateBiometric(false)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new CompletableObserver() {
+                                @Override
+                                public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                                }
+
+                                @Override
+                                public void onComplete() {
+                                    viewModel.profile.get().setIsBiometric(false);
+                                    binding.switchState.setThumbDrawable(ContextCompat.getDrawable(getContext(), R.drawable.thumb_off));
+                                }
+
+                                @Override
+                                public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                                    viewModel.profile.get().setIsBiometric(true);
+                                    binding.switchState.setThumbDrawable(ContextCompat.getDrawable(getContext(), R.drawable.thumb_on));
+                                }
+                            });
+                }else if(!viewModel.profile.get().getIsBiometric() && b){
+                    Log.d("TAG", "onCheckedChanged: false nee");
+                    biometricPrompt.authenticate(promptInfo);
+                }
+            }
+        });
+
+
     }
 
     @Override
@@ -138,16 +263,11 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
 
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull UserEntity userEntity) {
-                        ProfileResponse profileResponse = ProfileResponse.builder()
-                                .id(userEntity.getId())
-                                .avatar(userEntity.getAvatar())
-                                .email(userEntity.getEmail())
-                                .name(userEntity.getName())
-                                .phone(userEntity.getPhone())
-                                .build();
+
 
                         Log.d("TAG", "onSuccess: " + userEntity.getEncryptedPassword());
-                        viewModel.profile.set(profileResponse);
+                        Log.d("TAG", "onSuccess: bio" + userEntity.getIsBiometric());
+                        viewModel.profile.set(userEntity);
                     }
 
                     @Override

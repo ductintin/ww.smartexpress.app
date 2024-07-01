@@ -60,10 +60,12 @@ import ww.smartexpress.app.R;
 import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.model.api.ApiModelUtils;
 import ww.smartexpress.app.data.model.api.request.CreateBookingRequest;
+import ww.smartexpress.app.data.model.api.response.ApplyPromotion;
 import ww.smartexpress.app.data.model.api.response.BookCar;
 import ww.smartexpress.app.data.model.api.response.BookingDoneResponse;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
 import ww.smartexpress.app.data.model.api.response.DriverBookingResponse;
+import ww.smartexpress.app.data.model.api.response.DriverPosition;
 import ww.smartexpress.app.data.model.api.response.PaymentMethod;
 import ww.smartexpress.app.data.model.api.response.Promotion;
 import ww.smartexpress.app.data.model.api.response.ServicePrice;
@@ -305,32 +307,32 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     }
 
     private void bottomSheetLayout(){
-//        sheetBehavior = BottomSheetBehavior.from(viewBinding.bottomLayout);
-//        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-//
-//        BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
-//            @Override
-//            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-//                switch (newState) {
-//                    case BottomSheetBehavior.STATE_HIDDEN:
-//                        break;
-//                    case BottomSheetBehavior.STATE_EXPANDED:
-//
-//                    case BottomSheetBehavior.STATE_DRAGGING:
-//                        //Bắt đầu kéo View
-//                        break;
-//                    case BottomSheetBehavior.STATE_COLLAPSED:
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//
-//            @Override
-//            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-//            }
-//        };
-//        sheetBehavior.addBottomSheetCallback(bottomSheetCallback);
+        sheetBehavior = BottomSheetBehavior.from(viewBinding.bottomLayout);
+        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        break;
+                    case BottomSheetBehavior.STATE_EXPANDED:
+
+                    case BottomSheetBehavior.STATE_DRAGGING:
+                        //Bắt đầu kéo View
+                        break;
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+            }
+        };
+        sheetBehavior.addBottomSheetCallback(bottomSheetCallback);
     }
 
     public void findingDriver(){
@@ -359,7 +361,6 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                     viewModel.showErrorMessage(getString(R.string.network_error));
                     err.printStackTrace();
                 }));
-
 
     }
 
@@ -557,12 +558,12 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         mMap.addMarker(new MarkerOptions().position(origin).title(viewModel.origin.get()).icon(originIc));
                         mMap.addMarker(new MarkerOptions().position(des).title(viewModel.destination.get()).icon(desIc));
 
-
                         LatLngBounds bounds = new LatLngBounds.Builder().include(origin).include(des).build();
                         Point point = new Point();
                         getWindowManager().getDefaultDisplay().getSize(point);
-                        mMap.setPadding(10, 10, 10, point.y / 3);
+                        mMap.setPadding(10, point.y / 5, 10, point.y / 3);
                         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+
 
                         loadService();
 
@@ -580,7 +581,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     }
 
     public void loadMapDriverDirection(){
-        viewModel.compositeDisposable.add(viewModel.getMapDriverDirection(bookingResponse != null && bookingResponse.getState() == 200 ? viewModel.destinationLatLng.get() : viewModel.originLatLng.get())
+        viewModel.compositeDisposable.add(viewModel.getMapDriverDirection(bookingResponse != null && bookingResponse.getState() == 200 || bookingResponse.getState() == 100 ? viewModel.destinationLatLng.get() : viewModel.originLatLng.get())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
@@ -718,11 +719,13 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                                 viewModel.isBooking.set(false);
                                 viewModel.isFound.set(true);
                                 foundDriver();
+                                //getDriverPosition(bookingResponse.getDriver().getId());
                                 break;
                             case 200:
                                 viewModel.isFound.set(false);
                                 viewModel.isShipping.set(true);
                                 foundDriver();
+                                //getDriverPosition(bookingResponse.getDriver().getId());
                                 break;
                         }
 
@@ -881,7 +884,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 Log.d("TAG", "onNewIntent: case 5 " + codeCase);
                 Log.d("TAG", "onNewIntent: codebooking vm" + viewModel.bookingCode.get());
                 Log.d("TAG", "onNewIntent: codebooking" + intent.getStringExtra("BOOKING_CODE"));
-                if(viewModel.bookingCode.get().equals(intent.getStringExtra("BOOKING_CODE"))){
+                if(viewModel.bookingCode.get().equals(intent.getStringExtra("BOOKING_ID"))){
                     getCurrentBooking2();
                 }
                 break;
@@ -889,37 +892,44 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEventPromotion(Promotion promotion) {
-        if(promotion != null){
-            double discount = 0;
-            double promotionMoney = 0;
+    public void onEventPromotion(ApplyPromotion applyPromotion) {
+        if(applyPromotion != null){
             int index = viewModel.selectedServiceIndex.get();
-            double price = this.bookCars.get(index).getPrice();
-
-            //tien
-            if(promotion.getKind() == 0){
-                discount = price - promotion.getDiscountValue();
-                if(discount > 0){
-                    promotionMoney = promotion.getDiscountValue();
-                }else{
-                    promotionMoney = price;
-                }
+            //hủy
+            if(applyPromotion.getKindApply() == 0){
+                deletePromotion();
             }else{
-                //neu tien giam nhieu hon max
-                if(price * promotion.getDiscountValue() / 100 > promotion.getLimitValueMax()){
-                    promotionMoney = promotion.getLimitValueMax();
+                double discount = 0;
+                double promotionMoney = 0;
+                double price = this.bookCars.get(index).getPrice();
+
+                Promotion promotion = applyPromotion.getPromotion();
+
+                //tien
+                if(promotion.getKind() == 0){
+                    discount = price - promotion.getDiscountValue();
+                    if(discount > 0){
+                        promotionMoney = promotion.getDiscountValue();
+                    }else{
+                        promotionMoney = price;
+                    }
                 }else{
-                    promotionMoney = this.bookCars.get(index).getPrice() * promotion.getDiscountValue() / 100;
+                    //neu tien giam nhieu hon max
+                    if(price * promotion.getDiscountValue() / 100 > promotion.getLimitValueMax()){
+                        promotionMoney = promotion.getLimitValueMax();
+                    }else{
+                        promotionMoney = this.bookCars.get(index).getPrice() * promotion.getDiscountValue() / 100;
+                    }
                 }
+
+                this.bookCars.get(index).setDiscount(promotionMoney);
+
+                bookCarAdapter.notifyDataSetChanged();
+                viewModel.discount.set(promotionMoney);
+                viewModel.selectedService.get().setSelectedId(promotion.getId());
+                viewModel.bookingRequest.get().setPromotionMoney(promotionMoney);
+                viewModel.bookingRequest.get().setPromotionId(promotion.getId());
             }
-
-            this.bookCars.get(index).setDiscount(promotionMoney);
-
-            bookCarAdapter.notifyDataSetChanged();
-            viewModel.discount.set(promotionMoney);
-            viewModel.selectedService.get().setSelectedId(promotion.getId());
-            viewModel.bookingRequest.get().setPromotionMoney(promotionMoney);
-            viewModel.bookingRequest.get().setPromotionId(promotion.getId());
         }
     }
 
@@ -934,7 +944,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     protected void onPause() {
         super.onPause();
         EventBus.getDefault().unregister(this);
-        EventBus.getDefault().removeStickyEvent(Promotion.class);
+        EventBus.getDefault().removeStickyEvent(ApplyPromotion.class);
         EventBus.getDefault().removeStickyEvent(PaymentMethod.class);
     }
 
@@ -953,5 +963,26 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
             viewModel.paymentKind.set(paymentMethod.getPaymentKind());
             viewModel.bookingRequest.get().setPaymentKind(paymentMethod.getPaymentKind());
         }
+    }
+
+    public void getDriverPosition(Long driverId){
+        viewModel.compositeDisposable.add(viewModel.getDriverPosition(driverId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response ->{
+                    viewModel.hideLoading();
+                    if(response.isResult() && response.getData().getTotalElements() > 0){
+                        DriverPosition driverPosition = response.getData().getContent().get(0);
+                        viewModel.driverLatLng.set(driverPosition.getLatitude() + "," + driverPosition.getLongitude());
+                        loadMapDriverDirection();
+                    }else{
+
+                    }
+
+                }, err -> {
+                    viewModel.hideLoading();
+                    viewModel.showErrorMessage(getString(R.string.network_error));
+                    err.printStackTrace();
+                }));
     }
 }

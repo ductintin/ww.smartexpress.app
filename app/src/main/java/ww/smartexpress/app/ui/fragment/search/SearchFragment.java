@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -19,6 +20,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.rxjava3.EmptyResultSetException;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -99,43 +101,54 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
         Intent intent = getActivity().getIntent();
         if(intent != null){
             Log.d("TAG", "onViewCreated: ");
+//            if(intent.getStringExtra("ENCRYPTED_PW") != null){
+//                viewModel.user.get().setEncryptedPassword(intent.getStringExtra("ENCRYPTED_PW"));
+//
+//                executor = ContextCompat.getMainExecutor(getContext());
+//                biometricPrompt = new BiometricPrompt(this,
+//                        executor, new BiometricPrompt.AuthenticationCallback() {
+//                    @Override
+//                    public void onAuthenticationError(int errorCode,
+//                                                      @lombok.NonNull CharSequence errString) {
+//                        super.onAuthenticationError(errorCode, errString);
+//                        Log.d("TAG", "onAuthenticationError: " + errString);
+//                    }
+//
+//                    @Override
+//                    public void onAuthenticationSucceeded(
+//                            @lombok.NonNull BiometricPrompt.AuthenticationResult result) {
+//                        super.onAuthenticationSucceeded(result);
+//                        viewModel.user.get().setEncryptedPassword(intent.getStringExtra("ENCRYPTED_PW"));
+//                        Log.d("TAG", "onAuthenticationSucceeded: ");
+//                    }
+//
+//                    @Override
+//                    public void onAuthenticationFailed() {
+//                        super.onAuthenticationFailed();
+//                        Log.d("TAG", "onAuthenticationFailed: ");
+//                    }
+//                });
+//
+//                promptInfo = new BiometricPrompt.PromptInfo.Builder()
+//                        .setTitle("Xác thực vân tay cho đăng nhập ứng dụng")
+//                        .setNegativeButtonText("Sử dụng mật khẩu")
+//                        .build();
+//
+//
+//                biometricPrompt.authenticate(promptInfo);
+//            }
+
+            if(intent.getStringExtra("FROM_SIGNIN") != null){
+                viewModel.fromSignIn.set(true);
+            }
+
             if(intent.getStringExtra("ENCRYPTED_PW") != null){
-                viewModel.user.get().setEncryptedPassword(intent.getStringExtra("ENCRYPTED_PW"));
-
-                executor = ContextCompat.getMainExecutor(getContext());
-                biometricPrompt = new BiometricPrompt(this,
-                        executor, new BiometricPrompt.AuthenticationCallback() {
-                    @Override
-                    public void onAuthenticationError(int errorCode,
-                                                      @lombok.NonNull CharSequence errString) {
-                        super.onAuthenticationError(errorCode, errString);
-                        Log.d("TAG", "onAuthenticationError: " + errString);
-                    }
-
-                    @Override
-                    public void onAuthenticationSucceeded(
-                            @lombok.NonNull BiometricPrompt.AuthenticationResult result) {
-                        super.onAuthenticationSucceeded(result);
-                        viewModel.user.get().setEncryptedPassword(intent.getStringExtra("ENCRYPTED_PW"));
-                        Log.d("TAG", "onAuthenticationSucceeded: ");
-                    }
-
-                    @Override
-                    public void onAuthenticationFailed() {
-                        super.onAuthenticationFailed();
-                        Log.d("TAG", "onAuthenticationFailed: ");
-                    }
-                });
-
-                promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                        .setTitle("Xác thực vân tay cho đăng nhập ứng dụng")
-                        .setNegativeButtonText("Sử dụng mật khẩu")
-                        .build();
-
-                biometricPrompt.authenticate(promptInfo);
+                Log.d("TAG", "onViewCreated: " + intent.getStringExtra("ENCRYPTED_PW"));
+                viewModel.encryptedPassword.set(intent.getStringExtra("ENCRYPTED_PW"));
             }
         }
-        loadProfile();
+
+        getProfileLocal();
         loadCurrentBooking();
 
         binding.swRefreshHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -152,24 +165,57 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
 
     }
 
+    public void getProfileLocal(){
+        viewModel.getProfileLocal().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<UserEntity>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull UserEntity userEntity) {
+                        if(userEntity != null){
+                            viewModel.user.set(userEntity);
+                        }
+
+                        loadProfile();
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        e.printStackTrace();
+                        if(e instanceof EmptyResultSetException){
+                            loadProfile();
+                        }
+                    }
+                });
+
+    }
+
     public void loadProfile(){
         viewModel.compositeDisposable.add(viewModel.getProfile()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
                     if(response.isResult()){
-
-                        viewModel.user.get().setId(response.getData().getId());
-                        viewModel.user.get().setAvatar(response.getData().getAvatar());
-                        viewModel.user.get().setName(response.getData().getName());
-                        viewModel.user.get().setPhone(response.getData().getPhone());
-                        viewModel.user.get().setEmail(response.getData().getEmail());
-                        viewModel.user.get().setBankCard(response.getData().getBankCard());
-
-                        //Từ đăng nhập vào
-                        if(viewModel.user.get().getEncryptedPassword() != null){
+                        //Mới đăng nhập lần đầu
+                        if(viewModel.user.get().getId() == null){
                             //insert mới
-                            viewModel.insertUser(viewModel.user.get()).subscribeOn(Schedulers.io())
+                            Log.d("TAG", "loadProfile: mơi" );
+                            UserEntity userEntity = UserEntity.builder()
+                                    .id(response.getData().getId())
+                                    .avatar(response.getData().getAvatar())
+                                    .name(response.getData().getName())
+                                    .email(response.getData().getEmail())
+                                    .phone(response.getData().getPhone())
+                                    .bankCard(response.getData().getBankCard())
+                                    .encryptedPassword(viewModel.encryptedPassword.get())
+                                    .isBiometric(false)
+                                    .build();
+
+                            viewModel.insertUser(userEntity).subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(new CompletableObserver() {
                                         @Override
@@ -188,12 +234,13 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                                         }
                                     });
                         }else{
-                            viewModel.updateUser(response.getData().getId(),
-                                        response.getData().getAvatar(),
-                                        response.getData().getName(),
-                                        response.getData().getPhone(),
-                                        response.getData().getEmail(),
-                                            response.getData().getBankCard())
+                            Log.d("TAG", "loadProfile: cũ" );
+                            viewModel.updateExceptBiometric(response.getData().getId(),
+                                            response.getData().getAvatar(),
+                                            response.getData().getName(),
+                                            response.getData().getPhone(),
+                                            response.getData().getEmail(),
+                                            response.getData().getBankCard(), viewModel.encryptedPassword.get())
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(new CompletableObserver() {
@@ -253,12 +300,12 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                             });
 
                         }else{
+                            viewModel.totalBookingElements.set(0L);
                             if(bookingAdapter != null){
                                 bookingAdapter.clearItems();
                             }
                         }
                     }else{
-
                     }
                 }, err -> {
                     viewModel.showErrorMessage(getString(R.string.network_error));
