@@ -181,6 +181,7 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
 
                     Log.d("TAG", "onAuthenticationSucceeded: " + viewModel.encryptedPassword.get());
                     viewModel.password.set(viewModel.getApplication().getAes().decrypt(viewModel.encryptedPassword.get()));
+                    viewBinding.edtPw.clearFocus();
                     Log.d("TAG", "onAuthenticationSucceeded: de " + viewModel.password.get());
                 } catch (Exception e) {
                     throw new RuntimeException(e);

@@ -187,6 +187,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         e.printStackTrace();
                         if(e instanceof EmptyResultSetException){
+                            //truong hop moi
                             loadProfile();
                         }
                     }
@@ -240,7 +241,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                                             response.getData().getName(),
                                             response.getData().getPhone(),
                                             response.getData().getEmail(),
-                                            response.getData().getBankCard(), viewModel.encryptedPassword.get())
+                                            response.getData().getBankCard(),
+                                            !TextUtils.isEmpty(viewModel.encryptedPassword.get()) ? viewModel.encryptedPassword.get() : viewModel.user.get().getEncryptedPassword())
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(new CompletableObserver() {

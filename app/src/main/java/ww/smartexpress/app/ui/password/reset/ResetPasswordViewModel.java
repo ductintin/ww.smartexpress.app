@@ -58,7 +58,7 @@ public class ResetPasswordViewModel extends BaseViewModel {
     }
 
     Completable updateEncryptedPassword() throws Exception {
-        return repository.getRoomService().userDao().updateEncryptedPassword(userId.get(), application.getAes().decrypt(newPw.get()));
+        return repository.getRoomService().userDao().updateEncryptedPassword(userId.get(), application.getAes().encrypt(newPw.get()));
     }
 
 }

@@ -399,6 +399,7 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
+                    viewModel.hideLoading();
                     if(response.isResult()){
                         Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
                         intent.putExtra("FROM_SIGNIN", "1");
