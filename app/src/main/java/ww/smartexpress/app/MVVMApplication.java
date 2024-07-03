@@ -50,10 +50,13 @@ import timber.log.Timber;
 import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.model.api.ApiModelUtils;
 import ww.smartexpress.app.data.model.api.response.ChatMessage;
+import ww.smartexpress.app.data.model.api.response.DepositMessage;
+import ww.smartexpress.app.data.model.api.response.DepositSuccess;
 import ww.smartexpress.app.data.model.api.response.DriverBookingResponse;
 import ww.smartexpress.app.data.model.api.response.DriverPosition;
 import ww.smartexpress.app.data.model.api.response.MessageOfTransaction;
 import ww.smartexpress.app.data.model.api.response.TransactionMessage;
+import ww.smartexpress.app.data.model.other.ToastMessage;
 import ww.smartexpress.app.data.websocket.Command;
 import ww.smartexpress.app.data.websocket.Message;
 import ww.smartexpress.app.data.websocket.SocketEventModel;
@@ -72,6 +75,7 @@ import ww.smartexpress.app.ui.home.HomeActivity;
 import ww.smartexpress.app.ui.qrcode.QrcodeActivity;
 import ww.smartexpress.app.ui.trip.TripActivity;
 import ww.smartexpress.app.ui.trip.detail.TripDetailActivity;
+import ww.smartexpress.app.ui.wallet.WalletActivity;
 import ww.smartexpress.app.utils.AES;
 import ww.smartexpress.app.utils.DialogUtils;
 import ww.smartexpress.app.utils.NumberUtils;
@@ -98,7 +102,7 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
 
     @Getter
     @Setter
-    private ChatMessage chatDetail;
+    private ChatMessage chatMessage = null;
 
     @Getter
     private AES aes;
@@ -118,6 +122,29 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
     @Getter
     @Setter
     private Integer notificationIdChatIndex = 0;
+
+    @Getter
+    @Setter
+    private String currentBookingId;
+    @Getter
+    @Setter
+    private String cancelBookingId;
+    @Getter
+    @Setter
+    private Long detailsBookingId;
+    @Getter
+    @Setter
+    private Long deleteBookingId;
+    @Getter
+    @Setter
+    private Long chatBookingId;
+
+    @Getter
+    @Setter
+    private Boolean isDepositSuccess = false;
+    @Getter
+    @Setter
+    private DepositMessage depositMessage = null;
 
     @Override
     public void onCreate() {
@@ -235,7 +262,8 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
                         navigateFromDriverUpdatePositionToBookDeliveryActivity(socketEventModel);
                         break;
                     case Command.CMD_CLIENT_RECEIVED_PUSH_NOTIFICATION:
-                        transactionNotification(socketEventModel.getMessage());
+                        //transactionNotification(socketEventModel.getMessage());
+                        handleDepositSuccess(socketEventModel);
                         break;
                     default:
                         break;
@@ -276,45 +304,98 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
 
     }
 
-    public void navigateToChat(SocketEventModel socketEventModel){
+    public void handleDepositSuccess(SocketEventModel socketEventModel){
+        isDepositSuccess = true;
         Message message = socketEventModel.getMessage();
-        chatDetail = message.getDataObject(ChatMessage.class);
-
-        if(chatDetail != null){
-            Log.d("TAG", "navigateToChat: " + chatDetail.getBookingId());
-
-            final Bitmap[] bitmap = {null};
-
-            Glide.with(getApplicationContext())
-                    .asBitmap()
-                    .load(BuildConfig.MEDIA_URL+ "/v1/file/download" + "/6783713748123648/AVATAR/AVATAR_XkdibfQk0l.jpg")
-                    .into(new CustomTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-
-                            bitmap[0] = resource;
-                            createMessageNotification(chatDetail, bitmap[0]);
-                            // TODO Do some work: pass this bitmap
-                        }
-
-                        @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) {
-                        }
-                    });
-
-            //nếu không ở chat thì hiện badge
-            if(currentActivity instanceof BookDeliveryActivity){
-
-            }
-            if(currentActivity instanceof ChatActivity){
-                Intent intent = new Intent(currentActivity, ChatActivity.class);
-                if(chatDetail != null){
-                    intent.putExtra("BOOKING_CODE", chatDetail.getCodeBooking());
+        DepositSuccess depositSuccess = message.getDataObject(DepositSuccess.class);
+        depositMessage = ApiModelUtils.fromJson(depositSuccess.getMessage(),DepositMessage.class);
+        Intent intent ;
+        ToastMessage toastMessage;
+        switch (depositSuccess.getKind()){
+            case 1:
+                if(currentActivity instanceof WalletActivity || currentActivity instanceof QrcodeActivity){
+                    intent = new Intent(currentActivity, WalletActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     currentActivity.startActivity(intent);
                 }
+                toastMessage = new ToastMessage(ToastMessage.TYPE_SUCCESS, "Bạn đã nạp thành công "+ NumberUtils.formatCurrency(Double.valueOf(depositMessage.getMoney()))+" vào ví");
+                toastMessage.showMessage(currentActivity);
+                break;
+            case 2:
+                if(currentActivity instanceof WalletActivity){
+                    intent = new Intent(currentActivity, WalletActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    currentActivity.startActivity(intent);
+                }
+                toastMessage = new ToastMessage(ToastMessage.TYPE_SUCCESS, "Yêu cầu rút "+NumberUtils.formatCurrency(Double.valueOf(depositMessage.getMoney()))+" đã được chấp nhận");
+                toastMessage.showMessage(currentActivity);
+                break;
+            case 3:
+                toastMessage = new ToastMessage(ToastMessage.TYPE_SUCCESS, "Yêu cầu rút "+NumberUtils.formatCurrency(Double.valueOf(depositMessage.getMoney()))+" bị từ chối vì: "+depositMessage.getReason());
+                toastMessage.showMessage(currentActivity);
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    public void navigateToChat(SocketEventModel socketEventModel){
+        Message message = socketEventModel.getMessage();
+        if(Objects.equals(message.getApp(), Constants.APP_SERVER)){
+            chatMessage = message.getDataObject(ChatMessage.class);
+            chatBookingId = Long.valueOf(chatMessage.getBookingId());
+            if(currentActivity instanceof ChatActivity && Objects.equals(((ChatActivity) currentActivity).getBookingId(), chatBookingId)){
+                Intent intent = new Intent(currentActivity, ChatActivity.class);
+//            intent.putExtra("codeBooking", chatMessage.getCodeBooking());
+//            intent.putExtra("roomId", Long.valueOf(chatMessage.getRoomId()));
+//            intent.putExtra("bookingId", Long.valueOf(chatMessage.getBookingId()));
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                currentActivity.startActivity(intent);
+            }else{
+                Intent intent = new Intent(currentActivity, ChatActivity.class);
+                intent.putExtra("codeBooking", chatMessage.getCodeBooking());
+                intent.putExtra("roomId", Long.valueOf(chatMessage.getRoomId()));
+                intent.putExtra("bookingId", Long.valueOf(chatMessage.getBookingId()));
+//            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                currentActivity.startActivity(intent);
             }
         }
+
+//        if(chatDetail != null){
+//            Log.d("TAG", "navigateToChat: " + chatDetail.getBookingId());
+//
+//            final Bitmap[] bitmap = {null};
+//
+//            Glide.with(getApplicationContext())
+//                    .asBitmap()
+//                    .load(BuildConfig.MEDIA_URL+ "/v1/file/download" + "/6783713748123648/AVATAR/AVATAR_XkdibfQk0l.jpg")
+//                    .into(new CustomTarget<Bitmap>() {
+//                        @Override
+//                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+//
+//                            bitmap[0] = resource;
+//                            createMessageNotification(chatDetail, bitmap[0]);
+//                            // TODO Do some work: pass this bitmap
+//                        }
+//
+//                        @Override
+//                        public void onLoadCleared(@Nullable Drawable placeholder) {
+//                        }
+//                    });
+//
+//            //nếu không ở chat thì hiện badge
+//            if(currentActivity instanceof BookDeliveryActivity){
+//
+//            }else if(currentActivity instanceof ChatActivity){
+//                Intent intent = new Intent(currentActivity, ChatActivity.class);
+//                if(chatDetail != null){
+//                    intent.putExtra("BOOKING_CODE", chatDetail.getCodeBooking());
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//                    currentActivity.startActivity(intent);
+//                }
+//            }
+//        }
     }
 
     public void navigateFromDriverAcceptToBookDeliveryActivity(SocketEventModel socketEventModel){

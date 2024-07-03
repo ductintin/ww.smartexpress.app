@@ -124,12 +124,11 @@ public class BookDeliveryViewModel extends BaseViewModel {
     public void callDriver(){}
     public void chatDriver(){
         Intent intent = new Intent(application.getCurrentActivity(), ChatActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putLong(Constants.ROOM_ID, roomId.get());
-        bundle.putLong("BOOKING_ID", bookingId.get());
-        bundle.putString("BOOKING_CODE", bookingCode.get());
-        intent.putExtras(bundle);
+        intent.putExtra("codeBooking", bookingCode.get());
+        intent.putExtra("roomId", roomId.get());
+        intent.putExtra("bookingId", bookingId.get());
         application.getCurrentActivity().startActivity(intent);
+
     }
 
     Observable<ResponseWrapper<ResponseListObj<ServiceResponse>>> getService() {

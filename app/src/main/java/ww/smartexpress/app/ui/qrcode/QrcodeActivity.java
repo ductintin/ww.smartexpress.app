@@ -26,10 +26,12 @@ import java.io.IOException;
 import eu.davidea.flexibleadapter.databinding.BR;
 import ww.smartexpress.app.R;
 import ww.smartexpress.app.data.model.api.ApiModelUtils;
+import ww.smartexpress.app.data.model.api.response.MomoPaymentResponse;
 import ww.smartexpress.app.data.model.api.response.PayosPaymentResponse;
 import ww.smartexpress.app.databinding.ActivityQrcodeBinding;
 import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
+import ww.smartexpress.app.utils.NumberUtils;
 
 public class QrcodeActivity extends BaseActivity<ActivityQrcodeBinding, QrcodeViewModel> {
 
@@ -60,6 +62,8 @@ public class QrcodeActivity extends BaseActivity<ActivityQrcodeBinding, QrcodeVi
         String qrString = intent.getStringExtra("qrString");
         String payUrl = intent.getStringExtra("payUrl");
         String paymentInfo = intent.getStringExtra("paymentInfo");
+        viewModel.momoPaymentInfo.set(intent.getStringExtra("momoPaymentInfo"));
+
 //        viewBinding.webview.setWebViewClient(new WebViewClient());
 //        viewBinding.webview.getSettings().setJavaScriptEnabled(true);
 //        viewBinding.webview.loadUrl(payUrl);
@@ -76,17 +80,21 @@ public class QrcodeActivity extends BaseActivity<ActivityQrcodeBinding, QrcodeVi
                     }
                 }
 
-                imageView.setImageBitmap(bitmap);
+                viewBinding.imageView.setImageBitmap(bitmap);
             } catch (WriterException e) {
                 e.printStackTrace();
             }
+        }
+        if (viewModel.momoPaymentInfo.get() != null) {
+            MomoPaymentResponse data = ApiModelUtils.fromJson(viewModel.momoPaymentInfo.get(), MomoPaymentResponse.class);
+            viewBinding.txtMoney.setText("Số tiền: "+ NumberUtils.formatCurrency(Double.valueOf(data.getAmount())));
         }
 
         if(paymentInfo!= null){
             PayosPaymentResponse data = ApiModelUtils.fromJson(paymentInfo, PayosPaymentResponse.class);
             Glide.with(this)
                     .load("https://api.vietqr.io/image/970448-CAS0585858714-vJnoGzd.jpg?accountName="+data.getData().getAccountName()+"&amount="+data.getData().getAmount()+"&addInfo="+data.getData().getDescription())
-                    .into(imageView);
+                    .into(viewBinding.imageView);
         }
 
     }

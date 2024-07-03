@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
             name="ivm"
-            type="ww.smartexpress.app.data.model.api.response.ChatDetail" />
+            type="ww.smartexpress.app.data.model.api.response.MessageChat" />
         <variable
             name="lastMessage"
-            type="ww.smartexpress.app.data.model.api.response.ChatDetail" />
+            type="ww.smartexpress.app.data.model.api.response.MessageChat" />
         <variable
             name="userId"
             type="java.lang.Long" />
@@ -22,14 +23,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/white">
-        <TextView
-            style="@style/app_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:visibility="gone"/>
+        android:background="@color/bg_color">
+        <!--        <TextView-->
+        <!--            style="@style/app_text"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:gravity="center"-->
+        <!--            android:visibility="gone"/>-->
         <View
             android:layout_width="wrap_content"
             android:layout_height="0dp"
@@ -48,18 +49,32 @@
                 android:layout_height="@dimen/_30sdp"
                 android:src="@{ivm.senderAvatar}"
                 android:visibility="@{lastMessage.sender.equals(ivm.sender)? View.GONE:View.VISIBLE}"/>
-
             <TextView
+                android:visibility='@{!ivm.msg.contains("AVATAR") ? View.VISIBLE:View.GONE}'
                 style="@style/font_medium_79_gray"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_40sdp"
                 android:layout_marginRight="@dimen/_70sdp"
-                android:background="@drawable/background_message_sender"
+                android:layout_gravity="left|bottom"
                 android:paddingHorizontal="@dimen/_8sdp"
                 android:paddingVertical="@dimen/_5sdp"
+                android:background="@drawable/background_message_sender"
                 android:text="@{ivm.msg}" />
+            <androidx.cardview.widget.CardView
+                android:layout_marginLeft="@dimen/_40sdp"
+                android:layout_marginRight="@dimen/_70sdp"
+                android:visibility='@{ivm.msg.contains("AVATAR") ? View.VISIBLE:View.GONE}'
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/_5sdp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@{ivm.msg}"/>
+            </androidx.cardview.widget.CardView>
         </FrameLayout>
         <FrameLayout
             android:id="@+id/flReceiver"
@@ -69,6 +84,7 @@
             android:layout_marginBottom="@dimen/_8sdp"
             android:visibility="@{userId.equals(ivm.sender)?View.VISIBLE:View.GONE}">
             <TextView
+                android:visibility='@{!ivm.msg.contains("AVATAR") ? View.VISIBLE:View.GONE}'
                 style="@style/font_medium_79_gray"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,6 +94,18 @@
                 android:paddingVertical="@dimen/_5sdp"
                 android:background="@drawable/background_message_receiver"
                 android:text="@{ivm.msg}"/>
+            <androidx.cardview.widget.CardView
+                android:visibility='@{ivm.msg.contains("AVATAR") ? View.VISIBLE:View.GONE}'
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/_5sdp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@{ivm.msg}"/>
+            </androidx.cardview.widget.CardView>
         </FrameLayout>
 
 

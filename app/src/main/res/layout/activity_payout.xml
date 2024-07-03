@@ -19,11 +19,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/bg_color">
         <FrameLayout
             android:id="@+id/frameLayout2"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@color/white"
             android:padding="@dimen/_5sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -67,178 +68,331 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingHorizontal="@dimen/_10sdp">
+                android:orientation="vertical">
 
                 <LinearLayout
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:elevation="@dimen/_2sdp"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:background="@drawable/bg_corners_app"
+                    android:paddingVertical="@dimen/_10sdp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/baseline_attach_money_24"
+                            app:tint="@color/app_text" />
+
+                        <TextView
+                            style="@style/app_text_b"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_weight="1"
+                            android:maxLines="2"
+                            android:text="Số tiền hiện tại"
+                            android:textColor="@color/gray"/>
+
+
+                        <TextView
+                            style="@style/app_text_b"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_14ssp"
+                            android:text="@{NumberUtils.formatCurrency(Double.valueOf(vm.balance))}" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/edtMoney"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edt"
+                        android:hint="Nhập số tiền cần nạp"
+                        android:maxLines="1"
+                        android:textColorHint="@color/grey_text"
+                        style="@style/information_edit_text"
+                        android:inputType="numberDecimal">
+
+                    </EditText>
+                    <TextView
+                        android:layout_marginTop="@dimen/_5sdp"
+                        style="@style/text_style_montserrat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Vui lòng rút tối thiểu 50.000 đ"
+                        android:textColor="@color/red_color"
+                        android:textSize="@dimen/_9ssp"
+                        android:maxLines="1" />
+
+                    <TextView
+                        style="@style/app_text_b"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_weight="1"
+                        android:maxLines="1"
+                        android:text="Chọn nhanh số tiền"
+                        android:textColor="@color/gray"/>
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:columnCount="3"
+                        android:rowCount="2"
+                        android:paddingVertical="@dimen/_12sdp">
+                        <LinearLayout
+                            android:layout_marginHorizontal="@dimen/_3sdp"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:onClick='@{()->a.clickMoney("50000")}'
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:background='@{vm.money.equals("50000") ? @drawable/bg_money : @drawable/background_card_app}'
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                style="@style/text_style_medium"
+                                android:textSize="@dimen/_13sdp"
+                                android:textColor="@color/app_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="@dimen/_10sdp"
+                                android:layout_weight="1"
+                                android:maxLines="1"
+                                android:text="50.000"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_marginHorizontal="@dimen/_3sdp"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:onClick='@{()->a.clickMoney("100000")}'
+                            android:id="@+id/layoutTotal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:background='@{vm.money.equals("100000") ? @drawable/bg_money : @drawable/background_card_app}'
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                style="@style/text_style_medium"
+                                android:textSize="@dimen/_13sdp"
+                                android:textColor="@color/app_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="@dimen/_10sdp"
+                                android:layout_weight="1"
+                                android:maxLines="1"
+                                android:text="100.000"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_marginHorizontal="@dimen/_3sdp"
+                            android:layout_rowWeight="1"
+                            android:layout_columnWeight="1"
+                            android:onClick='@{()->a.clickMoney("200000")}'
+                            android:id="@+id/layout_pre_tax_fee"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:background='@{vm.money.equals("200000") ? @drawable/bg_money : @drawable/background_card_app}'
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                style="@style/text_style_medium"
+                                android:textSize="@dimen/_13sdp"
+                                android:textColor="@color/app_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="@dimen/_10sdp"
+                                android:layout_weight="1"
+                                android:maxLines="1"
+                                android:text="200.000"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_marginHorizontal="@dimen/_3sdp"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:onClick='@{()->a.clickMoney("500000")}'
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_below="@+id/layoutTotal"
+                            android:background='@{vm.money.equals("500000") ? @drawable/bg_money : @drawable/background_card_app}'
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                style="@style/text_style_medium"
+                                android:textSize="@dimen/_13sdp"
+                                android:textColor="@color/app_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="@dimen/_10sdp"
+                                android:layout_weight="1"
+                                android:maxLines="1"
+                                android:text="500.000"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_marginHorizontal="@dimen/_3sdp"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:onClick='@{()->a.clickMoney("1000000")}'
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/layout_pre_tax_fee"
+                            android:background='@{vm.money.equals("1000000") ? @drawable/bg_money : @drawable/background_card_app}'
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <TextView
+                                style="@style/text_style_medium"
+                                android:textSize="@dimen/_13sdp"
+                                android:textColor="@color/app_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="@dimen/_10sdp"
+                                android:layout_weight="1"
+                                android:maxLines="1"
+                                android:text="1.000.000"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_marginHorizontal="@dimen/_3sdp"
+                            android:layout_columnWeight="1"
+                            android:layout_rowWeight="1"
+                            android:onClick='@{()->a.clickMoney("2000000")}'
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_below="@+id/layoutTotal"
+                            android:background='@{vm.money.equals("2000000") ? @drawable/bg_money : @drawable/background_card_app}'
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                style="@style/text_style_medium"
+                                android:textSize="@dimen/_13sdp"
+                                android:textColor="@color/app_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="@dimen/_10sdp"
+                                android:layout_weight="1"
+                                android:maxLines="1"
+                                android:text="2.000.000"/>
+                        </LinearLayout>
+                    </GridLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_marginTop="@dimen/_10sdp"
+                    style="@style/app_text_b"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@color/white"
-                    android:gravity="center_vertical">
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:text="Tài khoản nhận tiền"
+                    android:textColor="@color/gray"/>
+
+                <LinearLayout
+                    android:onClick="@{()->vm.navigateBank()}"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:paddingHorizontal="@dimen/_15sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/bg_state_new"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/bank"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:visibility="@{vm.user.bankCard != null ? View.GONE : View.VISIBLE}"
+                            style="@style/app_text_b"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_weight="1"
+                            android:maxLines="1"
+                            android:text="Tài khoản ngân hàng" />
+
+                        <TextView
+                            android:visibility="@{vm.user.bankCard == null ? View.GONE : View.VISIBLE}"
+                            style="@style/app_text_b"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_weight="1"
+                            android:maxLines="1"
+                            android:text='@{vm.bankCard.bankName + " - " + vm.bankCard.accountName}' />
+                        <TextView
+                            android:visibility="@{vm.user.bankCard == null ? View.GONE : View.VISIBLE}"
+                            style="@style/app_text_b"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_weight="1"
+                            android:maxLines="1"
+                            android:text='@{"Số tài khoản: "+vm.bankCard.accountNumber}' />
+
+                        <TextView
+                            android:visibility="@{vm.user.bankCard != null ? View.GONE : View.VISIBLE}"
+                            style="@style/app_text_b"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_weight="1"
+                            android:maxLines="1"
+                            android:textColor="@color/green"
+                            android:textSize="@dimen/_10ssp"
+                            android:text="Bạn chưa có tài khoản ngân hàng" />
+
+                    </LinearLayout>
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/baseline_attach_money_24"
+                        android:src="@drawable/ic_icon_expand"
                         app:tint="@color/app_text" />
 
-                    <TextView
-                        style="@style/app_text_b"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:layout_weight="1"
-                        android:maxLines="2"
-                        android:text="Số tiền hiện tại" />
-
-
-                    <TextView
-                        style="@style/app_text_b"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:maxLines="1"
-                        android:text="@{NumberUtils.formatCurrency(Double.valueOf(vm.balance))}" />
                 </LinearLayout>
 
-                <EditText
-                    android:id="@+id/edtMoney"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_edt"
-                    android:hint="Nhập số tiền cần nạp"
-                    android:maxLines="1"
-                    android:textColorHint="@color/grey_text"
-                    style="@style/information_edit_text"
-                    android:inputType="numberDecimal">
-
-                </EditText>
-                <TextView
-                    style="@style/app_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:text="Vui lòng rút tối thiểu 50.000 đ"
-                    android:maxLines="1" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_2sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:background="@color/gray_light"/>
-
-                <TextView
-                    style="@style/app_text_b"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_weight="1"
-                    android:maxLines="1"
-                    android:text="Hoặc chọn số tiền cần rút" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/_12sdp">
-                    <LinearLayout
-                        android:onClick='@{()->a.clickMoney("100000")}'
-                        android:id="@+id/layoutTotal"
-                        android:layout_width="@dimen/_125sdp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:background='@{vm.money.equals("100000") ? @drawable/bg_money : @drawable/background_card_app}'
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <TextView
-                            style="@style/app_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginVertical="@dimen/_15sdp"
-                            android:layout_weight="1"
-                            android:maxLines="1"
-                            android:text="100.000"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:onClick='@{()->a.clickMoney("200000")}'
-                        android:id="@+id/layout_pre_tax_fee"
-                        android:layout_width="@dimen/_125sdp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:background='@{vm.money.equals("200000") ? @drawable/bg_money : @drawable/background_card_app}'
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <TextView
-                            style="@style/app_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginVertical="@dimen/_15sdp"
-                            android:layout_weight="1"
-                            android:maxLines="1"
-                            android:text="200.000"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:onClick='@{()->a.clickMoney("1000000")}'
-                        android:layout_width="@dimen/_125sdp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_alignParentRight="true"
-                        android:layout_below="@+id/layout_pre_tax_fee"
-                        android:background='@{vm.money.equals("1000000") ? @drawable/bg_money : @drawable/background_card_app}'
-                        android:orientation="vertical"
-                        android:gravity="center">
-                        <TextView
-                            style="@style/app_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginVertical="@dimen/_15sdp"
-                            android:layout_weight="1"
-                            android:maxLines="1"
-                            android:text="1.000.000"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:onClick='@{()->a.clickMoney("500000")}'
-                        android:layout_width="@dimen/_125sdp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_below="@+id/layoutTotal"
-                        android:background='@{vm.money.equals("500000") ? @drawable/bg_money : @drawable/background_card_app}'
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <TextView
-                            style="@style/app_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginVertical="@dimen/_15sdp"
-                            android:layout_weight="1"
-                            android:maxLines="1"
-                            android:text="500.000"/>
-                    </LinearLayout>
-                </RelativeLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_2sdp"
-                    android:background="@color/gray_light"
-                    android:layout_marginBottom="@dimen/_5sdp"/>
-
-                <TextView
-                    style="@style/app_text_b"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_weight="1"
-                    android:maxLines="1"
-                    android:text="Tài khoản nhận tiền" />
-
                 <RadioGroup
+                    android:visibility="gone"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/bg_corners_app"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <RadioButton

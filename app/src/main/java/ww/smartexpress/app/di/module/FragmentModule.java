@@ -18,6 +18,7 @@ import dagger.Provides;
 import ww.smartexpress.app.ui.fragment.activity.ActivityFragmentViewModel;
 import ww.smartexpress.app.ui.fragment.home.adapter.CategoryAdapter;
 import ww.smartexpress.app.ui.fragment.home.HomeFragmentViewModel;
+import ww.smartexpress.app.ui.fragment.notification.NotificationFragmentViewModel;
 import ww.smartexpress.app.ui.fragment.search.SearchFragmentViewModel;
 import ww.smartexpress.app.ui.profile.ProfileFragmentViewModel;
 
@@ -66,5 +67,13 @@ public class FragmentModule {
         Supplier<SearchFragmentViewModel> supplier = () -> new SearchFragmentViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<SearchFragmentViewModel> factory = new ViewModelProviderFactory<>(SearchFragmentViewModel.class, supplier);
         return new ViewModelProvider(fragment, factory).get(SearchFragmentViewModel.class);
+    }
+
+    @Provides
+    @FragmentScope
+    NotificationFragmentViewModel provideNotificationFragmentViewModel(Repository repository, Context application){
+        Supplier<NotificationFragmentViewModel> supplier = () -> new NotificationFragmentViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<NotificationFragmentViewModel> factory = new ViewModelProviderFactory<>(NotificationFragmentViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(NotificationFragmentViewModel.class);
     }
 }

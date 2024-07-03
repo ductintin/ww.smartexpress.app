@@ -46,6 +46,9 @@ public class BankViewModel extends BaseViewModel {
     public ObservableField<BankResponse> bank = new ObservableField<>();
 
     public ObservableField<UserEntity> user = new ObservableField<>();
+
+    Dialog dialog;
+
     public BankViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
     }
@@ -206,5 +209,11 @@ public class BankViewModel extends BaseViewModel {
                             hideLoading();
                         }
                 ));
+    }
+
+    public void showBankDialog(){
+        if(dialog!=null){
+            dialog.show();
+        }
     }
 }

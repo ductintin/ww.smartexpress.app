@@ -10,6 +10,7 @@ import ww.smartexpress.app.ui.delivery.order.DeliveryActivity;
 import ww.smartexpress.app.ui.deposit.DepositActivity;
 import ww.smartexpress.app.ui.index.IndexActivity;
 import ww.smartexpress.app.ui.map.MapActivity;
+import ww.smartexpress.app.ui.notification.details.NotificationDetailsActivity;
 import ww.smartexpress.app.ui.order.details.OrderDetailsActivity;
 import ww.smartexpress.app.ui.order.information.OrderInformationActivity;
 import ww.smartexpress.app.ui.password.forget.ForgetPasswordActivity;
@@ -126,5 +127,6 @@ public interface ActivityComponent {
     void inject(ForgetPasswordActivity forgetPasswordActivity);
     void inject(ResetForgetPasswordActivity resetForgetPasswordActivity);
     void inject(VerifyForgetPasswordOTPActivity verifyForgetPasswordOTPActivity);
+    void inject(NotificationDetailsActivity notificationDetailsActivity);
 }
 

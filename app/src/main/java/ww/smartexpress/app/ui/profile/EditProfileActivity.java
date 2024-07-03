@@ -231,7 +231,7 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
                         viewModel.bankCard.set(userEntity.getBankCard());
 
                         Log.d("TAG", "onSuccess: " + userEntity.getEncryptedPassword());
-                        if(userEntity.getEncryptedPassword() != null){
+                        if(userEntity.getIsBiometric()){
                             viewModel.encryptedPassword.set(userEntity.getEncryptedPassword());
                             viewBinding.edtPw.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                                 @Override
@@ -239,7 +239,8 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
                                     Log.d("TAG", "onFocusChange: " + b);
                                     if(b){
                                         biometricPrompt.authenticate(promptInfo);
-                                    }                                }
+                                    }
+                                }
                             });
                         }
                     }

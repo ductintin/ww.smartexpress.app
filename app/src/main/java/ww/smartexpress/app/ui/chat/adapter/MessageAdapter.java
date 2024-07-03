@@ -13,19 +13,20 @@ import java.util.List;
 
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.data.model.api.response.ChatDetail;
+import ww.smartexpress.app.data.model.api.response.MessageChat;
 import ww.smartexpress.app.databinding.ItemMessageBinding;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder>{
-    private List<ChatDetail> chatDetails;
+    private List<MessageChat> messages;
     private OnItemClickListener onItemClickListener;
     public Long currentUserId;
 
-    public ChatDetail lassChatDetail = new ChatDetail();
+    public MessageChat lassMessage = new MessageChat();
 
     public MessageAdapter() {
     }
-    public void setMessages(List<ChatDetail> chatDetails){
-        this.chatDetails = chatDetails;
+    public void setMessages(List<MessageChat> messages){
+        this.messages = messages;
         notifyDataSetChanged();
     }
 
@@ -44,39 +45,33 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     @Override
     public int getItemCount() {
-        return chatDetails == null ? 0 : chatDetails.size();
+        return messages == null ? 0 : messages.size();
     }
 
-    public void addItems(List<ChatDetail> chatDetails) {
-        this.chatDetails = chatDetails;
+    public void addItems(List<MessageChat> messages) {
+        this.messages = messages;
         notifyDataSetChanged();
     }
 
-    public void addItems(ChatDetail chatDetails) {
-        this.chatDetails.add(chatDetails);
-        notifyDataSetChanged();
+    public void clearItems() {
+        messages.clear();
     }
-
-    public void addMessage(ChatDetail messageChat){
-        if(chatDetails!= null && chatDetails.size()!=0){
-            chatDetails.add(messageChat);
-            notifyItemInserted(chatDetails.size());
+    public void addMessage(MessageChat messageChat){
+        if(messages!= null && messages.size()!=0){
+            messages.add(messageChat);
+            notifyItemInserted(messages.size());
         }else {
-            chatDetails = new ArrayList<>();
-            chatDetails.add(messageChat);
+            messages = new ArrayList<>();
+            messages.add(messageChat);
             notifyDataSetChanged();
         }
 
     }
 
-    public void clearItems() {
-        chatDetails.clear();
-    }
-
     public class MessageViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener{
         private ItemMessageBinding mBinding;
-        private ChatDetail chatDetail;
+        private MessageChat message;
         private OnItemClickListener onItemClickListener;
 
         public MessageViewHolder(@NonNull ItemMessageBinding binding, OnItemClickListener onItemClickListener) {
@@ -87,27 +82,27 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         }
 
         public void onBind(int position){
-            this.chatDetail = chatDetails.get(position);
+            this.message = messages.get(position);
             if(position - 1>=0){
-                lassChatDetail = chatDetails.get(position-1);
+                lassMessage = messages.get(position-1);
             }
-            mBinding.setVariable(BR.ivm, chatDetail);
+            mBinding.setVariable(BR.ivm, message);
             mBinding.setUserId(currentUserId);
-            mBinding.setLastMessage(lassChatDetail);
+            mBinding.setLastMessage(lassMessage);
             Log.d("TAG", "onBind: "+currentUserId);
-            Log.d("TAG", "onBind1: "+ chatDetail.getSender());
-            Log.d("TAG", "onBind1: "+ lassChatDetail.getSender());
+//            Log.d("TAG", "onBind1: "+message.getSender());
+//            Log.d("TAG", "onBind1: "+lassMessage.getSender());
             mBinding.executePendingBindings();
         }
 
         @Override
         public void onClick(View view) {
-            this.onItemClickListener.itemClick(chatDetail);
+            this.onItemClickListener.itemClick(message);
         }
     }
 
     public interface OnItemClickListener{
-        void itemClick(ChatDetail chatDetail);
+        void itemClick(MessageChat message);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){

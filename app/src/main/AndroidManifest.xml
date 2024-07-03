@@ -52,6 +52,14 @@
         android:windowSoftInputMode="adjustResize|stateHidden">
 
         <activity
+            android:name="ww.smartexpress.app.ui.notification.details.NotificationDetailsActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/Welcome"
+            android:exported="true">
+
+        </activity>
+
+        <activity
             android:name="ww.smartexpress.app.ui.password.forget.ResetForgetPasswordActivity"
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/Welcome"

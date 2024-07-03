@@ -769,7 +769,7 @@
                     android:layout_marginBottom="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:enabled="false"
-                    android:text="@{vm.bookingResponse.state == -100  ? @string/canceled : vm.bookingResponse.state == 300  ? @string/completed : @string/pending }"
+                    android:text='@{vm.bookingResponse.state == 300 ? @string/completed : vm.bookingResponse.state == -100 ? @string/canceled : vm.bookingResponse.state == 100 ? "Tìm thấy tài xế" : vm.bookingResponse.state == 200 ? "Tài xế nhận đơn" : "Điều hướng" }'
                     android:textColor="@{vm.bookingResponse.state == -100 ? @color/red_color : vm.bookingResponse.state == 300 ? @color/green : @color/pending_color}"
                     />
             </LinearLayout>

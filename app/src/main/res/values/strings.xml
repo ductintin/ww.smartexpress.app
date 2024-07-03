@@ -242,4 +242,6 @@
     <string name="same_booking_location">Điểm đón và điểm đến trùng nhau. Vui lòng chọn lại địa điểm khác!</string>
     <string name="same_reset_pw">Mật khẩu mới trùng với mật khẩu cũ. Vui lòng chọn một mật khẩu khác!</string>
     <string name="service">Loại dịch vụ:</string>
+    <string name="notification_header">Thông báo</string>
+    <string name="hot_news">Tin hot - SmartExpress ra mắt Ship</string>
 </resources>

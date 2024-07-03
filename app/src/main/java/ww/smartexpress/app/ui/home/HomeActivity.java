@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.google.android.material.navigation.NavigationBarView;
@@ -32,6 +33,7 @@ import ww.smartexpress.app.ui.base.activity.BaseActivity;
 import ww.smartexpress.app.ui.bookcar.BookCarActivity;
 import ww.smartexpress.app.ui.fragment.activity.ActivityFragment;
 import ww.smartexpress.app.ui.fragment.home.HomeFragment;
+import ww.smartexpress.app.ui.fragment.notification.NotificationFragment;
 import ww.smartexpress.app.ui.fragment.search.SearchFragment;
 import ww.smartexpress.app.ui.profile.ProfileFragment;
 
@@ -43,6 +45,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding, HomeViewMode
     private ActivityFragment activityFragment;
     private ProfileFragment profileFragment;
     private SearchFragment searchFragment;
+    private NotificationFragment notificationFragment;
 
     private BookingResponse bookingResponse = new BookingResponse();
     private ConnectivityManager connectivityManager;
@@ -157,6 +160,9 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding, HomeViewMode
             case R.id.account:
                 switchToProfileFragment();
                 return true;
+            case R.id.notification:
+                replaceFragmentNotification();
+                return true;
         }
         return false;
     }
@@ -231,6 +237,19 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding, HomeViewMode
                     .commit();
         }
         activeFragment = searchFragment;
+    }
+
+    public void replaceFragmentNotification(){
+        if(notificationFragment == null){
+            notificationFragment = new NotificationFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.frameLayout, notificationFragment, "notification fragment").hide(activeFragment).commit();
+        }
+        else{
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.hide(activeFragment).show(notificationFragment).commit();
+        }
+        activeFragment = notificationFragment;
     }
 
     @Override

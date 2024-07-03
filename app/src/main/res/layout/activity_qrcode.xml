@@ -10,17 +10,20 @@
             name="vm"
             type="ww.smartexpress.app.ui.qrcode.QrcodeViewModel" />
 
+        <import type="android.view.View"/>
     </data>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/white">
+        android:background="@color/bg_color">
         <FrameLayout
             android:id="@+id/frameLayout2"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@color/white"
             android:padding="@dimen/_5sdp">
 
             <ImageView
@@ -59,6 +62,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>
+
+        <TextView
+            android:visibility="@{vm.momoPaymentInfo == null ? View.GONE : View.VISIBLE}"
+            android:id="@+id/txtMoney"
+            style="@style/app_text_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
         <LinearLayout
             android:onClick="@{()->a.downloadImage()}"
             android:layout_marginTop="@dimen/_10sdp"
@@ -69,27 +80,27 @@
             android:padding="@dimen/_5sdp"
             android:background="@color/green_light_app">
 
-                <ImageView
-                    android:layout_width="@dimen/_10sdp"
-                    android:layout_height="@dimen/_10sdp"
-                    android:layout_gravity="left|center"
-                    android:src="@drawable/baseline_download_24"
-                    app:tint="@color/white">
+            <ImageView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:layout_gravity="left|center"
+                android:src="@drawable/baseline_download_24"
+                app:tint="@color/white">
 
-                </ImageView>
+            </ImageView>
 
-                <TextView
-                    style="@style/app_text_small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="Lưu ảnh"
-                    android:textSize="@dimen/_10ssp"
-                    android:textColor="@color/white">
+            <TextView
+                style="@style/app_text_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="Lưu ảnh"
+                android:textSize="@dimen/_10ssp"
+                android:textColor="@color/white">
 
-                </TextView>
-    </LinearLayout>
+            </TextView>
+        </LinearLayout>
 
 
 

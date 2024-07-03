@@ -36,10 +36,13 @@ import ww.smartexpress.app.data.model.api.response.LoginResponse;
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import ww.smartexpress.app.data.model.api.response.NewsResponse;
+import ww.smartexpress.app.data.model.api.response.NotificationResponse;
 import ww.smartexpress.app.data.model.api.response.Payment;
 import ww.smartexpress.app.data.model.api.response.ProfileResponse;
 import ww.smartexpress.app.data.model.api.response.Promotion;
 import ww.smartexpress.app.data.model.api.response.Room;
+import ww.smartexpress.app.data.model.api.response.RoomResponse;
 import ww.smartexpress.app.data.model.api.response.SearchLocationResponse;
 import ww.smartexpress.app.data.model.api.response.ServiceResponse;
 import ww.smartexpress.app.data.model.api.response.UploadFileResponse;
@@ -92,7 +95,7 @@ public interface ApiService {
     @GET("/v1/booking/detail-booking/{id}")
     Observable<ResponseWrapper<BookingResponse>> getBookingById(@Path("id") Long id);
     @GET("/v1/room/get/{id}")
-    Observable<ResponseWrapper<Room>> getMyRoom(@Path("id") Long id);
+    Observable<ResponseWrapper<RoomResponse>> getMyRoom(@Path("id") Long id);
     @POST("/v1/rating/create")
     Observable<ResponseWrapper<String>> ratingBooking(@Body RatingBookingRequest request);
 
@@ -142,4 +145,9 @@ public interface ApiService {
     @Headers({"IgnoreAuth:1"})
     Observable<ResponseWrapper<String>> resetPassword(@Body ResetPasswordRequest request);
 
+    @GET("/v1/notification/my-notification")
+    Observable<ResponseWrapper<ResponseListObj<NotificationResponse>>> getMyNotification(@Query("page") Integer pageNumber,
+                                                                                         @Query("size") Integer pageSize);
+    @GET("/v1/news/client-get/{id}")
+    Observable<ResponseWrapper<NewsResponse>> getNews(@Path("id") Long id);
 }

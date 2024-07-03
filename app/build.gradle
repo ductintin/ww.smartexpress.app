@@ -213,6 +213,7 @@ dependencies {
     implementation 'io.github.chaosleung:pinview:1.4.4'
 
     implementation 'com.kyleduo.switchbutton:library:2.1.0'
+    implementation 'com.github.yalantis:ucrop:2.2.8'
 }
 
 apply plugin: 'com.google.gms.google-services'

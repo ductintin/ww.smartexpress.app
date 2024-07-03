@@ -65,11 +65,9 @@ public class TripViewModel extends BaseViewModel {
 
     public void chatDriver(){
         Intent intent = new Intent(application.getCurrentActivity(), ChatActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putLong(Constants.ROOM_ID, bookingResponse.get().getRoom().getId());
-        bundle.putLong("BOOKING_ID", bookingResponse.get().getId());
-        bundle.putString("BOOKING_CODE", bookingResponse.get().getCode());
-        intent.putExtras(bundle);
+        intent.putExtra("codeBooking", bookingResponse.get().getCode());
+        intent.putExtra("roomId", bookingResponse.get().getRoom().getId());
+        intent.putExtra("bookingId", bookingResponse.get().getId());
         application.getCurrentActivity().startActivity(intent);
     }
 

@@ -63,17 +63,6 @@ public class BankActivity extends BaseActivity<ActivityBankCardBinding, BankView
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        viewModel.isVisibility.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(Observable sender, int propertyId) {
-                if(!viewModel.isVisibility.get()){
-                    viewBinding.edtPw.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                }else {
-                    viewBinding.edtPw.setTransformationMethod(null);;
-                }
-            }
-        });
-
         viewBinding.edtAccountNumber.setOnFocusChangeListener((view, b) -> {
             if(b){
 
@@ -81,5 +70,7 @@ public class BankActivity extends BaseActivity<ActivityBankCardBinding, BankView
                 viewModel.getAccountName();
             }
         });
+
+        viewModel.getBankList();
     }
 }

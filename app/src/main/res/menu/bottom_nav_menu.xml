@@ -17,6 +17,12 @@
 <!--        android:icon="@drawable/ic_icon_favorite"/>-->
 
     <item
+        android:id="@+id/notification"
+        android:title="@string/notification_header"
+        android:icon="@drawable/ic_icon_bell"
+        />
+
+    <item
         android:id="@+id/account"
         android:title="@string/title_account"
         android:icon="@drawable/ic_icon_account"/>

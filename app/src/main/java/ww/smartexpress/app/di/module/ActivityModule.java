@@ -17,6 +17,7 @@ import ww.smartexpress.app.ui.delivery.order.DeliveryViewModel;
 import ww.smartexpress.app.ui.deposit.DepositViewModel;
 import ww.smartexpress.app.ui.index.IndexViewModel;
 import ww.smartexpress.app.ui.map.MapViewModel;
+import ww.smartexpress.app.ui.notification.details.NotificationDetailsViewModel;
 import ww.smartexpress.app.ui.order.OrderViewModel;
 import ww.smartexpress.app.ui.order.details.OrderDetailsViewModel;
 import ww.smartexpress.app.ui.order.information.OrderInformationViewModel;
@@ -450,5 +451,13 @@ public class ActivityModule {
         Supplier<ResetForgetPasswordViewModel> supplier = () -> new ResetForgetPasswordViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<ResetForgetPasswordViewModel> factory = new ViewModelProviderFactory<>(ResetForgetPasswordViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(ResetForgetPasswordViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    NotificationDetailsViewModel provideNotificationDetailsViewModel(Repository repository, Context application) {
+        Supplier<NotificationDetailsViewModel> supplier = () -> new NotificationDetailsViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<NotificationDetailsViewModel> factory = new ViewModelProviderFactory<>(NotificationDetailsViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(NotificationDetailsViewModel.class);
     }
 }
