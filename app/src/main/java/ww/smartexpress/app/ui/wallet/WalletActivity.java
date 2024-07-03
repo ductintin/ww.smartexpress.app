@@ -39,6 +39,12 @@ public class WalletActivity extends BaseActivity<ActivityWalletBinding, WalletVi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         String userId = String.valueOf(viewModel.getRepository().getSharedPreferences().getLongVal(Constants.KEY_USER_ID));
         if(userId != null){
             viewModel.getRepository().getRoomService().userDao().findById(Long.valueOf(userId)).subscribeOn(Schedulers.io())
@@ -64,12 +70,6 @@ public class WalletActivity extends BaseActivity<ActivityWalletBinding, WalletVi
                         }
                     });
         }
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         viewModel.getMyWallet();
     }
 

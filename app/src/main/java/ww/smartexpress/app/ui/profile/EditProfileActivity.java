@@ -271,6 +271,8 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
             requestBodyBuilder.addFormDataPart("type", Constants.FILE_TYPE_AVATAR);
 
             UpdateProfileRequest request = prepareRequest();
+
+            viewModel.showLoading();
             viewModel.compositeDisposable.add(viewModel.uploadAvatar(requestBodyBuilder.build())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -279,9 +281,9 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
                             viewModel.avatar.set(uploadResponse.getData().getFilePath());
                             updatedAvatar =  null;
                             handleUpdateProfile();
-                            viewModel.hideLoading();
+                        }else{
+                            viewModel.showErrorMessage(uploadResponse.getMessage());
                         }
-                        viewModel.hideLoading();
                     }, error ->{
                         error.printStackTrace();
                     })

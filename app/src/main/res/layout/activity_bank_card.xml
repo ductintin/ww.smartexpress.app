@@ -102,6 +102,7 @@
                         android:text="@{vm.bank.name}"
                         android:inputType="text"
                         android:focusable="false"
+                        android:editable="false"
                         android:maxLines="1"
                         android:ellipsize="end"/>
                 </com.google.android.material.textfield.TextInputLayout>

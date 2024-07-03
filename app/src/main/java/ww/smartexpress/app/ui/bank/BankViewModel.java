@@ -64,7 +64,7 @@ public class BankViewModel extends BaseViewModel {
     }
 
     public void bankDialog(){
-        Dialog dialog = new Dialog(application.getCurrentActivity());
+        dialog = new Dialog(application.getCurrentActivity());
         DialogBankBinding mBinding = DataBindingUtil.inflate(LayoutInflater.from(application.getCurrentActivity()), R.layout.dialog_bank,null, false);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
@@ -110,7 +110,6 @@ public class BankViewModel extends BaseViewModel {
                 filterListener(bankAdapter,mBinding.edtSearchFood.getText().toString());
             }
         });
-        dialog.show();
     }
 
     private void filterListener(BankAdapter bankAdapter, String text){
@@ -134,6 +133,7 @@ public class BankViewModel extends BaseViewModel {
     }
 
 
+
     public void getBankList(){
         showLoading();
         compositeDisposable.add(repository.getApiService().getBankList()
@@ -141,6 +141,22 @@ public class BankViewModel extends BaseViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     bankResponseList.set(response.getData());
+
+                    String userId = repository.getSharedPreferences().getUserId();
+                    if(userId != null){
+                        if(user.get().getBankCard() != null){
+                            BankCard bankCard = ApiModelUtils.fromJson(user.get().getBankCard(), BankCard.class);
+                            for (BankResponse bank: response.getData()) {
+                                if(bank.getShort_name().equals(bankCard.getBankName())){
+                                    accountName.set(new AccountName(bankCard.getAccountName()));
+                                    accountNumber.set(bankCard.getAccountNumber());
+                                    brand.set(bankCard.getBranch());
+                                    this.bank.set(bank);
+                                    break;
+                                }
+                            }
+                        }
+                    }
                     bankDialog();
                     hideLoading();
                 },error->{
@@ -199,7 +215,7 @@ public class BankViewModel extends BaseViewModel {
 
                                         });
                                 application.getCurrentActivity().finish();
-                                showSuccessMessage(res.getMessage());
+                                showSuccessMessage("Cập nhật tài khoản ngân hàng thành công");
                             }else {
                                 showErrorMessage(res.getMessage());
                             }

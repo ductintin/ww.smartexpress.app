@@ -68,7 +68,7 @@ public class ForgetPasswordViewModel extends BaseViewModel {
                         getApplication().getCurrentActivity().startActivity(intent);
                         getApplication().getCurrentActivity().finish();
                     }else{
-                        showErrorMessage("Xảy ra lỗi, vui lòng thử lại!");
+                        showErrorMessage("Không tìm thấy người dùng!");
                     }
                 }, err -> {
                     hideLoading();

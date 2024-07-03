@@ -111,7 +111,7 @@
                             android:maxLines="1"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14ssp"
-                            android:text="@{NumberUtils.formatCurrency(Double.valueOf(vm.balance))}" />
+                            android:text="@{NumberUtils.formatCurrency(vm.balance)}" />
                     </LinearLayout>
 
                     <EditText

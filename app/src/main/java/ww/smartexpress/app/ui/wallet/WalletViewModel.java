@@ -1,6 +1,7 @@
 package ww.smartexpress.app.ui.wallet;
 
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.databinding.ObservableField;
 
@@ -51,6 +52,7 @@ public class WalletViewModel extends BaseViewModel {
             return;
         }
         Intent intent = new Intent(application.getCurrentActivity(), PayoutActivity.class);
+        Log.d("TAG", "navigatePayout: " + wallet.get().getBalance());
         intent.putExtra("balance", wallet.get().getBalance());
         application.getCurrentActivity().startActivity(intent);
     }

@@ -44,7 +44,8 @@ public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutVi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        viewModel.balance.set(intent.getIntExtra("balance",0));
+        viewModel.balance.set((intent.getDoubleExtra("balance",0L)));
+        Log.d("TAG", "onCreate: " + intent.getIntExtra("balance",0));
 
         String userId = String.valueOf(viewModel.getRepository().getSharedPreferences().getLongVal(Constants.KEY_USER_ID));
         if(userId != null){
@@ -59,6 +60,9 @@ public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutVi
                         @Override
                         public void onSuccess(@NonNull UserEntity userEntity) {
                             viewModel.user.set(userEntity);
+                            if(viewModel.user.get()!=null && viewModel.user.get().getBankCard() != null){
+                                viewModel.bankCard.set(ApiModelUtils.fromJson(viewModel.user.get().getBankCard(), BankCard.class));
+                            }
                         }
 
                         @Override

@@ -109,9 +109,9 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
     @Override
     public void onUpdateEmptyDataView(int size) {
         if(size>0){
-            binding.layoutEmpty.emptyView.setVisibility(View.GONE);
+            binding.layoutEmpty.setVisibility(View.GONE);
         }else {
-            binding.layoutEmpty.emptyView.setVisibility(View.VISIBLE);
+            binding.layoutEmpty.setVisibility(View.VISIBLE);
         }
     }
 
@@ -144,7 +144,7 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
                                             .setEndlessTargetCount(viewModel.totalElement.get())
                                             .setEndlessPageSize(viewModel.pageSize.get());
                                 }
-                                EmptyViewHelper.create(mFlexibleAdapter, binding.layoutEmpty.emptyView, null, this);
+                                EmptyViewHelper.create(mFlexibleAdapter, binding.layoutEmpty, null, this);
 
                                 binding.rcNotification.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
                                 binding.rcNotification.setAdapter(mFlexibleAdapter);

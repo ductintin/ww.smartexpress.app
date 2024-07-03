@@ -883,8 +883,8 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
             case 5: // Tai xe huy chuyen nay
                 Log.d("TAG", "onNewIntent: case 5 " + codeCase);
                 Log.d("TAG", "onNewIntent: codebooking vm" + viewModel.bookingCode.get());
-                Log.d("TAG", "onNewIntent: codebooking" + intent.getStringExtra("BOOKING_CODE"));
-                if(viewModel.bookingCode.get().equals(intent.getStringExtra("BOOKING_ID"))){
+                Log.d("TAG", "onNewIntent: codebooking" + intent.getStringExtra("BOOKING_ID"));
+                if(viewModel.bookingId.get().equals(intent.getStringExtra("BOOKING_ID"))){
                     getCurrentBooking2();
                 }
                 break;

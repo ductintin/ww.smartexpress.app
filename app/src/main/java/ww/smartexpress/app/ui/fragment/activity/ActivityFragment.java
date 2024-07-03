@@ -274,17 +274,21 @@ public class ActivityFragment extends BaseFragment<FragmentActivityBinding, Acti
                             binding.shimmerViewContainer.setVisibility(View.GONE);
                             binding.shimmerViewContainer.stopShimmer();
                         }
-                        viewModel.bookingList.setValue(response.getData().getContent());
-                        viewModel.pageTotal.set(response.getData().getTotalPages());
-                        if(bookingResponses.isEmpty()){
-                            bookingResponses = response.getData().getContent();
+                        if(response.getData().getTotalElements() > 0){
+                            viewModel.bookingList.setValue(response.getData().getContent());
+                            viewModel.pageTotal.set(response.getData().getTotalPages());
+                            if(bookingResponses.isEmpty()){
+                                bookingResponses = response.getData().getContent();
+                            }else{
+                                bookingResponses.addAll(response.getData().getContent());
+                            }
+                            if(bookingResponses.size() == 0 && viewModel.pageNumber.get() == 0){
+                                viewModel.isEmpty.set(true);
+                            }else{
+                                loadBooking();
+                            }
                         }else{
-                            bookingResponses.addAll(response.getData().getContent());
-                        }
-                        if(bookingResponses.size() == 0 && viewModel.pageNumber.get() == 0){
                             viewModel.isEmpty.set(true);
-                        }else{
-                            loadBooking();
                         }
                         Log.d("TAG", "getMyBooking: "+ viewModel.pageTotal.get());
                     }else {

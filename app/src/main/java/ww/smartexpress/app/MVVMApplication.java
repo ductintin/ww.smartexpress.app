@@ -461,7 +461,7 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
 //        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 //        currentActivity.startActivity(intent);
 
-        if( currentActivity instanceof BookDeliveryActivity){
+        if(currentActivity instanceof BookDeliveryActivity){
             Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
             intent.putExtra("STATE_BOOKING", 5);
             intent.putExtra("BOOKING_ID", message.getDataObject(DriverBookingResponse.class).getBookingId());

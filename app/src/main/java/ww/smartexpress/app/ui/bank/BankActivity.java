@@ -34,7 +34,11 @@ public class BankActivity extends BaseActivity<ActivityBankCardBinding, BankView
     @Override
     public void performDependencyInjection(ActivityComponent buildComponent) {
         buildComponent.inject(this);
+    }
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         String userId = String.valueOf(viewModel.getRepository().getSharedPreferences().getLongVal(Constants.KEY_USER_ID));
         if(userId != null){
 
@@ -57,11 +61,6 @@ public class BankActivity extends BaseActivity<ActivityBankCardBinding, BankView
                         }
                     });
         }
-    }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
         viewBinding.edtAccountNumber.setOnFocusChangeListener((view, b) -> {
             if(b){
@@ -70,7 +69,6 @@ public class BankActivity extends BaseActivity<ActivityBankCardBinding, BankView
                 viewModel.getAccountName();
             }
         });
-
         viewModel.getBankList();
     }
 }

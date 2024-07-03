@@ -17,6 +17,12 @@ public final class BindingUtils {
             view.setImageResource(R.drawable.smartexpress_splash_logo);
             return;
         }
+        if(url.contains("https:")){
+            Glide.with(view.getContext())
+                    .load(url)
+                    .into(view);
+            return;
+        }
         Glide.with(view.getContext())
                 .load(BuildConfig.MEDIA_URL+ "/v1/file/download" + url)
                 .error(R.drawable.smartexpress_splash_logo)
