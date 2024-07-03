@@ -321,25 +321,74 @@
                             android:layout_height="match_parent"
                             android:orientation="vertical">
 
-                            <TextView
-                                style="@style/title"
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:orientation="horizontal"
                                 android:layout_marginTop="@dimen/_15sdp"
-                                android:layout_marginLeft="@dimen/_12sdp"
-                                android:text="@string/sender_information" />
+                                android:layout_marginLeft="@dimen/_12sdp">
+                                <TextView
+                                    style="@style/title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/sender_information" />
+                                <TextView
+                                    style="@style/title"
+                                    android:textSize="@dimen/_16ssp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/_3sdp"
+                                    android:text="@string/required_star"
+                                    android:textColor="@color/red_color">
+
+                                </TextView>
+                            </LinearLayout>
+<!--                            <com.google.android.material.textfield.TextInputLayout-->
+<!--                                android:id="@+id/tipName"-->
+<!--                                android:layout_marginTop="@dimen/_15sdp"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                                app:boxBackgroundMode="outline"-->
+<!--                                app:shapeAppearanceOverlay="@style/Rounded"-->
+<!--                                android:hint="@string/sender_name"-->
+<!--                                app:hintEnabled="true"-->
+<!--                                app:boxStrokeColor="@color/app_color"-->
+<!--                                app:hintTextColor="@color/app_color"-->
+<!--                                app:helperTextTextColor="#898A8D"-->
+<!--                                app:boxStrokeWidthFocused="@dimen/_1sdp"-->
+<!--                                app:hintAnimationEnabled="false"-->
+<!--                                app:errorEnabled="true"-->
+<!--                                app:errorContentDescription="hello"-->
+<!--                                app:startIconDrawable="@drawable/ic_icon_person">-->
+<!--                                <com.google.android.material.textfield.TextInputEditText-->
+<!--                                    android:id="@+id/edtName"-->
+<!--                                    style="@style/order_information_text_bold_11"-->
+<!--                                    android:layout_marginHorizontal="@dimen/_12sdp"-->
+<!--                                    android:paddingVertical="@dimen/_5sdp"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="@dimen/_35sdp"-->
+<!--                                    android:maxLines="1"-->
+<!--                                    android:ellipsize="end"-->
+<!--                                    android:text="@={vm.senderName}"-->
+<!--                                    android:inputType="text"-->
+<!--                                    android:textColorHint="@color/grey_text"-->
+<!--                                    android:maxLength="50">-->
+<!--                                </com.google.android.material.textfield.TextInputEditText>-->
+<!--                            </com.google.android.material.textfield.TextInputLayout>-->
 
                             <EditText
+                                android:drawableLeft="@drawable/ic_icon_person"
                                 android:id="@+id/edtSenderName"
                                 android:text="@={vm.senderName}"
-                                style="@style/order_information_text_medium"
+                                style="@style/order_information_text_bold_11"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/_35sdp"
                                 android:layout_marginTop="@dimen/_15sdp"
                                 android:layout_marginHorizontal="@dimen/_12sdp"
                                 android:background="@drawable/bg_information"
                                 android:hint="@string/sender_name"
-                                android:paddingLeft="@dimen/_15sdp"
+                                android:paddingLeft="@dimen/_10sdp"
                                 android:paddingRight="@dimen/_10sdp"
                                 android:paddingVertical="@dimen/_5sdp"
                                 android:maxLines="1"
@@ -348,7 +397,7 @@
                             <EditText
                                 android:id="@+id/edtSenderPhone"
                                 android:text="@={vm.senderPhone}"
-                                style="@style/order_information_text_medium"
+                                style="@style/order_information_text_bold_11"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/_35sdp"
                                 android:layout_marginTop="@dimen/_15sdp"
@@ -360,18 +409,33 @@
                                 android:paddingVertical="@dimen/_5sdp"
                                 android:maxLines="1" />
 
-                            <TextView
-                                style="@style/title"
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:orientation="horizontal"
                                 android:layout_marginTop="@dimen/_15sdp"
-                                android:layout_marginLeft="@dimen/_12sdp"
-                                android:text="@string/receiver_information" />
+                                android:layout_marginLeft="@dimen/_12sdp">
+                                <TextView
+                                    style="@style/title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/receiver_information" />
+                                <TextView
+                                    style="@style/title"
+                                    android:textSize="@dimen/_16ssp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/_3sdp"
+                                    android:text="@string/required_star"
+                                    android:textColor="@color/red_color">
+
+                                </TextView>
+                            </LinearLayout>
 
                             <EditText
                                 android:id="@+id/edtConsigneeName"
                                 android:text="@={vm.consigneeName}"
-                                style="@style/order_information_text_medium"
+                                style="@style/order_information_text_bold_11"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/_35sdp"
                                 android:layout_marginHorizontal="@dimen/_12sdp"
@@ -388,7 +452,7 @@
                             <EditText
                                 android:id="@+id/edtConsigneePhone"
                                 android:text="@={vm.consigneePhone}"
-                                style="@style/order_information_text_medium"
+                                style="@style/order_information_text_bold_11"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/_35sdp"
                                 android:layout_marginTop="@dimen/_15sdp"
@@ -412,7 +476,7 @@
                             <EditText
                                 android:text="@={vm.customerNote}"
                                 android:id="@+id/edtCusNote"
-                                style="@style/order_information_text_medium"
+                                style="@style/order_information_text_bold_11"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/_70sdp"
                                 android:layout_marginHorizontal="@dimen/_12sdp"
@@ -526,8 +590,9 @@
                                             style="@style/app_text"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:maxLines="1"
-                                            android:text="Vui lòng nhập tối thiểu 10.000 đ, tối đa 50tr" />
+                                            android:maxLines="2"
+                                            android:textColor="@color/red_color"
+                                            android:text="Vui lòng nhập tối thiểu 10.000 đ, tối đa 50.000.000 đ" />
                                     </LinearLayout>
                                 </LinearLayout>
 

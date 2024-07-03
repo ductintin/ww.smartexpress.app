@@ -77,7 +77,7 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
 //            viewModel.hasBiometric.set(true);
 //        }
 
-        switch (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG| BiometricManager.Authenticators.DEVICE_CREDENTIAL)){
+        switch (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.BIOMETRIC_WEAK)){
             case BiometricManager.BIOMETRIC_SUCCESS:
                 viewModel.hasBiometric.set(true);
                 break;
