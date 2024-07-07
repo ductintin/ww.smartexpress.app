@@ -22,6 +22,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.R;
+import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.Repository;
 import ww.smartexpress.app.data.model.api.ApiModelUtils;
 import ww.smartexpress.app.data.model.api.request.ConfirmAccountNumberRequest;
@@ -141,9 +142,9 @@ public class BankViewModel extends BaseViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     bankResponseList.set(response.getData());
-
-                    String userId = repository.getSharedPreferences().getUserId();
-                    if(userId != null){
+                    //bị lỗi long và
+                    Long userId = repository.getSharedPreferences().getLongVal(Constants.KEY_USER_ID);
+                    if(userId != 0L){
                         if(user.get().getBankCard() != null){
                             BankCard bankCard = ApiModelUtils.fromJson(user.get().getBankCard(), BankCard.class);
                             for (BankResponse bank: response.getData()) {

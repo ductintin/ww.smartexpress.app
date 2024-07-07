@@ -733,6 +733,38 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:onClick="@{(v)->vm.gotoHotline()}"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="@dimen/_12sdp"
+                            android:paddingVertical="@dimen/_15sdp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_icon_hotline" />
+
+                            <TextView
+                                style="@style/app_text_b"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginHorizontal="@dimen/_15sdp"
+                                android:layout_weight="1"
+                                android:maxLines="1"
+                                android:text="Hỗ trợ" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_icon_expand" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:onClick="@{(v)->vm.doResetPassword()}"
                             android:orientation="horizontal"
                             android:paddingHorizontal="@dimen/_12sdp"

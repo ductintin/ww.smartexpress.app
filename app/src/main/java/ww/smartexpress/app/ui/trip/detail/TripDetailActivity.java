@@ -1,5 +1,6 @@
 package ww.smartexpress.app.ui.trip.detail;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
 
 public class TripDetailActivity extends BaseActivity<ActivityTripDetailBinding, TripDetailViewModel> {
+    Long id = -1L;
     @Override
     public int getLayoutId() {
         return R.layout.activity_trip_detail;
@@ -35,24 +37,42 @@ public class TripDetailActivity extends BaseActivity<ActivityTripDetailBinding, 
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            Long id = bundle.getLong(Constants.CUSTOMER_BOOKING_DETAIL_ID);
-            getMyBooking(id);
+            id = bundle.getLong(Constants.CUSTOMER_BOOKING_DETAIL_ID);
         }
 
     }
 
-    public void getMyBooking(Long id){
+    public void getMyBooking(){
         viewModel.compositeDisposable.add(viewModel.getMyBooking(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
+                    viewModel.hideLoading();
                     if(response.isResult() && response.getData().getContent() != null){
                         viewModel.isLoading.set(false);
                         viewModel.bookingResponse.set(response.getData().getContent().get(0));
                     }
                 }, err -> {
+                    viewModel.hideLoading();
                     viewModel.showErrorMessage(getString(R.string.network_error));
                     err.printStackTrace();
                 }));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(id != null){
+            getMyBooking();
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        if(id.equals(intent.getLongExtra("BOOKING_ID", 0L))){
+            getMyBooking();
+        }
     }
 }

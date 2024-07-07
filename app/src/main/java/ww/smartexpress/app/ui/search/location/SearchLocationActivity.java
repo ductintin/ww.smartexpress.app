@@ -456,6 +456,13 @@ public class GenericTextWatcher implements TextWatcher {
 
     public void openMap(int kind){
         Intent intent = new Intent(SearchLocationActivity.this, MapActivity.class);
+        if(kind == 1 && !TextUtils.isEmpty(viewModel.originId.get())){
+            intent.putExtra("ORIGIN_ID", viewModel.originId.get());
+            intent.putExtra("ORIGIN_DESCRIPTION", viewModel.location.get());
+        }else if(kind == 1 && !TextUtils.isEmpty(viewModel.destinationId.get())){
+            intent.putExtra("ORIGIN_ID", viewModel.destinationId.get());
+            intent.putExtra("ORIGIN_DESCRIPTION", viewModel.searchLocation.get());
+        }
         intent.putExtra("KIND", kind);
         startActivity(intent);
     }
@@ -491,7 +498,7 @@ public class GenericTextWatcher implements TextWatcher {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        EventBus.getDefault().removeStickyEvent(Note.class);
+        EventBus.getDefault().removeStickyEvent(AddressMap.class);
     }
 
 }

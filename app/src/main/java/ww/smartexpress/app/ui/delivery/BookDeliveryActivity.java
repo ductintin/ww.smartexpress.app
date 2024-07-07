@@ -581,7 +581,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     }
 
     public void loadMapDriverDirection(){
-        viewModel.compositeDisposable.add(viewModel.getMapDriverDirection(bookingResponse != null && bookingResponse.getState() == 200 || bookingResponse.getState() == 100 ? viewModel.destinationLatLng.get() : viewModel.originLatLng.get())
+        viewModel.compositeDisposable.add(viewModel.getMapDriverDirection(bookingResponse != null && bookingResponse.getState() == 200 ? viewModel.destinationLatLng.get() : viewModel.originLatLng.get())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
@@ -795,6 +795,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                                 viewModel.isFound.set(false);
                                 viewModel.isShipping.set(true);
                                 foundDriver();
+                                loadMapDriverDirection();
                                 break;
                         }
 
@@ -875,7 +876,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                     Intent intentToTrip = new Intent(BookDeliveryActivity.this, TripCompleteActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putBoolean(Constants.BOOKING_COMPLETE_STATE, true);
-                    bundle.putString(Constants.CUSTOMER_BOOKING_ID, viewModel.bookingId.get().toString());
+                    bundle.putLong(Constants.CUSTOMER_BOOKING_ID, viewModel.bookingId.get());
                     intentToTrip.putExtras(bundle);
                     startActivity(intentToTrip);
                 }
@@ -884,7 +885,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 Log.d("TAG", "onNewIntent: case 5 " + codeCase);
                 Log.d("TAG", "onNewIntent: codebooking vm" + viewModel.bookingCode.get());
                 Log.d("TAG", "onNewIntent: codebooking" + intent.getStringExtra("BOOKING_ID"));
-                if(viewModel.bookingId.get().equals(intent.getStringExtra("BOOKING_ID"))){
+                if(viewModel.bookingId.get().equals((intent.getLongExtra("BOOKING_ID", 0L)))){
                     getCurrentBooking2();
                 }
                 break;
@@ -955,6 +956,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
         viewModel.selectedService.get().setSelectedId(0L);
         bookCars.get(viewModel.selectedServiceIndex.get()).setDiscount(0.0);
         bookCarAdapter.notifyDataSetChanged();
+
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)

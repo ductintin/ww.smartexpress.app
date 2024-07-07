@@ -54,7 +54,35 @@
             </TextView>
         </FrameLayout>
 
+        <LinearLayout
+            android:visibility="@{vm.payoutTransactionList.size() > 0 ? View.VISIBLE : View.GONE}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
+            android:orientation="vertical">
+            <TextView
+                style="@style/app_text_b"
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:text="Hiện tại bạn đang có yêu cầu rút tiền. Vui lòng xóa yêu cầu hiện tại nếu muốn tạo yêu cầu mới."
+                android:textColor="@color/red_color"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcPayoutRequest"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+
         <androidx.core.widget.NestedScrollView
+            android:visibility="@{vm.payoutTransactionList.size() == 0 ? View.VISIBLE : View.GONE}"
             android:onClick="@{()->a.hideKeyboard()}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -136,6 +164,20 @@
                         android:textColor="@color/red_color"
                         android:textSize="@dimen/_9ssp"
                         android:maxLines="1" />
+
+                    <EditText
+                        android:id="@+id/edtPassword"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_edt"
+                        android:hint="Nhập mật khẩu"
+                        android:maxLines="1"
+                        android:textColorHint="@color/grey_text"
+                        style="@style/information_edit_text"
+                        android:inputType="numberDecimal">
+
+                    </EditText>
 
                     <TextView
                         style="@style/app_text_b"
@@ -409,6 +451,7 @@
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
         <LinearLayout
+            android:visibility="@{vm.payoutTransactionList.size() == 0 ? View.VISIBLE : View.GONE}"
             android:id="@+id/layoutButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1,13 +1,28 @@
 package ww.smartexpress.app.ui.payout;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.view.Window;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import eu.davidea.flexibleadapter.FlexibleAdapter;
+import eu.davidea.flexibleadapter.helpers.EmptyViewHelper;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.SingleObserver;
@@ -18,13 +33,20 @@ import ww.smartexpress.app.R;
 import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.model.api.ApiModelUtils;
 import ww.smartexpress.app.data.model.api.response.BankCard;
+import ww.smartexpress.app.data.model.api.response.PayoutTransaction;
 import ww.smartexpress.app.data.model.room.UserEntity;
 import ww.smartexpress.app.databinding.ActivityPayoutBinding;
+import ww.smartexpress.app.databinding.BaseDialogBinding;
 import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
+import ww.smartexpress.app.ui.order.adapter.OrderOptionAdapter;
+import ww.smartexpress.app.ui.payout.adapter.PayoutRequestAdapter;
+import ww.smartexpress.app.ui.view.ProgressItem;
 import ww.smartexpress.app.utils.NumberUtils;
 
 public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutViewModel> {
+    private PayoutRequestAdapter payoutRequestAdapter;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_payout;
@@ -45,7 +67,8 @@ public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutVi
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         viewModel.balance.set((intent.getDoubleExtra("balance",0L)));
-        Log.d("TAG", "onCreate: " + intent.getIntExtra("balance",0));
+
+        getMyPayoutRequest();
 
         String userId = String.valueOf(viewModel.getRepository().getSharedPreferences().getLongVal(Constants.KEY_USER_ID));
         if(userId != null){
@@ -108,5 +131,88 @@ public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutVi
     public void clickMoney(String money){
         viewModel.money.set(money);
         viewBinding.edtMoney.setText(money);
+    }
+
+    public void getMyPayoutRequest(){
+        viewModel.showLoading();
+        viewModel.compositeDisposable.add(viewModel.getMyPayoutRequest()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    viewModel.hideLoading();
+                    if(response.isResult() && response.getData().getTotalElements() > 0){
+
+                        viewModel.payoutTransactionList.set(response.getData().getContent());
+
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext()
+                                ,LinearLayoutManager.VERTICAL, false);
+                        viewBinding.rcPayoutRequest.setLayoutManager(layoutManager);
+                        viewBinding.rcPayoutRequest.setItemAnimator(new DefaultItemAnimator());
+                        payoutRequestAdapter = new PayoutRequestAdapter(viewModel.payoutTransactionList.get());
+                        viewBinding.rcPayoutRequest.setAdapter(payoutRequestAdapter);
+
+                        payoutRequestAdapter.setOnItemClickListener(new PayoutRequestAdapter.OnItemClickListener() {
+                            @Override
+                            public void itemClick(PayoutTransaction payoutTransaction) {
+
+                            }
+
+                            @Override
+                            public void delete(PayoutTransaction payoutTransaction) {
+                                deletePayoutRequest(payoutTransaction);
+                            }
+                        });
+                    }
+                },error->{
+                    viewModel.showErrorMessage(getString(R.string.network_error));
+                    error.printStackTrace();
+                    viewModel.hideLoading();
+                })
+        );
+    }
+
+    public void deletePayoutRequest(PayoutTransaction payoutTransaction){
+        Dialog dialog = new Dialog(PayoutActivity.this);
+        BaseDialogBinding dialogLogoutBinding = DataBindingUtil.inflate(LayoutInflater.from(PayoutActivity.this),R.layout.base_dialog,null, false);
+        dialogLogoutBinding.setTitle("Xóa yêu cầu rút tiền?");
+        dialogLogoutBinding.setSubtitle("");
+        dialogLogoutBinding.setDecision("Xóa");
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(dialogLogoutBinding.getRoot());
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        dialog.setCanceledOnTouchOutside(false);
+
+        dialogLogoutBinding.btnLogout.setOnClickListener(view -> {
+            dialog.dismiss();
+            viewModel.showLoading();
+            viewModel.compositeDisposable.add(viewModel.deletePayoutRequest(payoutTransaction.getId())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(response -> {
+                        viewModel.hideLoading();
+                        if(response.isResult()){
+                            viewModel.payoutTransactionList.get().remove(payoutTransaction);
+                            payoutRequestAdapter.notifyDataSetChanged();
+
+                        }else {
+                            viewModel.showErrorMessage(response.getMessage());
+                        }
+                    },error->{
+                        viewModel.showErrorMessage(getString(R.string.network_error));
+                        error.printStackTrace();
+                        viewModel.hideLoading();
+                    })
+            );
+        });
+        dialogLogoutBinding.btnCancel.setOnClickListener(view -> {
+            dialog.dismiss();
+        });
+        dialog.show();
     }
 }

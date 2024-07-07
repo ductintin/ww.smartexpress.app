@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="ivm"
+            type="ww.smartexpress.app.data.model.api.response.PayoutTransaction" />
+        <import type="ww.smartexpress.app.utils.NumberUtils"></import>
+        <import type="ww.smartexpress.app.utils.DateUtils"></import>
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:elevation="@dimen/_5sdp">
+
+        <ImageView
+            android:layout_margin="@dimen/_3sdp"
+            android:id="@+id/imvDelete"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:elevation="@dimen/_10sdp"
+            android:src="@drawable/ic_icon_delete_red"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout15"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_gravity="end"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayout15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/bg_green_light_elevation"
+            android:orientation="vertical"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <LinearLayout
+                android:layout_marginRight="@dimen/_25sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/createDate"
+                    android:text='@{DateUtils.dateFormat(ivm.createdDate)}'
+                    style="@style/small_information"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/state"
+                    android:text='Đang xử lý'
+                    android:textColor="@color/pending_color"
+                    style="@style/font_medium_black_11ssp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginRight="@dimen/_25sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/desc"
+                    android:text='Rút tiền'
+                    style="@style/font_medium_gray_11ssp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textSize="@dimen/_13ssp" />
+
+                <TextView
+                    android:id="@+id/money"
+                    style="@style/font_medium_gray_11ssp"
+                    android:text='@{"-" + NumberUtils.formatCurrency(ivm.money.doubleValue())}'
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textSize="@dimen/_13ssp" />
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/font_medium_black_8ssp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:maxLines="1"
+                android:visibility="gone" />
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

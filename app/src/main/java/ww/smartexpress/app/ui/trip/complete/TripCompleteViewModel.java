@@ -14,7 +14,7 @@ import ww.smartexpress.app.ui.rate.RateDriverActivity;
 
 public class TripCompleteViewModel extends BaseViewModel {
     public ObservableField<Boolean> isComplete = new ObservableField<>(true);
-    public ObservableField<String> bookingId = new ObservableField<>("");
+    public ObservableField<Long> bookingId = new ObservableField<>(0L);
     public TripCompleteViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
     }
@@ -24,7 +24,7 @@ public class TripCompleteViewModel extends BaseViewModel {
         if(isComplete.get()){
             intent = new Intent(getApplication().getCurrentActivity(), RateDriverActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString(Constants.CUSTOMER_BOOKING_ID, bookingId.get());
+            bundle.putLong(Constants.CUSTOMER_BOOKING_ID, bookingId.get());
             intent.putExtras(bundle);
         }else{
             intent = new Intent(getApplication().getCurrentActivity(), HomeActivity.class);

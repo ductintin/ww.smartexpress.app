@@ -70,9 +70,11 @@ import ww.smartexpress.app.others.MyTimberReleaseTree;
 import ww.smartexpress.app.ui.chat.ChatActivity;
 import ww.smartexpress.app.ui.delivery.BookDeliveryActivity;
 import ww.smartexpress.app.ui.deposit.DepositActivity;
+import ww.smartexpress.app.ui.fragment.activity.ActivityFragment;
 import ww.smartexpress.app.ui.fragment.search.SearchFragment;
 import ww.smartexpress.app.ui.home.HomeActivity;
 import ww.smartexpress.app.ui.qrcode.QrcodeActivity;
+import ww.smartexpress.app.ui.rate.RateDriverActivity;
 import ww.smartexpress.app.ui.trip.TripActivity;
 import ww.smartexpress.app.ui.trip.detail.TripDetailActivity;
 import ww.smartexpress.app.ui.wallet.WalletActivity;
@@ -411,6 +413,8 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
             intent.putExtra("STATE_BOOKING", 1);
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             currentActivity.startActivity(intent);
+        }else {
+            reloadStateShipping(message);
         }
     }
 
@@ -424,32 +428,43 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
                 intent.putExtra("BOOKING_ID", message.getDataObject(DriverBookingResponse.class).getBookingId());
                 intent.putExtra("STATE_BOOKING", 3);
                 currentActivity.startActivity(intent);
+            }else {
+                reloadStateShipping(message);
             }
         }
 
     public void navigateFromBookingDoneToBookDeliveryActivity(SocketEventModel socketEventModel){
         Message message = socketEventModel.getMessage();
         DriverBookingResponse response = message.getDataObject(DriverBookingResponse.class);
-        if(currentActivity instanceof BookDeliveryActivity){
-            Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            intent.putExtra("BOOKING_ID",response.getBookingId());
-            intent.putExtra("STATE_BOOKING", 4);
-            currentActivity.startActivity(intent);
-        }else if(currentActivity instanceof HomeActivity){
-            HomeActivity homeActivity = ((HomeActivity) currentActivity);
-            if(homeActivity.activeFragment instanceof SearchFragment){
-                Log.d("TAG", "navigateFromBookingDoneToBookDeliveryActivity: in search fragment");
-                Intent intent = new Intent(currentActivity, HomeActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                currentActivity.startActivity(intent);
-            }
-        }else if(currentActivity instanceof TripActivity){
-            Intent intent = new Intent(currentActivity, TripActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            intent.putExtra("BOOKING_ID",response.getBookingId());
-            currentActivity.startActivity(intent);
-        }
+
+        createNotification(message, 3);
+//        if(currentActivity instanceof BookDeliveryActivity){
+//            Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//            intent.putExtra("BOOKING_ID",response.getBookingId());
+//            intent.putExtra("STATE_BOOKING", 4);
+//            currentActivity.startActivity(intent);
+//        }else if(currentActivity instanceof HomeActivity){
+//            HomeActivity homeActivity = ((HomeActivity) currentActivity);
+//            if(homeActivity.activeFragment instanceof SearchFragment){
+//                Log.d("TAG", "navigateFromBookingDoneToBookDeliveryActivity: in search fragment");
+//                Intent intent = new Intent(currentActivity, HomeActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//                currentActivity.startActivity(intent);
+//            }
+//        }else if(currentActivity instanceof TripActivity){
+//            Intent intent = new Intent(currentActivity, TripActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//            intent.putExtra("BOOKING_ID",response.getBookingId());
+//            currentActivity.startActivity(intent);
+//        }
+
+        Intent intentToRating = new Intent(currentActivity, RateDriverActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putLong(Constants.CUSTOMER_BOOKING_ID, response.getBookingId());
+        intentToRating.putExtras(bundle);
+        startActivity(intentToRating);
+
         webSocketLiveData.removeBookingCode(response.getBookingId());
     }
 
@@ -467,6 +482,14 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
             intent.putExtra("BOOKING_ID", message.getDataObject(DriverBookingResponse.class).getBookingId());
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             currentActivity.startActivity(intent);
+        }else if(currentActivity instanceof HomeActivity) {
+            HomeActivity homeActivity = ((HomeActivity) currentActivity);
+            if (homeActivity.activeFragment instanceof SearchFragment) {
+                Log.d("TAG", "navigateFromBookingDoneToBookDeliveryActivity: in search fragment");
+                Intent intent = new Intent(currentActivity, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                currentActivity.startActivity(intent);
+            }
         }
     }
 
@@ -679,5 +702,16 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         m.notify(notificationIdChatMap.get(Long.valueOf(message.getBookingId())), builder.build());
     }
 
-
+    public void reloadStateShipping(Message message){
+        if(currentActivity instanceof HomeActivity) {
+            Intent intent = new Intent(currentActivity, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            currentActivity.startActivity(intent);
+        }else if(currentActivity instanceof TripDetailActivity){
+            Intent intent = new Intent(currentActivity, TripDetailActivity.class);
+            intent.putExtra("BOOKING_ID", message.getDataObject(DriverBookingResponse.class).getBookingId());
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            currentActivity.startActivity(intent);
+        }
+    }
 }

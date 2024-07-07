@@ -4,13 +4,22 @@ import android.content.Intent;
 
 import androidx.databinding.ObservableField;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.R;
+import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.Repository;
+import ww.smartexpress.app.data.model.api.ResponseListObj;
+import ww.smartexpress.app.data.model.api.ResponseWrapper;
 import ww.smartexpress.app.data.model.api.request.PayoutRequest;
 import ww.smartexpress.app.data.model.api.response.BankCard;
+import ww.smartexpress.app.data.model.api.response.NotificationResponse;
+import ww.smartexpress.app.data.model.api.response.PayoutTransaction;
 import ww.smartexpress.app.data.model.room.UserEntity;
 import ww.smartexpress.app.ui.bank.BankActivity;
 import ww.smartexpress.app.ui.base.activity.BaseViewModel;
@@ -21,6 +30,7 @@ public class PayoutViewModel extends BaseViewModel {
     public ObservableField<Double> balance = new ObservableField<>(0.0);
     public ObservableField<UserEntity> user = new ObservableField<>();
     public ObservableField<BankCard> bankCard = new ObservableField<>();
+    public ObservableField<List<PayoutTransaction>> payoutTransactionList = new ObservableField<>(new ArrayList<>());
     public PayoutViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
     }
@@ -64,5 +74,14 @@ public class PayoutViewModel extends BaseViewModel {
     public void navigateBank(){
         Intent intent = new Intent(application.getCurrentActivity(), BankActivity.class);
         application.getCurrentActivity().startActivity(intent);
+    }
+
+    public Observable<ResponseWrapper<String>> deletePayoutRequest(Long id){
+        return repository.getApiService().deletePayoutRequest(id);
+    }
+
+    public Observable<ResponseWrapper<ResponseListObj<PayoutTransaction>>> getMyPayoutRequest(){
+        Long userId = repository.getSharedPreferences().getLongVal(Constants.KEY_USER_ID);
+        return repository.getApiService().getMyPayoutRequest(userId, 0);
     }
 }

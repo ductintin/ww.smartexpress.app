@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -27,8 +29,11 @@ import ww.smartexpress.app.R;
 import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.Repository;
 import ww.smartexpress.app.data.local.prefs.PreferencesService;
+import ww.smartexpress.app.data.model.api.ResponseListObj;
 import ww.smartexpress.app.data.model.api.ResponseWrapper;
+import ww.smartexpress.app.data.model.api.response.PayoutTransaction;
 import ww.smartexpress.app.data.model.api.response.ProfileResponse;
+import ww.smartexpress.app.data.model.api.response.Setting;
 import ww.smartexpress.app.data.model.room.UserEntity;
 import ww.smartexpress.app.databinding.BaseDialogBinding;
 import ww.smartexpress.app.ui.base.fragment.BaseFragmentViewModel;
@@ -45,6 +50,7 @@ public class ProfileFragmentViewModel extends BaseFragmentViewModel {
     public ObservableField<String> token = new ObservableField<>("");
     public ObservableField<Long> userId = new ObservableField<>();
     public ObservableField<Boolean> hasBiometric = new ObservableField<>(false);
+    public ObservableField<String> hotline = new ObservableField<>("");
 
     public ProfileFragmentViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
@@ -173,5 +179,22 @@ public class ProfileFragmentViewModel extends BaseFragmentViewModel {
 
     public Completable updateBiometric(Boolean isBiometric){
         return repository.getRoomService().userDao().updateBiometric(userId.get(), isBiometric);
+    }
+
+    public Observable<ResponseWrapper<Setting>> getHotlineSetting(){
+        return repository.getApiService().getSetting("support-hotline");
+    }
+
+    public void gotoHotline(){
+        if(!TextUtils.isEmpty(hotline.get())){
+           try{
+               Intent callIntent = new Intent(Intent.ACTION_DIAL);
+               callIntent.setData(Uri.parse("tel:" + hotline.get()));
+               application.getCurrentActivity().startActivity(callIntent);
+           }catch (Exception e){
+               e.printStackTrace();
+               showErrorMessage("Thiết bị không hỗ trợ");
+           }
+        }
     }
 }

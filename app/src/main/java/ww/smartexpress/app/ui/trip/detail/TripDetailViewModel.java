@@ -1,8 +1,10 @@
 package ww.smartexpress.app.ui.trip.detail;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -13,12 +15,15 @@ import androidx.databinding.ObservableField;
 import io.reactivex.rxjava3.core.Observable;
 import ww.smartexpress.app.MVVMApplication;
 import ww.smartexpress.app.R;
+import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.Repository;
 import ww.smartexpress.app.data.model.api.ResponseListObj;
 import ww.smartexpress.app.data.model.api.ResponseWrapper;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
 import ww.smartexpress.app.databinding.ItemZoomImageBinding;
+import ww.smartexpress.app.ui.bank.BankActivity;
 import ww.smartexpress.app.ui.base.activity.BaseViewModel;
+import ww.smartexpress.app.ui.rate.RateDriverActivity;
 
 public class TripDetailViewModel extends BaseViewModel {
     public ObservableField<BookingResponse> bookingResponse = new ObservableField<>(null);
@@ -56,5 +61,15 @@ public class TripDetailViewModel extends BaseViewModel {
         dialog.setCanceledOnTouchOutside(true);
 
         dialog.show();
+    }
+
+    public void gotoRating(){
+        Intent intent = new Intent(application.getCurrentActivity(), RateDriverActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.CUSTOMER_BOOKING_ID,bookingResponse.get().getId().toString());
+        bundle.putInt("FROM",1);
+        intent.putExtras(bundle);
+
+        application.getCurrentActivity().startActivity(intent);
     }
 }

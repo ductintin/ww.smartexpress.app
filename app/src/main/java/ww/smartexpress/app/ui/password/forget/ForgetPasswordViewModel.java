@@ -64,6 +64,7 @@ public class ForgetPasswordViewModel extends BaseViewModel {
                     if(response.isResult() && response.getData() != null){
                         Intent intent = new Intent(getApplication().getCurrentActivity(), VerifyForgetPasswordOTPActivity.class);
                         intent.putExtra(Constants.KEY_USER_ID, response.getData().getUserId());
+                        intent.putExtra("EMAIL", email.get());
                         intent.putExtra(Constants.VERIFY_OPTION, kind.get());
                         getApplication().getCurrentActivity().startActivity(intent);
                         getApplication().getCurrentActivity().finish();

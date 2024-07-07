@@ -28,6 +28,9 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
@@ -46,6 +49,7 @@ import ww.smartexpress.app.BR;
 import ww.smartexpress.app.BuildConfig;
 import ww.smartexpress.app.R;
 
+import ww.smartexpress.app.data.model.api.response.PayoutTransaction;
 import ww.smartexpress.app.data.model.api.response.ProfileResponse;
 import ww.smartexpress.app.data.model.room.UserEntity;
 import ww.smartexpress.app.databinding.FragmentProfileBinding;
@@ -54,6 +58,7 @@ import ww.smartexpress.app.ui.base.fragment.BaseFragment;
 import ww.smartexpress.app.ui.chat.ChatActivity;
 import ww.smartexpress.app.ui.index.IndexActivity;
 import ww.smartexpress.app.ui.password.reset.ResetPasswordActivity;
+import ww.smartexpress.app.ui.payout.adapter.PayoutRequestAdapter;
 
 public class ProfileFragment extends BaseFragment<FragmentProfileBinding, ProfileFragmentViewModel> {
     private Executor executor;
@@ -242,7 +247,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
             }
         });
 
-
+        getHotline();
     }
 
     @Override
@@ -359,5 +364,24 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
                           }
                       }
                 );
+    }
+
+    public void getHotline(){
+        viewModel.compositeDisposable.add(viewModel.getHotlineSetting()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    viewModel.hideLoading();
+                    if(response.isResult()){
+                        viewModel.hotline.set(response.getData().getSettingValue());
+                    }else {
+                        viewModel.showErrorMessage(response.getMessage());
+                    }
+                },error->{
+                    viewModel.showErrorMessage(getString(R.string.network_error));
+                    error.printStackTrace();
+                    viewModel.hideLoading();
+                })
+        );
     }
 }

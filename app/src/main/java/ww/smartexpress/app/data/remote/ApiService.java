@@ -3,6 +3,7 @@ package ww.smartexpress.app.data.remote;
 import com.google.gson.JsonObject;
 
 import okhttp3.RequestBody;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.PUT;
@@ -39,12 +40,14 @@ import retrofit2.http.POST;
 import ww.smartexpress.app.data.model.api.response.NewsResponse;
 import ww.smartexpress.app.data.model.api.response.NotificationResponse;
 import ww.smartexpress.app.data.model.api.response.Payment;
+import ww.smartexpress.app.data.model.api.response.PayoutTransaction;
 import ww.smartexpress.app.data.model.api.response.ProfileResponse;
 import ww.smartexpress.app.data.model.api.response.Promotion;
 import ww.smartexpress.app.data.model.api.response.Room;
 import ww.smartexpress.app.data.model.api.response.RoomResponse;
 import ww.smartexpress.app.data.model.api.response.SearchLocationResponse;
 import ww.smartexpress.app.data.model.api.response.ServiceResponse;
+import ww.smartexpress.app.data.model.api.response.Setting;
 import ww.smartexpress.app.data.model.api.response.UploadFileResponse;
 import ww.smartexpress.app.data.model.api.response.WalletResponse;
 import ww.smartexpress.app.data.model.api.response.WalletTransaction;
@@ -150,4 +153,16 @@ public interface ApiService {
                                                                                          @Query("size") Integer pageSize);
     @GET("/v1/news/client-get/{id}")
     Observable<ResponseWrapper<NewsResponse>> getNews(@Path("id") Long id);
+
+    @DELETE("/v1/request-pay-out/delete/{id}")
+    Observable<ResponseWrapper<String>> deletePayoutRequest(@Path("id") Long id);
+
+    @GET("/v1/request-pay-out/my-request")
+    Observable<ResponseWrapper<ResponseListObj<PayoutTransaction>>> getMyPayoutRequest (@Query("customerId") Long customerId, @Query("state") Integer state);
+
+    @GET("/v1/settings/get-by-key/{key}")
+    Observable<ResponseWrapper<Setting>> getSetting(@Path("key") String key);
+
+    @GET("v1/customer/confirm-password")
+    Observable<ResponseWrapper<String>> confirmPassword(@Path("key") String key);
 }

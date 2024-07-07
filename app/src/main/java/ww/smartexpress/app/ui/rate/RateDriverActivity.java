@@ -56,7 +56,8 @@ public class RateDriverActivity extends BaseActivity<ActivityRatingDriverBinding
         viewBinding.setA(this);
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            viewModel.bookingId.set(Long.valueOf(bundle.getString(Constants.CUSTOMER_BOOKING_ID)));
+            viewModel.bookingId.set((bundle.getLong(Constants.CUSTOMER_BOOKING_ID)));
+            viewModel.from.set((bundle.getInt("FROM")));
             Log.d("TAG", "onCreate: " + bundle.getString(Constants.CUSTOMER_BOOKING_ID));
             Log.d("TAG", "onCreate: " + viewModel.bookingId.get());
             getMyBooking(viewModel.bookingId.get());
@@ -99,10 +100,14 @@ public class RateDriverActivity extends BaseActivity<ActivityRatingDriverBinding
     }
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(getApplication(), HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
-        finish();
+        if(viewModel.from != null && viewModel.from.get() == 1){
+            super.onBackPressed();
+        }else{
+            Intent intent = new Intent(getApplication(), HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void prepareRequest(){

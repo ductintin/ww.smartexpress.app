@@ -64,6 +64,8 @@ public class Constants {
     public static final int NOTIFICATION_KIND_DEPOSIT_SUCCESSFULLY = 1;
     public static final int NOTIFICATION_KIND_APPROVE_PAYOUT = 2;
     public static final int NOTIFICATION_KIND_REJECT_PAYOUT = 3;
+    public static final String CUSTOMER_ERROR_STATUS_PENDING = "ERROR-CUSTOMER-ERROR-00011";
+    public static final String CUSTOMER_ERROR_LOGIN_FAILED = "ERROR-CUSTOMER-ERROR-0003";
 
     private Constants() {
 

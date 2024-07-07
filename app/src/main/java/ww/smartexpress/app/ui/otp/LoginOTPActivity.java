@@ -49,7 +49,10 @@ public class LoginOTPActivity extends BaseActivity<ActivityLoginOtpBinding, Logi
 
         Intent intent = getIntent();
         if(intent!= null){
-            if(intent.getStringExtra("USER_ID") != null && intent.getStringExtra("USER_PHONE") != null){
+            if(intent.getStringExtra("USER_ID") == null ){
+                viewModel.phone.set(intent.getStringExtra("USER_PHONE"));
+                retryOtpActiveCustomer();
+            }else{
                 viewModel.userId.set(intent.getStringExtra("USER_ID"));
                 viewModel.phone.set(intent.getStringExtra("USER_PHONE"));
                 viewModel.setCountdownOTP();
@@ -163,7 +166,6 @@ public class LoginOTPActivity extends BaseActivity<ActivityLoginOtpBinding, Logi
                     if (response.isResult()){
                         viewModel.showSuccessMessage("Kích hoạt tài khoản thành công. Vui lòng đăng nhập lại!");
                         navigateToSignIn();
-
                     }
 
                 },error->{
@@ -184,6 +186,8 @@ public class LoginOTPActivity extends BaseActivity<ActivityLoginOtpBinding, Logi
                 .subscribe(response -> {
                     viewModel.hideLoading();
                     if (response.isResult()){
+                        viewModel.showSuccessMessage("Gửi lại mã xác thực thành công");
+                        viewModel.userId.set(response.getData().getUserId());
                         viewModel.setCountdownOTP();
                     }
 

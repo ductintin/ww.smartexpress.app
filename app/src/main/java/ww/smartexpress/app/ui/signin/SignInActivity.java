@@ -413,9 +413,21 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
                         finish();
                     }else{
                         viewModel.hideLoading();
-                        viewModel.showErrorMessage(response.getMessage());
+//                        Log.d("TAG", "doLogin: " + response.getCode());
+//                        Log.d("TAG", "doLogin: " + String.valueOf(response.getCode() == Constants.CUSTOMER_ERROR_STATUS_PENDING));
+//                        Log.d("TAG", "doLogin: " + String.valueOf(response.getCode().equals(Constants.CUSTOMER_ERROR_STATUS_PENDING)));
+//                        Log.d("TAG", "doLogin: " + String.valueOf(Constants.CUSTOMER_ERROR_STATUS_PENDING == response.getCode()));
+                        if(response.getCode().equals(Constants.CUSTOMER_ERROR_STATUS_PENDING)){
+                            Intent intent = new Intent(SignInActivity.this, LoginOTPActivity.class);
+                            intent.putExtra("USER_PHONE", viewModel.phoneS.get());
+                            startActivity(intent);
+                        }else if(response.getCode().equals(Constants.CUSTOMER_ERROR_LOGIN_FAILED)){
+                            viewModel.showErrorMessage("Số điện thoại hoặc mật khẩu không đúng");
+
+                        }
                     }
                 }, err -> {
+
                     viewModel.hideLoading();
                     viewModel.showErrorMessage(application.getString(R.string.network_error));
                 }));

@@ -294,6 +294,8 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding, HomeViewMode
         super.onNewIntent(intent);
         if(activeFragment instanceof SearchFragment){
             searchFragment.loadCurrentBooking();
+        }else if(activeFragment instanceof ActivityFragment){
+            activityFragment.getBooking();
         }
     }
 }

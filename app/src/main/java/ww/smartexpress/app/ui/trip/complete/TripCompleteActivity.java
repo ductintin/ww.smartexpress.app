@@ -34,7 +34,7 @@ public class TripCompleteActivity extends BaseActivity<ActivityCompleteTripBindi
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             viewModel.isComplete.set(bundle.getBoolean(Constants.BOOKING_COMPLETE_STATE, false));
-            viewModel.bookingId.set(bundle.getString(Constants.CUSTOMER_BOOKING_ID));
+            viewModel.bookingId.set(bundle.getLong(Constants.CUSTOMER_BOOKING_ID));
         }
     }
 

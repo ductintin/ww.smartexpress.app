@@ -34,6 +34,7 @@ import ww.smartexpress.app.ui.trip.complete.TripCompleteActivity;
 import ww.smartexpress.app.utils.NumberUtils;
 
 public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewModel> {
+    Long id;
     @Override
     public int getLayoutId() {
         return R.layout.activity_trip;
@@ -59,8 +60,8 @@ public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewMode
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            Long id = bundle.getLong(Constants.CUSTOMER_BOOKING_DETAIL_ID);
-            getMyBooking(id);
+            id = bundle.getLong(Constants.CUSTOMER_BOOKING_DETAIL_ID);
+            getMyBooking();
         }
 
         viewBinding.btnCancelBook.setOnClickListener(new View.OnClickListener() {
@@ -101,11 +102,12 @@ public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewMode
     }
 
 
-    public void getMyBooking(Long id){
+    public void getMyBooking(){
         viewModel.compositeDisposable.add(viewModel.getMyBooking(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
+                    viewModel.hideLoading();
                     if(response.isResult() && response.getData().getTotalElements() > 0){
                         viewModel.isLoading.set(false);
                         viewModel.bookingResponse.set(response.getData().getContent().get(0));
@@ -127,13 +129,16 @@ public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewMode
         super.onNewIntent(intent);
         if(intent != null){
             Long id = intent.getLongExtra("BOOKING_ID", 0L);
-            if(viewModel.bookingResponse.get().getId().equals(id)){
+            if(id != 0 && viewModel.bookingResponse.get().getId().equals(id)){
                 Intent intentToRating = new Intent(TripActivity.this, RateDriverActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putLong(Constants.CUSTOMER_BOOKING_ID, viewModel.bookingResponse.get().getId());
                 intentToRating.putExtras(bundle);
                 startActivity(intentToRating);
                 finish();
+            }else{
+                viewModel.showLoading();
+                getMyBooking();
             }
         }
     }

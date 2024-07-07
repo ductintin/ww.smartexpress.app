@@ -44,7 +44,7 @@
     <string name="home_private">Nhà riêng</string>
     <string name="company">Công ty</string>
     <string name="send_otp_title1">Mã xác thực sẽ được gửi đến </string>
-    <string name="send_otp_title2">Vui lòng kiểm tra tin nhắn và nhập mã xác thực vào đây </string>
+    <string name="send_otp_title2">Vui lòng kiểm tra điện thoại và nhập mã xác thực vào đây </string>
     <string name="send_otp_title3">Gửi lại mã xác thực</string>
     <string name="edit_profile">Chỉnh sửa hồ sơ</string>
     <string name="fullName">Họ và tên</string>

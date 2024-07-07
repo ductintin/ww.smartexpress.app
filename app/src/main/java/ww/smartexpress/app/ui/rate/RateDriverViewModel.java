@@ -26,6 +26,7 @@ public class RateDriverViewModel extends BaseViewModel {
     public ObservableField<Long> bookingId = new ObservableField<>(0L);
 
     public ObservableField<Boolean> onClick = new ObservableField<>(false);
+    public ObservableField<Integer> from = new ObservableField<>(0);
 
     public RateDriverViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
@@ -36,14 +37,18 @@ public class RateDriverViewModel extends BaseViewModel {
     }
 
     public void sendRating(){
-        Intent intent = new Intent(application.getCurrentActivity(), HomeActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(Constants.BOOKING_CANCEL_STATE, false);
-        bundle.putBoolean(Constants.BOOKING_COMPLETE_STATE, true);
-        bundle.putLong(Constants.CUSTOMER_BOOKING_DETAIL_ID, bookingId.get());
-        intent.putExtras(bundle);
-        application.getCurrentActivity().startActivity(intent);
-        application.getCurrentActivity().finish();
+        if(from.get() == null){
+            Intent intent = new Intent(application.getCurrentActivity(), HomeActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(Constants.BOOKING_CANCEL_STATE, false);
+            bundle.putBoolean(Constants.BOOKING_COMPLETE_STATE, true);
+            bundle.putLong(Constants.CUSTOMER_BOOKING_DETAIL_ID, bookingId.get());
+            intent.putExtras(bundle);
+            application.getCurrentActivity().startActivity(intent);
+            application.getCurrentActivity().finish();
+        }else{
+            application.getCurrentActivity().onBackPressed();
+        }
     }
 
     Observable<ResponseWrapper<String>> rating(RatingBookingRequest request) {
