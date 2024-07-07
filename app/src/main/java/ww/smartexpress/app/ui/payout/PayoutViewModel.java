@@ -16,6 +16,7 @@ import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.Repository;
 import ww.smartexpress.app.data.model.api.ResponseListObj;
 import ww.smartexpress.app.data.model.api.ResponseWrapper;
+import ww.smartexpress.app.data.model.api.request.ConfirmPasswordRequest;
 import ww.smartexpress.app.data.model.api.request.PayoutRequest;
 import ww.smartexpress.app.data.model.api.response.BankCard;
 import ww.smartexpress.app.data.model.api.response.NotificationResponse;
@@ -30,6 +31,7 @@ public class PayoutViewModel extends BaseViewModel {
     public ObservableField<Double> balance = new ObservableField<>(0.0);
     public ObservableField<UserEntity> user = new ObservableField<>();
     public ObservableField<BankCard> bankCard = new ObservableField<>();
+    public ObservableField<String> password = new ObservableField<>("");
     public ObservableField<List<PayoutTransaction>> payoutTransactionList = new ObservableField<>(new ArrayList<>());
     public PayoutViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
@@ -43,14 +45,7 @@ public class PayoutViewModel extends BaseViewModel {
     }
 
     public void doDone(){
-        if(money.get() != null && Integer.valueOf(money.get())<50000){
-            showErrorMessage("Số tiền rút tối thiểu là 50.000đ");
-            return;
-        }
-        if(money.get() != null && Double.valueOf(money.get()) > balance.get()){
-            showErrorMessage("Số tiền rút vượt quá số dư trong ví");
-            return;
-        }
+
         showLoading();
             compositeDisposable.add(repository.getApiService().payout(new PayoutRequest(user.get().getBankCard(),Integer.valueOf(money.get())))
                             .subscribeOn(Schedulers.io())
@@ -58,7 +53,8 @@ public class PayoutViewModel extends BaseViewModel {
                             .subscribe(response -> {
                                 if(response.isResult()){
                                     hideLoading();
-                                    showSuccessMessage(response.getMessage());
+                                    showSuccessMessage("Tạo yêu cầu rút tiền thành công");
+                                    getApplication().getCurrentActivity().onBackPressed();
                                 }else {
                                     hideLoading();
                                     showErrorMessage(response.getMessage());
@@ -83,5 +79,10 @@ public class PayoutViewModel extends BaseViewModel {
     public Observable<ResponseWrapper<ResponseListObj<PayoutTransaction>>> getMyPayoutRequest(){
         Long userId = repository.getSharedPreferences().getLongVal(Constants.KEY_USER_ID);
         return repository.getApiService().getMyPayoutRequest(userId, 0);
+    }
+
+    public Observable<ResponseWrapper<String>> confirmPassword(String password){
+        ConfirmPasswordRequest confirmPasswordRequest = new ConfirmPasswordRequest(password);
+        return repository.getApiService().confirmPassword(confirmPasswordRequest);
     }
 }

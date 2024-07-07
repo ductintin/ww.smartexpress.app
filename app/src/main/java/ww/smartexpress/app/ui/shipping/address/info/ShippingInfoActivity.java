@@ -35,6 +35,7 @@ import ww.smartexpress.app.R;
 import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.model.api.ApiModelUtils;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
+import ww.smartexpress.app.data.model.api.response.CodService;
 import ww.smartexpress.app.data.model.api.response.Note;
 import ww.smartexpress.app.data.model.api.response.ShippingInfo;
 import ww.smartexpress.app.databinding.ActivityShippingInfoBinding;
@@ -78,6 +79,8 @@ public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBindi
             viewModel.destination.set(bundle.getString(Constants.KEY_DESTINATION_NAME, ""));
             getProfile();
         }
+
+        getCodService();
 
         bottomSheetLayout();
 
@@ -291,5 +294,25 @@ public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBindi
         return true;
     }
 
-
+    public void getCodService(){
+        viewModel.showLoading();
+        viewModel.compositeDisposable.add(viewModel.getCodService()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    viewModel.hideLoading();
+                    if(response.isResult()){
+                        viewModel.codService.set(ApiModelUtils.fromJson(response.getData().getSettingValue(), CodService.class));
+                        String text = "Vui lòng nhập tối thiểu " +  NumberUtils.formatCurrency(viewModel.codService.get().getMin()) +" , tối đa " + NumberUtils.formatCurrency(viewModel.codService.get().getMax());
+                        viewModel.codPriceText.set(text);
+                    }else {
+                        viewModel.showErrorMessage(response.getCode());
+                    }
+                },error->{
+                    viewModel.showErrorMessage(getString(R.string.network_error));
+                    error.printStackTrace();
+                    viewModel.hideLoading();
+                })
+        );
+    }
 }

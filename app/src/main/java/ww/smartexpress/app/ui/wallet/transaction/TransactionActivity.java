@@ -1,5 +1,6 @@
 package ww.smartexpress.app.ui.wallet.transaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -13,6 +14,8 @@ import java.util.List;
 
 import eu.davidea.flexibleadapter.FlexibleAdapter;
 import eu.davidea.flexibleadapter.helpers.EmptyViewHelper;
+import ww.smartexpress.app.ui.trip.detail.TripDetailActivity;
+import ww.smartexpress.app.ui.wallet.transaction.details.TransactionDetailsActivity;
 import ww.smartexpress.app.ui.wallet.transaction.item.TransactionItem;
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.R;
@@ -82,6 +85,10 @@ public class TransactionActivity extends BaseActivity<ActivityTransactionBinding
 
     @Override
     public boolean onItemClick(View view, int position) {
+        Intent intent = new Intent(this, TransactionDetailsActivity.class);
+        TransactionItem transactionItem = (TransactionItem) mFlexibleAdapter.getItem(position);
+        intent.putExtra("transactionId",transactionItem.getWalletTransaction().getId());
+        startActivity(intent);
         return false;
     }
 

@@ -15,6 +15,7 @@ import ww.smartexpress.app.data.model.api.ResponseWrapper;
 import ww.smartexpress.app.data.model.api.request.ActiveCustomerRequest;
 import ww.smartexpress.app.data.model.api.request.CancelBookingRequest;
 import ww.smartexpress.app.data.model.api.request.ConfirmAccountNumberRequest;
+import ww.smartexpress.app.data.model.api.request.ConfirmPasswordRequest;
 import ww.smartexpress.app.data.model.api.request.CreateBookingRequest;
 import ww.smartexpress.app.data.model.api.request.DepositRequest;
 import ww.smartexpress.app.data.model.api.request.ForgetPasswordRequest;
@@ -163,6 +164,9 @@ public interface ApiService {
     @GET("/v1/settings/get-by-key/{key}")
     Observable<ResponseWrapper<Setting>> getSetting(@Path("key") String key);
 
-    @GET("v1/customer/confirm-password")
-    Observable<ResponseWrapper<String>> confirmPassword(@Path("key") String key);
+    @POST("v1/customer/confirm-password")
+    Observable<ResponseWrapper<String>> confirmPassword(@Body ConfirmPasswordRequest request);
+
+    @GET("/v1/wallet-transaction/get/{id}")
+    Observable<ResponseWrapper<WalletTransaction>> getTransactionDetails(@Path("id") Long id);
 }

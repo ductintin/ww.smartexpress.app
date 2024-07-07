@@ -16,7 +16,9 @@ import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.Repository;
 import ww.smartexpress.app.data.model.api.ApiModelUtils;
 import ww.smartexpress.app.data.model.api.ResponseWrapper;
+import ww.smartexpress.app.data.model.api.response.CodService;
 import ww.smartexpress.app.data.model.api.response.ProfileResponse;
+import ww.smartexpress.app.data.model.api.response.Setting;
 import ww.smartexpress.app.data.model.api.response.ShippingInfo;
 import ww.smartexpress.app.ui.base.activity.BaseViewModel;
 import ww.smartexpress.app.ui.coupon.CouponActivity;
@@ -55,6 +57,8 @@ public class ShippingInfoViewModel extends BaseViewModel {
     public ObservableField<List<Bitmap>> bitmaps= new ObservableField<>(new ArrayList<>());
     public ObservableField<Boolean> selectCOD = new ObservableField<>(false);
     public ObservableField<String> codPriceText = new ObservableField<>("");
+    public ObservableField<CodService> codService = new ObservableField<>(new CodService());
+    public ObservableField<String> codServiceText = new ObservableField<>("");
 
     public ShippingInfoViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
@@ -104,5 +108,9 @@ public class ShippingInfoViewModel extends BaseViewModel {
 
     public void selectHandDelivery(){
         bonusService.setValue(1);
+    }
+
+    public Observable<ResponseWrapper<Setting>> getCodService(){
+        return repository.getApiService().getSetting("cod_service");
     }
 }

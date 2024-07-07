@@ -57,6 +57,7 @@ import ww.smartexpress.app.ui.trip.TripViewModel;
 import ww.smartexpress.app.ui.trip.detail.TripDetailViewModel;
 import ww.smartexpress.app.ui.wallet.WalletViewModel;
 import ww.smartexpress.app.ui.wallet.transaction.TransactionViewModel;
+import ww.smartexpress.app.ui.wallet.transaction.details.TransactionDetailsViewModel;
 import ww.smartexpress.app.ui.welcome.WelcomeViewModel;
 import ww.smartexpress.app.ui.splashform.SplashFormViewModel;
 import ww.smartexpress.app.utils.GetInfo;
@@ -459,5 +460,13 @@ public class ActivityModule {
         Supplier<NotificationDetailsViewModel> supplier = () -> new NotificationDetailsViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<NotificationDetailsViewModel> factory = new ViewModelProviderFactory<>(NotificationDetailsViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(NotificationDetailsViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    TransactionDetailsViewModel provideTransactionDetailsViewModel(Repository repository, Context application) {
+        Supplier<TransactionDetailsViewModel> supplier = () -> new TransactionDetailsViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<TransactionDetailsViewModel> factory = new ViewModelProviderFactory<>(TransactionDetailsViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(TransactionDetailsViewModel.class);
     }
 }

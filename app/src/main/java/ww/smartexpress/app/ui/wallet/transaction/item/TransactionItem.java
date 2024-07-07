@@ -13,12 +13,14 @@ import eu.davidea.flexibleadapter.FlexibleAdapter;
 import eu.davidea.flexibleadapter.items.AbstractFlexibleItem;
 import eu.davidea.flexibleadapter.items.IFlexible;
 import eu.davidea.viewholders.FlexibleViewHolder;
+import lombok.Data;
 import ww.smartexpress.app.data.model.api.response.WalletTransaction;
 import ww.smartexpress.app.R;
 import ww.smartexpress.app.data.model.api.response.WalletTransaction;
 import ww.smartexpress.app.utils.DateUtils;
 import ww.smartexpress.app.utils.NumberUtils;
 
+@Data
 public class TransactionItem extends AbstractFlexibleItem<TransactionItem.TransactionViewHolder> {
 
     private WalletTransaction walletTransaction;

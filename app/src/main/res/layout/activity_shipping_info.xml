@@ -343,71 +343,101 @@
 
                                 </TextView>
                             </LinearLayout>
-<!--                            <com.google.android.material.textfield.TextInputLayout-->
-<!--                                android:id="@+id/tipName"-->
-<!--                                android:layout_marginTop="@dimen/_15sdp"-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-<!--                                app:boxBackgroundMode="outline"-->
-<!--                                app:shapeAppearanceOverlay="@style/Rounded"-->
-<!--                                android:hint="@string/sender_name"-->
-<!--                                app:hintEnabled="true"-->
-<!--                                app:boxStrokeColor="@color/app_color"-->
-<!--                                app:hintTextColor="@color/app_color"-->
-<!--                                app:helperTextTextColor="#898A8D"-->
-<!--                                app:boxStrokeWidthFocused="@dimen/_1sdp"-->
-<!--                                app:hintAnimationEnabled="false"-->
-<!--                                app:errorEnabled="true"-->
-<!--                                app:errorContentDescription="hello"-->
-<!--                                app:startIconDrawable="@drawable/ic_icon_person">-->
-<!--                                <com.google.android.material.textfield.TextInputEditText-->
-<!--                                    android:id="@+id/edtName"-->
-<!--                                    style="@style/order_information_text_bold_11"-->
-<!--                                    android:layout_marginHorizontal="@dimen/_12sdp"-->
-<!--                                    android:paddingVertical="@dimen/_5sdp"-->
-<!--                                    android:layout_width="match_parent"-->
-<!--                                    android:layout_height="@dimen/_35sdp"-->
-<!--                                    android:maxLines="1"-->
-<!--                                    android:ellipsize="end"-->
-<!--                                    android:text="@={vm.senderName}"-->
-<!--                                    android:inputType="text"-->
-<!--                                    android:textColorHint="@color/grey_text"-->
-<!--                                    android:maxLength="50">-->
-<!--                                </com.google.android.material.textfield.TextInputEditText>-->
-<!--                            </com.google.android.material.textfield.TextInputLayout>-->
-
-                            <EditText
-                                android:drawableLeft="@drawable/ic_icon_person"
-                                android:id="@+id/edtSenderName"
-                                android:text="@={vm.senderName}"
-                                style="@style/order_information_text_bold_11"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_35sdp"
-                                android:layout_marginTop="@dimen/_15sdp"
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_marginHorizontal="@dimen/_12sdp"
-                                android:background="@drawable/bg_information"
+                                android:id="@+id/tipSenderName"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                app:boxBackgroundMode="outline"
+                                app:shapeAppearanceOverlay="@style/Rounded"
                                 android:hint="@string/sender_name"
-                                android:paddingLeft="@dimen/_10sdp"
-                                android:paddingRight="@dimen/_10sdp"
-                                android:paddingVertical="@dimen/_5sdp"
-                                android:maxLines="1"
-                                android:ellipsize="end"
-                                android:inputType="text"/>
-                            <EditText
-                                android:id="@+id/edtSenderPhone"
-                                android:text="@={vm.senderPhone}"
-                                style="@style/order_information_text_bold_11"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_35sdp"
-                                android:layout_marginTop="@dimen/_15sdp"
+                                app:hintEnabled="true"
+                                app:boxStrokeColor="@color/app_color"
+                                app:hintTextColor="@color/app_color"
+                                app:helperTextTextColor="#898A8D"
+                                app:boxStrokeWidthFocused="@dimen/_1sdp"
+                                app:hintAnimationEnabled="false"
+                                app:errorEnabled="true">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edtSenderName"
+                                    style="@style/order_information_text_bold_11"
+                                    android:paddingVertical="@dimen/_5sdp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:maxLines="1"
+                                    android:ellipsize="end"
+                                    android:text="@={vm.senderName}"
+                                    android:inputType="text"
+                                    android:textColorHint="@color/grey_text"
+                                    android:maxLength="50">
+                                </com.google.android.material.textfield.TextInputEditText>
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_marginHorizontal="@dimen/_12sdp"
-                                android:background="@drawable/bg_information"
+                                android:id="@+id/tipSenderPhone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                app:boxBackgroundMode="outline"
+                                app:shapeAppearanceOverlay="@style/Rounded"
                                 android:hint="@string/phone_number"
-                                android:inputType="phone"
-                                android:paddingLeft="@dimen/_15sdp"
-                                android:paddingVertical="@dimen/_5sdp"
-                                android:maxLines="1" />
+                                app:hintEnabled="true"
+                                app:boxStrokeColor="@color/app_color"
+                                app:hintTextColor="@color/app_color"
+                                app:helperTextTextColor="#898A8D"
+                                app:boxStrokeWidthFocused="@dimen/_1sdp"
+                                app:hintAnimationEnabled="false"
+                                app:errorEnabled="true">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edtSenderPhone"
+                                    android:text="@={vm.senderPhone}"
+                                    style="@style/order_information_text_bold_11"
+                                    android:paddingVertical="@dimen/_5sdp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:maxLines="1"
+                                    android:ellipsize="end"
+                                    android:inputType="text"
+                                    android:textColorHint="@color/grey_text"
+                                    android:maxLength="50">
+                                </com.google.android.material.textfield.TextInputEditText>
+                            </com.google.android.material.textfield.TextInputLayout>
+
+<!--                            <EditText-->
+<!--                                android:drawableLeft="@drawable/ic_icon_person"-->
+<!--                                android:id="@+id/edtSenderName"-->
+<!--                                android:text="@={vm.senderName}"-->
+<!--                                style="@style/order_information_text_bold_11"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="@dimen/_35sdp"-->
+<!--                                android:layout_marginTop="@dimen/_15sdp"-->
+<!--                                android:layout_marginHorizontal="@dimen/_12sdp"-->
+<!--                                android:background="@drawable/bg_information"-->
+<!--                                android:hint="@string/sender_name"-->
+<!--                                android:paddingLeft="@dimen/_10sdp"-->
+<!--                                android:paddingRight="@dimen/_10sdp"-->
+<!--                                android:paddingVertical="@dimen/_5sdp"-->
+<!--                                android:maxLines="1"-->
+<!--                                android:ellipsize="end"-->
+<!--                                android:inputType="text"/>-->
+<!--                            <EditText-->
+<!--                                android:drawableLeft="@drawable/ic_icon_mobile"-->
+<!--                                android:id="@+id/edtSenderPhone"-->
+<!--                                android:text="@={vm.senderPhone}"-->
+<!--                                style="@style/order_information_text_bold_11"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="@dimen/_35sdp"-->
+<!--                                android:layout_marginTop="@dimen/_15sdp"-->
+<!--                                android:layout_marginHorizontal="@dimen/_12sdp"-->
+<!--                                android:background="@drawable/bg_information"-->
+<!--                                android:hint="@string/phone_number"-->
+<!--                                android:inputType="phone"-->
+<!--                                android:paddingLeft="@dimen/_15sdp"-->
+<!--                                android:paddingVertical="@dimen/_5sdp"-->
+<!--                                android:maxLines="1" />-->
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -432,37 +462,100 @@
                                 </TextView>
                             </LinearLayout>
 
-                            <EditText
-                                android:id="@+id/edtConsigneeName"
-                                android:text="@={vm.consigneeName}"
-                                style="@style/order_information_text_bold_11"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_35sdp"
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_marginHorizontal="@dimen/_12sdp"
+                                android:id="@+id/tipConsigneeName"
                                 android:layout_marginTop="@dimen/_15sdp"
-                                android:background="@drawable/bg_information"
-                                android:hint="@string/receiver_name"
-                                android:maxLines="1"
-                                android:paddingVertical="@dimen/_5sdp"
-                                android:paddingLeft="@dimen/_15sdp"
-                                android:paddingRight="@dimen/_10sdp"
-                                android:ellipsize="end"
-                                android:inputType="text"/>
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                app:boxBackgroundMode="outline"
+                                app:shapeAppearanceOverlay="@style/Rounded"
+                                android:hint="Tên người nhận"
+                                app:hintEnabled="true"
+                                app:boxStrokeColor="@color/app_color"
+                                app:hintTextColor="@color/app_color"
+                                app:helperTextTextColor="#898A8D"
+                                app:boxStrokeWidthFocused="@dimen/_1sdp"
+                                app:hintAnimationEnabled="false"
+                                app:errorEnabled="true">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edtConsigneeName"
+                                    style="@style/order_information_text_bold_11"
+                                    android:paddingVertical="@dimen/_5sdp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:maxLines="1"
+                                    android:ellipsize="end"
+                                    android:text="@={vm.consigneeName}"
+                                    android:inputType="text"
+                                    android:textColorHint="@color/grey_text"
+                                    android:maxLength="50">
+                                </com.google.android.material.textfield.TextInputEditText>
+                            </com.google.android.material.textfield.TextInputLayout>
 
-                            <EditText
-                                android:id="@+id/edtConsigneePhone"
-                                android:text="@={vm.consigneePhone}"
-                                style="@style/order_information_text_bold_11"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_35sdp"
-                                android:layout_marginTop="@dimen/_15sdp"
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_marginHorizontal="@dimen/_12sdp"
-                                android:background="@drawable/bg_information"
+                                android:id="@+id/tipConsigneePhone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                app:boxBackgroundMode="outline"
+                                app:shapeAppearanceOverlay="@style/Rounded"
                                 android:hint="@string/phone_number"
-                                android:inputType="phone"
-                                android:paddingLeft="@dimen/_15sdp"
-                                android:paddingVertical="@dimen/_5sdp"
-                                android:maxLines="1" />
+                                app:hintEnabled="true"
+                                app:boxStrokeColor="@color/app_color"
+                                app:hintTextColor="@color/app_color"
+                                app:helperTextTextColor="#898A8D"
+                                app:boxStrokeWidthFocused="@dimen/_1sdp"
+                                app:hintAnimationEnabled="false"
+                                app:errorEnabled="true">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edtConsigneePhone"
+                                    android:text="@={vm.consigneePhone}"
+                                    style="@style/order_information_text_bold_11"
+                                    android:paddingVertical="@dimen/_5sdp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:maxLines="1"
+                                    android:ellipsize="end"
+                                    android:inputType="text"
+                                    android:textColorHint="@color/grey_text"
+                                    android:maxLength="50">
+                                </com.google.android.material.textfield.TextInputEditText>
+                            </com.google.android.material.textfield.TextInputLayout>
+
+<!--                            <EditText-->
+<!--                                android:id="@+id/edtConsigneeName"-->
+<!--                                android:text="@={vm.consigneeName}"-->
+<!--                                style="@style/order_information_text_bold_11"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="@dimen/_35sdp"-->
+<!--                                android:layout_marginHorizontal="@dimen/_12sdp"-->
+<!--                                android:layout_marginTop="@dimen/_15sdp"-->
+<!--                                android:background="@drawable/bg_information"-->
+<!--                                android:hint="@string/receiver_name"-->
+<!--                                android:maxLines="1"-->
+<!--                                android:paddingVertical="@dimen/_5sdp"-->
+<!--                                android:paddingLeft="@dimen/_15sdp"-->
+<!--                                android:paddingRight="@dimen/_10sdp"-->
+<!--                                android:ellipsize="end"-->
+<!--                                android:inputType="text"/>-->
+
+<!--                            <EditText-->
+<!--                                android:id="@+id/edtConsigneePhone"-->
+<!--                                android:text="@={vm.consigneePhone}"-->
+<!--                                style="@style/order_information_text_bold_11"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="@dimen/_35sdp"-->
+<!--                                android:layout_marginTop="@dimen/_15sdp"-->
+<!--                                android:layout_marginHorizontal="@dimen/_12sdp"-->
+<!--                                android:background="@drawable/bg_information"-->
+<!--                                android:hint="@string/phone_number"-->
+<!--                                android:inputType="phone"-->
+<!--                                android:paddingLeft="@dimen/_15sdp"-->
+<!--                                android:paddingVertical="@dimen/_5sdp"-->
+<!--                                android:maxLines="1" />-->
 
 
                             <TextView
@@ -473,23 +566,55 @@
                                 android:layout_marginLeft="@dimen/_12sdp"
                                 android:text="Ghi chú cho tài xế" />
 
-                            <EditText
-                                android:text="@={vm.customerNote}"
-                                android:id="@+id/edtCusNote"
-                                style="@style/order_information_text_bold_11"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_70sdp"
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_marginHorizontal="@dimen/_12sdp"
-                                android:layout_marginTop="@dimen/_15sdp"
-                                android:background="@drawable/bg_information"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                app:boxBackgroundMode="outline"
+                                app:shapeAppearanceOverlay="@style/Rounded"
                                 android:hint="Ghi chú"
-                                android:maxLines="2"
-                                android:paddingVertical="@dimen/_5sdp"
-                                android:paddingLeft="@dimen/_15sdp"
-                                android:paddingRight="@dimen/_10sdp"
-                                android:ellipsize="end"
-                                android:gravity="top"
-                                android:inputType="textCapSentences|textMultiLine"/>
+                                app:boxStrokeColor="@color/app_color"
+                                app:hintTextColor="@color/app_color"
+                                app:helperTextTextColor="#898A8D"
+                                app:boxStrokeWidthFocused="@dimen/_1sdp"
+                                app:hintAnimationEnabled="false"
+                                app:errorEnabled="true"
+                                app:hintEnabled="true">
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edtCusNote"
+                                    android:text="@={vm.customerNote}"
+                                    style="@style/order_information_text_bold_11"
+                                    android:paddingVertical="@dimen/_5sdp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_70sdp"
+                                    android:maxLines="3"
+                                    android:ellipsize="end"
+                                    android:gravity="top"
+                                    android:textColorHint="@color/grey_text"
+                                    android:inputType="textCapSentences|textMultiLine">
+                                </com.google.android.material.textfield.TextInputEditText>
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+<!--                            <EditText-->
+<!--                                android:text="@={vm.customerNote}"-->
+<!--                                android:id="@+id/edtCusNote"-->
+<!--                                style="@style/order_information_text_bold_11"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="@dimen/_70sdp"-->
+<!--                                android:layout_marginHorizontal="@dimen/_12sdp"-->
+<!--                                android:layout_marginTop="@dimen/_15sdp"-->
+<!--                                android:background="@drawable/bg_information"-->
+<!--                                android:hint="Ghi chú"-->
+<!--                                android:maxLines="2"-->
+<!--                                android:paddingVertical="@dimen/_5sdp"-->
+<!--                                android:paddingLeft="@dimen/_15sdp"-->
+<!--                                android:paddingRight="@dimen/_10sdp"-->
+<!--                                android:ellipsize="end"-->
+<!--                                android:gravity="top"-->
+<!--                                android:inputType="textCapSentences|textMultiLine"/>-->
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -548,7 +673,6 @@
                                     android:visibility="@{vm.selectCOD ? View.VISIBLE : View.GONE }"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginVertical="@dimen/_15sdp"
                                     android:orientation="vertical">
                                     <LinearLayout
                                         android:layout_width="match_parent"
@@ -556,45 +680,105 @@
                                         android:orientation="vertical">
                                         <LinearLayout
                                             android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_35sdp"
-                                            android:orientation="horizontal"
-                                            android:background="@drawable/bg_information">
-                                            <EditText
-                                                android:id="@+id/edtCodPrice"
-                                                android:text='@={vm.codPriceText}'
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                style="@style/order_information_text_medium"
-                                                android:hint="Số tiền thu hộ"
-                                                android:background="@null"
-                                                android:inputType="phone"
-                                                android:maxLength="10"
-                                                android:paddingLeft="@dimen/_15sdp"
-                                                android:paddingVertical="@dimen/_5sdp"
-                                                android:maxLines="1"
-                                                android:layout_weight="1"/>
-                                            <TextView
-                                                android:gravity="center"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="match_parent"
-                                                android:text="VNĐ"
-                                                style="@style/location_text"
-                                                android:layout_marginRight="@dimen/_10sdp">
+                                            android:layout_height="wrap_content"
+                                            android:orientation="horizontal">
 
-                                            </TextView>
+                                            <com.google.android.material.textfield.TextInputLayout
+                                                android:layout_marginTop="@dimen/_5sdp"
+                                                android:layout_weight="1"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                                app:boxBackgroundMode="outline"
+                                                app:shapeAppearanceOverlay="@style/Rounded"
+                                                android:hint="Số tiền thu hộ"
+                                                app:hintEnabled="true"
+                                                app:boxStrokeColor="@color/app_color"
+                                                app:hintTextColor="@color/app_color"
+                                                app:helperTextTextColor="#898A8D"
+                                                app:boxStrokeWidthFocused="@dimen/_1sdp"
+                                                app:hintAnimationEnabled="false"
+                                                app:errorEnabled="true"
+                                                app:suffixText="VNĐ">
+                                                <com.google.android.material.textfield.TextInputEditText
+                                                    android:id="@+id/edtCodPrice"
+                                                    android:text="@={vm.codPriceText}"
+                                                    style="@style/order_information_text_bold_11"
+                                                    android:paddingVertical="@dimen/_5sdp"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="@dimen/_35sdp"
+                                                    android:maxLines="1"
+                                                    android:ellipsize="end"
+                                                    android:inputType="text"
+                                                    android:textColorHint="@color/grey_text"
+                                                    android:maxLength="50">
+                                                </com.google.android.material.textfield.TextInputEditText>
+                                            </com.google.android.material.textfield.TextInputLayout>
 
                                         </LinearLayout>
 
                                         <TextView
-                                            android:layout_marginTop="@dimen/_10sdp"
                                             style="@style/app_text"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:maxLines="2"
+                                            android:textSize="@dimen/_10ssp"
                                             android:textColor="@color/red_color"
-                                            android:text="Vui lòng nhập tối thiểu 10.000 đ, tối đa 50.000.000 đ" />
+                                            android:text="@{vm.codPriceText}" />
                                     </LinearLayout>
                                 </LinearLayout>
+
+<!--                                <LinearLayout-->
+<!--                                    android:visibility="@{vm.selectCOD ? View.VISIBLE : View.GONE }"-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:layout_marginVertical="@dimen/_15sdp"-->
+<!--                                    android:orientation="vertical">-->
+<!--                                    <LinearLayout-->
+<!--                                        android:layout_width="match_parent"-->
+<!--                                        android:layout_height="wrap_content"-->
+<!--                                        android:orientation="vertical">-->
+<!--                                        <LinearLayout-->
+<!--                                            android:layout_width="match_parent"-->
+<!--                                            android:layout_height="@dimen/_35sdp"-->
+<!--                                            android:orientation="horizontal"-->
+<!--                                            android:background="@drawable/bg_information">-->
+<!--                                            <EditText-->
+<!--                                                android:id="@+id/edtCodPrice"-->
+<!--                                                android:text='@={vm.codPriceText}'-->
+<!--                                                android:layout_width="match_parent"-->
+<!--                                                android:layout_height="match_parent"-->
+<!--                                                style="@style/order_information_text_medium"-->
+<!--                                                android:hint="Số tiền thu hộ"-->
+<!--                                                android:background="@null"-->
+<!--                                                android:inputType="phone"-->
+<!--                                                android:maxLength="10"-->
+<!--                                                android:paddingLeft="@dimen/_15sdp"-->
+<!--                                                android:paddingVertical="@dimen/_5sdp"-->
+<!--                                                android:maxLines="1"-->
+<!--                                                android:layout_weight="1"/>-->
+<!--                                            <TextView-->
+<!--                                                android:gravity="center"-->
+<!--                                                android:layout_width="wrap_content"-->
+<!--                                                android:layout_height="match_parent"-->
+<!--                                                android:text="VNĐ"-->
+<!--                                                style="@style/location_text"-->
+<!--                                                android:layout_marginRight="@dimen/_10sdp">-->
+
+<!--                                            </TextView>-->
+
+<!--                                        </LinearLayout>-->
+
+<!--                                        <TextView-->
+<!--                                            android:layout_marginTop="@dimen/_10sdp"-->
+<!--                                            style="@style/app_text"-->
+<!--                                            android:layout_width="wrap_content"-->
+<!--                                            android:layout_height="wrap_content"-->
+<!--                                            android:maxLines="2"-->
+<!--                                            android:textColor="@color/red_color"-->
+<!--                                            android:text="Vui lòng nhập tối thiểu 10.000 đ, tối đa 50.000.000 đ" />-->
+<!--                                    </LinearLayout>-->
+<!--                                </LinearLayout>-->
 
 
 

@@ -32,19 +32,22 @@ import ww.smartexpress.app.BR;
 import ww.smartexpress.app.R;
 import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.model.api.ApiModelUtils;
+import ww.smartexpress.app.data.model.api.request.PayoutRequest;
 import ww.smartexpress.app.data.model.api.response.BankCard;
 import ww.smartexpress.app.data.model.api.response.PayoutTransaction;
 import ww.smartexpress.app.data.model.room.UserEntity;
 import ww.smartexpress.app.databinding.ActivityPayoutBinding;
 import ww.smartexpress.app.databinding.BaseDialogBinding;
+import ww.smartexpress.app.databinding.DialogPayoutRequestBinding;
 import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
+import ww.smartexpress.app.ui.dialog.PasswordDialog;
 import ww.smartexpress.app.ui.order.adapter.OrderOptionAdapter;
 import ww.smartexpress.app.ui.payout.adapter.PayoutRequestAdapter;
 import ww.smartexpress.app.ui.view.ProgressItem;
 import ww.smartexpress.app.utils.NumberUtils;
 
-public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutViewModel> {
+public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutViewModel> implements PasswordDialog.PasswordListener{
     private PayoutRequestAdapter payoutRequestAdapter;
 
     @Override
@@ -143,25 +146,26 @@ public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutVi
                     if(response.isResult() && response.getData().getTotalElements() > 0){
 
                         viewModel.payoutTransactionList.set(response.getData().getContent());
+                        dialogPayoutRequest(response.getData().getContent().get(0));
 
-                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext()
-                                ,LinearLayoutManager.VERTICAL, false);
-                        viewBinding.rcPayoutRequest.setLayoutManager(layoutManager);
-                        viewBinding.rcPayoutRequest.setItemAnimator(new DefaultItemAnimator());
-                        payoutRequestAdapter = new PayoutRequestAdapter(viewModel.payoutTransactionList.get());
-                        viewBinding.rcPayoutRequest.setAdapter(payoutRequestAdapter);
-
-                        payoutRequestAdapter.setOnItemClickListener(new PayoutRequestAdapter.OnItemClickListener() {
-                            @Override
-                            public void itemClick(PayoutTransaction payoutTransaction) {
-
-                            }
-
-                            @Override
-                            public void delete(PayoutTransaction payoutTransaction) {
-                                deletePayoutRequest(payoutTransaction);
-                            }
-                        });
+//                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext()
+//                                ,LinearLayoutManager.VERTICAL, false);
+//                        viewBinding.rcPayoutRequest.setLayoutManager(layoutManager);
+//                        viewBinding.rcPayoutRequest.setItemAnimator(new DefaultItemAnimator());
+//                        payoutRequestAdapter = new PayoutRequestAdapter(viewModel.payoutTransactionList.get());
+//                        viewBinding.rcPayoutRequest.setAdapter(payoutRequestAdapter);
+//
+//                        payoutRequestAdapter.setOnItemClickListener(new PayoutRequestAdapter.OnItemClickListener() {
+//                            @Override
+//                            public void itemClick(PayoutTransaction payoutTransaction) {
+//
+//                            }
+//
+//                            @Override
+//                            public void delete(PayoutTransaction payoutTransaction) {
+//                                deletePayoutRequest(payoutTransaction);
+//                            }
+//                        });
                     }
                 },error->{
                     viewModel.showErrorMessage(getString(R.string.network_error));
@@ -169,6 +173,52 @@ public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutVi
                     viewModel.hideLoading();
                 })
         );
+    }
+
+    public void dialogPayoutRequest(PayoutTransaction payoutTransaction){
+        Dialog dialog = new Dialog(PayoutActivity.this);
+        DialogPayoutRequestBinding dialogLogoutBinding = DataBindingUtil.inflate(LayoutInflater.from(PayoutActivity.this),R.layout.dialog_payout_request,null, false);
+        dialogLogoutBinding.setIvm(payoutTransaction);
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(dialogLogoutBinding.getRoot());
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        dialog.setCanceledOnTouchOutside(false);
+
+        dialogLogoutBinding.btnLogout.setOnClickListener(view -> {
+            dialog.dismiss();
+            viewModel.showLoading();
+            viewModel.compositeDisposable.add(viewModel.deletePayoutRequest(payoutTransaction.getId())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(response -> {
+                        viewModel.hideLoading();
+                        if(response.isResult()){
+                            //viewModel.payoutTransactionList.get().remove(payoutTransaction);
+                            viewModel.payoutTransactionList.set(new ArrayList<>());
+                            Log.d("TAG", "dialogPayoutRequest: " + viewModel.payoutTransactionList.get().size());
+                            viewModel.showSuccessMessage("Xóa yêu cầu rút tiền thành công");
+                        }else {
+                            viewModel.showErrorMessage(response.getMessage());
+                        }
+                    },error->{
+                        viewModel.showErrorMessage(getString(R.string.network_error));
+                        error.printStackTrace();
+                        viewModel.hideLoading();
+                    })
+            );
+        });
+        dialogLogoutBinding.btnCancel.setOnClickListener(view -> {
+            dialog.dismiss();
+            onBackPressed();
+        });
+        dialog.show();
     }
 
     public void deletePayoutRequest(PayoutTransaction payoutTransaction){
@@ -214,5 +264,38 @@ public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutVi
             dialog.dismiss();
         });
         dialog.show();
+    }
+
+    @Override
+    public void confirm(String password) {
+        viewModel.compositeDisposable.add(viewModel.confirmPassword(password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    viewModel.hideLoading();
+                    if(response.isResult()){
+                        viewModel.doDone();
+                    }else {
+                        viewModel.showSuccessMessage(response.getCode());
+                    }
+                },error->{
+                    viewModel.hideLoading();
+                    viewModel.showErrorMessage(application.getString(R.string.network_error));
+                    error.printStackTrace();
+                })
+        );
+    }
+
+    public void navigateToConfirmPassword(){
+        if(viewModel.money.get() != null && Integer.valueOf(viewModel.money.get())<50000){
+            viewModel.showErrorMessage("Số tiền rút tối thiểu là 50.000đ");
+            return;
+        }
+        if(viewModel.money.get() != null && Double.valueOf(viewModel.money.get()) > viewModel.balance.get()){
+            viewModel.showErrorMessage("Số tiền rút vượt quá số dư trong ví");
+            return;
+        }
+        PasswordDialog passwordDialog = new PasswordDialog();
+        passwordDialog.show(getSupportFragmentManager(),"passwordDialog");
     }
 }

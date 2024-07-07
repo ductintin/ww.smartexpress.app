@@ -49,6 +49,7 @@ import ww.smartexpress.app.ui.trip.complete.TripCompleteActivity;
 import ww.smartexpress.app.ui.trip.detail.TripDetailActivity;
 import ww.smartexpress.app.ui.wallet.WalletActivity;
 import ww.smartexpress.app.ui.wallet.transaction.TransactionActivity;
+import ww.smartexpress.app.ui.wallet.transaction.details.TransactionDetailsActivity;
 import ww.smartexpress.app.ui.welcome.WelcomeActivity;
 import ww.smartexpress.app.ui.input.phone.PhoneActivity;
 import ww.smartexpress.app.ui.splashform.SplashFormActivity;
@@ -128,5 +129,6 @@ public interface ActivityComponent {
     void inject(ResetForgetPasswordActivity resetForgetPasswordActivity);
     void inject(VerifyForgetPasswordOTPActivity verifyForgetPasswordOTPActivity);
     void inject(NotificationDetailsActivity notificationDetailsActivity);
+    void inject(TransactionDetailsActivity transactionDetailsActivity);
 }
 
