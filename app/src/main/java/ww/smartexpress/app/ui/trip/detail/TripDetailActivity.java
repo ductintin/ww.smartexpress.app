@@ -13,6 +13,8 @@ import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.databinding.ActivityTripDetailBinding;
 import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
+import ww.smartexpress.app.ui.home.HomeActivity;
+import ww.smartexpress.app.ui.trip.TripActivity;
 
 public class TripDetailActivity extends BaseActivity<ActivityTripDetailBinding, TripDetailViewModel> {
     Long id = -1L;
@@ -51,6 +53,11 @@ public class TripDetailActivity extends BaseActivity<ActivityTripDetailBinding, 
                     if(response.isResult() && response.getData().getContent() != null){
                         viewModel.isLoading.set(false);
                         viewModel.bookingResponse.set(response.getData().getContent().get(0));
+                    }else if(!response.isResult()){
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        Intent intent = new Intent(TripDetailActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                 }, err -> {
                     viewModel.hideLoading();

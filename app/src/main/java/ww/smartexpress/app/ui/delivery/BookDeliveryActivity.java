@@ -239,9 +239,13 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
                     viewModel.isLoading.set(false);
-                    serviceResponses = response.getData().getContent().subList(4, response.getData().getContent().size());
-                    loadBookCar();
-                }, err -> {
+                    if(response.isResult() && response.getData().getTotalElements() > 8){
+                        serviceResponses = response.getData().getContent().subList(4, response.getData().getContent().size());
+                        loadBookCar();
+                    }else if(!response.isResult()){
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                    }
+                    }, err -> {
                     viewModel.showErrorMessage(getString(R.string.network_error));
                     err.printStackTrace();
                 }));
@@ -353,7 +357,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
 
                     }else{
                         viewModel.hideLoading();
-                        viewModel.showErrorMessage(response.getMessage());
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
 
                 }, err -> {
@@ -732,7 +736,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
 
                     }else{
                         viewModel.hideLoading();
-                        viewModel.showErrorMessage("Không tìm thấy đơn hàng");
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                         Intent intent = new Intent(BookDeliveryActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
@@ -802,7 +806,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
 
                     }else{
                         viewModel.hideLoading();
-                        viewModel.showErrorMessage("Không tìm thấy đơn hàng");
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                         Intent intent = new Intent(BookDeliveryActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
@@ -977,8 +981,8 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         DriverPosition driverPosition = response.getData().getContent().get(0);
                         viewModel.driverLatLng.set(driverPosition.getLatitude() + "," + driverPosition.getLongitude());
                         loadMapDriverDirection();
-                    }else{
-
+                    }else if(!response.isResult()){
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
 
                 }, err -> {

@@ -66,7 +66,7 @@ public class TripDetailViewModel extends BaseViewModel {
     public void gotoRating(){
         Intent intent = new Intent(application.getCurrentActivity(), RateDriverActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.CUSTOMER_BOOKING_ID,bookingResponse.get().getId().toString());
+        bundle.putLong(Constants.CUSTOMER_BOOKING_ID,bookingResponse.get().getId());
         bundle.putInt("FROM",1);
         intent.putExtras(bundle);
 

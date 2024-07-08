@@ -46,6 +46,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.R;
+import ww.smartexpress.app.constant.ErrorCode;
 import ww.smartexpress.app.data.model.api.response.AddressMap;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
 import ww.smartexpress.app.data.model.api.response.LocationType;
@@ -65,6 +66,7 @@ import ww.smartexpress.app.ui.search.location.adapter.SavedLocationAdapter;
 import ww.smartexpress.app.ui.search.location.adapter.SearchLocationAdapter;
 import ww.smartexpress.app.ui.signin.SignInActivity;
 import ww.smartexpress.app.utils.AES;
+import ww.smartexpress.app.utils.ErrorUtils;
 
 public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFragmentViewModel> implements LocationListener {
     BookingAdapter bookingAdapter;
@@ -99,6 +101,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Intent intent = getActivity().getIntent();
+
         if(intent != null){
             Log.d("TAG", "onViewCreated: ");
 //            if(intent.getStringExtra("ENCRYPTED_PW") != null){
@@ -262,6 +265,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                                         }
                                     });
                         }
+                    }else{
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
                 }, err -> {
                     viewModel.showErrorMessage(getString(R.string.network_error));
@@ -308,6 +313,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                             }
                         }
                     }else{
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
                 }, err -> {
                     viewModel.showErrorMessage(getString(R.string.network_error));

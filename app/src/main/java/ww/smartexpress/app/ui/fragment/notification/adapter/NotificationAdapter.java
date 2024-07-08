@@ -11,7 +11,7 @@ import java.util.List;
 
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.data.model.api.response.Notification;
-import ww.smartexpress.app.databinding.ItemNotificationBinding;
+import ww.smartexpress.app.databinding.ItemNotificationListBinding;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>{
     private List<Notification> notifications;
@@ -24,7 +24,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @NonNull
     @Override
     public NotificationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemNotificationBinding binding = ItemNotificationBinding.inflate(LayoutInflater.from(parent.getContext()),
+        ItemNotificationListBinding binding = ItemNotificationListBinding.inflate(LayoutInflater.from(parent.getContext()),
                 parent, false);
         return new NotificationViewHolder(binding, onItemClickListener);
     }
@@ -50,11 +50,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public class NotificationViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener{
-        private ItemNotificationBinding mBinding;
+        private ItemNotificationListBinding mBinding;
         private Notification notification;
         private OnItemClickListener onItemClickListener;
 
-        public NotificationViewHolder(@NonNull ItemNotificationBinding binding, OnItemClickListener onItemClickListener) {
+        public NotificationViewHolder(@NonNull ItemNotificationListBinding binding, OnItemClickListener onItemClickListener) {
             super(binding.getRoot());
             this.mBinding = binding;
             this.onItemClickListener = onItemClickListener;

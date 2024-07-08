@@ -413,6 +413,7 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
                         finish();
                     }else{
                         viewModel.hideLoading();
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
 //                        Log.d("TAG", "doLogin: " + response.getCode());
 //                        Log.d("TAG", "doLogin: " + String.valueOf(response.getCode() == Constants.CUSTOMER_ERROR_STATUS_PENDING));
 //                        Log.d("TAG", "doLogin: " + String.valueOf(response.getCode().equals(Constants.CUSTOMER_ERROR_STATUS_PENDING)));
@@ -421,9 +422,6 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
                             Intent intent = new Intent(SignInActivity.this, LoginOTPActivity.class);
                             intent.putExtra("USER_PHONE", viewModel.phoneS.get());
                             startActivity(intent);
-                        }else if(response.getCode().equals(Constants.CUSTOMER_ERROR_LOGIN_FAILED)){
-                            viewModel.showErrorMessage("Số điện thoại hoặc mật khẩu không đúng");
-
                         }
                     }
                 }, err -> {
@@ -491,7 +489,7 @@ public class SignInActivity extends BaseActivity<ActivitySignInBinding, SignInVi
                             //navigateToLogin();
                             navigateToOtp(response.getData().getUserId());
                         }else{
-                            viewModel.showErrorMessage(response.getMessage());
+                            viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                         }
                     }, err ->{
                         viewModel.hideLoading();

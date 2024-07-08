@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
@@ -203,33 +204,11 @@ public class MapActivity extends BaseActivity<ActivityMapBinding, MapViewModel> 
 
         mMap.setMyLocationEnabled(true);
 
-        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
-            @Override
-            public void onCameraMove() {
-                Log.d("TAG", "onMapLongClick: " + mMap.getCameraPosition().target.toString());
-                Log.d("TAG", "onMapLongClick: " + isFirst);
-                if(!isFirst && currentLatLng != null){
-                    Log.d("TAG", "onCameraMove: clear" );
-                    viewModel.description.set("");
-                    viewModel.placeId.set("");
-                    viewModel.mainText.set("");
-                    viewBinding.shimmerViewContainer.setVisibility(View.VISIBLE);
-                    viewBinding.shimmerViewContainer.startShimmer();
-                    currentLatLng = mMap.getCameraPosition().target;
-                    marker.setPosition(currentLatLng);
-                }else{
-                    Log.d("TAG", "onCameraMove: ko clear" );
-                    viewBinding.shimmerViewContainer.stopShimmer();
-                    viewBinding.shimmerViewContainer.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-
         mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
                 Log.d("TAG", "setOnCameraIdleListener: " + mMap.getCameraPosition().target.toString());
-                if(!isFirst && mMap.getCameraPosition().target.latitude != 0.0 && mMap.getCameraPosition().target.longitude != 0.0){
+                if(!isFirst && mMap.getCameraPosition().target.latitude != 0.0 && mMap.getCameraPosition().target.longitude != 0.0 && TextUtils.isEmpty(viewModel.placeId.get())){
                     viewModel.latlng.set(mMap.getCameraPosition().target.latitude+","+mMap.getCameraPosition().target.longitude);
 
                     viewModel.compositeDisposable.add(viewModel.getLocationInfo()
@@ -342,6 +321,34 @@ public class MapActivity extends BaseActivity<ActivityMapBinding, MapViewModel> 
                                             .title(""));
                                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 17.0f));
                                     isFirst = false;
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @SuppressWarnings("unchecked")
+                                        @Override
+                                        public void run() {
+
+                                            mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+                                                @Override
+                                                public void onCameraMove() {
+                                                    Log.d("TAG", "onMapLongClick: " + mMap.getCameraPosition().target.toString());
+                                                    Log.d("TAG", "onMapLongClick: " + isFirst);
+                                                    if(!isFirst && currentLatLng != null){
+                                                        Log.d("TAG", "onCameraMove: clear" );
+                                                        viewModel.description.set("");
+                                                        viewModel.placeId.set("");
+                                                        viewModel.mainText.set("");
+
+                                                        currentLatLng = mMap.getCameraPosition().target;
+                                                        marker.setPosition(currentLatLng);
+                                                    }else{
+                                                        Log.d("TAG", "onCameraMove: ko clear" );
+                                                        viewBinding.shimmerViewContainer.stopShimmer();
+                                                        viewBinding.shimmerViewContainer.setVisibility(View.INVISIBLE);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }, 1500);
                                 }
                             }
                         }, null);
@@ -386,6 +393,34 @@ public class MapActivity extends BaseActivity<ActivityMapBinding, MapViewModel> 
                             Log.d("TAG", "loadLocation: " + viewModel.placeId.get());
                             viewModel.isValidLocation.set(true);
                             Log.d("TAG", "loadLocation: " + viewModel.isValidLocation.get());
+
+                            new Handler().postDelayed(new Runnable() {
+                                @SuppressWarnings("unchecked")
+                                @Override
+                                public void run() {
+
+                                    mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+                                        @Override
+                                        public void onCameraMove() {
+                                            Log.d("TAG", "onMapLongClick: " + mMap.getCameraPosition().target.toString());
+                                            Log.d("TAG", "onMapLongClick: " + isFirst);
+                                            if(!isFirst && currentLatLng != null){
+                                                Log.d("TAG", "onCameraMove: clear" );
+                                                viewModel.description.set("");
+                                                viewModel.placeId.set("");
+                                                viewModel.mainText.set("");
+
+                                                currentLatLng = mMap.getCameraPosition().target;
+                                                marker.setPosition(currentLatLng);
+                                            }else{
+                                                Log.d("TAG", "onCameraMove: ko clear" );
+                                                viewBinding.shimmerViewContainer.stopShimmer();
+                                                viewBinding.shimmerViewContainer.setVisibility(View.INVISIBLE);
+                                            }
+                                        }
+                                    });
+                                }
+                            }, 1500);
                         }
                     }
 

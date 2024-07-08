@@ -55,7 +55,7 @@ public class PaymentActivity extends BaseActivity<ActivityPaymentBinding, Paymen
                     if(response.isResult()){
                         viewModel.wallet.set(response.getData());
                     }else {
-
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
                 },error->{
                     viewModel.hideLoading();

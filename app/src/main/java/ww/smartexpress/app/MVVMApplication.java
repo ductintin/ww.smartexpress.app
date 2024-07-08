@@ -1,21 +1,31 @@
 package ww.smartexpress.app;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Application;
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.Toast;
@@ -23,6 +33,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
@@ -55,6 +66,7 @@ import ww.smartexpress.app.data.model.api.response.DepositSuccess;
 import ww.smartexpress.app.data.model.api.response.DriverBookingResponse;
 import ww.smartexpress.app.data.model.api.response.DriverPosition;
 import ww.smartexpress.app.data.model.api.response.MessageOfTransaction;
+import ww.smartexpress.app.data.model.api.response.NewsNotification;
 import ww.smartexpress.app.data.model.api.response.TransactionMessage;
 import ww.smartexpress.app.data.model.other.ToastMessage;
 import ww.smartexpress.app.data.websocket.Command;
@@ -62,7 +74,9 @@ import ww.smartexpress.app.data.websocket.Message;
 import ww.smartexpress.app.data.websocket.SocketEventModel;
 import ww.smartexpress.app.data.websocket.SocketListener;
 import ww.smartexpress.app.data.websocket.WebSocketLiveData;
+import ww.smartexpress.app.databinding.ItemMarqueeNewsBinding;
 import ww.smartexpress.app.databinding.ItemNotificationBinding;
+import ww.smartexpress.app.databinding.ItemToastFavRestaurantBinding;
 import ww.smartexpress.app.di.component.AppComponent;
 import ww.smartexpress.app.di.component.DaggerAppComponent;
 import ww.smartexpress.app.others.MyTimberDebugTree;
@@ -80,6 +94,7 @@ import ww.smartexpress.app.ui.trip.detail.TripDetailActivity;
 import ww.smartexpress.app.ui.wallet.WalletActivity;
 import ww.smartexpress.app.utils.AES;
 import ww.smartexpress.app.utils.DialogUtils;
+import ww.smartexpress.app.utils.ErrorUtils;
 import ww.smartexpress.app.utils.NumberUtils;
 
 public class MVVMApplication extends Application implements LifecycleObserver, SocketListener {
@@ -148,6 +163,9 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
     @Setter
     private DepositMessage depositMessage = null;
 
+    @Getter
+    @Setter
+    private ErrorUtils errorUtils = new ErrorUtils();
     @Override
     public void onCreate() {
         super.onCreate();
@@ -158,6 +176,7 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
 
         // Enable firebase log
         FirebaseCrashlytics firebaseCrashlytics = FirebaseCrashlytics.getInstance();
@@ -336,6 +355,13 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
                 toastMessage = new ToastMessage(ToastMessage.TYPE_SUCCESS, "Yêu cầu rút "+NumberUtils.formatCurrency(Double.valueOf(depositMessage.getMoney()))+" bị từ chối vì: "+depositMessage.getReason());
                 toastMessage.showMessage(currentActivity);
                 break;
+            case 4: case 5 : case 6://NOTIFICATION_KIND_SYSTEM //NOTIFICATION_KIND_PROMOTION //NOTIFICATION_KIND_WARNING
+                showMarqueeDialog(message);
+                break;
+//            case 5://NOTIFICATION_KIND_PROMOTION
+//                break;
+//            case 6://NOTIFICATION_KIND_WARNING
+//                break;
             default:
                 break;
         }
@@ -460,6 +486,7 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
 //        }
 
         Intent intentToRating = new Intent(currentActivity, RateDriverActivity.class);
+        intentToRating.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundle = new Bundle();
         bundle.putLong(Constants.CUSTOMER_BOOKING_ID, response.getBookingId());
         intentToRating.putExtras(bundle);
@@ -713,5 +740,58 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             currentActivity.startActivity(intent);
         }
+    }
+
+    @SuppressLint("ResourceAsColor")
+    public void showMarqueeDialog(Message message) {
+        Dialog marqueeDialog = new Dialog(getCurrentActivity(), R.style.FullScreenDialog);
+        TransactionMessage tm = message.getDataObject(TransactionMessage.class);
+        NewsNotification newsNotification = ApiModelUtils.fromJson(tm.getMessage(), NewsNotification.class);
+        ItemMarqueeNewsBinding binding = DataBindingUtil.inflate(
+                LayoutInflater.from(this), R.layout.item_marquee_news, null, false);
+        marqueeDialog.setContentView(binding.getRoot());
+
+        binding.setIvm(newsNotification);
+        String title = "";
+        switch (newsNotification.getKind()){
+            case 4:
+                title = "Thông báo hệ thống: " + newsNotification.getDescription();
+                binding.marqueeText.setText(title);
+                break;
+            case 5:
+                title = "Khuyến mãi: " + newsNotification.getDescription();
+                binding.marqueeText.setText(title);
+                break;
+            case 6:
+                title = "Cảnh báo: " + newsNotification.getDescription();
+                binding.marqueeText.setText(title);
+                break;
+            default:
+                break;
+        }
+
+        binding.marqueeText.setSelected(true);
+
+        Window window = marqueeDialog.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        layoutParams.gravity = Gravity.TOP;
+        layoutParams.y = 0;
+        layoutParams.dimAmount = 0.0f;
+        window.setAttributes(layoutParams);
+        marqueeDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        marqueeDialog.getWindow().setGravity(Gravity.TOP);
+        marqueeDialog.setCanceledOnTouchOutside(false);
+        marqueeDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        marqueeDialog.show();
+
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                marqueeDialog.dismiss();
+            }
+        }, 20000); // Thời gian tính bằng mili giây (ở đây là 20 giây)
+
     }
 }

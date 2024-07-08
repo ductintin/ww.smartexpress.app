@@ -226,6 +226,7 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
 
                     @Override
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull UserEntity userEntity) {
+                        viewModel.userEntityObservableField.set(userEntity);
                         viewModel.avatar.set(userEntity.getAvatar());
                         viewModel.fullName.set(userEntity.getName());
                         viewModel.email.set(userEntity.getEmail());
@@ -305,7 +306,7 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
                         viewModel.fullName.set(response.getData().getName());
                         viewModel.email.set(response.getData().getEmail());
                     }else {
-                        viewModel.showErrorMessage(response.getMessage());
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
                 },error->{
                     viewModel.hideLoading();
@@ -340,7 +341,9 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
                         viewBinding.edtPw.clearFocus();
                         viewModel.storeProfile();
                     } else {
-                        viewModel.showErrorMessage(response.getMessage());
+                        viewModel.avatar.set(viewModel.userEntityObservableField.get().getAvatar());
+                        viewModel.password.set("");
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
 
                 }, err -> {

@@ -252,7 +252,7 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
                                 loadMessages();
 //                        viewModel.showSuccessMessage(response.getMessage());
                             }else {
-                                viewModel.showErrorMessage(response.getMessage());
+                                viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                             }
                             viewModel.hideLoading();
                         },error->{

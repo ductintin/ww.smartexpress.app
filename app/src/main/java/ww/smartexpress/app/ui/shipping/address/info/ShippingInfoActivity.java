@@ -131,7 +131,7 @@ public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBindi
                         viewModel.hideLoading();
                     }else {
                         viewModel.hideLoading();
-                        viewModel.showErrorMessage(response.getMessage());
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
                 },error->{
                     viewModel.hideLoading();
@@ -304,9 +304,9 @@ public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBindi
                     if(response.isResult()){
                         viewModel.codService.set(ApiModelUtils.fromJson(response.getData().getSettingValue(), CodService.class));
                         String text = "Vui lòng nhập tối thiểu " +  NumberUtils.formatCurrency(viewModel.codService.get().getMin()) +" , tối đa " + NumberUtils.formatCurrency(viewModel.codService.get().getMax());
-                        viewModel.codPriceText.set(text);
+                        viewBinding.tvCod.setText(text);
                     }else {
-                        viewModel.showErrorMessage(response.getCode());
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
                 },error->{
                     viewModel.showErrorMessage(getString(R.string.network_error));

@@ -291,7 +291,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
                         viewModel.hideLoading();
                     }else {
                         viewModel.hideLoading();
-                        viewModel.showErrorMessage(response.getMessage());
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
                 },error->{
                     viewModel.hideLoading();
@@ -375,7 +375,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
                     if(response.isResult()){
                         viewModel.hotline.set(response.getData().getSettingValue());
                     }else {
-                        viewModel.showErrorMessage(response.getMessage());
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
                 },error->{
                     viewModel.showErrorMessage(getString(R.string.network_error));

@@ -39,6 +39,7 @@ import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import ww.smartexpress.app.data.model.api.response.NewsResponse;
+import ww.smartexpress.app.data.model.api.response.NotificationRead;
 import ww.smartexpress.app.data.model.api.response.NotificationResponse;
 import ww.smartexpress.app.data.model.api.response.Payment;
 import ww.smartexpress.app.data.model.api.response.PayoutTransaction;
@@ -169,4 +170,10 @@ public interface ApiService {
 
     @GET("/v1/wallet-transaction/get/{id}")
     Observable<ResponseWrapper<WalletTransaction>> getTransactionDetails(@Path("id") Long id);
+
+    @PUT("/v1/notification/read")
+    Observable<ResponseGeneric> readNotification(@Body NotificationRead notificationRead);
+
+    @PUT("/v1/notification/read-all")
+    Observable<ResponseGeneric> readAllNotification();
 }

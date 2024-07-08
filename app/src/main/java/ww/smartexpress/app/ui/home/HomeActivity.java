@@ -15,18 +15,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.google.android.material.navigation.NavigationBarView;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 import ww.smartexpress.app.BR;
 import ww.smartexpress.app.R;
 import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.model.api.ApiModelUtils;
 import ww.smartexpress.app.data.model.api.response.BookingResponse;
+import ww.smartexpress.app.data.websocket.Message;
 import ww.smartexpress.app.databinding.ActivityHomeBinding;
 import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
@@ -145,6 +143,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding, HomeViewMode
 //                return null;
 //            }
 //        });
+
     }
 
     @Override
@@ -267,6 +266,8 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding, HomeViewMode
                     if(response.isResult() && response.getData().getTotalElements() > 0){
                         bookingResponse = response.getData().getContent().get(0);
                         //navigateToBookActivity();
+                    }else if(!response.isResult()){
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
                 }, err -> {
                     viewModel.hideLoading();

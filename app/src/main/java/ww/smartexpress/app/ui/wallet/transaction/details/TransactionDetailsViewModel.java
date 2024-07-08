@@ -30,7 +30,7 @@ public class TransactionDetailsViewModel extends BaseViewModel {
                     if(response.isResult()){
                         transaction.set(response.getData());
                     }else {
-                        showErrorMessage(response.getMessage());
+                        getApplication().getErrorUtils().handelError(response.getCode());
                     }
                     hideLoading();
                 },error->{

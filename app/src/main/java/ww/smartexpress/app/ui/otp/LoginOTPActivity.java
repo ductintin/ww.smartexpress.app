@@ -166,6 +166,8 @@ public class LoginOTPActivity extends BaseActivity<ActivityLoginOtpBinding, Logi
                     if (response.isResult()){
                         viewModel.showSuccessMessage("Kích hoạt tài khoản thành công. Vui lòng đăng nhập lại!");
                         navigateToSignIn();
+                    }else{
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
 
                 },error->{
@@ -189,6 +191,8 @@ public class LoginOTPActivity extends BaseActivity<ActivityLoginOtpBinding, Logi
                         viewModel.showSuccessMessage("Gửi lại mã xác thực thành công");
                         viewModel.userId.set(response.getData().getUserId());
                         viewModel.setCountdownOTP();
+                    }else{
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
 
                 },error->{

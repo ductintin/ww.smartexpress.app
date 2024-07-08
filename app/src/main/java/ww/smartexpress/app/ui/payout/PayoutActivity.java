@@ -166,6 +166,8 @@ public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutVi
 //                                deletePayoutRequest(payoutTransaction);
 //                            }
 //                        });
+                    }else if(!response.isResult()){
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
                 },error->{
                     viewModel.showErrorMessage(getString(R.string.network_error));
@@ -205,7 +207,7 @@ public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutVi
                             Log.d("TAG", "dialogPayoutRequest: " + viewModel.payoutTransactionList.get().size());
                             viewModel.showSuccessMessage("Xóa yêu cầu rút tiền thành công");
                         }else {
-                            viewModel.showErrorMessage(response.getMessage());
+                            viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                         }
                     },error->{
                         viewModel.showErrorMessage(getString(R.string.network_error));
@@ -251,7 +253,7 @@ public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutVi
                             payoutRequestAdapter.notifyDataSetChanged();
 
                         }else {
-                            viewModel.showErrorMessage(response.getMessage());
+                            viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                         }
                     },error->{
                         viewModel.showErrorMessage(getString(R.string.network_error));
@@ -276,7 +278,7 @@ public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutVi
                     if(response.isResult()){
                         viewModel.doDone();
                     }else {
-                        viewModel.showSuccessMessage(response.getCode());
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
                 },error->{
                     viewModel.hideLoading();

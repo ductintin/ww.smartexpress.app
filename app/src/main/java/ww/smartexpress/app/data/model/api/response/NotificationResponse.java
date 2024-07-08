@@ -2,6 +2,7 @@ package ww.smartexpress.app.data.model.api.response;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +22,7 @@ import lombok.NoArgsConstructor;
 import ww.smartexpress.app.R;
 import ww.smartexpress.app.constant.Constants;
 import ww.smartexpress.app.data.model.api.ApiModelUtils;
+import ww.smartexpress.app.databinding.ItemNotificationListBinding;
 import ww.smartexpress.app.utils.DateUtils;
 import ww.smartexpress.app.utils.NumberUtils;
 
@@ -54,6 +56,9 @@ public class NotificationResponse extends AbstractFlexibleItem<NotificationRespo
     @Override
     public void bindViewHolder(FlexibleAdapter<IFlexible> adapter, NotificationViewHolder holder, int position, List<Object> payloads) {
         Context context = holder.itemView.getContext();
+        ItemNotificationListBinding itemNotificationBinding = ItemNotificationListBinding.inflate(LayoutInflater.from(context), null,false);
+        itemNotificationBinding.setIvm(this);
+        itemNotificationBinding.executePendingBindings();
         holder.date.setText(DateUtils.dateFormat(modifiedDate));
         NotificationMessage notificationMessage = ApiModelUtils.fromJson(msg, NotificationMessage.class);
         NotificationServer notificationServer = ApiModelUtils.fromJson(msg, NotificationServer.class);
@@ -91,11 +96,12 @@ public class NotificationResponse extends AbstractFlexibleItem<NotificationRespo
         holder.title.setText(title);
         if(state == 0){
             holder.statusImage.setVisibility(View.VISIBLE);
-//            holder.notiLayout.setBackgroundColor(R.color.bg_app);
+            holder.notiLayout.setBackgroundColor(context.getResources().getColor(R.color.app_light_color2));
 
         }else {
             holder.statusImage.setVisibility(View.GONE);
 //            holder.notiLayout.setBackgroundColor(R.color.bg_app);
+            holder.notiLayout.setBackgroundColor(context.getResources().getColor(R.color.bg_color));
         }
 //        Glide.with(context)
 //                .load(BuildConfig.MEDIA_URL+ "/v1/file/download" + notificationServer.getBanner())

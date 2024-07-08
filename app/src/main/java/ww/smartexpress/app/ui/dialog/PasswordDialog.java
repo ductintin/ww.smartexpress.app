@@ -97,6 +97,6 @@ public class PasswordDialog extends DialogFragment implements View.OnClickListen
 
 
     public void confirmPassword(){
-        listener.confirm(password.get());
+        listener.confirm(password.get().trim());
     }
 }

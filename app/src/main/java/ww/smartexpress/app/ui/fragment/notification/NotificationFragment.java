@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import eu.davidea.flexibleadapter.FlexibleAdapter;
 import eu.davidea.flexibleadapter.helpers.EmptyViewHelper;
@@ -60,6 +61,15 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getMyNotification();
+
+        binding.swRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                viewModel.pageNumber.set(0);
+                getMyNotification();
+                binding.swRefresh.setRefreshing(false);
+            }
+        });
     }
 
     @Override
@@ -89,9 +99,14 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
             case Constants.NOTIFICATION_KIND_PROMOTION:
             case Constants.NOTIFICATION_KIND_WARNING:
             case Constants.NOTIFICATION_KIND_SYSTEM:
+                viewModel.readNotification(notificationResponse.getId());
                 intent = new Intent(getContext(), NotificationDetailsActivity.class);
                 intent.putExtra("messageNoti", notificationResponse.getMsg());
+                intent.putExtra("notificationId",notificationResponse.getId());
                 startActivity(intent);
+                notificationResponse.setState(1);
+                mFlexibleAdapter.updateItem(notificationResponse);
+                viewModel.totalUnread.set(viewModel.totalUnread.get()-1);
                 break;
             case Constants.NOTIFICATION_KIND_APPROVE_PAYOUT:
                 break;
@@ -109,9 +124,9 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
     @Override
     public void onUpdateEmptyDataView(int size) {
         if(size>0){
-            binding.layoutEmpty.setVisibility(View.GONE);
+            binding.layoutEmpty.emptyView.setVisibility(View.GONE);
         }else {
-            binding.layoutEmpty.setVisibility(View.VISIBLE);
+            binding.layoutEmpty.emptyView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -129,6 +144,7 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     if(response.isResult()){
+                        viewModel.totalUnread.set(Math.toIntExact(response.getData().getTotalUnread()));
                         viewModel.pageTotal.set(response.getData().getTotalPages());
                         viewModel.totalElement.set(Math.toIntExact(response.getData().getTotalElements()));
                         if (response.getData().getContent()!=null){
@@ -144,7 +160,7 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
                                             .setEndlessTargetCount(viewModel.totalElement.get())
                                             .setEndlessPageSize(viewModel.pageSize.get());
                                 }
-                                EmptyViewHelper.create(mFlexibleAdapter, binding.layoutEmpty, null, this);
+                                EmptyViewHelper.create(mFlexibleAdapter, binding.layoutEmpty.emptyView, null, this);
 
                                 binding.rcNotification.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
                                 binding.rcNotification.setAdapter(mFlexibleAdapter);
@@ -153,7 +169,7 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
                             }
                         }
                     }else {
-                        viewModel.showErrorMessage(response.getMessage());
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
                     viewModel.hideLoading();
                 },error->{
@@ -162,5 +178,27 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
                     viewModel.hideLoading();
                 })
         );
+    }
+
+    public void readAllNotification(){
+        viewModel.compositeDisposable.add(viewModel.readAllNotification()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
+                    if(response.isResult()){
+                        viewModel.pageNumber.set(0);
+                        getMyNotification();
+                    }else{
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                    }
+                },error->{
+                    error.printStackTrace();
+                })
+        );
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }

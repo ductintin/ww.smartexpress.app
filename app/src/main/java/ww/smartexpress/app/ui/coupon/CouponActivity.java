@@ -85,6 +85,8 @@ public class CouponActivity extends BaseActivity<ActivityCouponBinding, CouponVi
                     if(response.isResult() && response.getData().getTotalElements() > 0){
                         couponList = response.getData().getContent();
                         loadCoupon();
+                    }else if(!response.isResult()){
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
                 }, err -> {
                     viewModel.hideLoading();

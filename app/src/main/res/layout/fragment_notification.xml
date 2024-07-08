@@ -18,63 +18,69 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/bg_color">
-
-        <LinearLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swRefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-
-            <TextView
-                android:id="@+id/tvTitle"
-                style="@style/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:padding="@dimen/_10sdp"
-                android:maxLines="1"
-                android:text="@string/notification_header"
-                android:textSize="@dimen/_25ssp"
-                android:textAlignment="center">
-
-            </TextView>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:background="@color/bg_color"
-                android:id="@+id/rcNotification"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/_10sdp"
-                android:clipToPadding="false">
-
-            </androidx.recyclerview.widget.RecyclerView>
-            <FrameLayout
-                android:id="@+id/layout_empty"
+            android:layout_height="match_parent">
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white">
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_marginTop="@dimen/_50sdp">
-                    <ImageView
-                        android:layout_width="@dimen/_160sdp"
-                        android:layout_height="@dimen/_160sdp"
-                        android:src="@drawable/smartexpress_splash_logo">
-
-                    </ImageView>
+                    android:orientation="horizontal"
+                    android:gravity="center">
                     <TextView
-                        android:layout_marginTop="@dimen/_20sdp"
-                        style="@style/title"
+                        style="@style/app_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_gravity="left"
+                        android:text="@string/notification_header"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/_16ssp"
+                        android:paddingLeft="@dimen/_20sdp"
+                        android:textColor="@color/black"/>
+                    <TextView
+                        android:visibility="@{vm.totalUnread == null || vm.totalUnread==0 ? View.GONE : View.VISIBLE}"
+                        style="@style/app_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="left"
+                        android:text='@{"("+vm.totalUnread+")"}'
+                        android:textSize="@dimen/_16ssp"
+                        android:gravity="center_vertical"
+
+                        android:textColor="@color/red_color"/>
+                    <TextView
+                        android:onClick="@{()->f.readAllNotification()}"
+                        style="@style/text_style_montserrat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bạn chưa có thông báo nào">
-
-                    </TextView>
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_5sdp"
+                        android:gravity="center|right"
+                        android:text="Đánh dấu đọc hết"
+                        android:textColor="@color/green_light_app"/>
                 </LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:background="@color/bg_color"
+                    android:id="@+id/rcNotification"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:clipToPadding="false">
+
+                </androidx.recyclerview.widget.RecyclerView>
+                <include layout="@layout/item_transaction_empty"
+                    android:id="@+id/layout_empty"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent" />
+            </LinearLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </FrameLayout>
 </layout>

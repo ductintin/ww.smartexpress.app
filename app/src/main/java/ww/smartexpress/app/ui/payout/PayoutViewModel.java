@@ -57,7 +57,7 @@ public class PayoutViewModel extends BaseViewModel {
                                     getApplication().getCurrentActivity().onBackPressed();
                                 }else {
                                     hideLoading();
-                                    showErrorMessage(response.getMessage());
+                                    getApplication().getErrorUtils().handelError(response.getCode());
                                 }
                             },error->{
                                 hideLoading();

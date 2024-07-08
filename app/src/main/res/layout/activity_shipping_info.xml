@@ -718,13 +718,13 @@
                                         </LinearLayout>
 
                                         <TextView
+                                            android:id="@+id/tvCod"
                                             style="@style/app_text"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:maxLines="2"
                                             android:textSize="@dimen/_10ssp"
-                                            android:textColor="@color/red_color"
-                                            android:text="@{vm.codPriceText}" />
+                                            android:textColor="@color/red_color"/>
                                     </LinearLayout>
                                 </LinearLayout>
 

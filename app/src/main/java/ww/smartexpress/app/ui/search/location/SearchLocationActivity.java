@@ -80,7 +80,6 @@ public class SearchLocationActivity extends BaseActivity<ActivitySearchLocationB
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
 
         viewBinding.edtDeparture.addTextChangedListener(new GenericTextWatcher(viewBinding.edtDeparture));
         viewBinding.edtSearchLocation.addTextChangedListener(new GenericTextWatcher(viewBinding.edtSearchLocation));
@@ -433,7 +432,7 @@ public class GenericTextWatcher implements TextWatcher {
                     if(response.isResult()){
 
                     }else{
-
+                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
                     }
                 }, err -> {
                     viewModel.hideLoading();
@@ -445,13 +444,7 @@ public class GenericTextWatcher implements TextWatcher {
     @Override
     public void onResume() {
         super.onResume();
-//        viewModel.location.set("");
-//        viewModel.searchLocation.set("");
-//        viewModel.originId.set("");
-//        viewModel.destinationId.set("");
-//        binding.edtDeparture.requestFocus();
-//        binding.edtSearchLocation.clearFocus();
-
+        EventBus.getDefault().register(this);
     }
 
     public void openMap(int kind){
@@ -459,7 +452,7 @@ public class GenericTextWatcher implements TextWatcher {
         if(kind == 1 && !TextUtils.isEmpty(viewModel.originId.get())){
             intent.putExtra("ORIGIN_ID", viewModel.originId.get());
             intent.putExtra("ORIGIN_DESCRIPTION", viewModel.location.get());
-        }else if(kind == 1 && !TextUtils.isEmpty(viewModel.destinationId.get())){
+        }else if(kind == 2 && !TextUtils.isEmpty(viewModel.destinationId.get())){
             intent.putExtra("ORIGIN_ID", viewModel.destinationId.get());
             intent.putExtra("ORIGIN_DESCRIPTION", viewModel.searchLocation.get());
         }
@@ -495,10 +488,9 @@ public class GenericTextWatcher implements TextWatcher {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    protected void onPause() {
+        super.onPause();
         EventBus.getDefault().unregister(this);
         EventBus.getDefault().removeStickyEvent(AddressMap.class);
     }
-
 }
