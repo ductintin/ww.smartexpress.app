@@ -40,9 +40,7 @@ public class AuthInterceptor implements Interceptor {
         }
 
 
-
         Request.Builder newRequest = chain.request().newBuilder();
-
         String isSearchLocation = chain.request().header("isSearchLocation");
         if(isSearchLocation != null && isSearchLocation.equals("1")){
             HttpUrl url = chain.request().url();
@@ -83,15 +81,6 @@ public class AuthInterceptor implements Interceptor {
             newRequest.addHeader("Authorization", "Bearer " + token);
         }
 
-        Response origResponse = chain.proceed(newRequest.build());
-        if (origResponse.code() == 403 || origResponse.code() == 401) {
-            LogService.i("Error http =====================> code: " + origResponse.code());
-            appPreferences.removeKey(PreferencesService.KEY_BEARER_TOKEN);
-            Intent intent = new Intent();
-            intent.setAction(Constants.ACTION_EXPIRED_TOKEN);
-            LocalBroadcastManager.getInstance(application.getApplicationContext()).sendBroadcast(intent);
-        }
-
         String isMediaKind = chain.request().header("isMedia");
         if(isMediaKind != null && isMediaKind.equals("1")){
             StringBuilder builder = new StringBuilder(BuildConfig.MEDIA_URL);
@@ -103,6 +92,14 @@ public class AuthInterceptor implements Interceptor {
             return chain.proceed(newRequest.url(builder.toString()).build());
         }
 
+        Response origResponse = chain.proceed(newRequest.build());
+        if (origResponse.code() == 403 || origResponse.code() == 401) {
+            LogService.i("Error http =====================> code: " + origResponse.code());
+            appPreferences.removeKey(PreferencesService.KEY_BEARER_TOKEN);
+            Intent intent = new Intent();
+            intent.setAction(Constants.ACTION_EXPIRED_TOKEN);
+            LocalBroadcastManager.getInstance(application.getApplicationContext()).sendBroadcast(intent);
+        }
 
         return origResponse;
     }

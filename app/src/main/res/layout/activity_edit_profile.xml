@@ -72,7 +72,6 @@
                     android:layout_height="@dimen/_90sdp"
                     android:layout_gravity="center"
                     android:onClick="@{() -> a.dialogUpLoadAvatar()}"
-                    android:src="@{vm.avatar, default=@drawable/user_avatar}"
                     android:elevation="@dimen/_1sdp"
                     app:civ_border_width="@dimen/_2sdp"
                     app:civ_border_color="@color/white"

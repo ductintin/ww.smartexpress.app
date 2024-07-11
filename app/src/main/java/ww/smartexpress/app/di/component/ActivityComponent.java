@@ -18,6 +18,7 @@ import ww.smartexpress.app.ui.password.forget.ResetForgetPasswordActivity;
 import ww.smartexpress.app.ui.password.otp.VerifyForgetPasswordOTPActivity;
 import ww.smartexpress.app.ui.password.reset.ResetPasswordActivity;
 import ww.smartexpress.app.ui.payout.PayoutActivity;
+import ww.smartexpress.app.ui.payout.details.PayoutDetailsActivity;
 import ww.smartexpress.app.ui.purchase.PurchaseActivity;
 import ww.smartexpress.app.ui.qrcode.QrcodeActivity;
 import ww.smartexpress.app.ui.register.RegisterActivity;
@@ -130,5 +131,6 @@ public interface ActivityComponent {
     void inject(VerifyForgetPasswordOTPActivity verifyForgetPasswordOTPActivity);
     void inject(NotificationDetailsActivity notificationDetailsActivity);
     void inject(TransactionDetailsActivity transactionDetailsActivity);
+    void inject(PayoutDetailsActivity payoutDetailsActivity);
 }
 

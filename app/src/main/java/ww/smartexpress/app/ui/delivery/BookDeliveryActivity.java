@@ -239,7 +239,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response ->{
                     viewModel.isLoading.set(false);
-                    if(response.isResult() && response.getData().getTotalElements() > 8){
+                    if(response.isResult() && response.getData().getTotalElements() > 0){
                         serviceResponses = response.getData().getContent().subList(4, response.getData().getContent().size());
                         loadBookCar();
                     }else if(!response.isResult()){
@@ -300,6 +300,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                 viewModel.discount.set(0.0);
                 viewModel.bookingRequest.get().setPromotionId(null);
                 viewModel.bookingRequest.get().setPromotionMoney(0.0);
+                viewModel.selectedService.get().setSelectedId(0L);
             }
 
 
@@ -883,6 +884,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                     bundle.putLong(Constants.CUSTOMER_BOOKING_ID, viewModel.bookingId.get());
                     intentToTrip.putExtras(bundle);
                     startActivity(intentToTrip);
+                    finish();
                 }
                 break;
             case 5: // Tai xe huy chuyen nay

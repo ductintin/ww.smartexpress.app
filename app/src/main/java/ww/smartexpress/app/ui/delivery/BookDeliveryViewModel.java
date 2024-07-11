@@ -1,6 +1,7 @@
 package ww.smartexpress.app.ui.delivery;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.databinding.ObservableField;
@@ -121,7 +122,16 @@ public class BookDeliveryViewModel extends BaseViewModel {
         intent.putExtras(bundle);
         application.getCurrentActivity().startActivity(intent);
     }
-    public void callDriver(){}
+    public void callDriver(){
+        try{
+            Intent callIntent = new Intent(Intent.ACTION_DIAL);
+            callIntent.setData(Uri.parse("tel:" + bookingResponse.get().getDriver().getPhone()));
+            application.getCurrentActivity().startActivity(callIntent);
+        }catch (Exception e){
+            e.printStackTrace();
+            showErrorMessage("Thiết bị không hỗ trợ");
+        }
+    }
     public void chatDriver(){
         Intent intent = new Intent(application.getCurrentActivity(), ChatActivity.class);
         intent.putExtra("codeBooking", bookingCode.get());

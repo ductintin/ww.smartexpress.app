@@ -64,6 +64,7 @@ import ww.smartexpress.app.databinding.DialogUploadAvtBinding;
 import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
 import ww.smartexpress.app.utils.AES;
+import ww.smartexpress.app.utils.BindingUtils;
 
 public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding, EditProfileViewModel> {
     @Override
@@ -228,6 +229,11 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
                     public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull UserEntity userEntity) {
                         viewModel.userEntityObservableField.set(userEntity);
                         viewModel.avatar.set(userEntity.getAvatar());
+                        if(viewModel.avatar.get() == null){
+                            viewBinding.civAvatar.setImageResource(R.drawable.avatar_holder);
+                        }else{
+                            BindingUtils.setImageUrl(viewBinding.civAvatar,viewModel.avatar.get());
+                        }
                         viewModel.fullName.set(userEntity.getName());
                         viewModel.email.set(userEntity.getEmail());
                         viewModel.bankCard.set(userEntity.getBankCard());

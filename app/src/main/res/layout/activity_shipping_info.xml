@@ -400,7 +400,7 @@
                                     android:layout_height="@dimen/_35sdp"
                                     android:maxLines="1"
                                     android:ellipsize="end"
-                                    android:inputType="text"
+                                    android:inputType="phone"
                                     android:textColorHint="@color/grey_text"
                                     android:maxLength="50">
                                 </com.google.android.material.textfield.TextInputEditText>
@@ -519,7 +519,7 @@
                                     android:layout_height="@dimen/_35sdp"
                                     android:maxLines="1"
                                     android:ellipsize="end"
-                                    android:inputType="text"
+                                    android:inputType="phone"
                                     android:textColorHint="@color/grey_text"
                                     android:maxLength="50">
                                 </com.google.android.material.textfield.TextInputEditText>
@@ -709,7 +709,7 @@
                                                     android:layout_height="@dimen/_35sdp"
                                                     android:maxLines="1"
                                                     android:ellipsize="end"
-                                                    android:inputType="text"
+                                                    android:inputType="number"
                                                     android:textColorHint="@color/grey_text"
                                                     android:maxLength="50">
                                                 </com.google.android.material.textfield.TextInputEditText>

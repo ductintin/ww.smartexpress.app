@@ -25,13 +25,15 @@ import ww.smartexpress.app.databinding.FragmentNotificationBinding;
 import ww.smartexpress.app.di.component.FragmentComponent;
 import ww.smartexpress.app.ui.base.fragment.BaseFragment;
 import ww.smartexpress.app.ui.notification.details.NotificationDetailsActivity;
+import ww.smartexpress.app.ui.payout.details.PayoutDetailsActivity;
 import ww.smartexpress.app.ui.view.ProgressItem;
+import ww.smartexpress.app.ui.wallet.transaction.details.TransactionDetailsActivity;
 
 public class NotificationFragment extends BaseFragment<FragmentNotificationBinding, NotificationFragmentViewModel>
         implements FlexibleAdapter.EndlessScrollListener, EmptyViewHelper.OnEmptyViewListener, FlexibleAdapter.OnItemClickListener{
 
 
-    FlexibleAdapter mFlexibleAdapter;
+    //FlexibleAdapter mFlexibleAdapter;
     @Override
     public int getBindingVariable() {
         return BR.vm;
@@ -60,6 +62,8 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        binding.setF(this);
         getMyNotification();
 
         binding.swRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -92,27 +96,44 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
 
     @Override
     public boolean onItemClick(View view, int position) {
-        NotificationResponse notificationResponse = (NotificationResponse) mFlexibleAdapter.getItem(position);
+        NotificationResponse notificationResponse = (NotificationResponse) viewModel.mFlexibleAdapter.get().getItem(position);
         Log.d("TAG", "onItemClick: "+notificationResponse.getMsg());
         Intent intent;
         switch (notificationResponse.getKind()){
             case Constants.NOTIFICATION_KIND_PROMOTION:
             case Constants.NOTIFICATION_KIND_WARNING:
             case Constants.NOTIFICATION_KIND_SYSTEM:
-                viewModel.readNotification(notificationResponse.getId());
                 intent = new Intent(getContext(), NotificationDetailsActivity.class);
                 intent.putExtra("messageNoti", notificationResponse.getMsg());
                 intent.putExtra("notificationId",notificationResponse.getId());
                 startActivity(intent);
-                notificationResponse.setState(1);
-                mFlexibleAdapter.updateItem(notificationResponse);
-                viewModel.totalUnread.set(viewModel.totalUnread.get()-1);
+                if(notificationResponse.getState() == 0){
+                    notificationResponse.setState(1);
+                    viewModel.mFlexibleAdapter.get().updateItem(notificationResponse);
+                    viewModel.totalUnread.set(viewModel.totalUnread.get()-1);
+                }
+                break;
+
+            case Constants.NOTIFICATION_KIND_DEPOSIT_SUCCESSFULLY:
+                intent = new Intent(getContext(), TransactionDetailsActivity.class);
+                intent.putExtra("transactionId",Long.valueOf(notificationResponse.getRefId()));
+                startActivity(intent);
+                if(notificationResponse.getState() == 0){
+                    notificationResponse.setState(1);
+                    viewModel.mFlexibleAdapter.get().updateItem(notificationResponse);
+                    viewModel.totalUnread.set(viewModel.totalUnread.get()-1);
+                }
                 break;
             case Constants.NOTIFICATION_KIND_APPROVE_PAYOUT:
-                break;
             case Constants.NOTIFICATION_KIND_REJECT_PAYOUT:
-                break;
-            case Constants.NOTIFICATION_KIND_DEPOSIT_SUCCESSFULLY:
+                intent = new Intent(getContext(), PayoutDetailsActivity.class);
+                intent.putExtra("payoutId",Long.valueOf(notificationResponse.getRefId()));
+                startActivity(intent);
+                if(notificationResponse.getState() == 0){
+                    notificationResponse.setState(1);
+                    viewModel.mFlexibleAdapter.get().updateItem(notificationResponse);
+                    viewModel.totalUnread.set(viewModel.totalUnread.get()-1);
+                }
                 break;
             default:
                 break;
@@ -150,26 +171,26 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
                         if (response.getData().getContent()!=null){
                             if(viewModel.pageNumber.get() == 0){
 
-                                mFlexibleAdapter = new FlexibleAdapter(response.getData().getContent(), this);
+                                viewModel.mFlexibleAdapter.set(new FlexibleAdapter(response.getData().getContent(), this));
 
                                 if(viewModel.totalElement.get()> viewModel.pageSize.get()){
-                                    mFlexibleAdapter
+                                    viewModel.mFlexibleAdapter.get()
                                             .setLoadingMoreAtStartUp(false)
                                             .setEndlessScrollListener(this, new ProgressItem())
                                             .setEndlessScrollThreshold(1)
                                             .setEndlessTargetCount(viewModel.totalElement.get())
                                             .setEndlessPageSize(viewModel.pageSize.get());
                                 }
-                                EmptyViewHelper.create(mFlexibleAdapter, binding.layoutEmpty.emptyView, null, this);
+                                EmptyViewHelper.create(viewModel.mFlexibleAdapter.get(), binding.layoutEmpty.emptyView, null, this);
 
                                 binding.rcNotification.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
-                                binding.rcNotification.setAdapter(mFlexibleAdapter);
+                                binding.rcNotification.setAdapter(viewModel.mFlexibleAdapter.get());
                             }else {
-                                mFlexibleAdapter.onLoadMoreComplete(response.getData().getContent());
+                                viewModel.mFlexibleAdapter.get().onLoadMoreComplete(response.getData().getContent());
                             }
                         }
                     }else {
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(response.getMessage());
                     }
                     viewModel.hideLoading();
                 },error->{
@@ -181,16 +202,13 @@ public class NotificationFragment extends BaseFragment<FragmentNotificationBindi
     }
 
     public void readAllNotification(){
+        Log.d("TAG", "readAllNotification: ");
         viewModel.compositeDisposable.add(viewModel.readAllNotification()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
-                    if(response.isResult()){
-                        viewModel.pageNumber.set(0);
-                        getMyNotification();
-                    }else{
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
-                    }
+                    viewModel.pageNumber.set(0);
+                    getMyNotification();
                 },error->{
                     error.printStackTrace();
                 })

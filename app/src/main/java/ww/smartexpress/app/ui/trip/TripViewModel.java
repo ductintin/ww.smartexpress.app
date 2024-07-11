@@ -44,9 +44,14 @@ public class TripViewModel extends BaseViewModel {
         application.getCurrentActivity().startActivity(sendIntent);
     }
     public void callDriver(){
-        Intent callIntent = new Intent(Intent.ACTION_DIAL);
-        callIntent.setData(Uri.parse("tel:" + bookingResponse.get().getDriver().getPhone()));
-        application.getCurrentActivity().startActivity(callIntent);
+        try{
+            Intent callIntent = new Intent(Intent.ACTION_DIAL);
+            callIntent.setData(Uri.parse("tel:" + bookingResponse.get().getDriver().getPhone()));
+            application.getCurrentActivity().startActivity(callIntent);
+        }catch (Exception e){
+            e.printStackTrace();
+            showErrorMessage("Thiết bị không hỗ trợ");
+        }
     }
 
     public void back(){

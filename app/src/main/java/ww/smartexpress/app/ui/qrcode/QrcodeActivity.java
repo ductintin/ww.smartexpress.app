@@ -125,4 +125,10 @@ public class QrcodeActivity extends BaseActivity<ActivityQrcodeBinding, QrcodeVi
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        finish();
+    }
 }

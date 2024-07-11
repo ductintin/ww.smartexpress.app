@@ -112,7 +112,13 @@ public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutVi
                         String cleanString = charSequence.toString().replaceAll("[.]", "");
                         viewModel.money.set(cleanString);
                         Log.d("TAG", "onTextChanged: "+ viewModel.money.get());
-                        double parsed = Double.parseDouble(cleanString);
+                        Double parsed = Double.parseDouble(cleanString);
+                        if(parsed > viewModel.balance.get()){
+                            parsed = viewModel.balance.get();
+                        }
+
+                        viewModel.money.set(String.valueOf(parsed.intValue()));
+                        Log.d("TAG", "onTextChanged: "+ viewModel.money.get());
 
                         String formated = NumberUtils.formatEdtTextCurrency(parsed);
 
@@ -204,6 +210,7 @@ public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutVi
                         if(response.isResult()){
                             //viewModel.payoutTransactionList.get().remove(payoutTransaction);
                             viewModel.payoutTransactionList.set(new ArrayList<>());
+                            viewModel.balance.set(viewModel.balance.get() + payoutTransaction.getMoney());
                             Log.d("TAG", "dialogPayoutRequest: " + viewModel.payoutTransactionList.get().size());
                             viewModel.showSuccessMessage("Xóa yêu cầu rút tiền thành công");
                         }else {
@@ -289,14 +296,6 @@ public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutVi
     }
 
     public void navigateToConfirmPassword(){
-        if(viewModel.money.get() != null && Integer.valueOf(viewModel.money.get())<50000){
-            viewModel.showErrorMessage("Số tiền rút tối thiểu là 50.000đ");
-            return;
-        }
-        if(viewModel.money.get() != null && Double.valueOf(viewModel.money.get()) > viewModel.balance.get()){
-            viewModel.showErrorMessage("Số tiền rút vượt quá số dư trong ví");
-            return;
-        }
         PasswordDialog passwordDialog = new PasswordDialog();
         passwordDialog.show(getSupportFragmentManager(),"passwordDialog");
     }

@@ -58,7 +58,7 @@ public class RateDriverActivity extends BaseActivity<ActivityRatingDriverBinding
         if(bundle != null){
             viewModel.bookingId.set((bundle.getLong(Constants.CUSTOMER_BOOKING_ID)));
             viewModel.from.set((bundle.getInt("FROM")));
-            Log.d("TAG", "onCreate: " + bundle.getString(Constants.CUSTOMER_BOOKING_ID));
+            Log.d("TAG", "onCreate: " + bundle.getLong(Constants.CUSTOMER_BOOKING_ID));
             Log.d("TAG", "onCreate: " + viewModel.bookingId.get());
             getMyBooking(viewModel.bookingId.get());
         }

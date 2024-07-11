@@ -186,30 +186,62 @@
                             android:background="#EEF2F5"></FrameLayout>
 
                         <LinearLayout
-                            android:onClick="@{(v)->vm.chatDriver()}"
-                            android:id="@+id/sendMessage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/frameLayout"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_centerHorizontal="true">
-
-                            <ImageView
-                                android:id="@+id/imgMessage"
-                                android:layout_width="wrap_content"
+                            android:layout_below="@+id/frameLayout"
+                            android:gravity="center">
+                            <LinearLayout
+                                android:onClick="@{(v)->vm.chatDriver()}"
+                                android:id="@+id/sendMessage"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginRight="@dimen/_10sdp"
-                                app:srcCompat="@drawable/ic_icon_messenger" />
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:layout_centerHorizontal="true">
 
-                            <TextView
-                                android:id="@+id/txtMessage"
-                                style="@style/trip_information_text_medium"
-                                android:layout_width="wrap_content"
+                                <ImageView
+                                    android:id="@+id/imgMessage"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="@dimen/_10sdp"
+                                    app:srcCompat="@drawable/ic_icon_messenger" />
+
+                                <TextView
+                                    android:id="@+id/txtMessage"
+                                    style="@style/trip_information_text_medium"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/send_message" />
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:onClick="@{(v)->vm.callDriver()}"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@string/send_message" />
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:layout_centerHorizontal="true">
 
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="@dimen/_10sdp"
+                                    app:srcCompat="@drawable/ic_icon_call" />
+
+                                <TextView
+                                    style="@style/trip_information_text_medium"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/call_driver" />
+
+
+                            </LinearLayout>
 
                         </LinearLayout>
 

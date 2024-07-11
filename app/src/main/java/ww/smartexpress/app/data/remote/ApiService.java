@@ -42,6 +42,7 @@ import ww.smartexpress.app.data.model.api.response.NewsResponse;
 import ww.smartexpress.app.data.model.api.response.NotificationRead;
 import ww.smartexpress.app.data.model.api.response.NotificationResponse;
 import ww.smartexpress.app.data.model.api.response.Payment;
+import ww.smartexpress.app.data.model.api.response.PayoutResponse;
 import ww.smartexpress.app.data.model.api.response.PayoutTransaction;
 import ww.smartexpress.app.data.model.api.response.ProfileResponse;
 import ww.smartexpress.app.data.model.api.response.Promotion;
@@ -176,4 +177,6 @@ public interface ApiService {
 
     @PUT("/v1/notification/read-all")
     Observable<ResponseGeneric> readAllNotification();
+    @GET("/v1/request-pay-out/get/{id}")
+    Observable<ResponseWrapper<PayoutResponse>> getPayout(@Path("id") Long id);
 }

@@ -13,7 +13,7 @@
     <string name="password_hint">Password</string>
 
     <string name="location_request">Sử dụng vị trí của bạn và cho phép nhận thông báo</string>
-    <string name="location_description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
+    <string name="location_description">Để cải thiện trải nghiệm giao hàng, ứng dụng cần truy cập vị trí của bạn để tìm đường nhanh hơn và nhận đơn hàng gần nhất. Hãy cho phép nhận thông báo để không bỏ lỡ đơn hàng mới và các cập nhật quan trọng từ hệ thống.</string>
     <string name="welcome_winwin">Welcome to SmartExpress</string>
     <string name="please_enter_phone">Vui lòng nhập số điện thoại của bạn</string>
     <string name="welcome_button_continue">Tiếp tục</string>

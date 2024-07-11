@@ -334,8 +334,12 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         ToastMessage toastMessage;
         switch (depositSuccess.getKind()){
             case 1:
-                if(currentActivity instanceof WalletActivity || currentActivity instanceof QrcodeActivity){
+                if(currentActivity instanceof WalletActivity){
                     intent = new Intent(currentActivity, WalletActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    currentActivity.startActivity(intent);
+                }else if(currentActivity instanceof QrcodeActivity){
+                    intent = new Intent(currentActivity, QrcodeActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     currentActivity.startActivity(intent);
                 }
@@ -485,13 +489,20 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
 //            currentActivity.startActivity(intent);
 //        }
 
-        Intent intentToRating = new Intent(currentActivity, RateDriverActivity.class);
-        intentToRating.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Bundle bundle = new Bundle();
-        bundle.putLong(Constants.CUSTOMER_BOOKING_ID, response.getBookingId());
-        intentToRating.putExtras(bundle);
-        startActivity(intentToRating);
-
+       if(currentActivity instanceof BookDeliveryActivity){
+           Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            intent.putExtra("BOOKING_ID",response.getBookingId());
+            intent.putExtra("STATE_BOOKING", 4);
+            currentActivity.startActivity(intent);
+       }else{
+           Intent intentToRating = new Intent(currentActivity, RateDriverActivity.class);
+           intentToRating.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+           Bundle bundle = new Bundle();
+           bundle.putLong(Constants.CUSTOMER_BOOKING_ID, response.getBookingId());
+           intentToRating.putExtras(bundle);
+           startActivity(intentToRating);
+       }
         webSocketLiveData.removeBookingCode(response.getBookingId());
     }
 
@@ -571,6 +582,7 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
                 notificationIntent = new Intent(getCurrentActivity(), TripDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putLong(Constants.CUSTOMER_BOOKING_DETAIL_ID, bookingResponse.getBookingId());
+                notificationIntent.putExtras(bundle);
                 break;
         }
 

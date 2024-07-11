@@ -210,4 +210,10 @@ public class LoginOTPActivity extends BaseActivity<ActivityLoginOtpBinding, Logi
         finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewModel.countDownTimer.cancel();
+    }
+
 }

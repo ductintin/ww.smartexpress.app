@@ -129,6 +129,7 @@ public class SearchLocationActivity extends BaseActivity<ActivitySearchLocationB
         if(bundle != null){
             String component = bundle.getString("PLACE_NAME");
             String id = bundle.getString("PLACE_ID");
+            Log.d("TAG", "onCreate: dd" + id);
             if(fromLocations.size() == 0 && viewModel.destinationId.get().isEmpty()){
                 viewModel.location.set(component);
                 viewModel.originId.set(id);

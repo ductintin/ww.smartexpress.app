@@ -51,6 +51,7 @@ public class DepositViewModel extends BaseViewModel {
                             intent.putExtra("qrString", data.getQrCodeUrl());
                             intent.putExtra("payUrl", data.getPayUrl());
                             application.getCurrentActivity().startActivity(intent);
+                            application.getCurrentActivity().finish();
 //                                openMoMoDeeplink(data.getDeeplink());
                             hideLoading();
                             showSuccessMessage(response.getMessage());

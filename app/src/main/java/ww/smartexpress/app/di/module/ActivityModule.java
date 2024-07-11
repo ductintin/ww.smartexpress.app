@@ -27,6 +27,7 @@ import ww.smartexpress.app.ui.password.forget.ResetForgetPasswordViewModel;
 import ww.smartexpress.app.ui.password.otp.VerifyForgetPasswordOTPViewModel;
 import ww.smartexpress.app.ui.password.reset.ResetPasswordViewModel;
 import ww.smartexpress.app.ui.payout.PayoutViewModel;
+import ww.smartexpress.app.ui.payout.details.PayoutDetailsViewModel;
 import ww.smartexpress.app.ui.purchase.PurchaseViewModel;
 import ww.smartexpress.app.ui.qrcode.QrcodeViewModel;
 import ww.smartexpress.app.ui.register.RegisterViewModel;
@@ -468,5 +469,13 @@ public class ActivityModule {
         Supplier<TransactionDetailsViewModel> supplier = () -> new TransactionDetailsViewModel(repository, (MVVMApplication) application);
         ViewModelProviderFactory<TransactionDetailsViewModel> factory = new ViewModelProviderFactory<>(TransactionDetailsViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(TransactionDetailsViewModel.class);
+    }
+
+    @Provides
+    @ActivityScope
+    PayoutDetailsViewModel providePayoutDetailsViewModel(Repository repository, Context application) {
+        Supplier<PayoutDetailsViewModel> supplier = () -> new PayoutDetailsViewModel(repository, (MVVMApplication) application);
+        ViewModelProviderFactory<PayoutDetailsViewModel> factory = new ViewModelProviderFactory<>(PayoutDetailsViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(PayoutDetailsViewModel.class);
     }
 }
