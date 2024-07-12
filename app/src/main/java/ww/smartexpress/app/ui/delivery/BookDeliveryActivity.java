@@ -944,6 +944,9 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     @Override
     protected void onResume() {
         super.onResume();
+        if(viewModel.bookingResponse.get() != null){
+            getCurrentBooking2();
+        }
         EventBus.getDefault().register(this);
     }
 
