@@ -25,14 +25,17 @@
         <TextView
             android:id="@+id/tvTitle"
             style="@style/title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:padding="@dimen/_10sdp"
             android:maxLines="1"
             android:text="@string/title_account"
-            android:textSize="@dimen/_25ssp"
-            android:textAlignment="center">
+            android:textSize="@dimen/_16ssp"
+            android:textAlignment="textStart"
+            android:background="@color/green_light_app"
+            android:textColor="@color/white"
+            android:textStyle="bold">
 
         </TextView>
 
@@ -50,7 +53,8 @@
                 <FrameLayout
                     android:id="@+id/layoutProfile"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_80sdp"
+                    android:background="@drawable/profile_bg"
                     android:onClick="@{(v) -> vm.navigateToEditProfile()}"
                     android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/_12sdp"
@@ -61,15 +65,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/circleImageView"
                             android:layout_width="@dimen/_50sdp"
                             android:layout_height="@dimen/_50sdp"
                             android:src="@{vm.profile.avatar, default=@drawable/user_avatar}"
+                            app:civ_border_color="@color/app_light_color2"
+                            app:civ_border_width="@dimen/_2sdp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:civ_border_width="@dimen/_1sdp">
+                            app:layout_constraintTop_toTopOf="parent">
 
                         </de.hdodenhof.circleimageview.CircleImageView>
 
@@ -92,7 +98,9 @@
                                 android:ellipsize="end"
                                 android:maxLines="1"
                                 android:text="@{vm.profile.name}"
-                                android:textSize="@dimen/_13ssp">
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_13ssp"
+                                android:textStyle="bold">
 
                             </TextView>
 
@@ -100,10 +108,12 @@
                                 style="@style/new_password_subtitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp"
                                 android:ellipsize="end"
                                 android:maxLines="1"
                                 android:text="@{vm.profile.phone}"
-                                android:textAlignment="textStart">
+                                android:textAlignment="textStart"
+                                android:textColor="@color/white">
 
                             </TextView>
 
@@ -114,11 +124,12 @@
 
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_gravity="end"
                         android:src="@drawable/ic_icon_expand"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_gravity="end">
+                        app:tint="@color/white">
 
                     </ImageView>
 
@@ -137,6 +148,7 @@
 
 
                 <LinearLayout
+                    android:paddingTop="@dimen/_10sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -623,10 +635,18 @@
                             android:layout_height="wrap_content"
                             android:text="THANH TOÁN"
                             style="@style/app_text_b"
-                            android:textColor="@color/gray"
-                            android:layout_margin="@dimen/_12sdp">
+                            android:layout_marginHorizontal="@dimen/_12sdp"
+                            android:textColor="@color/green_light_app"
+                            android:textStyle="bold"
+                            >
 
                         </TextView>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:background="@color/app_light_color2" />
 
                         <LinearLayout
                             android:onClick="@{() -> vm.gotoWallet()}"
@@ -650,6 +670,7 @@
                                 android:layout_marginHorizontal="@dimen/_15sdp"
                                 android:layout_weight="1"
                                 android:maxLines="1"
+                                android:textStyle="bold"
                                 android:text="Tài khoản của tôi" />
 
                             <ImageView
@@ -674,10 +695,17 @@
                             android:layout_height="wrap_content"
                             android:text="BẢO MẬT"
                             style="@style/app_text_b"
-                            android:textColor="@color/gray"
-                            android:layout_margin="@dimen/_12sdp">
+                            android:textColor="@color/green_light_app"
+                            android:textStyle="bold"
+                            android:layout_marginHorizontal="@dimen/_12sdp">
 
                         </TextView>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:background="@color/app_light_color2" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -693,6 +721,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginHorizontal="@dimen/_15sdp"
                                 android:layout_weight="1"
+                                android:textStyle="bold"
                                 android:maxLines="1"
                                 android:text="Xác thực vân tay cho mật khẩu" />
 
@@ -725,10 +754,17 @@
                             android:layout_height="wrap_content"
                             android:text="CÀI ĐẶT"
                             style="@style/app_text_b"
-                            android:textColor="@color/gray"
-                            android:layout_margin="@dimen/_12sdp">
+                            android:textStyle="bold"
+                            android:textColor="@color/green_light_app"
+                            android:layout_marginHorizontal="@dimen/_12sdp">
 
                         </TextView>
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:background="@color/app_light_color2" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -752,13 +788,14 @@
                                 android:layout_marginHorizontal="@dimen/_15sdp"
                                 android:layout_weight="1"
                                 android:maxLines="1"
+                                android:textStyle="bold"
                                 android:text="Hỗ trợ" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_icon_expand" />
+                                android:src="@drawable/ic_icon_call" />
 
                         </LinearLayout>
 
@@ -784,6 +821,7 @@
                                 android:layout_marginHorizontal="@dimen/_15sdp"
                                 android:layout_weight="1"
                                 android:maxLines="1"
+                                android:textStyle="bold"
                                 android:text="Cài đặt mật khẩu" />
 
                             <ImageView
@@ -825,6 +863,7 @@
                                 android:layout_marginHorizontal="@dimen/_15sdp"
                                 android:layout_weight="1"
                                 android:maxLines="1"
+                                android:textStyle="bold"
                                 android:text="@string/logout_all_win" />
 
                         </LinearLayout>

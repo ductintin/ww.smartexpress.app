@@ -30,17 +30,18 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
+                    android:orientation="horizontal">
                     <TextView
                         style="@style/app_title"
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_50sdp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="left"
+                        android:paddingTop="@dimen/_10sdp"
                         android:text="@string/notification_header"
                         android:gravity="center_vertical"
                         android:textSize="@dimen/_16ssp"
-                        android:paddingLeft="@dimen/_20sdp"
+                        android:textStyle="bold"
+                        android:paddingLeft="@dimen/_15sdp"
                         android:textColor="@color/black"/>
                     <TextView
                         android:visibility="@{vm.totalUnread == null || vm.totalUnread==0 ? View.GONE : View.VISIBLE}"
@@ -50,21 +51,23 @@
                         android:layout_gravity="left"
                         android:text='@{"("+vm.totalUnread+")"}'
                         android:textSize="@dimen/_16ssp"
+                        android:textStyle="bold"
                         android:gravity="center_vertical"
-
                         android:textColor="@color/red_color"/>
-                    <TextView
-                        android:onClick="@{()->f.readAllNotification()}"
-                        style="@style/text_style_montserrat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:paddingVertical="@dimen/_5sdp"
-                        android:gravity="center|right"
-                        android:text="Đánh dấu đọc hết"
-                        android:textColor="@color/green_light_app"/>
+
                 </LinearLayout>
+
+                <TextView
+                    android:onClick="@{()->f.readAllNotification()}"
+                    style="@style/text_style_montserrat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:paddingVertical="@dimen/_5sdp"
+                    android:gravity="center|right"
+                    android:text="Đánh dấu tất cả đã đọc"
+                    android:textStyle="bold"
+                    android:textColor="@color/green_light_app"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:background="@color/bg_color"

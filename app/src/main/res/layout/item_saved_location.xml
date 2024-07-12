@@ -36,7 +36,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_icon_gray_clock">
+                    android:src="@drawable/ic_icon_gray_clock"
+                    app:tint="#7EA567">
 
                 </ImageView>
 

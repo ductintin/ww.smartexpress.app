@@ -51,6 +51,14 @@
                 android:text="Ví">
 
             </TextView>
+            <ImageView
+                android:onClick="@{()->vm.navigateTransaction()}"
+                android:layout_width="@dimen/_22sdp"
+                android:layout_height="@dimen/_22sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_gravity="center|right"
+                android:src="@drawable/baseline_history_24"
+                app:tint="@color/green_light_app" />
         </FrameLayout>
 
         <androidx.core.widget.NestedScrollView
@@ -78,7 +86,7 @@
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/_8sdp"
                         android:orientation="vertical"
-                        android:background="@drawable/bank_card">
+                        android:background="@drawable/profile_bg">
                         <TextView
                             style="@style/title"
                             android:paddingHorizontal="@dimen/_10sdp"
@@ -86,6 +94,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Smart Express"
+                            android:textStyle="bold"
                             android:textSize="@dimen/_18ssp"
                             android:textColor="@color/white"/>
                         <TextView
@@ -95,6 +104,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Tài khoản"
+                            android:textStyle="bold"
                             android:textSize="@dimen/_14ssp"
                             android:textColor="@color/white"/>
                         <TextView
@@ -104,6 +114,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/_25ssp"
+                            android:textStyle="bold"
                             android:text="@{NumberUtils.formatCurrency(vm.wallet.balance)}"
                             android:textColor="@color/white"
                             android:layout_marginBottom="@dimen/_10sdp"/>
@@ -154,11 +165,10 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/baseline_login_24"
-                            app:tint="@color/green_light_app"/>
+                            android:src="@drawable/deposit"/>
 
                         <TextView
                             style="@style/app_text_b"
@@ -168,6 +178,7 @@
                             android:layout_marginHorizontal="@dimen/_10sdp"
                             android:layout_weight="1"
                             android:maxLines="1"
+                            android:textStyle="bold"
                             android:text="Nạp tiền" />
 
 
@@ -190,11 +201,10 @@
                         android:layout_height="@dimen/_45sdp"
                         android:orientation="horizontal">
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/baseline_logout_24"
-                            app:tint="@color/red_color"/>
+                            android:src="@drawable/payout"/>
                         <TextView
                             style="@style/app_text_b"
                             android:layout_width="wrap_content"
@@ -203,6 +213,7 @@
                             android:layout_marginHorizontal="@dimen/_10sdp"
                             android:layout_weight="1"
                             android:maxLines="1"
+                            android:textStyle="bold"
                             android:text="Rút tiền" />
 
 
@@ -230,6 +241,8 @@
                         android:layout_weight="1"
                         android:maxLines="1"
                         android:text="Tài khoản"
+                        android:textStyle="bold"
+                        android:textColor="@color/green_light_app"
                         android:layout_marginLeft="@dimen/_15sdp"
                         android:layout_marginBottom="@dimen/_5sdp"/>
                     <FrameLayout
@@ -312,6 +325,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@color/white"
                     android:onClick="@{()->vm.navigateTransaction()}"

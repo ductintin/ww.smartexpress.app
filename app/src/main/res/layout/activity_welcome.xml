@@ -21,12 +21,13 @@
 
         <ImageView
             android:id="@+id/imgLocation"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_above="@+id/linearLayout"
             android:layout_alignParentTop="true"
-            android:layout_margin="@dimen/_60sdp"
-            app:srcCompat="@drawable/location_request" />
+            android:layout_marginTop="@dimen/_60sdp"
+            android:layout_marginBottom="@dimen/_60sdp"
+            app:srcCompat="@drawable/wellcome" />
 
         <LinearLayout
             android:id="@+id/linearLayout"

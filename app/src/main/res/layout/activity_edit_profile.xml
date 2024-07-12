@@ -14,278 +14,243 @@
         <import type="android.text.TextUtils" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
+        android:onClick="@{()->a.hideKeyboard()}"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/bg_color">
+        android:background="@color/white">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_200sdp"
+                android:adjustViewBounds="true"
+                android:layout_gravity="top"
+                android:scaleType="fitXY"
+                android:src="@drawable/profile_bg"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/frameLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:padding="@dimen/_5sdp"
+            android:layout_gravity="top">
+
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center"
+                android:onClick="@{()->vm.back()}"
+                android:paddingLeft="@dimen/_5ssp"
+                android:paddingRight="@dimen/_20ssp"
+                android:src="@drawable/ic_icon_back"
+                app:tint="@color/white">
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/textView10"
+                style="@style/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:text="Thông tin cá nhân">
+
+            </TextView>
+        </FrameLayout>
+
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:onClick="@{()->a.hideKeyboard()}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_50sdp"
-                android:background="@color/white"
-                android:padding="@dimen/_5sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_150sdp"
+            android:orientation="vertical">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civAvatar"
+                android:layout_width="@dimen/_90sdp"
+                android:layout_height="@dimen/_90sdp"
+                android:layout_gravity="center"
+                android:onClick="@{() -> a.dialogUpLoadAvatar()}"
+                android:elevation="@dimen/_1sdp"
+                app:civ_border_width="@dimen/_2sdp"
+                app:civ_border_color="@color/white"
+                app:layout_constraintBottom_toTopOf="@+id/cvContent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="@+id/cvContent">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left|center"
-                    android:onClick="@{()->vm.back()}"
-                    android:paddingLeft="@dimen/_5ssp"
-                    android:paddingRight="@dimen/_20ssp"
-                    android:src="@drawable/ic_icon_back">
+            </de.hdodenhof.circleimageview.CircleImageView>
 
-                </ImageView>
-
-                <TextView
-                    style="@style/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="@string/edit_profile"></TextView>
-
-            </FrameLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="@dimen/_15sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="@dimen/_20sdp">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/civAvatar"
-                    android:layout_width="@dimen/_90sdp"
-                    android:layout_height="@dimen/_90sdp"
-                    android:layout_gravity="center"
-                    android:onClick="@{() -> a.dialogUpLoadAvatar()}"
-                    android:elevation="@dimen/_1sdp"
-                    app:civ_border_width="@dimen/_2sdp"
-                    app:civ_border_color="@color/white"
-                    app:layout_constraintBottom_toTopOf="@+id/cvContent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/cvContent">
-
-                </de.hdodenhof.circleimageview.CircleImageView>
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cvContent"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxBackgroundMode="outline"
+                app:shapeAppearanceOverlay="@style/Rounded"
+                android:hint="Họ và tên"
+                app:hintEnabled="true"
+                app:boxStrokeColor="#898A8D"
+                app:boxBackgroundColor="@color/white"
+                android:background="@color/white"
+                app:hintTextColor="#898A8D"
+                app:helperTextTextColor="#898A8D"
+                app:boxStrokeWidthFocused="@dimen/_1sdp"
+                android:focusable="false"
+                app:hintAnimationEnabled="false">
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/app_text_b"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_12sdp"
-                    app:cardCornerRadius="@dimen/_24sdp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:cardElevation="0dp">
+                    android:text="@={vm.fullName}"
+                    android:textColor="#545454">
+                </com.google.android.material.textfield.TextInputEditText>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxBackgroundMode="outline"
+                app:shapeAppearanceOverlay="@style/Rounded"
+                app:boxBackgroundColor="@color/white"
+                android:background="@color/white"
+                android:hint="Email"
+                app:hintEnabled="true"
+                app:boxStrokeColor="#898A8D"
+                app:hintTextColor="#898A8D"
+                app:helperTextTextColor="#898A8D"
+                app:boxStrokeWidthFocused="@dimen/_1sdp"
+                android:enabled="false"
+                app:hintAnimationEnabled="false">
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/app_text_b"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={vm.email}"
+                    android:inputType="textPhonetic"
+                    android:textColor="#545454">
+                </com.google.android.material.textfield.TextInputEditText>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxBackgroundMode="outline"
+                app:shapeAppearanceOverlay="@style/Rounded"
+                app:boxBackgroundColor="@color/white"
+                android:background="@color/white"
+                android:hint="Mật khẩu"
+                app:hintEnabled="true"
+                app:boxStrokeColor="#898A8D"
+                app:hintTextColor="#898A8D"
+                app:helperTextTextColor="#898A8D"
+                app:boxStrokeWidthFocused="@dimen/_1sdp"
+                app:passwordToggleEnabled="true"
+                app:hintAnimationEnabled="false">
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/app_text_b"
+                    android:id="@+id/edtPw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:text="@={vm.password}"
+                    android:textColor="#545454">
+                </com.google.android.material.textfield.TextInputEditText>
+            </com.google.android.material.textfield.TextInputLayout>
+            <!--            <TextView-->
+            <!--                style="@style/app_text"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/_15sdp"-->
+            <!--                android:layout_marginLeft="@dimen/_15sdp"-->
+            <!--                android:text="@string/full_name"-->
+            <!--                android:maxLines="1" />-->
+            <!--            <EditText-->
+            <!--                android:id="@+id/edtEPFullName"-->
+            <!--                style="@style/AppEditTextStyle"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginHorizontal="@dimen/_12sdp"-->
+            <!--                android:layout_marginTop="@dimen/_10sdp"-->
+            <!--                android:hint="@string/input_name"-->
+            <!--                android:maxLines="1"-->
+            <!--                android:text="@={vm.fullName}"-->
+            <!--                android:enabled="false"/>-->
+            <!--            <TextView-->
+            <!--                style="@style/app_text"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/_10sdp"-->
+            <!--                android:layout_marginLeft="@dimen/_15sdp"-->
+            <!--                android:text="@string/email"-->
+            <!--                android:maxLines="1"-->
+            <!--                android:visibility="gone"/>-->
+            <!--            <EditText-->
+            <!--                style="@style/AppEditTextStyle"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginHorizontal="@dimen/_12sdp"-->
+            <!--                android:layout_marginTop="@dimen/_10sdp"-->
+            <!--                android:hint="@string/input_email"-->
+            <!--                android:maxLines="1"-->
+            <!--                android:text="@={vm.email}"-->
+            <!--                android:visibility="gone"/>-->
+            <!--            <TextView-->
+            <!--                style="@style/app_text"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/_10sdp"-->
+            <!--                android:layout_marginLeft="@dimen/_15sdp"-->
+            <!--                android:text="@string/phone"-->
+            <!--                android:maxLines="1" />-->
+            <!--            <EditText-->
+            <!--                style="@style/AppEditTextStyle"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginHorizontal="@dimen/_12sdp"-->
+            <!--                android:layout_marginTop="@dimen/_10sdp"-->
+            <!--                android:hint="@string/input_phone"-->
+            <!--                android:maxLines="1"-->
+            <!--                android:text="@={vm.user.phone}"-->
+            <!--                android:enabled="false">-->
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_12sdp"
-                            android:visibility="gone">
-
-                            <TextView
-                                style="@style/font_medium_gray_12ssp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/fullName">
-
-                            </TextView>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/_3sdp"
-                                android:text="@string/required_star"
-                                android:textColor="@color/red_color">
-
-                            </TextView>
-
-                        </LinearLayout>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_12sdp"
-                            android:layout_marginTop="@dimen/_80sdp"
-                            android:backgroundTint="#F8F8F8"
-                            android:padding="@dimen/_10sdp"
-                            app:cardCornerRadius="@dimen/_12sdp"
-                            app:cardElevation="0dp">
-
-                            <EditText
-                                android:id="@+id/edtEPFullName"
-                                style="@style/information_edit_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/_5sdp"
-                                android:backgroundTint="#F8F8F8"
-                                android:maxLines="1"
-                                android:text="@={vm.fullName}"
-                                android:textColorHint="@color/grey_text">
-
-                            </EditText>
-                        </androidx.cardview.widget.CardView>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_12sdp"
-                            android:layout_marginTop="@dimen/_15sdp"
-                            android:visibility="gone">
-
-                            <TextView
-                                style="@style/font_medium_gray_12ssp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/email">
-
-                            </TextView>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/_3sdp"
-                                android:text="@string/required_star"
-                                android:textColor="@color/red_color">
-
-                            </TextView>
-                        </LinearLayout>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_12sdp"
-                            android:layout_marginTop="@dimen/_15sdp"
-                            android:backgroundTint="#F8F8F8"
-                            android:padding="@dimen/_10sdp"
-                            app:cardCornerRadius="@dimen/_12sdp"
-                            app:cardElevation="0dp">
-
-                            <EditText
-                                android:id="@+id/edtEPEmail"
-                                style="@style/information_edit_text"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/_5sdp"
-                                android:backgroundTint="#F8F8F8"
-                                android:enabled="false"
-                                android:maxLines="1"
-                                android:text="@={vm.email}">
-
-                            </EditText>
-                        </androidx.cardview.widget.CardView>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_12sdp"
-                            android:layout_marginTop="@dimen/_15sdp"
-                            android:visibility="gone">
-
-                            <TextView
-                                style="@style/font_medium_gray_12ssp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/password">
-
-                            </TextView>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/_3sdp"
-                                android:text="@string/required_star"
-                                android:textColor="@color/red_color">
-
-                            </TextView>
-                        </LinearLayout>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_12sdp"
-                            android:layout_marginTop="@dimen/_15sdp"
-                            android:layout_marginBottom="@dimen/_10sdp"
-                            android:backgroundTint="#F8F8F8"
-                            android:padding="@dimen/_10sdp"
-                            app:cardCornerRadius="@dimen/_12sdp"
-                            app:cardElevation="0dp">
-
-                            <FrameLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/_5sdp">
-
-                                <EditText
-                                    android:id="@+id/edtPw"
-                                    style="@style/information_edit_text"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:backgroundTint="#F8F8F8"
-                                    android:inputType="textPassword"
-                                    android:maxLength="16"
-                                    android:maxLines="1"
-                                    android:paddingRight="@dimen/_35sdp"
-                                    android:text="@={vm.password}">
-
-                                </EditText>
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="right|center_vertical"
-                                    android:layout_marginRight="@dimen/_15sdp"
-                                    android:onClick="@{(v)->vm.setIsVisibilityPassword()}"
-                                    android:src="@{vm.isVisibility ? @drawable/ic_icon_visibility_off : @drawable/ic_icon_visibility}">
-
-                                </ImageView>
-                            </FrameLayout>
-                        </androidx.cardview.widget.CardView>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            <!--            </EditText>-->
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnEPUpdate"
-            style="@style/NextBtn"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_12sdp"
-            android:layout_marginVertical="@dimen/_28sdp"
-            android:enabled="@{!TextUtils.isEmpty(vm.fullName) &amp;&amp; !TextUtils.isEmpty(vm.email) &amp;&amp; !TextUtils.isEmpty(vm.password) &amp;&amp; vm.password.length() >=6 }"
-            android:onClick="@{(v) -> a.updateAvatar()}"
-            android:text="@string/update"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:orientation="vertical"
+            android:layout_gravity="bottom">
+            <Button
+                android:id="@+id/btnEPUpdate"
+                style="@style/NextBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginVertical="@dimen/_20sdp"
+                android:enabled="@{!TextUtils.isEmpty(vm.fullName) &amp;&amp; !TextUtils.isEmpty(vm.email) &amp;&amp; !TextUtils.isEmpty(vm.password) &amp;&amp; vm.password.length() >=6 }"
+                android:onClick="@{(v) -> a.updateAvatar()}"
+                android:text="@string/update"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
-        </Button>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </Button>
+        </LinearLayout>
+    </FrameLayout>
 </layout>

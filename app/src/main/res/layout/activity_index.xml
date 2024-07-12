@@ -26,7 +26,7 @@
             android:layout_above="@+id/linearLayout"
             android:layout_alignParentTop="true"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/image_delivery" />
+            app:srcCompat="@drawable/wellcome" />
 
         <LinearLayout
             android:id="@+id/linearLayout"

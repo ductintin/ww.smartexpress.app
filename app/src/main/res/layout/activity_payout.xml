@@ -402,7 +402,7 @@
                             android:layout_marginHorizontal="@dimen/_10sdp"
                             android:layout_weight="1"
                             android:maxLines="1"
-                            android:textColor="@color/green"
+                            android:textColor="@color/green_light_app"
                             android:textSize="@dimen/_10ssp"
                             android:text="Bạn chưa có tài khoản ngân hàng" />
 

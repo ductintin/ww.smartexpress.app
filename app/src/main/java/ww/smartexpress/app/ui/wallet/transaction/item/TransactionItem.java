@@ -53,33 +53,33 @@ public class TransactionItem extends AbstractFlexibleItem<TransactionItem.Transa
         switch (walletTransaction.getKind()){
             case 0:
                 holder.money.setText("+"+NumberUtils.formatCurrency((double) walletTransaction.getMoney()));
-                holder.money.setTextColor(context.getResources().getColor(R.color.green_light_app));
+//                holder.money.setTextColor(context.getResources().getColor(R.color.primary_color));
                 holder.desc.setText("Nạp tiền vào ví");
                 break;
             case 1:
                 holder.money.setText("-"+NumberUtils.formatCurrency((double) walletTransaction.getMoney()));
-                holder.money.setTextColor(context.getResources().getColor(R.color.red_color));
+//                holder.money.setTextColor(context.getResources().getColor(R.color.red_color));
                 holder.desc.setText("Rút tiền từ ví");
                 break;
             case 2:
             case 4:
                 holder.money.setText("-"+NumberUtils.formatCurrency((double) walletTransaction.getMoney()));
-                holder.money.setTextColor(context.getResources().getColor(R.color.red_color));
+//                holder.money.setTextColor(context.getResources().getColor(R.color.red_color));
                 holder.desc.setText("Chi tiền");
                 break;
             case 3:
                 holder.money.setText("+"+NumberUtils.formatCurrency((double) walletTransaction.getMoney()));
-                holder.money.setTextColor(context.getResources().getColor(R.color.green_light_app));
+//                holder.money.setTextColor(context.getResources().getColor(R.color.primary_color));
                 holder.desc.setText("Nhận tiền");
                 break;
             case 5:
                 holder.money.setText("+"+NumberUtils.formatCurrency((double) walletTransaction.getMoney()));
-                holder.money.setTextColor(context.getResources().getColor(R.color.green_light_app));
+//                holder.money.setTextColor(context.getResources().getColor(R.color.primary_color));
                 holder.desc.setText("Nhận thêm tiền");
                 break;
             case 6:
                 holder.money.setText("+"+NumberUtils.formatCurrency((double) walletTransaction.getMoney()));
-                holder.money.setTextColor(context.getResources().getColor(R.color.green_light_app));
+//                holder.money.setTextColor(context.getResources().getColor(R.color.primary_color));
                 holder.desc.setText("Hoàn tiền");
                 break;
             default:
@@ -93,7 +93,7 @@ public class TransactionItem extends AbstractFlexibleItem<TransactionItem.Transa
                 break;
             case 1:
                 holder.state.setText("Thành công");
-                holder.state.setTextColor(context.getResources().getColor(R.color.green_light_app));
+                holder.state.setTextColor(context.getResources().getColor(R.color.primary_color));
                 break;
             case 2:
                 holder.state.setText("Thất bại");

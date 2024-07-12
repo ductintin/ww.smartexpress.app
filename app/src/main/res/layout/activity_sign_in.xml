@@ -28,7 +28,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_180sdp"
-                android:src="@drawable/image_bg_login"
+                android:src="@drawable/login_bg"
                 android:scaleType="fitXY">
 
             </ImageView>
@@ -96,6 +96,7 @@
                                 android:text='@{"Xin chào, " + vm.user.phone}'
                                 android:layout_marginTop="@dimen/_20sdp"
                                 android:layout_marginHorizontal="@dimen/_50sdp"
+                                android:textStyle="bold"
                                 style="@style/app_text_b"
                                 android:gravity="center"/>
 
@@ -358,12 +359,12 @@
                         android:visibility="@{vm.tabIndex == 0 ? View.VISIBLE : View.GONE}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Bạn quên mật khẩu ư?"
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:text="Quên mật khẩu?"
                         android:layout_marginBottom="@dimen/_20sdp"
                         android:paddingVertical="@dimen/_10sdp"
                         android:layout_marginHorizontal="@dimen/_50sdp"
                         style="@style/app_text_b"
+                        android:textColor="@color/green_light_app"
                         android:gravity="center"
                         android:onClick="@{() -> vm.gotoForgetPassword()}"/>
                 </LinearLayout>

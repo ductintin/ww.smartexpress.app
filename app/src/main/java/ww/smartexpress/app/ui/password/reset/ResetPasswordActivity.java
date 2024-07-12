@@ -44,45 +44,6 @@ public class ResetPasswordActivity extends BaseActivity<ActivityResetPasswordBin
                 onBackPressed();
             }
         });
-
-        viewModel.isOldPwVisibility.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(Observable sender, int propertyId) {
-                if(!viewModel.isOldPwVisibility.get()){
-                    viewBinding.edtOldPw.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                }else {
-                    viewBinding.edtOldPw.setTransformationMethod(null);;
-                }
-
-                viewBinding.edtOldPw.setSelection(viewBinding.edtOldPw.length());
-            }
-        });
-
-        viewModel.isNewPwVisibility.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(Observable sender, int propertyId) {
-                if(!viewModel.isNewPwVisibility.get()){
-                    viewBinding.edtNewPw.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                }else {
-                    viewBinding.edtNewPw.setTransformationMethod(null);;
-                }
-
-                viewBinding.edtNewPw.setSelection(viewBinding.edtNewPw.length());
-            }
-        });
-
-        viewModel.isCNewPwVisibility.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(Observable sender, int propertyId) {
-                if(!viewModel.isCNewPwVisibility.get()){
-                    viewBinding.edtCNewPw.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                }else {
-                    viewBinding.edtCNewPw.setTransformationMethod(null);;
-                }
-
-                viewBinding.edtCNewPw.setSelection(viewBinding.edtCNewPw.length());
-            }
-        });
     }
 
     public boolean prepareUpdateRequest(){
