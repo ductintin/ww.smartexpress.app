@@ -19,6 +19,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <FrameLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:background="@color/white">
+
+            <ImageView
+                android:onClick="@{(v)->a.onBackPressed()}"
+                android:id="@+id/imgBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:src="@drawable/ic_icon_back" />
+
+            <TextView
+                style="@style/font_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:text="@string/trip_information"
+                android:textColor="@color/title_home_page"
+                android:textSize="@dimen/_14ssp"
+                android:maxLines="1"/>
+
+        </FrameLayout>
+
         <com.github.ybq.android.spinkit.SpinKitView
             android:visibility="@{!vm.isLoading ? View.GONE : View.VISIBLE}"
             android:layout_gravity="center"
@@ -29,6 +57,7 @@
 
         </com.github.ybq.android.spinkit.SpinKitView>
         <FrameLayout
+            android:layout_marginTop="@dimen/_50sdp"
             android:visibility="@{vm.isLoading ? View.GONE : View.VISIBLE}"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -46,59 +75,22 @@
                     android:orientation="vertical"
                     android:paddingBottom="@dimen/_30sdp">
 
-                    <FrameLayout
-                        android:id="@+id/linearLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_50sdp">
-
-                        <ImageView
-                            android:onClick="@{(v)->a.onBackPressed()}"
-                            android:id="@+id/imgBack"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center|left"
-                            android:layout_marginLeft="@dimen/_15sdp"
-                            android:src="@drawable/ic_icon_back" />
-
-                        <TextView
-                            style="@style/font_medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:textAlignment="center"
-                            android:text="@string/trip_information"
-                            android:textColor="@color/title_home_page"
-                            android:textSize="@dimen/_14ssp"
-                            android:maxLines="1"/>
-
-                    </FrameLayout>
-
                     <LinearLayout
                         android:visibility="@{(vm.bookingResponse.state == -100 || vm.bookingResponse.state == 400) ? View.GONE : View.VISIBLE}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:background="#EEF2F5">
-
-                        </FrameLayout>
                         <TextView
                             style="@style/trip_information_text_bold"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Thông tin tài xế"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/_12ssp"
+                            android:textColor="@color/green_light_app"
                             android:layout_marginLeft="@dimen/_12sdp"
                             android:layout_marginTop="@dimen/_12sdp"/>
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_1sdp"
-                            android:background="#EEF2F5"
-                            android:layout_marginHorizontal="@dimen/_12sdp">
-                        </FrameLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -123,59 +115,64 @@
                                         android:id="@+id/driverAvt"
                                         android:layout_width="@dimen/_45sdp"
                                         android:layout_height="@dimen/_45sdp"
-                                        android:src="@{vm.bookingResponse.driver.avatar, default=@drawable/user_avatar}"
+                                        android:src="@{vm.bookingResponse.driver.avatar}"
                                         app:civ_border_color="@color/app_color"
                                         app:civ_border_width="@dimen/_1sdp">
 
                                     </ImageView>
                                 </androidx.cardview.widget.CardView>
-
                                 <LinearLayout
-                                    android:visibility="@{vm.bookingResponse.averageRating > 0 ? View.VISIBLE : View.INVISIBLE}"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:layout_gravity="center"
-                                    android:layout_marginLeft="@dimen/_10sdp"
-                                    android:orientation="horizontal">
-
+                                    android:layout_height="match_parent"
+                                    android:gravity="center_vertical"
+                                    android:layout_weight="1"
+                                    android:layout_marginRight="@dimen/_10sdp"
+                                    android:orientation="vertical">
                                     <TextView
-                                        android:id="@+id/textView17"
-                                        style="@style/trip_information_text_medium"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:id="@+id/textView14"
+                                        style="@style/trip_information_text_bold"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginRight="@dimen/_4sdp"
-                                        android:gravity="bottom"
-                                        android:text="@{String.valueOf(vm.bookingResponse.averageRating)}" />
+                                        android:ellipsize="end"
+                                        android:maxLines="1"
+                                        android:text="@{vm.bookingResponse.driver.fullName}"
+                                        android:textColor="@color/title_home_page"
+                                        android:textStyle="bold"
+                                        android:textSize="@dimen/_14ssp" />
+                                    <LinearLayout
+                                        android:layout_marginTop="@dimen/_5sdp"
+                                        android:visibility="@{vm.bookingResponse.averageRating > 0 ? View.VISIBLE : View.INVISIBLE}"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:orientation="horizontal">
 
-                                    <ImageView
-                                        android:id="@+id/imageView15"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        app:srcCompat="@drawable/ic_icon_star" />
+                                        <TextView
+                                            android:id="@+id/textView17"
+                                            style="@style/trip_information_text_medium"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginRight="@dimen/_4sdp"
+                                            android:gravity="bottom"
+                                            android:text="@{String.valueOf(vm.bookingResponse.averageRating)}" />
+
+                                        <ImageView
+                                            android:id="@+id/imageView15"
+                                            android:layout_width="@dimen/_15sdp"
+                                            android:adjustViewBounds="true"
+                                            android:layout_height="@dimen/_15sdp"
+                                            android:scaleType="fitXY"
+                                            app:srcCompat="@drawable/ic_icon_star" />
+                                    </LinearLayout>
                                 </LinearLayout>
                             </LinearLayout>
 
                             <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
                                 android:orientation="vertical"
-                                android:layout_weight="1"
                                 android:weightSum="3">
-
-                                <TextView
-                                    android:id="@+id/textView14"
-                                    style="@style/trip_information_text_bold"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_weight="1"
-                                    android:ellipsize="end"
-                                    android:maxLines="1"
-                                    android:text="@{vm.bookingResponse.driver.fullName}"
-                                    android:textColor="@color/title_home_page"
-                                    android:textSize="@dimen/_14ssp" />
-
                                 <TextView
                                     android:visibility="@{!TextUtils.isEmpty(vm.bookingResponse.driverVehicle.name) ? View.VISIBLE : View.GONE}"
                                     android:id="@+id/textView15"
@@ -189,6 +186,7 @@
                                     android:ellipsize="end"/>
 
                                 <TextView
+                                    android:layout_marginTop="@dimen/_5sdp"
                                     android:visibility="@{!TextUtils.isEmpty(vm.bookingResponse.driverVehicle.plate) ? View.VISIBLE : View.GONE}"
                                     android:id="@+id/textView16"
                                     style="@style/trip_information_text_medium"
@@ -207,10 +205,10 @@
                         </LinearLayout>
                     </LinearLayout>
                     <FrameLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_5sdp"
-                        android:background="#EEF2F5">
-
+                        android:background="@color/app_light_color2">
                     </FrameLayout>
                     <LinearLayout
                         android:visibility="@{(vm.bookingResponse.state == 300 &amp;&amp; vm.bookingResponse.rating.star > 0)? View.VISIBLE : View.GONE}"
@@ -223,8 +221,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/rating_driver"
+                            android:textStyle="bold"
                             android:textColor="@color/title_home_page"
-                            android:textSize="@dimen/_10ssp"
+                            android:textSize="@dimen/_13ssp"
                             android:textAlignment="center">
 
                         </TextView>
@@ -234,7 +233,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_35sdp"
                             android:layout_gravity="center"
-                            android:layout_marginVertical="@dimen/_10sdp"
                             android:isIndicator="true"
                             android:numStars="5"
                             android:scaleX="0.5"
@@ -256,6 +254,8 @@
                             android:layout_gravity="center"
                             android:maxLines="1"
                             android:ellipsize="end"
+                            android:textStyle="bold"
+                            android:textColor="@color/app_text"
                             android:textSize="@dimen/_10ssp"
                             android:paddingHorizontal="@dimen/_20sdp">
 
@@ -265,7 +265,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_5sdp"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:background="#EEF2F5">
+                            android:background="@color/app_light_color2">
 
                         </FrameLayout>
                     </LinearLayout>
@@ -288,6 +288,9 @@
                                 style="@style/trip_information_text_bold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textSize="@dimen/_12ssp"
+                                android:textColor="@color/app_text"
+                                android:textStyle="bold"
                                 android:text="Đánh giá tài xế ngay"/>
 
                             <ImageView
@@ -301,7 +304,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_5sdp"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:background="#EEF2F5">
+                            android:background="@color/app_light_color2">
 
                         </FrameLayout>
 
@@ -319,6 +322,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Thông tin dịch vụ"
+                            android:textSize="@dimen/_12ssp"
+                            android:textColor="@color/green_light_app"
+                            android:textStyle="bold"
                             android:layout_weight="1"/>
 
                     </LinearLayout>
@@ -326,17 +332,18 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:layout_marginHorizontal="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp">
 
                         <ImageView
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_50sdp"
+                            android:layout_width="@dimen/_35sdp"
+                            android:layout_height="@dimen/_35sdp"
                             android:src="@{vm.bookingResponse.service.image, default=@drawable/car}"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:orientation="vertical"
                             android:layout_marginLeft="@dimen/_10sdp">
@@ -359,10 +366,12 @@
                                     android:text='@{vm.bookingResponse.service.name}'
                                     android:textColor="@color/app_color"
                                     android:textSize="@dimen/_12sdp"
+                                    android:textStyle="bold"
                                     android:textAlignment="textEnd"/>
                             </LinearLayout>
 
                             <LinearLayout
+                                android:layout_marginTop="@dimen/_5sdp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
@@ -377,6 +386,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:textStyle="bold"
                                     android:text='@{NumberUtils.getSize(vm.bookingResponse.service.size) +"  "+vm.bookingResponse.service.weight+"Kg"}'
                                     android:textAlignment="textEnd"/>
 
@@ -389,7 +399,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_5sdp"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:background="#EEF2F5">
+                        android:background="@color/app_light_color2">
 
                     </FrameLayout>
 
@@ -405,12 +415,10 @@
                             android:id="@+id/textView18"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textSize="@dimen/_12ssp"
+                            android:textColor="@color/green_light_app"
+                            android:textStyle="bold"
                             android:text="Chi tiết thanh toán" />
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_1sdp"
-                            android:background="#EEF2F5">
-                        </FrameLayout>
 
                         <FrameLayout
                             android:layout_width="match_parent"
@@ -430,6 +438,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
                                 android:gravity="right"
+                                android:textStyle="bold"
                                 android:text='@{NumberUtils.formatDoubleNumber(vm.bookingResponse.money.doubleValue()) + " đ"}' />
                         </FrameLayout>
 
@@ -449,6 +458,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
                                 android:gravity="right"
+                                android:textStyle="bold"
                                 android:text='@{vm.bookingResponse.promotionMoney == 0.0 ? NumberUtils.formatCurrency(vm.bookingResponse.promotionMoney) : "- " + NumberUtils.formatCurrency(vm.bookingResponse.promotionMoney)}' />
                         </FrameLayout>
 
@@ -470,6 +480,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
+                                android:textStyle="bold"
                                 android:gravity="right"
                                 android:text="@string/discount_price" />
                         </FrameLayout>
@@ -479,7 +490,7 @@
                             android:layout_height="1dp"
                             android:layout_below="@+id/linearLayout1"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:background="#EEF2F5"></FrameLayout>
+                            android:background="#EEF2F5" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -492,6 +503,8 @@
                                 android:id="@+id/textView21"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:textSize="@dimen/_12ssp"
                                 android:text='@{vm.bookingResponse.paymentKind == 1 ? @string/payment_cash : "Thanh toán ví điện tử"}' />
 
                             <ImageView
@@ -512,7 +525,8 @@
                                 android:text='@{vm.bookingResponse.promotionMoney != 0.0 ? NumberUtils.formatDoubleNumber(vm.bookingResponse.money.doubleValue() - vm.bookingResponse.promotionMoney.doubleValue()) + " đ" : NumberUtils.formatDoubleNumber(vm.bookingResponse.money.doubleValue()) + " đ"}'
                                 android:maxLines="1"
                                 android:ellipsize="end"
-                                android:textSize="@dimen/_20ssp"
+                                android:textStyle="bold"
+                                android:textSize="@dimen/_12ssp"
                                 android:textColor="@color/black"/>
                         </LinearLayout>
 
@@ -522,7 +536,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_5sdp"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:background="#EEF2F5">
+                        android:background="@color/app_light_color2">
 
                     </FrameLayout>
 
@@ -535,15 +549,12 @@
                         <TextView
                             style="@style/trip_information_text_bold"
                             android:id="@+id/textView23"
+                            android:textSize="@dimen/_12ssp"
+                            android:textColor="@color/green_light_app"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/trip_details" />
-
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_1sdp"
-                            android:background="#EEF2F5">
-                        </FrameLayout>
+                            android:text="@string/trip_details"
+                            android:textStyle="bold"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -602,6 +613,8 @@
                                     android:layout_height="match_parent"
                                     android:background="@color/white"
                                     android:maxLines="2"
+                                    android:textStyle="bold"
+                                    android:layout_marginBottom="@dimen/_2sdp"
                                     android:text="@{vm.bookingResponse.pickupAddress}"
                                     android:ellipsize="end"/>
 
@@ -655,6 +668,8 @@
                                     android:layout_height="match_parent"
                                     android:background="@color/white"
                                     android:maxLines="2"
+                                    android:textStyle="bold"
+                                    android:layout_marginBottom="@dimen/_2sdp"
                                     android:text="@{vm.bookingResponse.destinationAddress}"
                                     android:ellipsize="end"/>
 
@@ -683,7 +698,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_5sdp"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:background="#EEF2F5">
+                            android:background="@color/app_light_color2">
 
                         </FrameLayout>
                         <LinearLayout
@@ -699,10 +714,13 @@
                                 android:orientation="vertical"
                                 android:gravity="center">
                                 <TextView
+                                    android:textSize="@dimen/_12ssp"
+                                    android:textColor="@color/green_light_app"
                                     style="@style/trip_information_text_bold"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Hình ảnh gửi hàng" />
+                                    android:text="Hình ảnh gửi hàng"
+                                    android:textStyle="bold"/>
 
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="wrap_content"
@@ -727,10 +745,13 @@
                                 android:orientation="vertical"
                                 android:gravity="center">
                                 <TextView
+                                    android:textSize="@dimen/_12ssp"
+                                    android:textColor="@color/green_light_app"
                                     android:visibility="@{vm.bookingResponse.state == 300 ? View.VISIBLE : View.GONE}"
                                     style="@style/trip_information_text_bold"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textStyle="bold"
                                     android:text="Hình ảnh nhận hàng" />
 
                                 <androidx.cardview.widget.CardView
@@ -761,7 +782,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_5sdp"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:background="#EEF2F5">
+                            android:background="@color/app_light_color2">
                         </FrameLayout>
 
                         <LinearLayout
@@ -771,6 +792,9 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
                             <TextView
+                                android:textStyle="bold"
+                                android:textSize="@dimen/_12ssp"
+                                android:textColor="@color/green_light_app"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 style="@style/trip_information_text_bold"
@@ -781,6 +805,8 @@
                                 android:layout_height="wrap_content"
                                 android:textAlignment="textEnd"
                                 style="@style/trip_information_text_bold"
+                                android:textSize="@dimen/_12ssp"
+                                android:textStyle="bold"
                                 android:text='@{vm.bookingResponse.isCod ? NumberUtils.formatCurrency(vm.bookingResponse.codPrice) : ""}'
                                 android:layout_weight="1"/>
 

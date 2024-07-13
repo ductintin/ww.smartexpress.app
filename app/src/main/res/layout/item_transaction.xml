@@ -54,6 +54,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -74,6 +75,7 @@
                         android:background="@color/white"
                         android:maxLines="1"
                         android:layout_weight="1"
+                        android:textColor="@color/app_text"
                         android:textSize="@dimen/_13ssp"
                         android:ellipsize="end" />
 
@@ -85,6 +87,7 @@
                         android:background="@color/white"
                         android:maxLines="1"
                         android:ellipsize="end"
+                        android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp"/>
 

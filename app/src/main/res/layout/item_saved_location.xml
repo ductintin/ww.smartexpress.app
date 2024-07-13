@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_icon_gray_clock"
-                    app:tint="#7EA567">
+                    app:tint="@color/green_light_app">
 
                 </ImageView>
 
@@ -59,6 +59,7 @@
                     </TextView>
 
                     <TextView
+                        android:textStyle="bold"
                         android:layout_marginTop="@dimen/_5sdp"
                         style="@style/new_password_subtitle"
                         android:textSize="@dimen/_8sdp"

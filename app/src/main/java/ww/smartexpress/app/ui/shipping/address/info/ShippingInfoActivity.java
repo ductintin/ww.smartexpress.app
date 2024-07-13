@@ -39,7 +39,6 @@ import ww.smartexpress.app.data.model.api.response.CodService;
 import ww.smartexpress.app.data.model.api.response.Note;
 import ww.smartexpress.app.data.model.api.response.ShippingInfo;
 import ww.smartexpress.app.databinding.ActivityShippingInfoBinding;
-import ww.smartexpress.app.databinding.LayoutBottomSheetServiceBinding;
 import ww.smartexpress.app.di.component.ActivityComponent;
 import ww.smartexpress.app.ui.base.activity.BaseActivity;
 import ww.smartexpress.app.ui.delivery.BookDeliveryActivity;
@@ -82,7 +81,7 @@ public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBindi
 
         getCodService();
 
-        bottomSheetLayout();
+//        bottomSheetLayout();
 
         viewBinding.edtCodPrice.addTextChangedListener(new TextWatcher() {
             @Override
@@ -158,38 +157,38 @@ public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBindi
 //        dialog.getWindow().setElevation(100);
 //
 //        dialog.show();
-        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
-    public void bottomSheetLayout(){
-        sheetBehavior = BottomSheetBehavior.from(viewBinding.bottomLayout);
-
-        BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                switch (newState) {
-                    case BottomSheetBehavior.STATE_HIDDEN:
-                        break;
-                    case BottomSheetBehavior.STATE_EXPANDED:
-                        break;
-                    case BottomSheetBehavior.STATE_DRAGGING:
-                        //Bắt đầu kéo View
-                        break;
-                    case BottomSheetBehavior.STATE_COLLAPSED:
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-            }
-        };
-
-        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        sheetBehavior.addBottomSheetCallback(bottomSheetCallback);
-    }
+//    public void bottomSheetLayout(){
+//        sheetBehavior = BottomSheetBehavior.from(viewBinding.bottomLayout);
+//
+//        BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
+//            @Override
+//            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+//                switch (newState) {
+//                    case BottomSheetBehavior.STATE_HIDDEN:
+//                        break;
+//                    case BottomSheetBehavior.STATE_EXPANDED:
+//                        break;
+//                    case BottomSheetBehavior.STATE_DRAGGING:
+//                        //Bắt đầu kéo View
+//                        break;
+//                    case BottomSheetBehavior.STATE_COLLAPSED:
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+//            }
+//        };
+//
+//        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+//        sheetBehavior.addBottomSheetCallback(bottomSheetCallback);
+//    }
 
     // Trong màn hình A
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)

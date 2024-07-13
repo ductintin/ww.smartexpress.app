@@ -164,7 +164,7 @@
     <string name="address_delivery">Bạn muốn giao đến</string>
     <string name="delivery_checkbox">Người nhận trả phí giao hàng</string>
     <string name="time_setup">Hẹn giờ</string>
-    <string name="found_delivery_driver_title">Tài xế đang trên đường đến</string>
+    <string name="found_delivery_driver_title">Tài xế đang đến lấy hàng</string>
     <string name="discount_text">Giảm</string>
     <string name="percent">%</string>
     <string name="finding_delivery_driver_title">Đang tìm tài xế cho bạn</string>

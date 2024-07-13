@@ -12,8 +12,9 @@
             name="vm"
             type="ww.smartexpress.app.ui.profile.ProfileFragmentViewModel" />
 
-        <import type="android.view.View"></import>
-        <import type="android.text.TextUtils"></import>
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
     </data>
 
     <LinearLayout
@@ -99,7 +100,7 @@
                                 android:maxLines="1"
                                 android:text="@{vm.profile.name}"
                                 android:textColor="@color/white"
-                                android:textSize="@dimen/_13ssp"
+                                android:textSize="@dimen/_14ssp"
                                 android:textStyle="bold">
 
                             </TextView>

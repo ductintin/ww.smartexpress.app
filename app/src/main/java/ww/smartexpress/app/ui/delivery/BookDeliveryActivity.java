@@ -176,7 +176,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         .findFragmentById(R.id.mapShip);
                 mapFragment.getMapAsync(this);
 
-                bottomSheetLayout();
+//                bottomSheetLayout();
 
                 getOrigin();
 
@@ -311,34 +311,34 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
         });
     }
 
-    private void bottomSheetLayout(){
-        sheetBehavior = BottomSheetBehavior.from(viewBinding.bottomLayout);
-        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-        BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                switch (newState) {
-                    case BottomSheetBehavior.STATE_HIDDEN:
-                        break;
-                    case BottomSheetBehavior.STATE_EXPANDED:
-
-                    case BottomSheetBehavior.STATE_DRAGGING:
-                        //Bắt đầu kéo View
-                        break;
-                    case BottomSheetBehavior.STATE_COLLAPSED:
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-            }
-        };
-        sheetBehavior.addBottomSheetCallback(bottomSheetCallback);
-    }
+//    private void bottomSheetLayout(){
+//        sheetBehavior = BottomSheetBehavior.from(viewBinding.bottomLayout);
+//        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//
+//        BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
+//            @Override
+//            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+//                switch (newState) {
+//                    case BottomSheetBehavior.STATE_HIDDEN:
+//                        break;
+//                    case BottomSheetBehavior.STATE_EXPANDED:
+//
+//                    case BottomSheetBehavior.STATE_DRAGGING:
+//                        //Bắt đầu kéo View
+//                        break;
+//                    case BottomSheetBehavior.STATE_COLLAPSED:
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+//            }
+//        };
+//        sheetBehavior.addBottomSheetCallback(bottomSheetCallback);
+//    }
 
     public void findingDriver(){
         viewModel.compositeDisposable.add(viewModel.createBooking(viewModel.bookingRequest.get())
@@ -705,6 +705,8 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         if(bookingResponse.getRoom() != null){
                             viewModel.roomId.set(bookingResponse.getRoom().getId());
                         }
+                        viewModel.destination.set(bookingResponse.getDestinationAddress());
+                        viewModel.origin.set(bookingResponse.getPickupAddress());
                         viewModel.originLat.set(bookingResponse.getPickupLat());
                         viewModel.originLng.set(bookingResponse.getPickupLong());
                         viewModel.destinationLat.set(bookingResponse.getDestinationLat());

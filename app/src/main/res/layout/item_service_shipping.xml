@@ -6,8 +6,10 @@
         <variable
             name="ivm"
             type="ww.smartexpress.app.data.model.api.response.BookCar" />
-        <import type="android.view.View"></import>
-        <import type="ww.smartexpress.app.utils.NumberUtils"></import>
+
+        <import type="android.view.View" />
+
+        <import type="ww.smartexpress.app.utils.NumberUtils" />
     </data>
 
    <androidx.constraintlayout.widget.ConstraintLayout
