@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ForgetPasswordRequest {
+public class ForgetPasswordRequest extends BaseBooking{
     private String email;
     private Integer kind;
 }

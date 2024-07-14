@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequest {
+public class LoginRequest extends BaseBooking{
 //    @SerializedName("grant_type")
 //    private String grantType = "password";
     private String phone;

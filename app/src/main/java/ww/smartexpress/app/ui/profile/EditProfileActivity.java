@@ -125,11 +125,10 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
             @Override
             public void onClick(View view) {
                 if (!checkStoragePermission()) {
-                        requestStoragePermission();
-                    } else {
-                        takeFromGallery();
-                        dialog.dismiss();
-                    }
+                    requestStoragePermission();
+                } else {
+                    takeFromGallery();
+                }
             }
         });
 
@@ -162,6 +161,7 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
 
         viewBinding.setA(this);
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
         getProfileLocal();
         executor = ContextCompat.getMainExecutor(this);
         biometricPrompt = new BiometricPrompt(this,
