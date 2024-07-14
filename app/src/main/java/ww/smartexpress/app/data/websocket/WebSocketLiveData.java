@@ -210,10 +210,10 @@ public class WebSocketLiveData implements Runnable{
                 Timber.d("========>SEND: %s", message.getPayload());
         }else if(session == null){
             Timber.d("ERROR TOKEN NULL");
-            stopSocket();
+            //stopSocket();
         }else {
             Timber.d("PING ERROR");
-            stopSocket();
+            //stopSocket();
         }
 
     }

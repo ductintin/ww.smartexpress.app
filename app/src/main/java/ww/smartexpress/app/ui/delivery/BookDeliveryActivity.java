@@ -587,6 +587,8 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     }
 
     public void loadMapDriverDirection(){
+        Log.d("TAG", "loadMapDriverDirection: + sendping");
+        viewModel.getApplication().getWebSocketLiveData().sendPing();
         viewModel.compositeDisposable.add(viewModel.getMapDriverDirection(bookingResponse != null && bookingResponse.getState() == 200 ? viewModel.destinationLatLng.get() : viewModel.originLatLng.get())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -669,6 +671,9 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                     viewModel.showErrorMessage(getString(R.string.network_error));
                     err.printStackTrace();
                 }));
+
+        Log.d("TAG", "loadMapDriverDirection: + sendping");
+        viewModel.getApplication().getWebSocketLiveData().sendPing();
     }
 
     @Override
@@ -765,6 +770,8 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
     }
 
     public void getCurrentBooking2(){
+        Log.d("TAG", "curr: + sendping");
+        viewModel.getApplication().getWebSocketLiveData().sendPing();
         viewModel.compositeDisposable.add(viewModel.getCurrentBooking()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -821,6 +828,9 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                     viewModel.showErrorMessage(getString(R.string.network_error));
                     err.printStackTrace();
                 }));
+
+        Log.d("TAG", "curr: + sendping");
+        viewModel.getApplication().getWebSocketLiveData().sendPing();
     }
 
     @Override
