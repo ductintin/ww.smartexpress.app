@@ -98,6 +98,14 @@ public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBindi
                         Log.d("TAG", "onTextChanged: " + text);
                         Log.d("TAG", "onTextChanged: ff " + money);
                         if(!money.equals(viewModel.codPriceText)){
+//                            if(text < viewModel.codService.get().getMin()){
+//                                text = viewModel.codService.get().getMin();
+//                                money = NumberUtils.formatDoubleNumber(text);
+//                            }else
+                            if(text > viewModel.codService.get().getMax()){
+                                text = viewModel.codPrice.get().doubleValue();
+                                money = NumberUtils.formatDoubleNumber(text);
+                            }
                             viewModel.codPrice.set(text.intValue());
                             viewModel.codPriceText.set(money);
                             viewBinding.edtCodPrice.setSelection(viewModel.codPriceText.get().length());

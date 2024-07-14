@@ -148,7 +148,6 @@
         <activity android:name="ww.smartexpress.app.ui.shipping.address.info.ShippingInfoActivity"
             android:theme="@style/WhiteAppTheme"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"
             android:launchMode="singleTop">
         </activity>
 

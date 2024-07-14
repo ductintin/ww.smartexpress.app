@@ -567,7 +567,8 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         Point point = new Point();
                         getWindowManager().getDefaultDisplay().getSize(point);
                         mMap.setPadding(10, point.y / 5, 10, point.y / 3);
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+//                        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(origin,16));
 
 
                         loadService();

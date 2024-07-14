@@ -46,11 +46,12 @@
                     <TextView
                         android:visibility="@{vm.totalUnread == null || vm.totalUnread==0 ? View.GONE : View.VISIBLE}"
                         style="@style/app_title"
+                        android:paddingTop="@dimen/_10sdp"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="left"
                         android:text='@{"("+vm.totalUnread+")"}'
-                        android:textSize="@dimen/_16ssp"
+                        android:textSize="@dimen/_14ssp"
                         android:textStyle="bold"
                         android:gravity="center_vertical"
                         android:textColor="@color/red_color"/>
