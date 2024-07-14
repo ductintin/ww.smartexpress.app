@@ -74,7 +74,7 @@ public class WalletViewModel extends BaseViewModel {
                         hideLoading();
                     }else {
                         hideLoading();
-                        getApplication().getErrorUtils().handelError(response.getCode());
+                        showErrorMessage(getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 },error->{
                     hideLoading();

@@ -138,7 +138,7 @@ public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBindi
                         viewModel.hideLoading();
                     }else {
                         viewModel.hideLoading();
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 },error->{
                     viewModel.hideLoading();
@@ -313,7 +313,7 @@ public class ShippingInfoActivity extends BaseActivity<ActivityShippingInfoBindi
                         String text = "Vui lòng nhập tối thiểu " +  NumberUtils.formatCurrency(viewModel.codService.get().getMin()) +" , tối đa " + NumberUtils.formatCurrency(viewModel.codService.get().getMax());
                         viewBinding.tvCod.setText(text);
                     }else {
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 },error->{
                     viewModel.showErrorMessage(getString(R.string.network_error));

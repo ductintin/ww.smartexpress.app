@@ -120,7 +120,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeFragment
 
                     }else {
                         viewModel.hideLoading();
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 },error->{
                     viewModel.hideLoading();
@@ -159,7 +159,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeFragment
 
                     }else {
                         viewModel.hideLoading();
-                        viewModel.showErrorMessage(response.getMessage());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 },error->{
                     viewModel.hideLoading();
@@ -208,7 +208,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeFragment
                         viewModel.hideLoading();
                     }else {
                         viewModel.hideLoading();
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 },error->{
                     viewModel.hideLoading();

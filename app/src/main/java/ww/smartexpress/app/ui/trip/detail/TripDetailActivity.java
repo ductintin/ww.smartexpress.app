@@ -54,7 +54,7 @@ public class TripDetailActivity extends BaseActivity<ActivityTripDetailBinding, 
                         viewModel.isLoading.set(false);
                         viewModel.bookingResponse.set(response.getData().getContent().get(0));
                     }else if(!response.isResult()){
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                         Intent intent = new Intent(TripDetailActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();

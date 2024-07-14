@@ -312,7 +312,7 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
                         viewModel.fullName.set(response.getData().getName());
                         viewModel.email.set(response.getData().getEmail());
                     }else {
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 },error->{
                     viewModel.hideLoading();
@@ -349,7 +349,7 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
                     } else {
                         viewModel.avatar.set(viewModel.userEntityObservableField.get().getAvatar());
                         viewModel.password.set("");
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
 
                 }, err -> {

@@ -166,7 +166,7 @@ public class TripCancelReasonActivity extends BaseActivity<ActivityTripCancelRea
                         startActivity(intent);
                         finish();
                     }else{
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
 
                 }, err -> {

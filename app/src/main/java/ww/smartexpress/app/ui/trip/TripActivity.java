@@ -112,7 +112,7 @@ public class TripActivity extends BaseActivity<ActivityTripBinding, TripViewMode
                         viewModel.isLoading.set(false);
                         viewModel.bookingResponse.set(response.getData().getContent().get(0));
                     }else{
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                         Intent intent = new Intent(TripActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();

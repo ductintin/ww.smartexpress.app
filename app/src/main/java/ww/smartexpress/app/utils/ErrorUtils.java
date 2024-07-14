@@ -205,6 +205,10 @@ public class ErrorUtils {
     }
 
     public String handelError(String message){
-        return errorMessage.get(message);
+        if(errorMessage.containsKey(message)){
+            return errorMessage.get(message);
+        }else{
+            return "Xảy ra lỗi, vui lòng thử lại";
+        }
     }
 }

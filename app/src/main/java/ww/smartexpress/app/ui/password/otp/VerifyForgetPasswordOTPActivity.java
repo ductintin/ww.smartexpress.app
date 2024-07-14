@@ -154,7 +154,7 @@ public class VerifyForgetPasswordOTPActivity extends BaseActivity<ActivityVerify
                     if(response.isResult() && response.getData() != null){
                         viewModel.setCountdownOTP();
                     }else if(!response.isResult()){
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 }, err -> {
                     viewModel.hideLoading();

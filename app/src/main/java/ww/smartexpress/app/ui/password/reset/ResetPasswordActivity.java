@@ -69,7 +69,7 @@ public class ResetPasswordActivity extends BaseActivity<ActivityResetPasswordBin
                             viewModel.showSuccessMessage(getString(R.string.update_password_success));
                             updateEncryptedPassword();
                         }else{
-                            viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                            viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                         }
                     }, err -> {
                         viewModel.hideLoading();

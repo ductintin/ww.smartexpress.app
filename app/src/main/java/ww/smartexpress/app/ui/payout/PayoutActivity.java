@@ -173,7 +173,7 @@ public class PayoutActivity extends BaseActivity<ActivityPayoutBinding, PayoutVi
 //                            }
 //                        });
                     }else if(!response.isResult()){
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 },error->{
                     viewModel.showErrorMessage(getString(R.string.network_error));

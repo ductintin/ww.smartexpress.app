@@ -267,7 +267,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding, HomeViewMode
                         bookingResponse = response.getData().getContent().get(0);
                         //navigateToBookActivity();
                     }else if(!response.isResult()){
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 }, err -> {
                     viewModel.hideLoading();

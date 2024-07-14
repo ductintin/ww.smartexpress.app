@@ -243,7 +243,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         serviceResponses = response.getData().getContent().subList(4, response.getData().getContent().size());
                         loadBookCar();
                     }else if(!response.isResult()){
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                     }, err -> {
                     viewModel.showErrorMessage(getString(R.string.network_error));
@@ -358,7 +358,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
 
                     }else{
                         viewModel.hideLoading();
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
 
                 }, err -> {
@@ -745,7 +745,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
 
                     }else{
                         viewModel.hideLoading();
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                         Intent intent = new Intent(BookDeliveryActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
@@ -817,7 +817,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
 
                     }else{
                         viewModel.hideLoading();
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                         Intent intent = new Intent(BookDeliveryActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
@@ -1000,7 +1000,7 @@ public class BookDeliveryActivity extends BaseActivity<ActivityBookDeliveryBindi
                         viewModel.driverLatLng.set(driverPosition.getLatitude() + "," + driverPosition.getLongitude());
                         loadMapDriverDirection();
                     }else if(!response.isResult()){
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
 
                 }, err -> {
