@@ -222,7 +222,7 @@ public class ActivityFragment extends BaseFragment<FragmentActivityBinding, Acti
                             loadBooking();
                         }
                     }else{
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
 
                 },error->{
@@ -292,7 +292,7 @@ public class ActivityFragment extends BaseFragment<FragmentActivityBinding, Acti
                         }
                         Log.d("TAG", "getMyBooking: "+ viewModel.pageTotal.get());
                     }else {
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 },error->{
                     viewModel.showErrorMessage(getActivity().getString(R.string.network_error));

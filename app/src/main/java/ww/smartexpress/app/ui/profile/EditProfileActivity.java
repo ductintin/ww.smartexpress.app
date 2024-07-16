@@ -125,11 +125,10 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
             @Override
             public void onClick(View view) {
                 if (!checkStoragePermission()) {
-                        requestStoragePermission();
-                    } else {
-                        takeFromGallery();
-                        dialog.dismiss();
-                    }
+                    requestStoragePermission();
+                } else {
+                    takeFromGallery();
+                }
             }
         });
 
@@ -162,6 +161,7 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
 
         viewBinding.setA(this);
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
         getProfileLocal();
         executor = ContextCompat.getMainExecutor(this);
         biometricPrompt = new BiometricPrompt(this,
@@ -312,7 +312,7 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
                         viewModel.fullName.set(response.getData().getName());
                         viewModel.email.set(response.getData().getEmail());
                     }else {
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 },error->{
                     viewModel.hideLoading();
@@ -349,7 +349,7 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
                     } else {
                         viewModel.avatar.set(viewModel.userEntityObservableField.get().getAvatar());
                         viewModel.password.set("");
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
 
                 }, err -> {

@@ -69,7 +69,7 @@ public class ForgetPasswordViewModel extends BaseViewModel {
                         getApplication().getCurrentActivity().startActivity(intent);
                         getApplication().getCurrentActivity().finish();
                     }else if(!response.isResult()){
-                        getApplication().getErrorUtils().handelError(response.getCode());
+                        showErrorMessage(getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 }, err -> {
                     hideLoading();

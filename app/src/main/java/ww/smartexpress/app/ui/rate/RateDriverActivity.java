@@ -133,7 +133,7 @@ public class RateDriverActivity extends BaseActivity<ActivityRatingDriverBinding
                         viewModel.sendRating();
                         viewModel.showSuccessMessage(response.getMessage());
                     }else{
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
 
                 }, err -> {
@@ -154,7 +154,7 @@ public class RateDriverActivity extends BaseActivity<ActivityRatingDriverBinding
                         bookingResponse = response.getData().getContent().get(0);
                         viewModel.image.set(bookingResponse.getDriver().getAvatar());
                     }else{
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                         Intent intent = new Intent(RateDriverActivity.this, HomeActivity.class);
                         startActivity(intent);
                         this.finish();

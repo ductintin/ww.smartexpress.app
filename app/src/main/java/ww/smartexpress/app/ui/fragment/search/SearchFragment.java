@@ -266,7 +266,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                                     });
                         }
                     }else{
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 }, err -> {
                     viewModel.showErrorMessage(getString(R.string.network_error));
@@ -313,7 +313,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchFr
                             }
                         }
                     }else{
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 }, err -> {
                     viewModel.showErrorMessage(getString(R.string.network_error));

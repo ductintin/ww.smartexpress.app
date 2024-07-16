@@ -218,7 +218,7 @@ public class BankViewModel extends BaseViewModel {
                                 application.getCurrentActivity().finish();
                                 showSuccessMessage("Cập nhật tài khoản ngân hàng thành công");
                             }else {
-                                getApplication().getErrorUtils().handelError(res.getCode());
+                                showErrorMessage(getApplication().getErrorUtils().handelError(res.getCode()));
                             }
                             hideLoading();
                         },err-> {

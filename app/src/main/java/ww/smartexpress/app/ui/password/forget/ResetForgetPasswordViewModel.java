@@ -68,7 +68,7 @@ public class ResetForgetPasswordViewModel extends BaseViewModel {
                         getApplication().getCurrentActivity().startActivity(intent);
                         getApplication().getCurrentActivity().finish();
                     }else{
-                        getApplication().getErrorUtils().handelError(response.getCode());
+                        showErrorMessage(getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 }, err -> {
                     hideLoading();

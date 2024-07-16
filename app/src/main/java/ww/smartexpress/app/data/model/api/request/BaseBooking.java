@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RetryOtpRegisterRequest extends BaseBooking {
-    private String phone;
+public class BaseBooking {
+    private Boolean isBooking = false;
 }

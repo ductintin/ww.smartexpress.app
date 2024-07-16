@@ -103,7 +103,7 @@ public class NotificationDetailsActivity extends BaseActivity<ActivityNotificati
                         String htmlContentWithCss = addCssToHtmlContent(response.getData().getContent());
                         viewBinding.webview.loadData(htmlContentWithCss, "text/html", "UTF-8");
                     }else {
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                     viewModel.hideLoading();
                 },error->{

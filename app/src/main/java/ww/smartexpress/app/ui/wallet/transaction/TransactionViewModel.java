@@ -46,7 +46,7 @@ public class TransactionViewModel extends BaseViewModel {
                             transactions.setValue(new ArrayList<>());
                         }
                     }else {
-                        getApplication().getErrorUtils().handelError(response.getCode());
+                        showErrorMessage(getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                     hideLoading();
                 },error->{

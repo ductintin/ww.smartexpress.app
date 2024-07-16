@@ -433,7 +433,7 @@ public class GenericTextWatcher implements TextWatcher {
                     if(response.isResult()){
 
                     }else{
-                        viewModel.getApplication().getErrorUtils().handelError(response.getCode());
+                        viewModel.showErrorMessage(viewModel.getApplication().getErrorUtils().handelError(response.getCode()));
                     }
                 }, err -> {
                     viewModel.hideLoading();

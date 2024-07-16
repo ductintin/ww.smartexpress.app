@@ -57,7 +57,7 @@ public class DepositViewModel extends BaseViewModel {
                             showSuccessMessage(response.getMessage());
                         }else {
                             hideLoading();
-                            getApplication().getErrorUtils().handelError(response.getCode());
+                            showErrorMessage(getApplication().getErrorUtils().handelError(response.getCode()));
                         }
                     },error->{
                         hideLoading();
@@ -79,7 +79,7 @@ public class DepositViewModel extends BaseViewModel {
                             showSuccessMessage(response.getMessage());
                         }else {
                             hideLoading();
-                            getApplication().getErrorUtils().handelError(response.getCode());
+                            showErrorMessage(getApplication().getErrorUtils().handelError(response.getCode()));
                         }
                     },error->{
                         hideLoading();
