@@ -163,7 +163,7 @@ public class BookDeliveryViewModel extends BaseViewModel {
     }
 
     Observable<JsonObject> getMapDriverDirection(String latLng) {
-        return repository.getApiService().getMapDirection(driverLatLng.get(), "driving", latLng, Constants.GEO_API_KEY)
+        return repository.getApiService().getMapDirection(latLng, "driving", driverLatLng.get(), Constants.GEO_API_KEY)
                 .doOnNext(response -> {
 
                 });

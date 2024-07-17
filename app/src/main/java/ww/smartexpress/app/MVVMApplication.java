@@ -1,24 +1,17 @@
 package ww.smartexpress.app;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Application;
 import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.PixelFormat;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -39,21 +31,13 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
 
 import es.dmoral.toasty.Toasty;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.annotations.Nullable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import lombok.Getter;
 import lombok.Setter;
@@ -76,7 +60,6 @@ import ww.smartexpress.app.data.websocket.SocketListener;
 import ww.smartexpress.app.data.websocket.WebSocketLiveData;
 import ww.smartexpress.app.databinding.ItemMarqueeNewsBinding;
 import ww.smartexpress.app.databinding.ItemNotificationBinding;
-import ww.smartexpress.app.databinding.ItemToastFavRestaurantBinding;
 import ww.smartexpress.app.di.component.AppComponent;
 import ww.smartexpress.app.di.component.DaggerAppComponent;
 import ww.smartexpress.app.others.MyTimberDebugTree;
@@ -84,12 +67,10 @@ import ww.smartexpress.app.others.MyTimberReleaseTree;
 import ww.smartexpress.app.ui.chat.ChatActivity;
 import ww.smartexpress.app.ui.delivery.BookDeliveryActivity;
 import ww.smartexpress.app.ui.deposit.DepositActivity;
-import ww.smartexpress.app.ui.fragment.activity.ActivityFragment;
 import ww.smartexpress.app.ui.fragment.search.SearchFragment;
 import ww.smartexpress.app.ui.home.HomeActivity;
 import ww.smartexpress.app.ui.qrcode.QrcodeActivity;
 import ww.smartexpress.app.ui.rate.RateDriverActivity;
-import ww.smartexpress.app.ui.trip.TripActivity;
 import ww.smartexpress.app.ui.trip.detail.TripDetailActivity;
 import ww.smartexpress.app.ui.wallet.WalletActivity;
 import ww.smartexpress.app.utils.AES;
@@ -360,12 +341,9 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
                 toastMessage.showMessage(currentActivity);
                 break;
             case 4: case 5 : case 6://NOTIFICATION_KIND_SYSTEM //NOTIFICATION_KIND_PROMOTION //NOTIFICATION_KIND_WARNING
-                showMarqueeDialog(message);
+
                 break;
-//            case 5://NOTIFICATION_KIND_PROMOTION
-//                break;
-//            case 6://NOTIFICATION_KIND_WARNING
-//                break;
+
             default:
                 break;
         }
@@ -448,20 +426,20 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         }
     }
 
-        public void navigateFromDriverPickUpToBookDeliveryActivity(SocketEventModel socketEventModel){
-            Message message = socketEventModel.getMessage();
-            createNotification(message, 2);
+    public void navigateFromDriverPickUpToBookDeliveryActivity(SocketEventModel socketEventModel){
+        Message message = socketEventModel.getMessage();
+        createNotification(message, 2);
 
-            if(currentActivity instanceof BookDeliveryActivity){
-                Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                intent.putExtra("BOOKING_ID", message.getDataObject(DriverBookingResponse.class).getBookingId());
-                intent.putExtra("STATE_BOOKING", 3);
-                currentActivity.startActivity(intent);
-            }else {
-                reloadStateShipping(message);
-            }
+        if(currentActivity instanceof BookDeliveryActivity){
+            Intent intent = new Intent(currentActivity, BookDeliveryActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            intent.putExtra("BOOKING_ID", message.getDataObject(DriverBookingResponse.class).getBookingId());
+            intent.putExtra("STATE_BOOKING", 3);
+            currentActivity.startActivity(intent);
+        }else {
+            reloadStateShipping(message);
         }
+    }
 
     public void navigateFromBookingDoneToBookDeliveryActivity(SocketEventModel socketEventModel){
         Message message = socketEventModel.getMessage();

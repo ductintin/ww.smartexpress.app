@@ -45,7 +45,7 @@ public class LoginOTPViewModel extends BaseViewModel {
 
     public void setCountdownOTP() {
 
-        long OTPDurationInMillis = 60000; //60s
+        long OTPDurationInMillis = 3*60*1000; //60s
         long intervalInMillis = 1000; //1s tick
 
         milFinished.set(-1L);
