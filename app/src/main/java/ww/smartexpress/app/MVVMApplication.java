@@ -540,7 +540,6 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
 
         RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.item_shipping_notification);
 
-
         switch (option){
             case 1: //accept
                 title = "Đã tìm thấy tài xế giao hàng";
@@ -564,8 +563,8 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
                 break;
         }
 
-        notificationLayout.setTextViewText(R.id.tvNotificationTitle, title);
-        notificationLayout.setTextViewText(R.id.tvNotificationSubtitle, content);
+//        notificationLayout.setTextViewText(R.id.tvNotificationTitle, title);
+//        notificationLayout.setTextViewText(R.id.tvNotificationSubtitle, content);
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
@@ -584,8 +583,12 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         PendingIntent contentIntent = PendingIntent.getActivity(getCurrentActivity(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, id)
                 .setSmallIcon(R.drawable.smartexpress_splash_logo)
-                .setCustomContentView(notificationLayout)
-                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.car_vehicle))
+                .setStyle(new NotificationCompat.BigPictureStyle()
+                        .bigLargeIcon(null)
+                )
+                .setContentTitle(title)
+                .setContentText(content)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVibrate(new long[]{100,1000,200,340})
                 .setAutoCancel(false)

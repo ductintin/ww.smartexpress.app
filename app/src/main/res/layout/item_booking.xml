@@ -53,7 +53,7 @@
                             android:maxLines="1"
                             android:textSize="@dimen/_8ssp"
                             android:background='@{ivm.state == 300 ? @drawable/bg_text_completed : ivm.state == -100 ? @drawable/bg_text_cancel : @drawable/bg_text_pending}'
-                            android:text='@{ivm.state == 300 ? @string/completed : ivm.state == -100 ? @string/canceled : ivm.state == 100 ? "Tìm thấy tài xế" : ivm.state == 200 ? "Tài xế nhận đơn" : "Điều hướng" }'
+                            android:text='@{ivm.state == 300 ? @string/completed : ivm.state == -100 ? @string/canceled : ivm.state == 100 ? "Tìm thấy tài xế" : ivm.state == 200 ? "Tài xế nhận đơn" : ivm.state == 0 ? "Đang tìm tài xế" : "Điều hướng" }'
                             android:textColor='@color/white' />
                     </LinearLayout>
 

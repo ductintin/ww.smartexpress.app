@@ -76,7 +76,7 @@
                     android:paddingBottom="@dimen/_30sdp">
 
                     <LinearLayout
-                        android:visibility="@{(vm.bookingResponse.state == -100 || vm.bookingResponse.state == 400) ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{(vm.bookingResponse.state == -100 || vm.bookingResponse.state == 400 || vm.bookingResponse.state == 0) ? View.GONE : View.VISIBLE}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -690,7 +690,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:visibility='@{vm.bookingResponse.state == 100 || vm.bookingResponse.state == -100 ? View.GONE : View.VISIBLE}'
+                        android:visibility='@{vm.bookingResponse.state == 100 || vm.bookingResponse.state == -100 || vm.bookingResponse.state == 0 ? View.GONE : View.VISIBLE}'
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
