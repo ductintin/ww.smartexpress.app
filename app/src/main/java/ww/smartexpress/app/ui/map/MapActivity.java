@@ -162,15 +162,67 @@ public class MapActivity extends BaseActivity<ActivityMapBinding, MapViewModel> 
 
     @SuppressWarnings("MissingPermission")
     public void getLocation() {
+        viewModel.showLoading();
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(MapActivity.this, location -> {
                     if(location!=null){
                         currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        markerOptions = new MarkerOptions();
-                        markerOptions.position(currentLatLng).title("").draggable(true);
-                        marker = mMap.addMarker(markerOptions);
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 17.0f));
+//                        markerOptions = new MarkerOptions();
+//                        markerOptions.position(currentLatLng).title("").draggable(true);
+//                        marker = mMap.addMarker(markerOptions);
+//                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 17.0f));
                         isFirst = false;
+
+                        viewModel.latlng.set(currentLatLng.latitude+","+currentLatLng.longitude);
+
+
+//                    marker.setPosition(new LatLng(mMap.getCameraPosition().target.latitude,mMap.getCameraPosition().target.longitude));
+                        viewModel.compositeDisposable.add(viewModel.getLocationInfo()
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(response -> {
+                                    String status = response.get("status").getAsString();
+                                    Log.d("TAG", status);
+                                    if(status.equals("OK")){
+                                        viewBinding.shimmerViewContainer.stopShimmer();
+                                        viewBinding.shimmerViewContainer.setVisibility(View.INVISIBLE);
+                                        JsonArray results = response.getAsJsonArray("results");
+                                        int lastIndex = results.size() - 1;
+                                        String component = results.get(0).getAsJsonObject().get("formatted_address").getAsString();
+                                        String id = results.get(0).getAsJsonObject().get("place_id").getAsString();
+                                        String locationType = results.get(0).getAsJsonObject().get("geometry").getAsJsonObject().get("location_type").getAsString();
+                                        JsonArray jsonArray = results.get(0).getAsJsonObject().get("types").getAsJsonArray();
+                                        List<String> types = new ArrayList<>();
+                                        for (JsonElement element : jsonArray) {
+                                            types.add(element.getAsString());
+                                        }
+
+                                        String country = results.get(lastIndex).getAsJsonObject().get("formatted_address").getAsString();
+                                        Log.d("TAG", "setOnCameraIdleListener: com " + component);
+                                        Log.d("TAG", "setOnCameraIdleListener: id "  + id);
+                                        Log.d("TAG", "setOnCameraIdleListener: location_type "  + locationType);
+                                        Log.d("TAG", "setOnCameraIdleListener: country "  + country);
+
+//                                        marker.setTitle(component);
+                                        viewModel.description.set(component);
+                                        viewModel.mainText.set(component);
+                                        viewModel.placeId.set(id);
+                                        loadLocation();
+                                        if(country.equals("Vietnam")){
+                                            viewModel.isValidLocation.set(true);
+                                        }else{
+                                            viewModel.isValidLocation.set(false);
+                                        }
+                                    }
+                                    viewModel.hideLoading();
+                                },error->{
+                                    viewModel.hideLoading();
+                                    viewModel.showErrorMessage(getString(R.string.network_error));
+                                    error.printStackTrace();
+                                })
+                        );
+                    }else {
+                        viewModel.hideLoading();
                     }
                 });
 
@@ -208,9 +260,11 @@ public class MapActivity extends BaseActivity<ActivityMapBinding, MapViewModel> 
             @Override
             public void onCameraIdle() {
                 Log.d("TAG", "setOnCameraIdleListener: " + mMap.getCameraPosition().target.toString());
-                if(!isFirst && mMap.getCameraPosition().target.latitude != 0.0 && mMap.getCameraPosition().target.longitude != 0.0 && TextUtils.isEmpty(viewModel.placeId.get())){
+//                 && TextUtils.isEmpty(viewModel.placeId.get())
+                if(!isFirst && mMap.getCameraPosition().target.latitude != 0.0 && mMap.getCameraPosition().target.longitude != 0.0){
                     viewModel.latlng.set(mMap.getCameraPosition().target.latitude+","+mMap.getCameraPosition().target.longitude);
 
+//                    marker.setPosition(new LatLng(mMap.getCameraPosition().target.latitude,mMap.getCameraPosition().target.longitude));
                     viewModel.compositeDisposable.add(viewModel.getLocationInfo()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())

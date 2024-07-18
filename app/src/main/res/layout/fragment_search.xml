@@ -182,32 +182,29 @@
                     </TextView>
                 </LinearLayout>
 
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <LinearLayout
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
-                        <TextView
-                            android:visibility="@{vm.totalBookingElements > 0 ? View.VISIBLE : View.GONE}"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            style="@style/location_text"
-                            android:layout_marginHorizontal="@dimen/_10sdp"
-                            android:textStyle="bold"
-                            android:textColor="@color/black"
-                            android:text='@{"Đơn hàng hiện tại: " + vm.totalBookingElements}'/>
 
-                        <androidx.recyclerview.widget.RecyclerView
+                    <TextView
+                        style="@style/location_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:text='@{"Đơn hàng hiện tại: " + vm.totalBookingElements}'
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="@dimen/_3sdp"
+                        android:visibility="@{vm.totalBookingElements > 0 ? View.VISIBLE : View.GONE}" />
+
+                    <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rcCurrentBooking"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             tools:listitem="@layout/item_booking"
                             />
                     </LinearLayout>
-
-                </ScrollView>
 
 
             </LinearLayout>

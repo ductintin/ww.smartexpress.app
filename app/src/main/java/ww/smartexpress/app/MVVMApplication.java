@@ -583,7 +583,7 @@ public class MVVMApplication extends Application implements LifecycleObserver, S
         PendingIntent contentIntent = PendingIntent.getActivity(getCurrentActivity(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, id)
                 .setSmallIcon(R.drawable.smartexpress_splash_logo)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.car_vehicle))
+//                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.car_vehicle))
                 .setStyle(new NotificationCompat.BigPictureStyle()
                         .bigLargeIcon(null)
                 )
